@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/auth.php'; exigirLogin(); ?>
+<?php require_once __DIR__ . '/auth.php';?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 

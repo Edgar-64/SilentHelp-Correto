@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/auth.php'; exigirLogin(); ?>
+<?php
+require_once __DIR__ . '/auth.php';
+exigirLogin();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -35,25 +39,19 @@
         ===================================================== */
 
         :root {
-
             --roxo: #a855f7;
             --roxo-2: #b76cff;
             --roxo-claro: #d0a0ff;
             --roxo-escuro: #702db5;
-
             --fundo: #07060a;
             --fundo-2: #0b0910;
-
             --card: rgba(18, 16, 24, .82);
             --card-2: rgba(25, 22, 32, .82);
-
             --borda: rgba(255, 255, 255, .075);
             --borda-roxa: rgba(168, 85, 247, .35);
-
             --branco: #ffffff;
             --cinza: #aaa5b4;
             --cinza-2: #817b8c;
-
             --verde: #55df91;
             --vermelho: #ff5d73;
             --amarelo: #f4c95d;
@@ -68,29 +66,24 @@
         ===================================================== */
 
         body {
-
             min-height: 100vh;
 
             background:
-
                 radial-gradient(
                     circle at 50% -15%,
                     rgba(168, 85, 247, .20),
                     transparent 35%
                 ),
-
                 radial-gradient(
                     circle at 100% 25%,
                     rgba(112, 45, 181, .12),
                     transparent 30%
                 ),
-
                 radial-gradient(
                     circle at 0% 70%,
                     rgba(168, 85, 247, .06),
                     transparent 30%
                 ),
-
                 var(--fundo);
 
             color: var(--branco);
@@ -104,23 +97,18 @@
                 sans-serif;
 
             overflow-x: hidden;
-
             font-size: 16px;
         }
 
-
         body::before {
-
             content: "";
 
             position: fixed;
-
             inset: 0;
 
             pointer-events: none;
 
             background-image:
-
                 radial-gradient(
                     rgba(255, 255, 255, .035) 1px,
                     transparent 1px
@@ -136,20 +124,15 @@
                 );
 
             opacity: .25;
-
             z-index: -1;
         }
-
 
         button {
             font-family: inherit;
         }
 
-
         button:disabled {
-
             opacity: .5;
-
             cursor: not-allowed;
         }
 
@@ -159,9 +142,7 @@
         ===================================================== */
 
         .app {
-
             width: 100%;
-
             max-width: 1080px;
 
             margin: auto;
@@ -178,11 +159,8 @@
         ===================================================== */
 
         .header {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             margin-bottom: 35px;
@@ -194,15 +172,12 @@
         ===================================================== */
 
         .logo-button {
-
             display: inline-flex;
-
             align-items: center;
 
             gap: 12px;
 
             border: none;
-
             background: transparent;
 
             color: white;
@@ -218,18 +193,14 @@
                 background .2s;
         }
 
-
         .logo-button:hover {
-
             transform: translateY(-2px);
 
             background:
                 rgba(168, 85, 247, .07);
         }
 
-
         .logo-heart {
-
             width: 51px;
             height: 51px;
 
@@ -242,21 +213,16 @@
                 );
         }
 
-
         .logo-text {
-
             font-size: 34px;
-
             font-weight: 750;
 
             letter-spacing: -1.5px;
         }
 
-
         .logo-text .silent {
             color: var(--roxo-2);
         }
-
 
         .logo-text .help {
             color: white;
@@ -268,14 +234,12 @@
         ===================================================== */
 
         .notification {
-
             position: relative;
 
             width: 50px;
             height: 50px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -301,9 +265,7 @@
                 border-color .2s;
         }
 
-
         .notification:hover {
-
             transform: translateY(-3px);
 
             background:
@@ -313,16 +275,12 @@
                 var(--borda-roxa);
         }
 
-
         .notification svg {
-
             width: 24px;
             height: 24px;
         }
 
-
         .notification-badge {
-
             position: absolute;
 
             top: -5px;
@@ -332,7 +290,6 @@
             height: 21px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -344,7 +301,6 @@
             color: white;
 
             font-size: 10px;
-
             font-weight: 800;
 
             border:
@@ -362,15 +318,11 @@
         ===================================================== */
 
         .page-title {
-
             margin-bottom: 25px;
         }
 
-
         .page-title h1 {
-
             font-size: 40px;
-
             font-weight: 500;
 
             letter-spacing: -1.2px;
@@ -378,21 +330,15 @@
             margin-bottom: 7px;
         }
 
-
         .page-title h1 span {
-
             color: var(--roxo-claro);
-
             font-weight: 700;
         }
 
-
         .page-title p {
-
             color: var(--cinza);
 
             font-size: 16px;
-
             line-height: 1.6;
         }
 
@@ -402,7 +348,6 @@
         ===================================================== */
 
         .summary-grid {
-
             display: grid;
 
             grid-template-columns:
@@ -413,9 +358,7 @@
             margin-bottom: 28px;
         }
 
-
         .summary-card {
-
             min-height: 105px;
 
             padding: 18px;
@@ -427,7 +370,6 @@
             border-radius: 20px;
 
             background:
-
                 linear-gradient(
                     145deg,
                     rgba(20, 18, 26, .88),
@@ -442,35 +384,26 @@
                 border-color .2s;
         }
 
-
         .summary-card:hover {
-
             transform: translateY(-3px);
 
             border-color:
                 rgba(168, 85, 247, .30);
         }
 
-
         .summary-top {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             margin-bottom: 13px;
         }
 
-
         .summary-icon {
-
             width: 38px;
             height: 38px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -483,41 +416,29 @@
                 var(--roxo-claro);
         }
 
-
         .summary-icon svg {
-
             width: 20px;
             height: 20px;
         }
 
-
         .summary-number {
-
             font-size: 26px;
-
             font-weight: 700;
         }
 
-
         .summary-card p {
-
             color: var(--cinza);
-
             font-size: 13px;
         }
 
-
         .summary-card.success .summary-icon {
-
             color: var(--verde);
 
             background:
                 rgba(85, 223, 145, .08);
         }
 
-
         .summary-card.danger .summary-icon {
-
             color: var(--vermelho);
 
             background:
@@ -530,11 +451,8 @@
         ===================================================== */
 
         .history-header {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             gap: 15px;
@@ -542,33 +460,24 @@
             margin-bottom: 17px;
         }
 
-
         .history-title {
-
             display: flex;
-
             align-items: center;
 
             gap: 10px;
         }
 
-
         .history-title h2 {
-
             font-size: 22px;
-
             font-weight: 600;
 
             letter-spacing: -.3px;
         }
 
-
         .history-count {
-
             display: inline-flex;
 
             align-items: center;
-
             justify-content: center;
 
             min-width: 27px;
@@ -585,13 +494,10 @@
                 var(--roxo-claro);
 
             font-size: 12px;
-
             font-weight: 750;
         }
 
-
         .clear-button {
-
             padding:
                 10px
                 14px;
@@ -609,7 +515,6 @@
                 #ff8999;
 
             font-size: 12px;
-
             font-weight: 650;
 
             cursor: pointer;
@@ -620,9 +525,7 @@
                 transform .2s;
         }
 
-
         .clear-button:hover {
-
             transform: translateY(-2px);
 
             background:
@@ -638,9 +541,7 @@
         ===================================================== */
 
         .filters {
-
             display: flex;
-
             align-items: center;
 
             gap: 8px;
@@ -652,9 +553,7 @@
             padding-bottom: 3px;
         }
 
-
         .filter-button {
-
             flex-shrink: 0;
 
             padding:
@@ -674,7 +573,6 @@
                 var(--cinza);
 
             font-size: 12px;
-
             font-weight: 600;
 
             cursor: pointer;
@@ -685,9 +583,7 @@
                 color .2s;
         }
 
-
         .filter-button:hover {
-
             border-color:
                 rgba(168, 85, 247, .30);
 
@@ -695,9 +591,7 @@
                 var(--roxo-claro);
         }
 
-
         .filter-button.active {
-
             background:
                 rgba(168, 85, 247, .13);
 
@@ -714,7 +608,6 @@
         ===================================================== */
 
         .alert-list {
-
             display: flex;
 
             flex-direction: column;
@@ -722,13 +615,10 @@
             gap: 12px;
         }
 
-
         .alert-card {
-
             position: relative;
 
             display: flex;
-
             align-items: center;
 
             gap: 16px;
@@ -742,7 +632,6 @@
             border-radius: 21px;
 
             background:
-
                 linear-gradient(
                     145deg,
                     rgba(20, 18, 26, .88),
@@ -757,18 +646,17 @@
                 transform .2s,
                 border-color .2s,
                 background .2s;
+
+            cursor: pointer;
         }
 
-
         .alert-card:hover {
-
             transform: translateY(-2px);
 
             border-color:
                 rgba(168, 85, 247, .30);
 
             background:
-
                 linear-gradient(
                     145deg,
                     rgba(28, 22, 37, .92),
@@ -776,16 +664,13 @@
                 );
         }
 
-
         .alert-icon {
-
             width: 56px;
             height: 56px;
 
             min-width: 56px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -802,16 +687,12 @@
                 rgba(168, 85, 247, .12);
         }
 
-
         .alert-icon svg {
-
             width: 27px;
             height: 27px;
         }
 
-
         .alert-icon.emergency {
-
             background:
                 rgba(255, 93, 115, .09);
 
@@ -822,9 +703,7 @@
                 rgba(255, 93, 115, .15);
         }
 
-
         .alert-icon.test {
-
             background:
                 rgba(85, 223, 145, .08);
 
@@ -835,19 +714,13 @@
                 rgba(85, 223, 145, .14);
         }
 
-
         .alert-info {
-
             flex: 1;
-
             min-width: 0;
         }
 
-
         .alert-name {
-
             display: flex;
-
             align-items: center;
 
             flex-wrap: wrap;
@@ -857,17 +730,12 @@
             margin-bottom: 5px;
         }
 
-
         .alert-name h3 {
-
             font-size: 16px;
-
             font-weight: 650;
         }
 
-
         .alert-status {
-
             display: inline-flex;
 
             align-items: center;
@@ -881,7 +749,6 @@
             border-radius: 7px;
 
             font-size: 9px;
-
             font-weight: 750;
 
             text-transform: uppercase;
@@ -889,9 +756,7 @@
             letter-spacing: .4px;
         }
 
-
         .alert-status-dot {
-
             width: 5px;
             height: 5px;
 
@@ -901,9 +766,7 @@
                 currentColor;
         }
 
-
         .alert-status.resolved {
-
             color:
                 var(--verde);
 
@@ -911,9 +774,7 @@
                 rgba(85, 223, 145, .08);
         }
 
-
         .alert-status.cancelled {
-
             color:
                 var(--cinza);
 
@@ -921,9 +782,7 @@
                 rgba(255, 255, 255, .06);
         }
 
-
         .alert-meta {
-
             display: flex;
 
             align-items: center;
@@ -938,9 +797,7 @@
             font-size: 12px;
         }
 
-
         .alert-meta span {
-
             display: flex;
 
             align-items: center;
@@ -948,21 +805,11 @@
             gap: 4px;
         }
 
-
-        .alert-meta svg {
-
-            width: 14px;
-            height: 14px;
-        }
-
-
         .meta-separator {
             color: var(--cinza-2);
         }
 
-
         .alert-action {
-
             width: 40px;
             height: 40px;
 
@@ -994,16 +841,7 @@
                 transform .2s;
         }
 
-
-        .alert-action svg {
-
-            width: 19px;
-            height: 19px;
-        }
-
-
         .alert-action:hover {
-
             transform: translateX(2px);
 
             background:
@@ -1022,7 +860,6 @@
         ===================================================== */
 
         .empty-state {
-
             display: none;
 
             padding: 50px 25px;
@@ -1039,19 +876,15 @@
                 rgba(18, 16, 24, .70);
         }
 
-
         .empty-state.show {
             display: block;
         }
 
-
         .empty-icon {
-
             width: 65px;
             height: 65px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -1068,24 +901,13 @@
                 var(--roxo-claro);
         }
 
-
-        .empty-icon svg {
-
-            width: 30px;
-            height: 30px;
-        }
-
-
         .empty-state h3 {
-
             font-size: 18px;
 
             margin-bottom: 6px;
         }
 
-
         .empty-state p {
-
             color:
                 var(--cinza);
 
@@ -1100,11 +922,9 @@
         ===================================================== */
 
         .toast {
-
             position: fixed;
 
             left: 50%;
-
             bottom: 30px;
 
             transform:
@@ -1117,7 +937,6 @@
             z-index: 5000;
 
             width: max-content;
-
             max-width: 90%;
 
             padding:
@@ -1151,9 +970,7 @@
                 transform .3s;
         }
 
-
         .toast.show {
-
             opacity: 1;
 
             transform:
@@ -1166,7 +983,6 @@
         ===================================================== */
 
         .modal {
-
             position: fixed;
 
             inset: 0;
@@ -1187,16 +1003,12 @@
             z-index: 3000;
         }
 
-
         .modal.show {
             display: flex;
         }
 
-
         .modal-content {
-
             width: 100%;
-
             max-width: 450px;
 
             padding: 28px;
@@ -1208,7 +1020,6 @@
             border-radius: 25px;
 
             background:
-
                 linear-gradient(
                     145deg,
                     rgba(29, 22, 38, .98),
@@ -1220,11 +1031,8 @@
                 rgba(0, 0, 0, .65);
         }
 
-
         .modal-top {
-
             display: flex;
-
             align-items: center;
 
             gap: 13px;
@@ -1232,14 +1040,11 @@
             margin-bottom: 22px;
         }
 
-
         .modal-icon {
-
             width: 55px;
             height: 55px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -1252,16 +1057,7 @@
                 var(--roxo-claro);
         }
 
-
-        .modal-icon svg {
-
-            width: 27px;
-            height: 27px;
-        }
-
-
         .modal-top h2 {
-
             font-size: 21px;
 
             font-weight: 650;
@@ -1269,18 +1065,14 @@
             margin-bottom: 3px;
         }
 
-
         .modal-top p {
-
             color:
                 var(--cinza);
 
             font-size: 12px;
         }
 
-
         .detail-list {
-
             display: flex;
 
             flex-direction: column;
@@ -1290,18 +1082,17 @@
             margin-bottom: 21px;
         }
 
-
         .detail-item {
-
             display: flex;
 
             align-items: center;
-
             justify-content: space-between;
 
             gap: 15px;
 
-            padding: 13px 14px;
+            padding:
+                13px
+                14px;
 
             border:
                 1px solid
@@ -1313,18 +1104,14 @@
                 rgba(7, 7, 11, .60);
         }
 
-
         .detail-item span {
-
             color:
                 var(--cinza);
 
             font-size: 12px;
         }
 
-
         .detail-item strong {
-
             color:
                 white;
 
@@ -1335,9 +1122,7 @@
             text-align: right;
         }
 
-
         .modal-close {
-
             width: 100%;
 
             padding: 14px;
@@ -1365,9 +1150,7 @@
                 border-color .2s;
         }
 
-
         .modal-close:hover {
-
             background:
                 rgba(168, 85, 247, .14);
 
@@ -1381,18 +1164,14 @@
         ===================================================== */
 
         .confirm-modal {
-
             text-align: center;
         }
 
-
         .confirm-icon {
-
             width: 62px;
             height: 62px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -1409,24 +1188,13 @@
                 var(--vermelho);
         }
 
-
-        .confirm-icon svg {
-
-            width: 29px;
-            height: 29px;
-        }
-
-
         .confirm-modal h2 {
-
             font-size: 21px;
 
             margin-bottom: 8px;
         }
 
-
         .confirm-modal p {
-
             color:
                 var(--cinza);
 
@@ -1437,17 +1205,13 @@
             margin-bottom: 20px;
         }
 
-
         .modal-buttons {
-
             display: flex;
 
             gap: 9px;
         }
 
-
         .modal-buttons button {
-
             flex: 1;
 
             padding: 13px;
@@ -1461,9 +1225,7 @@
             cursor: pointer;
         }
 
-
         .cancel-button {
-
             border:
                 1px solid
                 var(--borda);
@@ -1475,9 +1237,7 @@
                 white;
         }
 
-
         .delete-button {
-
             border: none;
 
             background:
@@ -1498,109 +1258,72 @@
         @media (max-width: 700px) {
 
             .app {
-
                 padding:
                     19px
                     15px
                     40px;
             }
 
-
             .header {
-
                 margin-bottom: 28px;
             }
 
-
             .logo-heart {
-
                 width: 43px;
                 height: 43px;
             }
 
-
             .logo-text {
-
                 font-size: 30px;
             }
 
-
             .notification {
-
                 width: 45px;
                 height: 45px;
             }
 
-
             .page-title h1 {
-
                 font-size: 31px;
             }
 
-
             .page-title p {
-
                 font-size: 14px;
             }
 
-
             .summary-grid {
-
                 grid-template-columns:
                     repeat(3, 1fr);
 
                 gap: 8px;
             }
 
-
             .summary-card {
-
                 padding: 13px;
-
                 min-height: 95px;
             }
 
-
             .summary-icon {
-
                 width: 32px;
                 height: 32px;
             }
 
-
-            .summary-icon svg {
-
-                width: 17px;
-                height: 17px;
-            }
-
-
             .summary-number {
-
                 font-size: 21px;
             }
 
-
             .summary-card p {
-
                 font-size: 10px;
             }
 
-
             .history-header {
-
                 align-items: flex-start;
             }
 
-
             .history-title h2 {
-
                 font-size: 19px;
             }
 
-
             .clear-button {
-
                 padding:
                     9px
                     11px;
@@ -1608,256 +1331,165 @@
                 font-size: 10px;
             }
 
-
             .alert-card {
-
                 padding: 15px;
-
                 gap: 12px;
             }
 
-
             .alert-icon {
-
                 width: 48px;
                 height: 48px;
-
                 min-width: 48px;
             }
 
-
-            .alert-icon svg {
-
-                width: 23px;
-                height: 23px;
-            }
-
-
             .alert-name h3 {
-
                 font-size: 14px;
             }
 
-
             .alert-meta {
-
                 font-size: 10px;
             }
 
-
             .alert-action {
-
                 width: 36px;
                 height: 36px;
-
                 min-width: 36px;
             }
-
-
-            .alert-action svg {
-
-                width: 17px;
-                height: 17px;
-            }
         }
-
 
         @media (max-width: 480px) {
 
             .logo-text {
-
                 font-size: 27px;
             }
 
-
             .page-title h1 {
-
                 font-size: 28px;
             }
 
-
             .page-title p {
-
                 font-size: 13px;
             }
 
-
             .summary-grid {
-
                 gap: 6px;
             }
 
-
             .summary-card {
-
                 padding: 10px;
             }
 
-
             .summary-number {
-
                 font-size: 19px;
             }
 
-
             .summary-card p {
-
                 font-size: 9px;
             }
 
-
             .summary-icon {
-
                 width: 29px;
                 height: 29px;
             }
 
-
             .history-title h2 {
-
                 font-size: 17px;
             }
 
-
             .history-count {
-
                 min-width: 24px;
                 height: 24px;
-
                 font-size: 10px;
             }
 
-
             .alert-card {
-
                 align-items: flex-start;
             }
 
-
             .alert-icon {
-
                 width: 43px;
                 height: 43px;
-
                 min-width: 43px;
-
                 border-radius: 13px;
             }
 
-
             .alert-name {
-
                 gap: 5px;
             }
 
-
             .alert-name h3 {
-
                 font-size: 13px;
             }
 
-
             .alert-status {
-
                 font-size: 7px;
-
                 padding:
                     3px
                     6px;
             }
 
-
             .alert-meta {
-
                 display: block;
-
                 line-height: 1.7;
             }
 
-
             .alert-meta .meta-separator {
-
                 display: none;
             }
 
-
             .alert-action {
-
                 width: 32px;
                 height: 32px;
-
                 min-width: 32px;
             }
 
-
             .modal-content {
-
                 padding:
                     23px
                     18px;
             }
 
-
             .modal-top h2 {
-
                 font-size: 19px;
             }
 
-
             .modal-buttons {
-
                 flex-direction: column;
             }
         }
 
-
         @media (max-width: 360px) {
 
             .logo-text {
-
                 font-size: 24px;
             }
 
-
             .notification {
-
                 width: 42px;
                 height: 42px;
             }
 
-
             .page-title h1 {
-
                 font-size: 24px;
             }
 
-
             .summary-number {
-
                 font-size: 17px;
             }
 
-
             .summary-card p {
-
                 font-size: 8px;
             }
 
-
             .alert-card {
-
                 padding: 12px;
             }
 
-
             .alert-name h3 {
-
                 font-size: 12px;
             }
 
-
             .alert-meta {
-
                 font-size: 9px;
             }
         }
@@ -1869,117 +1501,105 @@
 
 <body>
 
+<div class="app">
+
 
     <!-- =====================================================
-         APP
-    ====================================================== -->
+         HEADER
+    ===================================================== -->
 
-    <main class="app">
+    <header class="header">
 
+        <button
+            class="logo-button"
+            onclick="goTo('index.php')"
+        >
 
-        <!-- =================================================
-             HEADER
-        ================================================== -->
-
-        <header class="header">
-
-
-            <!--
-                AGORA O SILENTHELP É UM BOTÃO
-                QUE VOLTA PARA index.php
-            -->
-
-            <button
-                class="logo-button"
-                onclick="goTo('index.php')"
-                aria-label="Ir para página inicial"
+            <svg
+                class="logo-heart"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
             >
+                <path
+                    d="M20.8 8.7
+                       C20.8 5.7 18.5 3.5 15.7 3.5
+                       C13.9 3.5 12.4 4.4 11.5 5.8
+                       C10.6 4.4 9.1 3.5 7.3 3.5
+                       C4.5 3.5 2.2 5.7 2.2 8.7
+                       C2.2 13.8 7.1 17.3 11.5 20.5
+                       C15.9 17.3 20.8 13.8 20.8 8.7Z"
+                />
+            </svg>
 
-                <svg
-                    class="logo-heart"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
+            <span class="logo-text">
+                <span class="silent">Silent</span><span class="help">Help</span>
+            </span>
 
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-
-                </svg>
-
-
-                <div class="logo-text">
-
-                    <span class="silent">
-                        Silent
-                    </span>
-
-                    <span class="help">
-                        Help
-                    </span>
-
-                </div>
-
-            </button>
+        </button>
 
 
+        <button
+            class="notification"
+            onclick="goTo('notificacoes.php')"
+            aria-label="Notificações"
+        >
 
-            <!-- NOTIFICAÇÃO -->
-
-            <button
-                class="notification"
-                onclick="showToast('Você não possui novas notificações.')"
-                aria-label="Notificações"
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
             >
+                <path
+                    d="M18 8
+                       C18 5 16.2 3 13.5 2.5
+                       M6 8
+                       C6 4.7 8.4 2 12 2
+                       C15.6 2 18 4.7 18 8
+                       C18 14 20 16 20 16
+                       H4
+                       C4 16 6 14 6 8Z"
+                />
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                <path
+                    d="M10 20
+                       C10.5 21.3 11.2 22 12 22
+                       C12.8 22 13.5 21.3 14 20"
+                />
+            </svg>
 
-                    <path
-                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-                    />
+            <span
+                class="notification-badge"
+                id="notificationBadge"
+            >
+                2
+            </span>
 
-                    <path
-                        d="M13.73 21a2 2 0 0 1-3.46 0"
-                    />
+        </button>
 
-                </svg>
-
-
-                <span class="notification-badge">
-                    2
-                </span>
-
-            </button>
-
-        </header>
+    </header>
 
 
 
-        <!-- =================================================
-             TÍTULO
-        ================================================== -->
+    <!-- =====================================================
+         CONTEÚDO
+    ===================================================== -->
+
+    <main>
+
+
+        <!-- TÍTULO -->
 
         <section class="page-title">
 
             <h1>
-                Histórico de <span>alertas</span>
+                Histórico de <span>Alertas</span>
             </h1>
 
             <p>
-                Consulte os alertas registrados pelo seu dispositivo
-                e acompanhe as atividades de segurança.
+                Consulte os registros de emergência e verificações do seu dispositivo.
             </p>
 
         </section>
@@ -1988,45 +1608,24 @@
 
         <!-- =================================================
              RESUMO
-        ================================================== -->
+        ================================================= -->
 
         <section class="summary-grid">
 
-
-            <!-- TOTAL -->
 
             <div class="summary-card">
 
                 <div class="summary-top">
 
                     <div class="summary-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
-                            />
-
-                            <path
-                                d="m9 12 2 2 4-4"
-                            />
-
-                        </svg>
-
+                        📋
                     </div>
 
                     <strong
                         class="summary-number"
                         id="totalAlerts"
                     >
-                        8
+                        0
                     </strong>
 
                 </div>
@@ -2039,1646 +1638,1321 @@
 
 
 
-            <!-- EMERGÊNCIAS -->
-
             <div class="summary-card danger">
 
                 <div class="summary-top">
 
                     <div class="summary-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="9"
-                                x2="12"
-                                y2="13"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="17"
-                                x2="12.01"
-                                y2="17"
-                            />
-
-                        </svg>
-
+                        🆘
                     </div>
 
                     <strong
                         class="summary-number"
                         id="emergencyAlerts"
                     >
-                        3
+                        0
                     </strong>
 
                 </div>
 
                 <p>
-                    Alertas de emergência
+                    Emergências
                 </p>
 
             </div>
 
 
-
-            <!-- RESOLVIDOS -->
 
             <div class="summary-card success">
 
                 <div class="summary-top">
 
                     <div class="summary-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
-
-                            <path
-                                d="m8 12 2.5 2.5L16 9"
-                            />
-
-                        </svg>
-
+                        ✓
                     </div>
 
                     <strong
                         class="summary-number"
                         id="resolvedAlerts"
                     >
-                        7
+                        0
                     </strong>
 
                 </div>
 
                 <p>
-                    Alertas resolvidos
+                    Resolvidos
                 </p>
 
             </div>
+
 
         </section>
 
 
 
         <!-- =================================================
-             HISTÓRICO
-        ================================================== -->
+             CABEÇALHO HISTÓRICO
+        ================================================= -->
 
-        <section class="history-section">
+        <section class="history-header">
 
+            <div class="history-title">
 
-            <div class="history-header">
+                <h2>
+                    Histórico
+                </h2>
 
-                <div class="history-title">
-
-                    <h2>
-                        Alertas registrados
-                    </h2>
-
-                    <span
-                        class="history-count"
-                        id="historyCount"
-                    >
-                        8
-                    </span>
-
-                </div>
-
-
-                <button
-                    class="clear-button"
-                    onclick="openClearModal()"
+                <span
+                    class="history-count"
+                    id="historyCount"
                 >
-                    Limpar histórico
-                </button>
-
-            </div>
-
-
-
-            <!-- FILTROS -->
-
-            <div class="filters">
-
-                <button
-                    class="filter-button active"
-                    data-filter="all"
-                    onclick="filterAlerts('all', this)"
-                >
-                    Todos
-                </button>
-
-
-                <button
-                    class="filter-button"
-                    data-filter="emergency"
-                    onclick="filterAlerts('emergency', this)"
-                >
-                    Emergência
-                </button>
-
-
-                <button
-                    class="filter-button"
-                    data-filter="test"
-                    onclick="filterAlerts('test', this)"
-                >
-                    Testes
-                </button>
-
-
-                <button
-                    class="filter-button"
-                    data-filter="cancelled"
-                    onclick="filterAlerts('cancelled', this)"
-                >
-                    Cancelados
-                </button>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 LISTA DE ALERTAS
-            ================================================== -->
-
-            <div
-                class="alert-list"
-                id="alertList"
-            >
-
-
-                <!-- ALERTA 1 -->
-
-                <article
-                    class="alert-card"
-                    data-type="emergency"
-                >
-
-                    <div class="alert-icon emergency">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="9"
-                                x2="12"
-                                y2="13"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="17"
-                                x2="12.01"
-                                y2="17"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Alerta de emergência
-                            </h3>
-
-                            <span class="alert-status resolved">
-
-                                <span class="alert-status-dot"></span>
-
-                                Resolvido
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                >
-
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="9"
-                                    />
-
-                                    <polyline
-                                        points="12 7 12 12 15 14"
-                                    />
-
-                                </svg>
-
-                                Hoje, 10:42
-
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                >
-
-                                    <path
-                                        d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"
-                                    />
-
-                                    <circle
-                                        cx="12"
-                                        cy="10"
-                                        r="2.5"
-                                    />
-
-                                </svg>
-
-                                Localização registrada
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Alerta de emergência',
-                            'Hoje, 10:42',
-                            'Resolvido',
-                            'Localização registrada',
-                            '3 contatos'
-                        )"
-                        aria-label="Ver detalhes"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-
-
-                <!-- ALERTA 2 -->
-
-                <article
-                    class="alert-card"
-                    data-type="test"
-                >
-
-                    <div class="alert-icon test">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
-
-                            <path
-                                d="m8 12 2.5 2.5L16 9"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Teste de segurança
-                            </h3>
-
-                            <span class="alert-status resolved">
-
-                                <span class="alert-status-dot"></span>
-
-                                Concluído
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-                                Hoje, 08:15
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-                                Teste manual
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Teste de segurança',
-                            'Hoje, 08:15',
-                            'Concluído',
-                            'Teste manual',
-                            'Nenhum contato acionado'
-                        )"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-
-
-                <!-- ALERTA 3 -->
-
-                <article
-                    class="alert-card"
-                    data-type="emergency"
-                >
-
-                    <div class="alert-icon emergency">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="9"
-                                x2="12"
-                                y2="13"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="17"
-                                x2="12.01"
-                                y2="17"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Alerta de emergência
-                            </h3>
-
-                            <span class="alert-status resolved">
-
-                                <span class="alert-status-dot"></span>
-
-                                Resolvido
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-                                Ontem, 21:37
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-                                Localização registrada
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Alerta de emergência',
-                            'Ontem, 21:37',
-                            'Resolvido',
-                            'Localização registrada',
-                            '3 contatos'
-                        )"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-
-
-                <!-- ALERTA 4 -->
-
-                <article
-                    class="alert-card"
-                    data-type="cancelled"
-                >
-
-                    <div class="alert-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
-
-                            <path d="m9 9 6 6"/>
-
-                            <path d="m15 9-6 6"/>
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Alerta cancelado
-                            </h3>
-
-                            <span class="alert-status cancelled">
-
-                                <span class="alert-status-dot"></span>
-
-                                Cancelado
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-                                14/08/2026, 17:20
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-                                Cancelado manualmente
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Alerta cancelado',
-                            '14/08/2026, 17:20',
-                            'Cancelado',
-                            'Cancelado manualmente',
-                            'Nenhum contato acionado'
-                        )"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-
-
-                <!-- ALERTA 5 -->
-
-                <article
-                    class="alert-card"
-                    data-type="test"
-                >
-
-                    <div class="alert-icon test">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
-                            />
-
-                            <path
-                                d="m9 12 2 2 4-4"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Verificação do dispositivo
-                            </h3>
-
-                            <span class="alert-status resolved">
-
-                                <span class="alert-status-dot"></span>
-
-                                Concluído
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-                                13/08/2026, 14:05
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-                                Sistema funcionando
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Verificação do dispositivo',
-                            '13/08/2026, 14:05',
-                            'Concluído',
-                            'Sistema funcionando',
-                            'Nenhum contato acionado'
-                        )"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-
-
-                <!-- ALERTA 6 -->
-
-                <article
-                    class="alert-card"
-                    data-type="emergency"
-                >
-
-                    <div class="alert-icon emergency">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="9"
-                                x2="12"
-                                y2="13"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="17"
-                                x2="12.01"
-                                y2="17"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Alerta de emergência
-                            </h3>
-
-                            <span class="alert-status resolved">
-
-                                <span class="alert-status-dot"></span>
-
-                                Resolvido
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-                                12/08/2026, 22:18
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-                                GPS ativado
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Alerta de emergência',
-                            '12/08/2026, 22:18',
-                            'Resolvido',
-                            'GPS ativado',
-                            '3 contatos'
-                        )"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-
-
-                <!-- ALERTA 7 -->
-
-                <article
-                    class="alert-card"
-                    data-type="test"
-                >
-
-                    <div class="alert-icon test">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path
-                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
-                            />
-
-                            <path
-                                d="m9 12 2 2 4-4"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Teste de segurança
-                            </h3>
-
-                            <span class="alert-status resolved">
-
-                                <span class="alert-status-dot"></span>
-
-                                Concluído
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-                                10/08/2026, 09:30
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-                                Teste automático
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Teste de segurança',
-                            '10/08/2026, 09:30',
-                            'Concluído',
-                            'Teste automático',
-                            'Nenhum contato acionado'
-                        )"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-
-
-                <!-- ALERTA 8 -->
-
-                <article
-                    class="alert-card"
-                    data-type="cancelled"
-                >
-
-                    <div class="alert-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
-
-                            <path d="m9 9 6 6"/>
-
-                            <path d="m15 9-6 6"/>
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="alert-info">
-
-                        <div class="alert-name">
-
-                            <h3>
-                                Alerta cancelado
-                            </h3>
-
-                            <span class="alert-status cancelled">
-
-                                <span class="alert-status-dot"></span>
-
-                                Cancelado
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="alert-meta">
-
-                            <span>
-                                08/08/2026, 18:45
-                            </span>
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-                            <span>
-                                Cancelado pelo usuário
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="alert-action"
-                        onclick="openDetails(
-                            'Alerta cancelado',
-                            '08/08/2026, 18:45',
-                            'Cancelado',
-                            'Cancelado pelo usuário',
-                            'Nenhum contato acionado'
-                        )"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-
-                            <path d="m9 18 6-6-6-6"/>
-
-                        </svg>
-
-                    </button>
-
-                </article>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 ESTADO VAZIO
-            ================================================== -->
-
-            <div
-                class="empty-state"
-                id="emptyState"
-            >
-
-                <div class="empty-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-
-                        <path
-                            d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
-                        />
-
-                        <path
-                            d="m9 12 2 2 4-4"
-                        />
-
-                    </svg>
-
-                </div>
-
-                <h3>
-                    Nenhum alerta encontrado
-                </h3>
-
-                <p>
-                    Não existem alertas desse tipo no histórico.
-                </p>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-
-    <!-- =====================================================
-         MODAL DETALHES
-    ====================================================== -->
-
-    <div
-        class="modal"
-        id="detailsModal"
-        onclick="closeModalOutside(event)"
-    >
-
-        <div class="modal-content">
-
-
-            <div class="modal-top">
-
-                <div class="modal-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-
-                        <path
-                            d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
-                        />
-
-                        <path
-                            d="m9 12 2 2 4-4"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div>
-
-                    <h2 id="detailTitle">
-                        Detalhes do alerta
-                    </h2>
-
-                    <p>
-                        Informações registradas pelo SilentHelp
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="detail-list">
-
-
-                <div class="detail-item">
-
-                    <span>
-                        Data e horário
-                    </span>
-
-                    <strong id="detailDate">
-                        -
-                    </strong>
-
-                </div>
-
-
-                <div class="detail-item">
-
-                    <span>
-                        Status
-                    </span>
-
-                    <strong id="detailStatus">
-                        -
-                    </strong>
-
-                </div>
-
-
-                <div class="detail-item">
-
-                    <span>
-                        Registro
-                    </span>
-
-                    <strong id="detailLocation">
-                        -
-                    </strong>
-
-                </div>
-
-
-                <div class="detail-item">
-
-                    <span>
-                        Contatos acionados
-                    </span>
-
-                    <strong id="detailContacts">
-                        -
-                    </strong>
-
-                </div>
+                    0
+                </span>
 
             </div>
 
 
             <button
-                class="modal-close"
-                onclick="closeDetails()"
+                class="clear-button"
+                onclick="openClearModal()"
             >
-                Fechar
+                Limpar
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FILTROS
+        ================================================= -->
+
+        <div class="filters">
+
+            <button
+                class="filter-button active"
+                onclick="filterAlerts('all', this)"
+            >
+                Todos
+            </button>
+
+
+            <button
+                class="filter-button"
+                onclick="filterAlerts('emergency', this)"
+            >
+                Emergência
+            </button>
+
+
+            <button
+                class="filter-button"
+                onclick="filterAlerts('test', this)"
+            >
+                Testes
+            </button>
+
+
+            <button
+                class="filter-button"
+                onclick="filterAlerts('cancelled', this)"
+            >
+                Cancelados
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LISTA
+        ================================================= -->
+
+        <div
+            class="alert-list"
+            id="alertList"
+        >
+        </div>
+
+
+
+        <!-- =================================================
+             ESTADO VAZIO
+        ================================================= -->
+
+        <div
+            class="empty-state"
+            id="emptyState"
+        >
+
+            <div class="empty-icon">
+                📋
+            </div>
+
+            <h3>
+                Nenhum alerta encontrado
+            </h3>
+
+            <p>
+                Quando houver registros de alertas ou verificações,
+                eles aparecerão aqui.
+            </p>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL DE DETALHES
+========================================================= -->
+
+<div
+    class="modal"
+    id="detailsModal"
+    onclick="fecharModalFora(event)"
+>
+
+    <div
+        class="modal-content"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="modal-top">
+
+            <div class="modal-icon">
+                🆘
+            </div>
+
+            <div>
+
+                <h2 id="detailTitle">
+                    Detalhes do alerta
+                </h2>
+
+                <p>
+                    Informações do registro
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-list">
+
+
+            <div class="detail-item">
+
+                <span>
+                    Data
+                </span>
+
+                <strong id="detailDate">
+                    -
+                </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span>
+                    Status
+                </span>
+
+                <strong id="detailStatus">
+                    -
+                </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span>
+                    Localização
+                </span>
+
+                <strong id="detailLocation">
+                    -
+                </strong>
+
+            </div>
+
+
+
+            <div class="detail-item">
+
+                <span>
+                    Contatos
+                </span>
+
+                <strong id="detailContacts">
+                    -
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="modal-close"
+            onclick="closeDetails()"
+        >
+            Fechar
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL CONFIRMAÇÃO
+========================================================= -->
+
+<div
+    class="modal"
+    id="clearModal"
+    onclick="fecharClearFora(event)"
+>
+
+    <div
+        class="modal-content confirm-modal"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="confirm-icon">
+            ⚠
+        </div>
+
+
+        <h2>
+            Limpar histórico?
+        </h2>
+
+
+        <p>
+            Todos os registros de alertas serão apagados
+            deste dispositivo. Essa ação não poderá ser desfeita.
+        </p>
+
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel-button"
+                onclick="closeClearModal()"
+            >
+                Cancelar
+            </button>
+
+
+            <button
+                class="delete-button"
+                onclick="clearHistory()"
+            >
+                Limpar histórico
             </button>
 
         </div>
 
     </div>
 
+</div>
 
 
-    <!-- =====================================================
-         MODAL LIMPAR
-    ====================================================== -->
 
-    <div
-        class="modal"
-        id="clearModal"
-        onclick="closeClearOutside(event)"
-    >
+<!-- =========================================================
+     TOAST
+========================================================= -->
 
-        <div class="modal-content confirm-modal">
+<div
+    class="toast"
+    id="toast"
+>
+    <span id="toastMessage"></span>
+</div>
 
 
-            <div class="confirm-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+<script>
 
-                    <polyline
-                        points="3 6 5 6 21 6"
-                    />
+const HISTORY_KEY =
+    "historicoAlertasSilentHelp";
 
-                    <path
-                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
-                    />
+let alertas = [];
 
-                    <path
-                        d="M10 11v6"
-                    />
+let filtroAtual = "all";
 
-                    <path
-                        d="M14 11v6"
-                    />
+let toastTimer = null;
 
-                    <path
-                        d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"
-                    />
 
-                </svg>
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(mensagem) {
+
+    const toast =
+        document.getElementById("toast");
+
+    const texto =
+        document.getElementById("toastMessage");
+
+
+    if (!toast || !texto) {
+        return;
+    }
+
+
+    texto.textContent = mensagem;
+
+
+    toast.classList.add("show");
+
+
+    clearTimeout(toastTimer);
+
+
+    toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 3000);
+}
+
+
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
+
+function escapeHTML(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined
+    ) {
+        return "";
+    }
+
+
+    return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   CARREGAR HISTÓRICO
+========================================================= */
+
+function carregarHistorico() {
+
+    try {
+
+        const dados =
+            localStorage.getItem(
+                HISTORY_KEY
+            );
+
+
+        if (!dados) {
+
+            alertas = [];
+
+            renderizarHistorico();
+
+            return;
+        }
+
+
+        const historico =
+            JSON.parse(dados);
+
+
+        if (Array.isArray(historico)) {
+
+            alertas = historico;
+
+        } else {
+
+            alertas = [];
+
+        }
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar histórico:",
+            erro
+        );
+
+        alertas = [];
+
+        showToast(
+            "Erro ao carregar histórico."
+        );
+    }
+
+
+    renderizarHistorico();
+}
+
+
+/* =========================================================
+   TIPO DO ALERTA
+========================================================= */
+
+function normalizarTipo(alerta) {
+
+    const tipo = String(
+        alerta?.tipo ||
+        alerta?.type ||
+        alerta?.categoria ||
+        ""
+    ).toLowerCase();
+
+
+    if (
+        tipo.includes("cancel")
+    ) {
+        return "cancelled";
+    }
+
+
+    if (
+        tipo.includes("test") ||
+        tipo.includes("check") ||
+        tipo.includes("verific")
+    ) {
+        return "test";
+    }
+
+
+    if (
+        tipo.includes("emerg") ||
+        tipo.includes("sos") ||
+        tipo.includes("alert")
+    ) {
+        return "emergency";
+    }
+
+
+    const titulo = String(
+        alerta?.titulo ||
+        alerta?.title ||
+        ""
+    ).toLowerCase();
+
+
+    if (
+        titulo.includes("teste") ||
+        titulo.includes("verificação") ||
+        titulo.includes("check-up") ||
+        titulo.includes("checkup")
+    ) {
+        return "test";
+    }
+
+
+    if (
+        titulo.includes("cancel")
+    ) {
+        return "cancelled";
+    }
+
+
+    return "emergency";
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function normalizarStatus(alerta) {
+
+    const status = String(
+        alerta?.status ||
+        alerta?.situacao ||
+        ""
+    ).toLowerCase();
+
+
+    if (
+        status.includes("resolv") ||
+        status.includes("conclu") ||
+        status.includes("atend")
+    ) {
+        return "Resolvido";
+    }
+
+
+    if (
+        status.includes("cancel")
+    ) {
+        return "Cancelado";
+    }
+
+
+    if (
+        normalizarTipo(alerta) === "test"
+    ) {
+        return "Concluído";
+    }
+
+
+    return "Registrado";
+}
+
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+function obterTitulo(alerta) {
+
+    if (alerta?.titulo) {
+        return alerta.titulo;
+    }
+
+
+    if (alerta?.title) {
+        return alerta.title;
+    }
+
+
+    if (alerta?.nome) {
+        return alerta.nome;
+    }
+
+
+    const tipo =
+        normalizarTipo(alerta);
+
+
+    if (tipo === "test") {
+        return "Verificação do dispositivo";
+    }
+
+
+    if (tipo === "cancelled") {
+        return "Alerta cancelado";
+    }
+
+
+    return "Alerta de emergência";
+}
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+function obterData(alerta) {
+
+    return (
+        alerta?.dataHora ||
+        alerta?.data_hora ||
+        alerta?.data ||
+        alerta?.created_at ||
+        alerta?.createdAt ||
+        alerta?.timestamp ||
+        ""
+    );
+}
+
+
+function formatarData(valor) {
+
+    if (!valor) {
+        return "Data não informada";
+    }
+
+
+    const data =
+        new Date(valor);
+
+
+    if (
+        isNaN(data.getTime())
+    ) {
+        return String(valor);
+    }
+
+
+    return data.toLocaleString(
+        "pt-BR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+}
+
+
+/* =========================================================
+   LOCALIZAÇÃO
+========================================================= */
+
+function obterLocalizacao(alerta) {
+
+    return (
+        alerta?.localizacao ||
+        alerta?.local ||
+        alerta?.endereco ||
+        alerta?.location ||
+        "Localização não informada"
+    );
+}
+
+
+/* =========================================================
+   CONTATOS
+========================================================= */
+
+function obterContatos(alerta) {
+
+    if (
+        Array.isArray(alerta?.contatos)
+    ) {
+
+        return alerta.contatos
+            .map(contato => {
+
+                if (
+                    typeof contato === "string"
+                ) {
+                    return contato;
+                }
+
+
+                return (
+                    contato?.nome ||
+                    contato?.telefone ||
+                    "Contato"
+                );
+
+            })
+            .join(", ");
+    }
+
+
+    return (
+        alerta?.contatos ||
+        alerta?.contato ||
+        alerta?.responsavel ||
+        "Não informado"
+    );
+}
+
+
+/* =========================================================
+   ÍCONE
+========================================================= */
+
+function obterIcone(alerta) {
+
+    const tipo =
+        normalizarTipo(alerta);
+
+
+    if (tipo === "test") {
+        return "📱";
+    }
+
+
+    if (tipo === "cancelled") {
+        return "✕";
+    }
+
+
+    return "🆘";
+}
+
+
+/* =========================================================
+   RENDERIZAR
+========================================================= */
+
+function renderizarHistorico() {
+
+    const lista =
+        document.getElementById(
+            "alertList"
+        );
+
+    const vazio =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    if (!lista || !vazio) {
+        return;
+    }
+
+
+    lista.innerHTML = "";
+
+
+    let registros =
+        [...alertas];
+
+
+    if (
+        filtroAtual !== "all"
+    ) {
+
+        registros =
+            registros.filter(
+                alerta =>
+                    normalizarTipo(alerta)
+                    === filtroAtual
+            );
+    }
+
+
+    if (
+        registros.length === 0
+    ) {
+
+        lista.style.display = "none";
+
+        vazio.classList.add("show");
+
+    } else {
+
+        lista.style.display = "flex";
+
+        vazio.classList.remove("show");
+
+
+        registros.forEach(
+            alerta => {
+
+                lista.appendChild(
+                    criarCard(alerta)
+                );
+
+            }
+        );
+    }
+
+
+    atualizarResumo();
+}
+
+
+/* =========================================================
+   CRIAR CARD
+========================================================= */
+
+function criarCard(alerta) {
+
+    const card =
+        document.createElement("article");
+
+
+    const tipo =
+        normalizarTipo(alerta);
+
+
+    const titulo =
+        obterTitulo(alerta);
+
+
+    const data =
+        formatarData(
+            obterData(alerta)
+        );
+
+
+    const status =
+        normalizarStatus(alerta);
+
+
+    const localizacao =
+        obterLocalizacao(alerta);
+
+
+    const contatos =
+        obterContatos(alerta);
+
+
+    card.className =
+        "alert-card";
+
+
+    const classeIcone =
+        tipo === "emergency"
+            ? "emergency"
+            : tipo === "test"
+                ? "test"
+                : "";
+
+
+    const classeStatus =
+        status === "Resolvido"
+            ? "resolved"
+            : status === "Cancelado"
+                ? "cancelled"
+                : "";
+
+
+    card.innerHTML = `
+
+        <div class="alert-icon ${classeIcone}">
+            ${obterIcone(alerta)}
+        </div>
+
+
+        <div class="alert-info">
+
+            <div class="alert-name">
+
+                <h3>
+                    ${escapeHTML(titulo)}
+                </h3>
+
+                <span class="alert-status ${classeStatus}">
+
+                    <span class="alert-status-dot"></span>
+
+                    ${escapeHTML(status)}
+
+                </span>
 
             </div>
 
 
-            <h2>
-                Limpar histórico?
-            </h2>
+            <div class="alert-meta">
 
+                <span>
+                    📅
+                    ${escapeHTML(data)}
+                </span>
 
-            <p>
-                Todos os alertas exibidos nesta página serão
-                removidos do histórico local.
-            </p>
+                <span class="meta-separator">
+                    •
+                </span>
 
-
-            <div class="modal-buttons">
-
-                <button
-                    class="cancel-button"
-                    onclick="closeClearModal()"
-                >
-                    Cancelar
-                </button>
-
-
-                <button
-                    class="delete-button"
-                    onclick="clearHistory()"
-                >
-                    Limpar histórico
-                </button>
+                <span>
+                    📍
+                    ${escapeHTML(localizacao)}
+                </span>
 
             </div>
 
         </div>
 
-    </div>
 
+        <button
+            class="alert-action"
+            type="button"
+            aria-label="Ver detalhes"
+        >
+            →
+        </button>
 
+    `;
 
-    <!-- =====================================================
-         TOAST
-    ====================================================== -->
 
-    <div
-        class="toast"
-        id="toast"
-    ></div>
+    const botao =
+        card.querySelector(
+            ".alert-action"
+        );
 
 
+    botao.addEventListener(
+        "click",
+        function(event) {
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+            event.stopPropagation();
 
-    <script>
-
-        /* =====================================================
-           TOAST
-        ===================================================== */
-
-        let toastTimer;
-
-
-        function showToast(message) {
-
-            const toast =
-                document.getElementById("toast");
-
-            toast.textContent = message;
-
-            toast.classList.add("show");
-
-            clearTimeout(toastTimer);
-
-            toastTimer = setTimeout(() => {
-
-                toast.classList.remove("show");
-
-            }, 2600);
-        }
-
-
-
-        /* =====================================================
-           FILTROS
-        ===================================================== */
-
-        function filterAlerts(type, button) {
-
-            const buttons =
-                document.querySelectorAll(
-                    ".filter-button"
-                );
-
-            buttons.forEach(btn => {
-
-                btn.classList.remove("active");
-
-            });
-
-            button.classList.add("active");
-
-
-            const cards =
-                document.querySelectorAll(
-                    ".alert-card"
-                );
-
-            let visible = 0;
-
-
-            cards.forEach(card => {
-
-                const cardType =
-                    card.dataset.type;
-
-                if (
-                    type === "all" ||
-                    cardType === type
-                ) {
-
-                    card.style.display = "flex";
-
-                    visible++;
-
-                } else {
-
-                    card.style.display = "none";
-
-                }
-
-            });
-
-
-            document.getElementById(
-                "historyCount"
-            ).textContent = visible;
-
-
-            const empty =
-                document.getElementById(
-                    "emptyState"
-                );
-
-
-            if (visible === 0) {
-
-                empty.classList.add("show");
-
-            } else {
-
-                empty.classList.remove("show");
-
-            }
-
-        }
-
-
-
-        /* =====================================================
-           MODAL DETALHES
-        ===================================================== */
-
-        function openDetails(
-            title,
-            date,
-            status,
-            location,
-            contacts
-        ) {
-
-            document.getElementById(
-                "detailTitle"
-            ).textContent = title;
-
-            document.getElementById(
-                "detailDate"
-            ).textContent = date;
-
-            document.getElementById(
-                "detailStatus"
-            ).textContent = status;
-
-            document.getElementById(
-                "detailLocation"
-            ).textContent = location;
-
-            document.getElementById(
-                "detailContacts"
-            ).textContent = contacts;
-
-
-            document.getElementById(
-                "detailsModal"
-            ).classList.add("show");
-
-        }
-
-
-
-        function closeDetails() {
-
-            document.getElementById(
-                "detailsModal"
-            ).classList.remove("show");
-
-        }
-
-
-
-        function closeModalOutside(event) {
-
-            if (
-                event.target.id ===
-                "detailsModal"
-            ) {
-
-                closeDetails();
-
-            }
-
-        }
-
-
-
-        /* =====================================================
-           MODAL LIMPAR
-        ===================================================== */
-
-        function openClearModal() {
-
-            document.getElementById(
-                "clearModal"
-            ).classList.add("show");
-
-        }
-
-
-
-        function closeClearModal() {
-
-            document.getElementById(
-                "clearModal"
-            ).classList.remove("show");
-
-        }
-
-
-
-        function closeClearOutside(event) {
-
-            if (
-                event.target.id ===
-                "clearModal"
-            ) {
-
-                closeClearModal();
-
-            }
-
-        }
-
-
-
-        /* =====================================================
-           LIMPAR HISTÓRICO
-        ===================================================== */
-
-        function clearHistory() {
-
-            const cards =
-                document.querySelectorAll(
-                    ".alert-card"
-                );
-
-
-            cards.forEach(card => {
-
-                card.remove();
-
-            });
-
-
-            document.getElementById(
-                "totalAlerts"
-            ).textContent = "0";
-
-
-            document.getElementById(
-                "emergencyAlerts"
-            ).textContent = "0";
-
-
-            document.getElementById(
-                "resolvedAlerts"
-            ).textContent = "0";
-
-
-            document.getElementById(
-                "historyCount"
-            ).textContent = "0";
-
-
-            document.getElementById(
-                "emptyState"
-            ).classList.add("show");
-
-
-            closeClearModal();
-
-
-            showToast(
-                "Histórico de alertas limpo."
+            openDetails(
+                titulo,
+                data,
+                status,
+                localizacao,
+                contatos
             );
-
         }
+    );
 
 
+    card.addEventListener(
+        "click",
+        function() {
 
-        /* =====================================================
-           NAVEGAÇÃO DO SILENTHELP
-        ===================================================== */
-
-        function goTo(page) {
-
-            window.location.href = page;
-
+            openDetails(
+                titulo,
+                data,
+                status,
+                localizacao,
+                contatos
+            );
         }
+    );
 
 
+    return card;
+}
 
-        /* =====================================================
-           ESC PARA FECHAR MODAIS
-        ===================================================== */
 
-        document.addEventListener(
-            "keydown",
-            function(event) {
+/* =========================================================
+   ATUALIZAR RESUMO
+========================================================= */
 
-                if (event.key === "Escape") {
+function atualizarResumo() {
 
-                    closeDetails();
+    const total =
+        alertas.length;
 
-                    closeClearModal();
 
-                }
+    const emergencias =
+        alertas.filter(
+            alerta =>
+                normalizarTipo(alerta)
+                === "emergency"
+        ).length;
+
+
+    const resolvidos =
+        alertas.filter(
+            alerta => {
+
+                const status =
+                    normalizarStatus(
+                        alerta
+                    ).toLowerCase();
+
+
+                return (
+                    status.includes("resolv") ||
+                    status.includes("conclu")
+                );
+            }
+        ).length;
+
+
+    document.getElementById(
+        "totalAlerts"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "emergencyAlerts"
+    ).textContent =
+        emergencias;
+
+
+    document.getElementById(
+        "resolvedAlerts"
+    ).textContent =
+        resolvidos;
+
+
+    document.getElementById(
+        "historyCount"
+    ).textContent =
+        total === 1
+            ? "1"
+            : total;
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+function filterAlerts(
+    tipo,
+    botao
+) {
+
+    filtroAtual = tipo;
+
+
+    document
+        .querySelectorAll(
+            ".filter-button"
+        )
+        .forEach(
+            elemento => {
+
+                elemento.classList.remove(
+                    "active"
+                );
 
             }
         );
 
-    </script>
+
+    if (botao) {
+
+        botao.classList.add(
+            "active"
+        );
+    }
+
+
+    renderizarHistorico();
+}
+
+
+/* =========================================================
+   MODAL DETALHES
+========================================================= */
+
+function openDetails(
+    titulo,
+    data,
+    status,
+    localizacao,
+    contatos
+) {
+
+    document.getElementById(
+        "detailTitle"
+    ).textContent =
+        titulo || "-";
+
+
+    document.getElementById(
+        "detailDate"
+    ).textContent =
+        data || "-";
+
+
+    document.getElementById(
+        "detailStatus"
+    ).textContent =
+        status || "-";
+
+
+    document.getElementById(
+        "detailLocation"
+    ).textContent =
+        localizacao || "-";
+
+
+    document.getElementById(
+        "detailContacts"
+    ).textContent =
+        contatos || "-";
+
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.add("show");
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeDetails() {
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.remove("show");
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+function fecharModalFora(event) {
+
+    if (
+        event.target.id ===
+        "detailsModal"
+    ) {
+
+        closeDetails();
+    }
+}
+
+
+/* =========================================================
+   MODAL LIMPAR
+========================================================= */
+
+function openClearModal() {
+
+    if (
+        alertas.length === 0
+    ) {
+
+        showToast(
+            "Não há histórico para limpar."
+        );
+
+        return;
+    }
+
+
+    document.getElementById(
+        "clearModal"
+    ).classList.add("show");
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+function closeClearModal() {
+
+    document.getElementById(
+        "clearModal"
+    ).classList.remove("show");
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+function fecharClearFora(event) {
+
+    if (
+        event.target.id ===
+        "clearModal"
+    ) {
+
+        closeClearModal();
+    }
+}
+
+
+/* =========================================================
+   LIMPAR HISTÓRICO
+========================================================= */
+
+function clearHistory() {
+
+    localStorage.removeItem(
+        HISTORY_KEY
+    );
+
+
+    alertas = [];
+
+
+    filtroAtual = "all";
+
+
+    document
+        .querySelectorAll(
+            ".filter-button"
+        )
+        .forEach(
+            botao => {
+
+                botao.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const primeiro =
+        document.querySelector(
+            ".filter-button"
+        );
+
+
+    if (primeiro) {
+
+        primeiro.classList.add(
+            "active"
+        );
+    }
+
+
+    closeClearModal();
+
+
+    renderizarHistorico();
+
+
+    showToast(
+        "Histórico apagado com sucesso."
+    );
+}
+
+
+/* =========================================================
+   NAVEGAÇÃO
+========================================================= */
+
+function goTo(pagina) {
+
+    window.location.href =
+        pagina;
+}
+
+
+/* =========================================================
+   TECLA ESC
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeDetails();
+
+            closeClearModal();
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        carregarHistorico();
+
+    }
+);
+
+</script>
+
 
 <script src="assets/db-sync.js"></script>
-</body>
 
+</body>
 </html>

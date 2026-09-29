@@ -1,4 +1,9 @@
-<?php require_once __DIR__ . '/auth.php'; exigirLogin(); ?>
+<?php
+require_once __DIR__ . '/auth.php';
+
+$usuario = exigirLogin();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -6,10 +11,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SilentHelp - Contatos de Confiança</title>
 
@@ -31,7 +33,6 @@
         ===================================================== */
 
         :root {
-
             --roxo: #a65cff;
             --roxo-claro: #c58aff;
             --roxo-escuro: #6e32ad;
@@ -51,7 +52,6 @@
             --verde: #55df91;
 
             --vermelho: #ff5c70;
-
         }
 
 
@@ -60,17 +60,14 @@
         ===================================================== */
 
         body {
-
             min-height: 100vh;
 
             background:
-
                 radial-gradient(
                     circle at 50% -10%,
                     rgba(166, 92, 255, .15),
                     transparent 35%
                 ),
-
                 var(--fundo);
 
             color: var(--branco);
@@ -84,23 +81,18 @@
                 sans-serif;
 
             overflow-x: hidden;
-
         }
 
 
         button,
         input,
         select {
-
             font-family: inherit;
-
         }
 
 
         button {
-
             -webkit-tap-highlight-color: transparent;
-
         }
 
 
@@ -109,9 +101,7 @@
         ===================================================== */
 
         .app {
-
             width: 100%;
-
             max-width: 900px;
 
             margin: auto;
@@ -120,7 +110,6 @@
                 25px
                 25px
                 155px;
-
         }
 
 
@@ -129,98 +118,71 @@
         ===================================================== */
 
         .header {
-
             display: flex;
-
             align-items: center;
 
             gap: 18px;
 
             margin-bottom: 28px;
-
         }
 
 
         .back-button {
-
             width: 48px;
             height: 48px;
-
             min-width: 48px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
-            border:
-                1px solid
-                var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 15px;
 
-            background:
-                var(--fundo-card);
+            background: var(--fundo-card);
 
-            color:
-                var(--roxo-claro);
+            color: var(--roxo-claro);
 
             cursor: pointer;
 
             transition: .2s;
-
         }
 
 
         .back-button:hover {
+            background: rgba(166, 92, 255, .12);
 
-            background:
-                rgba(166, 92, 255, .12);
+            border-color: var(--roxo);
 
-            border-color:
-                var(--roxo);
-
-            transform:
-                translateX(-2px);
-
+            transform: translateX(-2px);
         }
 
 
         .back-button svg {
-
             width: 25px;
             height: 25px;
-
         }
 
 
         .header-text {
-
             min-width: 0;
-
         }
 
 
         .header-text h1 {
-
             font-size: 30px;
-
             font-weight: 600;
 
             margin-bottom: 5px;
-
         }
 
 
         .header-text p {
-
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 14px;
 
             line-height: 1.5;
-
         }
 
 
@@ -229,7 +191,6 @@
         ===================================================== */
 
         .intro-card {
-
             padding: 25px;
 
             margin-bottom: 22px;
@@ -241,36 +202,28 @@
             border-radius: 23px;
 
             background:
-
                 linear-gradient(
                     145deg,
                     #17121d,
                     #0b0b10
                 );
-
         }
 
 
         .intro-top {
-
             display: flex;
-
             align-items: flex-start;
 
             gap: 15px;
-
         }
 
 
         .intro-icon {
-
             width: 55px;
             height: 55px;
-
             min-width: 55px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -279,40 +232,30 @@
             background:
                 rgba(166, 92, 255, .13);
 
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
 
 
         .intro-icon svg {
-
             width: 29px;
             height: 29px;
-
         }
 
 
         .intro-text h2 {
-
             font-size: 20px;
-
             font-weight: 600;
 
             margin-bottom: 7px;
-
         }
 
 
         .intro-text p {
-
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 13px;
 
             line-height: 1.6;
-
         }
 
 
@@ -321,9 +264,7 @@
         ===================================================== */
 
         .security-info {
-
             display: flex;
-
             align-items: flex-start;
 
             gap: 13px;
@@ -340,19 +281,15 @@
 
             background:
                 rgba(166, 92, 255, .06);
-
         }
 
 
         .security-info-icon {
-
             width: 40px;
             height: 40px;
-
             min-width: 40px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -361,69 +298,53 @@
             background:
                 rgba(166, 92, 255, .12);
 
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
 
 
         .security-info-icon svg {
-
             width: 21px;
             height: 21px;
-
         }
 
 
         .security-info h3 {
-
             font-size: 14px;
 
             margin-bottom: 4px;
-
         }
 
 
         .security-info p {
-
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 12px;
 
             line-height: 1.6;
-
         }
 
 
         /* =====================================================
-           TÍTULO DA LISTA
+           TÍTULO
         ===================================================== */
 
         .section-title {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             gap: 15px;
 
             margin-bottom: 13px;
-
         }
 
 
         .section-title h2 {
-
-            color:
-                var(--roxo-claro);
+            color: var(--roxo-claro);
 
             font-size: 18px;
 
             font-weight: 500;
-
         }
 
 
@@ -432,26 +353,21 @@
         ===================================================== */
 
         .add-button {
-
             display: flex;
-
             align-items: center;
             justify-content: center;
 
             gap: 7px;
 
-            padding:
-                10px 15px;
+            padding: 10px 15px;
 
             border: none;
 
             border-radius: 12px;
 
-            background:
-                var(--roxo);
+            background: var(--roxo);
 
-            color:
-                white;
+            color: white;
 
             font-size: 12px;
 
@@ -460,30 +376,23 @@
             cursor: pointer;
 
             transition: .2s;
-
         }
 
 
         .add-button:hover {
+            background: var(--roxo-escuro);
 
-            background:
-                var(--roxo-escuro);
-
-            transform:
-                translateY(-1px);
+            transform: translateY(-1px);
 
             box-shadow:
                 0 8px 20px
                 rgba(166, 92, 255, .18);
-
         }
 
 
         .add-button svg {
-
             width: 17px;
             height: 17px;
-
         }
 
 
@@ -492,7 +401,6 @@
         ===================================================== */
 
         .contacts-card {
-
             overflow: hidden;
 
             border:
@@ -502,13 +410,11 @@
             border-radius: 22px;
 
             background:
-
                 linear-gradient(
                     145deg,
                     #111116,
                     #0b0b10
                 );
-
         }
 
 
@@ -517,9 +423,7 @@
         ===================================================== */
 
         .contact {
-
             display: flex;
-
             align-items: center;
 
             gap: 15px;
@@ -531,22 +435,17 @@
                 rgba(255,255,255,.05);
 
             transition: .2s;
-
         }
 
 
         .contact:last-child {
-
             border-bottom: none;
-
         }
 
 
         .contact:hover {
-
             background:
                 rgba(166, 92, 255, .05);
-
         }
 
 
@@ -555,14 +454,11 @@
         ===================================================== */
 
         .contact-avatar {
-
             width: 52px;
             height: 52px;
-
             min-width: 52px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -571,13 +467,11 @@
             background:
                 rgba(166, 92, 255, .13);
 
-            color:
-                var(--roxo-claro);
+            color: var(--roxo-claro);
 
             font-size: 18px;
 
             font-weight: 600;
-
         }
 
 
@@ -586,86 +480,68 @@
         ===================================================== */
 
         .contact-info {
-
             flex: 1;
-
             min-width: 0;
-
         }
 
 
         .contact-info h3 {
-
             font-size: 15px;
-
             font-weight: 500;
 
             margin-bottom: 5px;
 
             word-break: break-word;
-
         }
 
 
         .contact-info p {
-
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 12px;
 
             margin-bottom: 6px;
-
         }
 
 
         .contact-type {
-
             display: inline-block;
 
-            padding:
-                4px 8px;
+            padding: 4px 8px;
 
             border-radius: 8px;
 
             background:
                 rgba(85, 223, 145, .09);
 
-            color:
-                var(--verde);
+            color: var(--verde);
 
             font-size: 10px;
-
         }
 
 
         /* =====================================================
-           CONTATO PRINCIPAL
+           PRINCIPAL
         ===================================================== */
 
         .principal-badge {
-
             display: inline-flex;
-
             align-items: center;
 
             gap: 4px;
 
             margin-left: 5px;
 
-            padding:
-                3px 7px;
+            padding: 3px 7px;
 
             border-radius: 7px;
 
             background:
                 rgba(166, 92, 255, .12);
 
-            color:
-                var(--roxo-claro);
+            color: var(--roxo-claro);
 
             font-size: 9px;
-
         }
 
 
@@ -674,23 +550,18 @@
         ===================================================== */
 
         .contact-actions {
-
             display: flex;
-
             align-items: center;
 
             gap: 7px;
-
         }
 
 
         .action-button {
-
             width: 38px;
             height: 38px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -700,52 +571,39 @@
 
             border-radius: 12px;
 
-            background:
-                transparent;
+            background: transparent;
 
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             cursor: pointer;
 
             transition: .2s;
-
         }
 
 
         .action-button:hover {
+            color: var(--roxo-claro);
 
-            color:
-                var(--roxo-claro);
-
-            border-color:
-                var(--roxo);
+            border-color: var(--roxo);
 
             background:
                 rgba(166, 92, 255, .08);
-
         }
 
 
         .action-button.delete:hover {
+            color: var(--vermelho);
 
-            color:
-                var(--vermelho);
-
-            border-color:
-                var(--vermelho);
+            border-color: var(--vermelho);
 
             background:
                 rgba(255, 92, 112, .08);
-
         }
 
 
         .action-button svg {
-
             width: 18px;
             height: 18px;
-
         }
 
 
@@ -754,7 +612,6 @@
         ===================================================== */
 
         .empty {
-
             display: none;
 
             text-align: center;
@@ -767,50 +624,38 @@
 
             border-radius: 22px;
 
-            background:
-                #101015;
-
+            background: #101015;
         }
 
 
         .empty.show {
-
             display: block;
-
         }
 
 
         .empty svg {
-
             width: 45px;
             height: 45px;
 
             margin-bottom: 12px;
 
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
 
 
         .empty h3 {
-
             font-size: 16px;
 
             margin-bottom: 7px;
-
         }
 
 
         .empty p {
-
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 12px;
 
             line-height: 1.5;
-
         }
 
 
@@ -819,35 +664,28 @@
         ===================================================== */
 
         .privacy-info {
-
             display: flex;
-
             align-items: flex-start;
 
             gap: 9px;
 
             margin-top: 17px;
 
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 11px;
 
             line-height: 1.5;
-
         }
 
 
         .privacy-info svg {
-
             width: 17px;
             height: 17px;
 
             min-width: 17px;
 
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
 
 
@@ -856,9 +694,7 @@
         ===================================================== */
 
         .security-card {
-
             display: flex;
-
             align-items: flex-start;
 
             gap: 14px;
@@ -875,19 +711,15 @@
 
             background:
                 rgba(85, 223, 145, .05);
-
         }
 
 
         .security-icon {
-
             width: 45px;
             height: 45px;
-
             min-width: 45px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -896,40 +728,31 @@
             background:
                 rgba(85, 223, 145, .10);
 
-            color:
-                var(--verde);
-
+            color: var(--verde);
         }
 
 
         .security-icon svg {
-
             width: 23px;
             height: 23px;
-
         }
 
 
         .security-text h3 {
-
             font-size: 14px;
 
             font-weight: 500;
 
             margin-bottom: 5px;
-
         }
 
 
         .security-text p {
-
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 12px;
 
             line-height: 1.6;
-
         }
 
 
@@ -938,7 +761,6 @@
         ===================================================== */
 
         .modal {
-
             position: fixed;
 
             inset: 0;
@@ -953,28 +775,21 @@
             background:
                 rgba(0,0,0,.72);
 
-            backdrop-filter:
-                blur(8px);
+            backdrop-filter: blur(8px);
 
-            -webkit-backdrop-filter:
-                blur(8px);
+            -webkit-backdrop-filter: blur(8px);
 
             z-index: 3000;
-
         }
 
 
         .modal.show {
-
             display: flex;
-
         }
 
 
         .modal-card {
-
             width: 100%;
-
             max-width: 440px;
 
             padding: 25px;
@@ -986,7 +801,6 @@
             border-radius: 24px;
 
             background:
-
                 linear-gradient(
                     145deg,
                     #15151c,
@@ -999,30 +813,25 @@
 
             animation:
                 modalEntrada .2s ease;
-
         }
 
 
         @keyframes modalEntrada {
 
             from {
-
                 opacity: 0;
 
                 transform:
                     translateY(15px)
                     scale(.98);
-
             }
 
             to {
-
                 opacity: 1;
 
                 transform:
                     translateY(0)
                     scale(1);
-
             }
 
         }
@@ -1033,28 +842,22 @@
         ===================================================== */
 
         .modal-header {
-
             display: flex;
-
             align-items: center;
             justify-content: space-between;
 
             margin-bottom: 22px;
-
         }
 
 
         .modal-header h2 {
-
             font-size: 20px;
 
             font-weight: 600;
-
         }
 
 
         .close-button {
-
             width: 36px;
             height: 36px;
 
@@ -1065,23 +868,19 @@
             background:
                 rgba(255,255,255,.05);
 
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 20px;
 
             cursor: pointer;
-
         }
 
 
         .close-button:hover {
-
             color: white;
 
             background:
                 rgba(255,255,255,.1);
-
         }
 
 
@@ -1090,35 +889,27 @@
         ===================================================== */
 
         .form-group {
-
             margin-bottom: 17px;
-
         }
 
 
         .form-group label {
-
             display: block;
 
             margin-bottom: 7px;
 
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 12px;
-
         }
 
 
         .form-group input,
         .form-group select {
-
             width: 100%;
-
             height: 50px;
 
-            padding:
-                0 14px;
+            padding: 0 14px;
 
             border:
                 1px solid
@@ -1128,73 +919,55 @@
 
             outline: none;
 
-            background:
-                #0b0b10;
+            background: #0b0b10;
 
-            color:
-                white;
+            color: white;
 
             font-size: 14px;
-
         }
 
 
         .form-group input::placeholder {
-
-            color:
-                #60606a;
-
+            color: #60606a;
         }
 
 
         .form-group input:focus,
         .form-group select:focus {
-
-            border-color:
-                var(--roxo);
+            border-color: var(--roxo);
 
             box-shadow:
                 0 0 0 3px
                 rgba(166,92,255,.08);
-
         }
 
 
         .form-group select {
-
             cursor: pointer;
-
         }
 
 
         .form-group select option {
+            background: #101015;
 
-            background:
-                #101015;
-
-            color:
-                white;
-
+            color: white;
         }
 
 
         /* =====================================================
-           BOTÕES DO MODAL
+           BOTÕES MODAL
         ===================================================== */
 
         .modal-actions {
-
             display: flex;
 
             gap: 10px;
 
             margin-top: 5px;
-
         }
 
 
         .save-button {
-
             flex: 1;
 
             height: 50px;
@@ -1204,15 +977,13 @@
             border-radius: 13px;
 
             background:
-
                 linear-gradient(
                     135deg,
                     var(--roxo),
                     var(--roxo-escuro)
                 );
 
-            color:
-                white;
+            color: white;
 
             font-size: 14px;
 
@@ -1221,28 +992,22 @@
             cursor: pointer;
 
             transition: .2s;
-
         }
 
 
         .save-button:hover {
-
-            transform:
-                translateY(-1px);
+            transform: translateY(-1px);
 
             box-shadow:
                 0 8px 25px
                 rgba(166,92,255,.20);
-
         }
 
 
         .cancel-button {
-
             height: 50px;
 
-            padding:
-                0 18px;
+            padding: 0 18px;
 
             border:
                 1px solid
@@ -1250,24 +1015,18 @@
 
             border-radius: 13px;
 
-            background:
-                transparent;
+            background: transparent;
 
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             cursor: pointer;
-
         }
 
 
         .cancel-button:hover {
-
             color: white;
 
-            border-color:
-                var(--cinza);
-
+            border-color: var(--cinza);
         }
 
 
@@ -1276,7 +1035,6 @@
         ===================================================== */
 
         .toast {
-
             position: fixed;
 
             left: 50%;
@@ -1292,37 +1050,31 @@
 
             z-index: 5000;
 
-            padding:
-                14px 20px;
+            padding: 14px 20px;
 
             border-radius: 14px;
 
-            background:
-                #18181f;
+            background: #18181f;
 
             border:
                 1px solid
                 var(--roxo);
 
-            color:
-                white;
+            color: white;
 
             transition: .3s;
 
             text-align: center;
 
             max-width: 90%;
-
         }
 
 
         .toast.show {
-
             opacity: 1;
 
             transform:
                 translate(-50%, 0);
-
         }
 
 
@@ -1331,11 +1083,9 @@
         ===================================================== */
 
         .bottom-nav {
-
             position: fixed;
 
             left: 50%;
-
             bottom: 15px;
 
             transform:
@@ -1363,19 +1113,15 @@
 
             border-radius: 28px;
 
-            backdrop-filter:
-                blur(15px);
+            backdrop-filter: blur(15px);
 
-            -webkit-backdrop-filter:
-                blur(15px);
+            -webkit-backdrop-filter: blur(15px);
 
             z-index: 1000;
-
         }
 
 
         .nav-button {
-
             display: flex;
 
             flex-direction: column;
@@ -1387,35 +1133,27 @@
 
             border: none;
 
-            background:
-                transparent;
+            background: transparent;
 
-            color:
-                #85858e;
+            color: #85858e;
 
             cursor: pointer;
 
             font-size: 15px;
 
             transition: .2s;
-
         }
 
 
         .nav-button svg {
-
             width: 31px;
             height: 31px;
-
         }
 
 
         .nav-button.active,
         .nav-button:hover {
-
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
 
 
@@ -1426,71 +1164,54 @@
         @media (max-width: 700px) {
 
             .app {
-
                 padding:
                     18px
                     15px
                     120px;
-
             }
 
 
             .header {
-
                 gap: 12px;
-
             }
 
 
             .header-text h1 {
-
                 font-size: 26px;
-
             }
 
 
             .header-text p {
-
                 font-size: 13px;
-
             }
 
 
             .back-button {
-
                 width: 43px;
                 height: 43px;
 
                 min-width: 43px;
-
             }
 
 
             .intro-card {
-
                 padding: 20px;
-
             }
 
 
             .security-info {
-
                 padding: 14px;
-
             }
 
 
             .contact {
-
                 padding: 14px;
 
                 gap: 10px;
-
             }
 
 
             .contact-avatar {
-
                 width: 44px;
                 height: 44px;
 
@@ -1499,34 +1220,26 @@
                 border-radius: 13px;
 
                 font-size: 15px;
-
             }
 
 
             .contact-info h3 {
-
                 font-size: 13px;
-
             }
 
 
             .contact-info p {
-
                 font-size: 11px;
-
             }
 
 
             .action-button {
-
                 width: 34px;
                 height: 34px;
-
             }
 
 
             .bottom-nav {
-
                 height: 82px;
 
                 bottom: 10px;
@@ -1535,24 +1248,19 @@
                     calc(100% - 20px);
 
                 border-radius: 24px;
-
             }
 
 
             .nav-button {
-
                 font-size: 12px;
 
                 gap: 5px;
-
             }
 
 
             .nav-button svg {
-
                 width: 25px;
                 height: 25px;
-
             }
 
         }
@@ -1561,66 +1269,48 @@
         @media (max-width: 480px) {
 
             .section-title {
-
                 align-items: flex-start;
-
             }
 
 
             .section-title h2 {
-
                 font-size: 16px;
-
             }
 
 
             .add-button {
-
                 padding:
                     9px 11px;
-
             }
 
 
             .add-button span {
-
                 display: none;
-
             }
 
 
             .contact {
-
                 align-items: flex-start;
-
             }
 
 
             .contact-actions {
-
                 flex-direction: column;
-
             }
 
 
             .modal-card {
-
                 padding: 20px;
-
             }
 
 
             .modal-actions {
-
                 flex-direction: column;
-
             }
 
 
             .cancel-button {
-
                 width: 100%;
-
             }
 
         }
@@ -1629,17 +1319,13 @@
         @media (max-width: 360px) {
 
             .nav-button {
-
                 font-size: 10px;
-
             }
 
 
             .nav-button svg {
-
                 width: 23px;
                 height: 23px;
-
             }
 
         }
@@ -1651,120 +1337,52 @@
 
 <body>
 
+<main class="app">
 
-    <!-- =====================================================
-         CONTEÚDO
-    ====================================================== -->
+    <header class="header">
 
-    <main class="app">
+        <button
+            class="back-button"
+            id="backButton"
+            aria-label="Voltar"
+            type="button"
+        >
 
-
-        <!-- =================================================
-             CABEÇALHO
-        ================================================== -->
-
-        <header class="header">
-
-            <button
-                class="back-button"
-                id="backButton"
-                aria-label="Voltar"
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
             >
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                <path d="M19 12H5"/>
+                <path d="M12 19l-7-7 7-7"/>
 
-                    <path d="M19 12H5"/>
+            </svg>
 
-                    <path d="M12 19l-7-7 7-7"/>
-
-                </svg>
-
-            </button>
+        </button>
 
 
-            <div class="header-text">
+        <div class="header-text">
 
-                <h1>
-                    Contatos de confiança
-                </h1>
+            <h1>Contatos de confiança</h1>
 
-                <p>
-                    Cadastre quem poderá receber seu alerta de segurança.
-                </p>
+            <p>
+                Cadastre quem poderá receber seu alerta de segurança.
+            </p>
 
-            </div>
+        </div>
 
-        </header>
+    </header>
 
 
-        <!-- =================================================
-             INTRODUÇÃO
-        ================================================== -->
+    <section class="intro-card">
 
-        <section class="intro-card">
+        <div class="intro-top">
 
-            <div class="intro-top">
-
-                <div class="intro-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-
-                        <circle
-                            cx="12"
-                            cy="8"
-                            r="4"
-                        />
-
-                        <path
-                            d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div class="intro-text">
-
-                    <h2>
-                        Pessoas de confiança
-                    </h2>
-
-                    <p>
-                        Cadastre pessoas que você confia para
-                        facilitar o contato durante uma situação
-                        de emergência ou quando um alerta de
-                        segurança for acionado.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             AVISO
-        ================================================== -->
-
-        <section class="security-info">
-
-            <div class="security-info-icon">
+            <div class="intro-icon">
 
                 <svg
                     viewBox="0 0 24 24"
@@ -1775,134 +1393,186 @@
                     stroke-linejoin="round"
                 >
 
-                    <path
-                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-                    />
+                    <circle cx="12" cy="8" r="4"/>
 
-                    <path d="M10 21h4"/>
+                    <path
+                        d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+                    />
 
                 </svg>
 
             </div>
 
 
-            <div>
+            <div class="intro-text">
 
-                <h3>
-                    Como funciona?
-                </h3>
+                <h2>Pessoas de confiança</h2>
 
                 <p>
-                    Quando um alerta de segurança for acionado,
-                    os contatos cadastrados poderão ser utilizados
-                    pelo sistema para comunicação.
+                    Cadastre pessoas que você confia para
+                    facilitar o contato durante uma situação
+                    de emergência ou quando um alerta de
+                    segurança for acionado.
                 </p>
 
             </div>
 
-        </section>
+        </div>
+
+    </section>
 
 
-        <!-- =================================================
-             TÍTULO DA LISTA
-        ================================================== -->
+    <section class="security-info">
 
-        <div class="section-title">
+        <div class="security-info-icon">
 
-            <h2>
-                Meus contatos
-            </h2>
-
-
-            <button
-                class="add-button"
-                id="addButton"
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
             >
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                >
+                <path
+                    d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                />
 
-                    <path d="M12 5v14"/>
+                <path d="M10 21h4"/>
 
-                    <path d="M5 12h14"/>
-
-                </svg>
-
-                <span>
-                    Adicionar contato
-                </span>
-
-            </button>
+            </svg>
 
         </div>
 
 
-        <!-- =================================================
-             LISTA
-        ================================================== -->
+        <div>
 
-        <section
-            class="contacts-card"
-            id="contactsCard"
-        >
+            <h3>Como funciona?</h3>
 
-        </section>
+            <p>
+                Quando um alerta de segurança for acionado,
+                os contatos cadastrados poderão ser utilizados
+                pelo sistema para comunicação.
+            </p>
+
+        </div>
+
+    </section>
 
 
-        <!-- =================================================
-             ESTADO VAZIO
-        ================================================== -->
+    <div class="section-title">
 
-        <div
-            class="empty"
-            id="emptyContacts"
+        <h2>Meus contatos</h2>
+
+        <button
+            class="add-button"
+            id="addButton"
+            type="button"
         >
 
             <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="1.7"
+                stroke-width="2"
                 stroke-linecap="round"
-                stroke-linejoin="round"
             >
 
-                <circle
-                    cx="12"
-                    cy="8"
-                    r="4"
-                />
-
-                <path
-                    d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-                />
+                <path d="M12 5v14"/>
+                <path d="M5 12h14"/>
 
             </svg>
 
+            <span>Adicionar contato</span>
 
-            <h3>
-                Nenhum contato cadastrado
-            </h3>
+        </button>
 
-
-            <p>
-                Adicione uma pessoa de confiança
-                para situações de emergência.
-            </p>
-
-        </div>
+    </div>
 
 
-        <!-- =================================================
-             PRIVACIDADE
-        ================================================== -->
+    <section
+        class="contacts-card"
+        id="contactsCard"
+    ></section>
 
-        <div class="privacy-info">
+
+    <div
+        class="empty"
+        id="emptyContacts"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <circle cx="12" cy="8" r="4"/>
+
+            <path
+                d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+            />
+
+        </svg>
+
+
+        <h3>Nenhum contato cadastrado</h3>
+
+        <p>
+            Adicione uma pessoa de confiança
+            para situações de emergência.
+        </p>
+
+    </div>
+
+
+    <div class="privacy-info">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <path
+                d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6l8-3Z"
+            />
+
+            <rect
+                x="9"
+                y="10"
+                width="6"
+                height="5"
+                rx="1"
+            />
+
+            <path
+                d="M10 10V8a2 2 0 0 1 4 0v2"
+            />
+
+        </svg>
+
+
+        <span>
+            Os contatos são armazenados localmente neste
+            navegador. Em uma versão conectada a um servidor,
+            essas informações deverão ser protegidas
+            adequadamente.
+        </span>
+
+    </div>
+
+
+    <section class="security-card">
+
+        <div class="security-icon">
 
             <svg
                 viewBox="0 0 24 24"
@@ -1917,1772 +1587,1384 @@
                     d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6l8-3Z"
                 />
 
-                <rect
-                    x="9"
-                    y="10"
-                    width="6"
-                    height="5"
-                    rx="1"
-                />
-
                 <path
-                    d="M10 10V8a2 2 0 0 1 4 0v2"
+                    d="M8.5 12l2.3 2.3 4.9-5"
                 />
 
             </svg>
 
+        </div>
 
-            <span>
-                Os contatos são armazenados localmente neste
-                navegador. Em uma versão conectada a um servidor,
-                essas informações deverão ser protegidas
-                adequadamente.
-            </span>
+
+        <div class="security-text">
+
+            <h3>Sua segurança é prioridade</h3>
+
+            <p>
+                Utilize apenas contatos de pessoas em quem
+                você realmente confia. Eles serão utilizados
+                para as funções de segurança autorizadas
+                dentro do SilentHelp.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     MODAL
+====================================================== -->
+
+<div
+    class="modal"
+    id="modal"
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Novo contato
+            </h2>
+
+
+            <button
+                class="close-button"
+                id="closeButton"
+                type="button"
+                aria-label="Fechar"
+            >
+                ×
+            </button>
 
         </div>
 
 
-        <!-- =================================================
-             SEGURANÇA
-        ================================================== -->
+        <form id="contactForm">
 
-        <section class="security-card">
+            <div class="form-group">
 
-            <div class="security-icon">
+                <label for="nome">
+                    Nome
+                </label>
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Ex.: Maria Silva"
+                    autocomplete="name"
+                    maxlength="80"
+                    required
                 >
 
-                    <path
-                        d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6l8-3Z"
-                    />
+            </div>
 
-                    <path
-                        d="M8.5 12l2.3 2.3 4.9-5"
-                    />
 
-                </svg>
+            <div class="form-group">
+
+                <label for="relacao">
+                    Relação
+                </label>
+
+                <select
+                    id="relacao"
+                    required
+                >
+
+                    <option value="">
+                        Selecione
+                    </option>
+
+                    <option value="Mãe">Mãe</option>
+                    <option value="Pai">Pai</option>
+                    <option value="Irmã">Irmã</option>
+                    <option value="Irmão">Irmão</option>
+                    <option value="Amiga">Amiga</option>
+                    <option value="Amigo">Amigo</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Responsável">Responsável</option>
+                    <option value="Pessoa de confiança">
+                        Pessoa de confiança
+                    </option>
+                    <option value="Outro">Outro</option>
+
+                </select>
 
             </div>
 
 
-            <div class="security-text">
+            <div class="form-group">
 
-                <h3>
-                    Sua segurança é prioridade
-                </h3>
+                <label for="telefone">
+                    Telefone
+                </label>
 
-                <p>
-                    Utilize apenas contatos de pessoas em quem
-                    você realmente confia. Eles serão utilizados
-                    para as funções de segurança autorizadas
-                    dentro do SilentHelp.
-                </p>
+                <input
+                    type="tel"
+                    id="telefone"
+                    placeholder="(00) 00000-0000"
+                    autocomplete="tel"
+                    maxlength="15"
+                    required
+                >
 
             </div>
 
-        </section>
 
+            <div class="modal-actions">
 
-    </main>
-
-
-    <!-- =====================================================
-         MODAL
-    ====================================================== -->
-
-    <div
-        class="modal"
-        id="modal"
-    >
-
-        <div class="modal-card">
-
-
-            <div class="modal-header">
-
-                <h2 id="modalTitle">
-                    Novo contato
-                </h2>
+                <button
+                    type="button"
+                    class="cancel-button"
+                    id="cancelButton"
+                >
+                    Cancelar
+                </button>
 
 
                 <button
-                    class="close-button"
-                    id="closeButton"
-                    aria-label="Fechar"
+                    type="submit"
+                    class="save-button"
                 >
-                    ×
+                    Salvar contato
                 </button>
 
             </div>
 
-
-            <form
-                id="contactForm"
-            >
-
-
-                <!-- NOME -->
-
-                <div class="form-group">
-
-                    <label for="nome">
-                        Nome
-                    </label>
-
-                    <input
-                        type="text"
-                        id="nome"
-                        placeholder="Ex.: Maria Silva"
-                        autocomplete="name"
-                        maxlength="80"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- RELAÇÃO -->
-
-                <div class="form-group">
-
-                    <label for="relacao">
-                        Relação
-                    </label>
-
-                    <select
-                        id="relacao"
-                        required
-                    >
-
-                        <option value="">
-                            Selecione
-                        </option>
-
-                        <option value="Mãe">
-                            Mãe
-                        </option>
-
-                        <option value="Pai">
-                            Pai
-                        </option>
-
-                        <option value="Irmã">
-                            Irmã
-                        </option>
-
-                        <option value="Irmão">
-                            Irmão
-                        </option>
-
-                        <option value="Amiga">
-                            Amiga
-                        </option>
-
-                        <option value="Amigo">
-                            Amigo
-                        </option>
-
-                        <option value="Familiar">
-                            Familiar
-                        </option>
-
-                        <option value="Responsável">
-                            Responsável
-                        </option>
-
-                        <option value="Pessoa de confiança">
-                            Pessoa de confiança
-                        </option>
-
-                        <option value="Outro">
-                            Outro
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- TELEFONE -->
-
-                <div class="form-group">
-
-                    <label for="telefone">
-                        Telefone
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="telefone"
-                        placeholder="(00) 00000-0000"
-                        autocomplete="tel"
-                        maxlength="15"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- BOTÕES -->
-
-                <div class="modal-actions">
-
-                    <button
-                        type="button"
-                        class="cancel-button"
-                        id="cancelButton"
-                    >
-                        Cancelar
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="save-button"
-                    >
-                        Salvar contato
-                    </button>
-
-                </div>
-
-
-            </form>
-
-        </div>
+        </form>
 
     </div>
 
-
-    <!-- =====================================================
-         TOAST
-    ====================================================== -->
-
-    <div
-        class="toast"
-        id="toast"
-    ></div>
+</div>
 
 
-    <!-- =====================================================
-         MENU INFERIOR
-    ====================================================== -->
+<!-- =====================================================
+     TOAST
+====================================================== -->
 
-    <nav class="bottom-nav">
+<div
+    class="toast"
+    id="toast"
+></div>
 
 
-        <!-- INÍCIO -->
+<!-- =====================================================
+     MENU INFERIOR
+====================================================== -->
 
-        <button
-            class="nav-button"
-            data-page="index.php"
+<nav class="bottom-nav">
+
+    <button
+        class="nav-button"
+        data-page="index.php"
+        type="button"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
         >
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-            >
+            <path
+                d="M3 10.8L12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"
+            />
 
-                <path
-                    d="M3 10.8L12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"
-                />
+        </svg>
 
-            </svg>
+        <span>Início</span>
 
-            <span>
-                Início
-            </span>
-
-        </button>
+    </button>
 
 
-        <!-- MAPA -->
+    <button
+        class="nav-button"
+        data-page="mapa.php"
+        type="button"
+    >
 
-        <button
-            class="nav-button"
-            data-page="mapa.php"
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
         >
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
+            <path
+                d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"
+            />
 
-                <path
-                    d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"
-                />
+            <path d="M9 3v15"/>
+            <path d="M15 6v15"/>
 
-                <path d="M9 3v15"/>
+        </svg>
 
-                <path d="M15 6v15"/>
+        <span>Mapa</span>
 
-            </svg>
-
-            <span>
-                Mapa
-            </span>
-
-        </button>
+    </button>
 
 
-        <!-- HISTÓRICO -->
+    <button
+        class="nav-button"
+        data-page="historico.php"
+        type="button"
+    >
 
-        <button
-            class="nav-button"
-            data-page="historico.php"
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
         >
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
+            <path
+                d="M6 2h9l5 5v15H6z"
+            />
 
-                <path
-                    d="M6 2h9l5 5v15H6z"
-                />
+            <path d="M14 2v6h6"/>
 
-                <path
-                    d="M14 2v6h6"
-                />
+            <circle
+                cx="16"
+                cy="17"
+                r="3"
+            />
 
-                <circle
-                    cx="16"
-                    cy="17"
-                    r="3"
-                />
+            <path d="M16 15v2l1 1"/>
 
-                <path
-                    d="M16 15v2l1 1"
-                />
+        </svg>
 
-            </svg>
+        <span>Histórico</span>
 
-            <span>
-                Histórico
-            </span>
-
-        </button>
+    </button>
 
 
-        <!-- CONFIGURAÇÕES -->
+    <button
+        class="nav-button active"
+        data-page="config.php"
+        type="button"
+    >
 
-        <button
-            class="nav-button active"
-            data-page="config.php"
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
         >
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
+            <circle
+                cx="12"
+                cy="12"
+                r="3"
+            />
 
-                <circle
-                    cx="12"
-                    cy="12"
-                    r="3"
-                />
+            <path
+                d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-3v-.8a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-2-2 .1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-1.6-1h-.8v-3h.8a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L6 7.9l2-2 .1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V4h3v.8a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 2 2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.8v3h-.8a1.7 1.7 0 0 0-1.6 1z"
+            />
 
-                <path
-                    d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-3v-.8a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-2-2 .1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-1.6-1h-.8v-3h.8a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L6 7.9l2-2 .1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V4h3v.8a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 2 2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.8v3h-.8a1.7 1.7 0 0 0-1.6 1z"
-                />
+        </svg>
 
-            </svg>
+        <span>Config.</span>
 
-            <span>
-                Config.
-            </span>
-
-        </button>
+    </button>
 
 
-        <!-- PERFIL -->
+    <button
+        class="nav-button"
+        data-page="perfil.php"
+        type="button"
+    >
 
-        <button
-            class="nav-button"
-            data-page="perfil.php"
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
         >
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-            >
+            <circle
+                cx="12"
+                cy="8"
+                r="4"
+            />
 
-                <circle
-                    cx="12"
-                    cy="8"
-                    r="4"
-                />
+            <path
+                d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+            />
 
-                <path
-                    d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-                />
+        </svg>
 
-            </svg>
+        <span>Perfil</span>
 
-            <span>
-                Perfil
-            </span>
+    </button>
 
-        </button>
+</nav>
 
 
-    </nav>
+<script>
+
+    /* =====================================================
+       CONFIGURAÇÃO
+    ===================================================== */
+
+    const STORAGE_KEY = "silenthelp_contatos";
+
+    let contatoEditando = null;
+    let toastTimer = null;
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
 
-    <script>
+    const modal = document.getElementById("modal");
 
-        /* =====================================================
-           CONFIGURAÇÃO
-        ===================================================== */
+    const contactForm =
+        document.getElementById("contactForm");
 
-        const STORAGE_KEY =
-            "silenthelp_contatos";
+    const nomeInput =
+        document.getElementById("nome");
 
+    const telefoneInput =
+        document.getElementById("telefone");
 
-        let contatoEditando = null;
+    const relacaoInput =
+        document.getElementById("relacao");
 
-        let toastTimer = null;
+    const contactsCard =
+        document.getElementById("contactsCard");
 
+    const emptyContacts =
+        document.getElementById("emptyContacts");
 
-        /* =====================================================
-           ELEMENTOS
-        ===================================================== */
+    const modalTitle =
+        document.getElementById("modalTitle");
 
-        const modal =
-            document.getElementById("modal");
-
-        const contactForm =
-            document.getElementById("contactForm");
-
-        const nomeInput =
-            document.getElementById("nome");
-
-        const telefoneInput =
-            document.getElementById("telefone");
-
-        const relacaoInput =
-            document.getElementById("relacao");
-
-        const contactsCard =
-            document.getElementById("contactsCard");
-
-        const emptyContacts =
-            document.getElementById("emptyContacts");
-
-        const modalTitle =
-            document.getElementById("modalTitle");
-
-        const toast =
-            document.getElementById("toast");
+    const toast =
+        document.getElementById("toast");
 
 
-        /* =====================================================
-           NAVEGAÇÃO
-        ===================================================== */
+    /* =====================================================
+       NAVEGAÇÃO
+    ===================================================== */
 
-        function abrirPagina(pagina) {
+    function abrirPagina(pagina) {
 
-            if (!pagina) {
-                return;
-            }
-
-            window.location.href = pagina;
-
+        if (!pagina) {
+            return;
         }
 
-
-        document
-            .querySelectorAll(".nav-button")
-            .forEach(function(button) {
-
-                button.addEventListener(
-                    "click",
-                    function() {
-
-                        const pagina =
-                            button.dataset.page;
-
-                        abrirPagina(pagina);
-
-                    }
-                );
-
-            });
+        window.location.href = pagina;
+    }
 
 
-        document
-            .getElementById("backButton")
-            .addEventListener(
+    document
+        .querySelectorAll(".nav-button")
+        .forEach(function(button) {
+
+            button.addEventListener(
                 "click",
                 function() {
 
-                    abrirPagina("config.php");
+                    const pagina =
+                        button.dataset.page;
+
+                    abrirPagina(pagina);
 
                 }
             );
 
+        });
 
-        /* =====================================================
-           TOAST
-        ===================================================== */
 
-        function mostrarMensagem(mensagem) {
-
-            toast.textContent =
-                mensagem;
-
-            toast.classList.add("show");
-
-            clearTimeout(toastTimer);
-
-            toastTimer =
-                setTimeout(
-                    function() {
-
-                        toast.classList.remove("show");
-
-                    },
-                    2500
-                );
-
-        }
-
-
-        /* =====================================================
-           LOCAL STORAGE
-        ===================================================== */
-
-        function obterContatos() {
-
-            const dados =
-                localStorage.getItem(
-                    STORAGE_KEY
-                );
-
-
-            if (!dados) {
-
-                return [];
-
-            }
-
-
-            try {
-
-                const contatos =
-                    JSON.parse(dados);
-
-
-                if (
-                    Array.isArray(contatos)
-                ) {
-
-                    return contatos;
-
-                }
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao ler contatos:",
-                    erro
-                );
-
-            }
-
-
-            return [];
-
-        }
-
-
-        function salvarContatos(contatos) {
-
-            try {
-
-                localStorage.setItem(
-                    STORAGE_KEY,
-                    JSON.stringify(contatos)
-                );
-
-                return true;
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao salvar:",
-                    erro
-                );
-
-                mostrarMensagem(
-                    "Erro ao salvar os contatos."
-                );
-
-                return false;
-
-            }
-
-        }
-
-
-        /* =====================================================
-           SEGURANÇA HTML
-        ===================================================== */
-
-        function escaparHTML(texto) {
-
-            return String(texto)
-
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
-
-        }
-
-
-        /* =====================================================
-           FORMATAÇÃO DO TELEFONE
-        ===================================================== */
-
-        function limparTelefone(telefone) {
-
-            return String(telefone)
-                .replace(/\D/g, "");
-
-        }
-
-
-        function formatarTelefone(telefone) {
-
-            let numeros =
-                limparTelefone(
-                    telefone
-                )
-                .slice(0, 11);
-
-
-            if (
-                numeros.length <= 2
-            ) {
-
-                return numeros;
-
-            }
-
-
-            if (
-                numeros.length <= 6
-            ) {
-
-                return numeros.replace(
-                    /^(\d{2})(\d+)/,
-                    "($1) $2"
-                );
-
-            }
-
-
-            if (
-                numeros.length <= 10
-            ) {
-
-                return numeros.replace(
-                    /^(\d{2})(\d{4})(\d+)/,
-                    "($1) $2-$3"
-                );
-
-            }
-
-
-            return numeros.replace(
-                /^(\d{2})(\d{5})(\d{4})$/,
-                "($1) $2-$3"
-            );
-
-        }
-
-
-        telefoneInput.addEventListener(
-            "input",
+    document
+        .getElementById("backButton")
+        .addEventListener(
+            "click",
             function() {
 
-                telefoneInput.value =
-                    formatarTelefone(
-                        telefoneInput.value
-                    );
+                abrirPagina("config.php");
 
             }
         );
 
 
-        /* =====================================================
-           RENDERIZAR CONTATOS
-        ===================================================== */
+    /* =====================================================
+       TOAST
+    ===================================================== */
 
-        function renderizarContatos() {
+    function mostrarMensagem(mensagem) {
+
+        toast.textContent = mensagem;
+
+        toast.classList.add("show");
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(
+            function() {
+
+                toast.classList.remove("show");
+
+            },
+            2500
+        );
+    }
+
+
+    /* =====================================================
+       LOCAL STORAGE
+    ===================================================== */
+
+    function obterContatos() {
+
+        const dados =
+            localStorage.getItem(STORAGE_KEY);
+
+        if (!dados) {
+            return [];
+        }
+
+        try {
+
+            const contatos =
+                JSON.parse(dados);
+
+            if (Array.isArray(contatos)) {
+                return contatos;
+            }
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao ler contatos:",
+                erro
+            );
+
+        }
+
+        return [];
+    }
+
+
+    function salvarContatos(contatos) {
+
+        try {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(contatos)
+            );
+
+            return true;
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao salvar contatos:",
+                erro
+            );
+
+            mostrarMensagem(
+                "Erro ao salvar os contatos."
+            );
+
+            return false;
+        }
+    }
+
+
+    /* =====================================================
+       SEGURANÇA HTML
+    ===================================================== */
+
+    function escaparHTML(texto) {
+
+        return String(texto)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* =====================================================
+       TELEFONE
+    ===================================================== */
+
+    function limparTelefone(telefone) {
+
+        return String(telefone)
+            .replace(/\D/g, "");
+    }
+
+
+    function formatarTelefone(telefone) {
+
+        const numeros =
+            limparTelefone(telefone)
+                .slice(0, 11);
+
+        if (numeros.length <= 2) {
+            return numeros;
+        }
+
+        if (numeros.length <= 6) {
+
+            return numeros.replace(
+                /^(\d{2})(\d+)/,
+                "($1) $2"
+            );
+        }
+
+        if (numeros.length <= 10) {
+
+            return numeros.replace(
+                /^(\d{2})(\d{4})(\d+)/,
+                "($1) $2-$3"
+            );
+        }
+
+        return numeros.replace(
+            /^(\d{2})(\d{5})(\d{4})$/,
+            "($1) $2-$3"
+        );
+    }
+
+
+    telefoneInput.addEventListener(
+        "input",
+        function() {
+
+            telefoneInput.value =
+                formatarTelefone(
+                    telefoneInput.value
+                );
+
+        }
+    );
+
+
+    /* =====================================================
+       RENDERIZAR
+    ===================================================== */
+
+    function renderizarContatos() {
+
+        const contatos =
+            obterContatos();
+
+        contactsCard.innerHTML = "";
+
+        if (contatos.length === 0) {
+
+            contactsCard.style.display = "none";
+
+            emptyContacts.classList.add("show");
+
+            return;
+        }
+
+        contactsCard.style.display = "block";
+
+        emptyContacts.classList.remove("show");
+
+
+        contatos.forEach(function(contato) {
+
+            const item =
+                document.createElement("div");
+
+            item.className = "contact";
+
+
+            const inicial =
+                contato.nome
+                    ? contato.nome.charAt(0).toUpperCase()
+                    : "?";
+
+
+            item.innerHTML = `
+
+                <div class="contact-avatar">
+                    ${escaparHTML(inicial)}
+                </div>
+
+                <div class="contact-info">
+
+                    <h3>
+                        ${escaparHTML(contato.nome)}
+
+                        ${
+                            contato.principal
+                            ? `
+                                <span class="principal-badge">
+                                    Principal
+                                </span>
+                            `
+                            : ""
+                        }
+                    </h3>
+
+                    <p>
+                        ${escaparHTML(contato.telefone)}
+                    </p>
+
+                    <span class="contact-type">
+                        ${escaparHTML(contato.relacao)}
+                    </span>
+
+                </div>
+
+
+                <div class="contact-actions">
+
+                    <button
+                        class="action-button"
+                        data-action="call"
+                        data-id="${contato.id}"
+                        type="button"
+                        title="Ligar"
+                        aria-label="Ligar"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <path
+                                d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 5.2 2 2 0 0 1 5.1 3h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 2.9a2 2 0 0 1-.5 2.1L9 10.9a16 16 0 0 0 4.1 4.1l1.2-1.3a2 2 0 0 1 2.1-.5c.9.4 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"
+                            />
+
+                        </svg>
+
+                    </button>
+
+
+                    <button
+                        class="action-button"
+                        data-action="principal"
+                        data-id="${contato.id}"
+                        type="button"
+                        title="Definir como principal"
+                        aria-label="Definir como principal"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="${
+                                contato.principal
+                                ? "currentColor"
+                                : "none"
+                            }"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <path
+                                d="M12 21s-7-4.35-9.5-8.5C.7 8.9 2.4 5 6.5 5c2.2 0 4 1.2 5.5 3 1.5-1.8 3.3-3 5.5-3 4.1 0 5.8 3.9 4 7.5C19 16.65 12 21 12 21z"
+                            />
+
+                        </svg>
+
+                    </button>
+
+
+                    <button
+                        class="action-button"
+                        data-action="edit"
+                        data-id="${contato.id}"
+                        type="button"
+                        title="Editar"
+                        aria-label="Editar"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <path d="M12 20h9"/>
+
+                            <path
+                                d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5z"
+                            />
+
+                        </svg>
+
+                    </button>
+
+
+                    <button
+                        class="action-button delete"
+                        data-action="delete"
+                        data-id="${contato.id}"
+                        type="button"
+                        title="Excluir"
+                        aria-label="Excluir"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <path d="M3 6h18"/>
+
+                            <path d="M8 6V4h8v2"/>
+
+                            <path
+                                d="M19 6l-1 15H6L5 6"
+                            />
+
+                            <path d="M10 11v6"/>
+                            <path d="M14 11v6"/>
+
+                        </svg>
+
+                    </button>
+
+                </div>
+            `;
+
+
+            contactsCard.appendChild(item);
+
+        });
+    }
+
+
+    /* =====================================================
+       EVENTOS DOS CONTATOS
+    ===================================================== */
+
+    contactsCard.addEventListener(
+        "click",
+        function(event) {
+
+            const botao =
+                event.target.closest(
+                    "button[data-action]"
+                );
+
+            if (!botao) {
+                return;
+            }
+
+            const id =
+                Number(botao.dataset.id);
+
+            const acao =
+                botao.dataset.action;
+
+
+            if (acao === "call") {
+                ligarContato(id);
+            }
+
+            else if (acao === "principal") {
+                definirPrincipal(id);
+            }
+
+            else if (acao === "edit") {
+                editarContato(id);
+            }
+
+            else if (acao === "delete") {
+                removerContato(id);
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       MODAL
+    ===================================================== */
+
+    function abrirModal() {
+
+        contatoEditando = null;
+
+        modalTitle.textContent =
+            "Novo contato";
+
+        contactForm.reset();
+
+        modal.classList.add("show");
+
+        setTimeout(
+            function() {
+                nomeInput.focus();
+            },
+            100
+        );
+    }
+
+
+    document
+        .getElementById("addButton")
+        .addEventListener(
+            "click",
+            abrirModal
+        );
+
+
+    function fecharModal() {
+
+        modal.classList.remove("show");
+
+        contactForm.reset();
+
+        contatoEditando = null;
+    }
+
+
+    document
+        .getElementById("closeButton")
+        .addEventListener(
+            "click",
+            fecharModal
+        );
+
+
+    document
+        .getElementById("cancelButton")
+        .addEventListener(
+            "click",
+            fecharModal
+        );
+
+
+    modal.addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === modal) {
+                fecharModal();
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Escape" &&
+                modal.classList.contains("show")
+            ) {
+
+                fecharModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       SALVAR CONTATO
+    ===================================================== */
+
+    contactForm.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const nome =
+                nomeInput.value.trim();
+
+            const telefone =
+                telefoneInput.value.trim();
+
+            const relacao =
+                relacaoInput.value;
+
+
+            if (!nome) {
+
+                mostrarMensagem(
+                    "Digite o nome do contato."
+                );
+
+                nomeInput.focus();
+
+                return;
+            }
+
+
+            if (!relacao) {
+
+                mostrarMensagem(
+                    "Selecione a relação."
+                );
+
+                relacaoInput.focus();
+
+                return;
+            }
+
+
+            const numero =
+                limparTelefone(telefone);
+
+
+            if (numero.length < 10) {
+
+                mostrarMensagem(
+                    "Digite um telefone válido."
+                );
+
+                telefoneInput.focus();
+
+                return;
+            }
+
 
             const contatos =
                 obterContatos();
 
 
-            contactsCard.innerHTML =
-                "";
+            const duplicado =
+                contatos.some(
+                    function(contato) {
 
+                        if (
+                            contatoEditando !== null &&
+                            contato.id === contatoEditando
+                        ) {
 
-            if (
-                contatos.length === 0
-            ) {
+                            return false;
+                        }
 
-                contactsCard.style.display =
-                    "none";
-
-                emptyContacts.classList.add(
-                    "show"
+                        return (
+                            limparTelefone(
+                                contato.telefone
+                            ) === numero
+                        );
+                    }
                 );
 
+
+            if (duplicado) {
+
+                mostrarMensagem(
+                    "Este telefone já está cadastrado."
+                );
+
+                telefoneInput.focus();
+
                 return;
-
             }
 
 
-            contactsCard.style.display =
-                "block";
+            /* =================================================
+               EDITAR
+            ================================================= */
 
-            emptyContacts.classList.remove(
-                "show"
-            );
+            if (contatoEditando !== null) {
 
-
-            contatos.forEach(
-                function(contato) {
-
-                    const item =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    item.className =
-                        "contact";
-
-
-                    const inicial =
-                        contato.nome
-                            .charAt(0)
-                            .toUpperCase();
-
-
-                    item.innerHTML = `
-
-                        <div class="contact-avatar">
-                            ${escaparHTML(inicial)}
-                        </div>
-
-
-                        <div class="contact-info">
-
-                            <h3>
-
-                                ${escaparHTML(
-                                    contato.nome
-                                )}
-
-                                ${
-                                    contato.principal
-                                    ?
-                                    `
-                                    <span class="principal-badge">
-                                        Principal
-                                    </span>
-                                    `
-                                    :
-                                    ""
-                                }
-
-                            </h3>
-
-
-                            <p>
-                                ${escaparHTML(
-                                    contato.telefone
-                                )}
-                            </p>
-
-
-                            <span class="contact-type">
-                                ${escaparHTML(
-                                    contato.relacao
-                                )}
-                            </span>
-
-                        </div>
-
-
-                        <div class="contact-actions">
-
-
-                            <!-- LIGAR -->
-
-                            <button
-                                class="action-button"
-                                data-action="call"
-                                data-id="${contato.id}"
-                                title="Ligar"
-                                aria-label="Ligar"
-                            >
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-
-                                    <path
-                                        d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 5.2 2 2 0 0 1 5.1 3h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 2.9a2 2 0 0 1-.5 2.1L9 10.9a16 16 0 0 0 4.1 4.1l1.2-1.3a2 2 0 0 1 2.1-.5c.9.4 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"
-                                    />
-
-                                </svg>
-
-                            </button>
-
-
-                            <!-- PRINCIPAL -->
-
-                            <button
-                                class="action-button"
-                                data-action="principal"
-                                data-id="${contato.id}"
-                                title="Definir como principal"
-                                aria-label="Definir como principal"
-                            >
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="${
-                                        contato.principal
-                                        ?
-                                        "currentColor"
-                                        :
-                                        "none"
-                                    }"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-
-                                    <path
-                                        d="M12 21s-7-4.35-9.5-8.5C.7 8.9 2.4 5 6.5 5c2.2 0 4 1.2 5.5 3 1.5-1.8 3.3-3 5.5-3 4.1 0 5.8 3.9 4 7.5C19 16.65 12 21 12 21z"
-                                    />
-
-                                </svg>
-
-                            </button>
-
-
-                            <!-- EDITAR -->
-
-                            <button
-                                class="action-button"
-                                data-action="edit"
-                                data-id="${contato.id}"
-                                title="Editar"
-                                aria-label="Editar"
-                            >
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-
-                                    <path d="M12 20h9"/>
-
-                                    <path
-                                        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5z"
-                                    />
-
-                                </svg>
-
-                            </button>
-
-
-                            <!-- EXCLUIR -->
-
-                            <button
-                                class="action-button delete"
-                                data-action="delete"
-                                data-id="${contato.id}"
-                                title="Excluir"
-                                aria-label="Excluir"
-                            >
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-
-                                    <path d="M3 6h18"/>
-
-                                    <path d="M8 6V4h8v2"/>
-
-                                    <path
-                                        d="M19 6l-1 15H6L5 6"
-                                    />
-
-                                    <path d="M10 11v6"/>
-
-                                    <path d="M14 11v6"/>
-
-                                </svg>
-
-                            </button>
-
-                        </div>
-
-                    `;
-
-
-                    contactsCard.appendChild(
-                        item
-                    );
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           EVENTOS DOS BOTÕES DOS CONTATOS
-        ===================================================== */
-
-        contactsCard.addEventListener(
-            "click",
-            function(event) {
-
-                const botao =
-                    event.target.closest(
-                        "button[data-action]"
-                    );
-
-
-                if (!botao) {
-
-                    return;
-
-                }
-
-
-                const id =
-                    Number(
-                        botao.dataset.id
-                    );
-
-
-                const acao =
-                    botao.dataset.action;
-
-
-                if (
-                    acao === "call"
-                ) {
-
-                    ligarContato(id);
-
-                }
-
-
-                if (
-                    acao === "principal"
-                ) {
-
-                    definirPrincipal(id);
-
-                }
-
-
-                if (
-                    acao === "edit"
-                ) {
-
-                    editarContato(id);
-
-                }
-
-
-                if (
-                    acao === "delete"
-                ) {
-
-                    removerContato(id);
-
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           ABRIR MODAL
-        ===================================================== */
-
-        function abrirModal() {
-
-            contatoEditando =
-                null;
-
-
-            modalTitle.textContent =
-                "Novo contato";
-
-
-            contactForm.reset();
-
-
-            modal.classList.add(
-                "show"
-            );
-
-
-            setTimeout(
-                function() {
-
-                    nomeInput.focus();
-
-                },
-                100
-            );
-
-        }
-
-
-        document
-            .getElementById("addButton")
-            .addEventListener(
-                "click",
-                abrirModal
-            );
-
-
-        /* =====================================================
-           FECHAR MODAL
-        ===================================================== */
-
-        function fecharModal() {
-
-            modal.classList.remove(
-                "show"
-            );
-
-
-            contactForm.reset();
-
-
-            contatoEditando =
-                null;
-
-        }
-
-
-        document
-            .getElementById("closeButton")
-            .addEventListener(
-                "click",
-                fecharModal
-            );
-
-
-        document
-            .getElementById("cancelButton")
-            .addEventListener(
-                "click",
-                fecharModal
-            );
-
-
-        /* =====================================================
-           FECHAR CLICANDO FORA
-        ===================================================== */
-
-        modal.addEventListener(
-            "click",
-            function(event) {
-
-                if (
-                    event.target === modal
-                ) {
-
-                    fecharModal();
-
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           ESC
-        ===================================================== */
-
-        document.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (
-                    event.key === "Escape" &&
-                    modal.classList.contains("show")
-                ) {
-
-                    fecharModal();
-
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           SALVAR CONTATO
-        ===================================================== */
-
-        contactForm.addEventListener(
-            "submit",
-            function(event) {
-
-                event.preventDefault();
-
-
-                const nome =
-                    nomeInput.value.trim();
-
-
-                const telefone =
-                    telefoneInput.value.trim();
-
-
-                const relacao =
-                    relacaoInput.value;
-
-
-                /* ---------------------------------------------
-                   VALIDAÇÃO DO NOME
-                --------------------------------------------- */
-
-                if (!nome) {
-
-                    mostrarMensagem(
-                        "Digite o nome do contato."
-                    );
-
-                    nomeInput.focus();
-
-                    return;
-
-                }
-
-
-                /* ---------------------------------------------
-                   VALIDAÇÃO DA RELAÇÃO
-                --------------------------------------------- */
-
-                if (!relacao) {
-
-                    mostrarMensagem(
-                        "Selecione a relação."
-                    );
-
-                    relacaoInput.focus();
-
-                    return;
-
-                }
-
-
-                /* ---------------------------------------------
-                   VALIDAÇÃO DO TELEFONE
-                --------------------------------------------- */
-
-                const numero =
-                    limparTelefone(
-                        telefone
-                    );
-
-
-                if (
-                    numero.length < 10
-                ) {
-
-                    mostrarMensagem(
-                        "Digite um telefone válido."
-                    );
-
-                    telefoneInput.focus();
-
-                    return;
-
-                }
-
-
-                const contatos =
-                    obterContatos();
-
-
-                /* ---------------------------------------------
-                   TELEFONE DUPLICADO
-                --------------------------------------------- */
-
-                const duplicado =
-                    contatos.some(
+                const indice =
+                    contatos.findIndex(
                         function(contato) {
 
-                            if (
-                                contatoEditando !== null &&
+                            return (
                                 contato.id ===
                                 contatoEditando
-                            ) {
-
-                                return false;
-
-                            }
-
-
-                            return (
-                                limparTelefone(
-                                    contato.telefone
-                                ) === numero
                             );
 
                         }
                     );
 
 
-                if (duplicado) {
+                if (indice === -1) {
 
                     mostrarMensagem(
-                        "Este telefone já está cadastrado."
+                        "Contato não encontrado."
                     );
 
-                    telefoneInput.focus();
+                    fecharModal();
 
                     return;
-
                 }
 
 
-                /* ---------------------------------------------
-                   EDITAR
-                --------------------------------------------- */
+                contatos[indice].nome =
+                    nome;
 
-                if (
-                    contatoEditando !== null
-                ) {
+                contatos[indice].telefone =
+                    formatarTelefone(telefone);
 
-                    const indice =
-                        contatos.findIndex(
-                            function(contato) {
-
-                                return (
-                                    contato.id ===
-                                    contatoEditando
-                                );
-
-                            }
-                        );
-
-
-                    if (
-                        indice === -1
-                    ) {
-
-                        mostrarMensagem(
-                            "Contato não encontrado."
-                        );
-
-                        fecharModal();
-
-                        return;
-
-                    }
-
-
-                    contatos[indice].nome =
-                        nome;
-
-
-                    contatos[indice].telefone =
-                        formatarTelefone(
-                            telefone
-                        );
-
-
-                    contatos[indice].relacao =
-                        relacao;
-
-
-                    if (
-                        salvarContatos(
-                            contatos
-                        )
-                    ) {
-
-                        renderizarContatos();
-
-                        fecharModal();
-
-                        mostrarMensagem(
-                            "Contato atualizado com sucesso."
-                        );
-
-                    }
-
-
-                    return;
-
-                }
-
-
-                /* ---------------------------------------------
-                   NOVO CONTATO
-                --------------------------------------------- */
-
-                const novoContato = {
-
-                    id:
-                        Date.now(),
-
-                    nome:
-                        nome,
-
-                    telefone:
-                        formatarTelefone(
-                            telefone
-                        ),
-
-                    relacao:
-                        relacao,
-
-                    principal:
-                        contatos.length === 0
-
-                };
-
-
-                contatos.push(
-                    novoContato
-                );
+                contatos[indice].relacao =
+                    relacao;
 
 
                 if (
-                    salvarContatos(
-                        contatos
-                    )
+                    salvarContatos(contatos)
                 ) {
 
                     renderizarContatos();
 
                     fecharModal();
 
-
-                    if (
-                        novoContato.principal
-                    ) {
-
-                        mostrarMensagem(
-                            "Contato cadastrado como principal!"
-                        );
-
-                    } else {
-
-                        mostrarMensagem(
-                            "Contato adicionado com sucesso."
-                        );
-
-                    }
-
+                    mostrarMensagem(
+                        "Contato atualizado com sucesso."
+                    );
                 }
 
-            }
-        );
-
-
-        /* =====================================================
-           EDITAR CONTATO
-        ===================================================== */
-
-        function editarContato(id) {
-
-            const contatos =
-                obterContatos();
-
-
-            const contato =
-                contatos.find(
-                    function(item) {
-
-                        return (
-                            item.id === id
-                        );
-
-                    }
-                );
-
-
-            if (!contato) {
-
-                mostrarMensagem(
-                    "Contato não encontrado."
-                );
-
                 return;
-
             }
 
 
-            contatoEditando =
-                id;
+            /* =================================================
+               NOVO CONTATO
+            ================================================= */
+
+            const novoContato = {
+
+                id: Date.now(),
+
+                nome: nome,
+
+                telefone:
+                    formatarTelefone(telefone),
+
+                relacao: relacao,
+
+                principal:
+                    contatos.length === 0
+            };
 
 
-            modalTitle.textContent =
-                "Editar contato";
-
-
-            nomeInput.value =
-                contato.nome;
-
-
-            telefoneInput.value =
-                contato.telefone;
-
-
-            relacaoInput.value =
-                contato.relacao;
-
-
-            modal.classList.add(
-                "show"
-            );
-
-
-            setTimeout(
-                function() {
-
-                    nomeInput.focus();
-
-                },
-                100
-            );
-
-        }
-
-
-        /* =====================================================
-           DEFINIR PRINCIPAL
-        ===================================================== */
-
-        function definirPrincipal(id) {
-
-            const contatos =
-                obterContatos();
-
-
-            const contato =
-                contatos.find(
-                    function(item) {
-
-                        return (
-                            item.id === id
-                        );
-
-                    }
-                );
-
-
-            if (!contato) {
-
-                return;
-
-            }
+            contatos.push(novoContato);
 
 
             if (
-                contato.principal
+                salvarContatos(contatos)
             ) {
 
-                mostrarMensagem(
-                    "Este contato já é o principal."
-                );
+                renderizarContatos();
 
-                return;
+                fecharModal();
 
+
+                if (novoContato.principal) {
+
+                    mostrarMensagem(
+                        "Contato cadastrado como principal!"
+                    );
+
+                } else {
+
+                    mostrarMensagem(
+                        "Contato adicionado com sucesso."
+                    );
+
+                }
             }
 
+        }
+    );
 
-            contatos.forEach(
+
+    /* =====================================================
+       EDITAR
+    ===================================================== */
+
+    function editarContato(id) {
+
+        const contatos =
+            obterContatos();
+
+
+        const contato =
+            contatos.find(
                 function(item) {
 
-                    item.principal =
-                        item.id === id;
+                    return item.id === id;
 
                 }
             );
 
 
-            if (
-                salvarContatos(
-                    contatos
-                )
-            ) {
+        if (!contato) {
 
-                renderizarContatos();
+            mostrarMensagem(
+                "Contato não encontrado."
+            );
 
-                mostrarMensagem(
-                    contato.nome +
-                    " agora é o contato principal."
-                );
-
-            }
-
+            return;
         }
 
 
-        /* =====================================================
-           EXCLUIR CONTATO
-        ===================================================== */
+        contatoEditando = id;
 
-        function removerContato(id) {
+        modalTitle.textContent =
+            "Editar contato";
 
-            const contatos =
-                obterContatos();
+        nomeInput.value =
+            contato.nome;
 
+        telefoneInput.value =
+            contato.telefone;
 
-            const contato =
-                contatos.find(
-                    function(item) {
+        relacaoInput.value =
+            contato.relacao;
 
-                        return (
-                            item.id === id
-                        );
-
-                    }
-                );
+        modal.classList.add("show");
 
 
-            if (!contato) {
-
-                return;
-
-            }
-
-
-            const confirmar =
-                confirm(
-                    "Deseja remover " +
-                    contato.nome +
-                    " dos contatos de confiança?"
-                );
-
-
-            if (!confirmar) {
-
-                return;
-
-            }
-
-
-            const eraPrincipal =
-                contato.principal;
-
-
-            let novosContatos =
-                contatos.filter(
-                    function(item) {
-
-                        return (
-                            item.id !== id
-                        );
-
-                    }
-                );
-
-
-            /* ---------------------------------------------
-               SE O PRINCIPAL FOR EXCLUÍDO
-            --------------------------------------------- */
-
-            if (
-                eraPrincipal &&
-                novosContatos.length > 0
-            ) {
-
-                novosContatos.forEach(
-                    function(item, indice) {
-
-                        item.principal =
-                            indice === 0;
-
-                    }
-                );
-
-            }
-
-
-            if (
-                salvarContatos(
-                    novosContatos
-                )
-            ) {
-
-                renderizarContatos();
-
-                mostrarMensagem(
-                    "Contato removido com sucesso."
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           LIGAR
-        ===================================================== */
-
-        function ligarContato(id) {
-
-            const contatos =
-                obterContatos();
-
-
-            const contato =
-                contatos.find(
-                    function(item) {
-
-                        return (
-                            item.id === id
-                        );
-
-                    }
-                );
-
-
-            if (!contato) {
-
-                mostrarMensagem(
-                    "Contato não encontrado."
-                );
-
-                return;
-
-            }
-
-
-            const telefone =
-                limparTelefone(
-                    contato.telefone
-                );
-
-
-            if (
-                telefone.length < 10
-            ) {
-
-                mostrarMensagem(
-                    "Número de telefone inválido."
-                );
-
-                return;
-
-            }
-
-
-            window.location.href =
-                "tel:" +
-                telefone;
-
-        }
-
-
-        /* =====================================================
-           INICIALIZAÇÃO
-        ===================================================== */
-
-        document.addEventListener(
-            "DOMContentLoaded",
+        setTimeout(
             function() {
 
-                renderizarContatos();
+                nomeInput.focus();
 
-                console.log(
-                    "SilentHelp carregado."
-                );
+            },
+            100
+        );
+    }
 
-                console.log(
-                    "Contatos:",
-                    obterContatos()
-                );
+
+    /* =====================================================
+       PRINCIPAL
+    ===================================================== */
+
+    function definirPrincipal(id) {
+
+        const contatos =
+            obterContatos();
+
+
+        const contato =
+            contatos.find(
+                function(item) {
+
+                    return item.id === id;
+
+                }
+            );
+
+
+        if (!contato) {
+            return;
+        }
+
+
+        if (contato.principal) {
+
+            mostrarMensagem(
+                "Este contato já é o principal."
+            );
+
+            return;
+        }
+
+
+        contatos.forEach(
+            function(item) {
+
+                item.principal =
+                    item.id === id;
 
             }
         );
 
-    </script>
+
+        if (
+            salvarContatos(contatos)
+        ) {
+
+            renderizarContatos();
+
+            mostrarMensagem(
+                contato.nome +
+                " agora é o contato principal."
+            );
+        }
+    }
+
+
+    /* =====================================================
+       EXCLUIR
+    ===================================================== */
+
+    function removerContato(id) {
+
+        const contatos =
+            obterContatos();
+
+
+        const contato =
+            contatos.find(
+                function(item) {
+
+                    return item.id === id;
+
+                }
+            );
+
+
+        if (!contato) {
+            return;
+        }
+
+
+        const confirmar =
+            confirm(
+                "Deseja remover " +
+                contato.nome +
+                " dos contatos de confiança?"
+            );
+
+
+        if (!confirmar) {
+            return;
+        }
+
+
+        const eraPrincipal =
+            contato.principal;
+
+
+        let novosContatos =
+            contatos.filter(
+                function(item) {
+
+                    return item.id !== id;
+
+                }
+            );
+
+
+        if (
+            eraPrincipal &&
+            novosContatos.length > 0
+        ) {
+
+            novosContatos.forEach(
+                function(item, indice) {
+
+                    item.principal =
+                        indice === 0;
+
+                }
+            );
+        }
+
+
+        if (
+            salvarContatos(novosContatos)
+        ) {
+
+            renderizarContatos();
+
+            mostrarMensagem(
+                "Contato removido com sucesso."
+            );
+        }
+    }
+
+
+    /* =====================================================
+       LIGAR
+    ===================================================== */
+
+    function ligarContato(id) {
+
+        const contatos =
+            obterContatos();
+
+
+        const contato =
+            contatos.find(
+                function(item) {
+
+                    return item.id === id;
+
+                }
+            );
+
+
+        if (!contato) {
+
+            mostrarMensagem(
+                "Contato não encontrado."
+            );
+
+            return;
+        }
+
+
+        const telefone =
+            limparTelefone(
+                contato.telefone
+            );
+
+
+        if (telefone.length < 10) {
+
+            mostrarMensagem(
+                "Número de telefone inválido."
+            );
+
+            return;
+        }
+
+
+        window.location.href =
+            "tel:" + telefone;
+    }
+
+
+    /* =====================================================
+       INICIALIZAÇÃO
+    ===================================================== */
+
+    renderizarContatos();
+
+    console.log(
+        "SilentHelp - Contatos carregado."
+    );
+
+    console.log(
+        "Contatos:",
+        obterContatos()
+    );
+
+</script>
+
 
 <script src="assets/db-sync.js"></script>
+
 </body>
 
 </html>

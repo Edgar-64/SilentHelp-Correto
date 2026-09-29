@@ -1,4 +1,17 @@
-<?php require_once __DIR__ . '/auth.php'; exigirLogin(); ?>
+<?php
+require_once __DIR__ . '/auth.php';
+
+$usuario = exigirLogin();
+
+$nomeUsuario = $usuario['nome'] ?? 'Usuário';
+$emailUsuario = $usuario['email'] ?? 'Não informado';
+$telefoneUsuario = $usuario['telefone'] ?? 'Não informado';
+
+$nomeUsuario = htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8');
+$emailUsuario = htmlspecialchars($emailUsuario, ENT_QUOTES, 'UTF-8');
+$telefoneUsuario = htmlspecialchars($telefoneUsuario, ENT_QUOTES, 'UTF-8');
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -25,35 +38,26 @@
             box-sizing: border-box;
         }
 
-
         :root {
-
             --roxo: #a65cff;
             --roxo-claro: #c58aff;
             --roxo-escuro: #6e32ad;
-
             --fundo: #050507;
             --fundo-card: #101015;
             --fundo-card-2: #15151c;
-
             --borda: #292933;
-
             --branco: #ffffff;
             --cinza: #aaaab3;
             --cinza-escuro: #777781;
-
             --verde: #55df91;
             --vermelho: #ff657a;
-
         }
-
 
         /* =====================================================
            BODY
         ===================================================== */
 
         body {
-
             min-height: 100vh;
 
             background:
@@ -75,133 +79,89 @@
                 sans-serif;
 
             overflow-x: hidden;
-
         }
-
 
         button {
             font-family: inherit;
         }
-
 
         /* =====================================================
            APP
         ===================================================== */
 
         .app {
-
             width: 100%;
             max-width: 900px;
-
             margin: auto;
 
             padding:
                 25px
                 25px
                 140px;
-
         }
-
 
         /* =====================================================
            CABEÇALHO
         ===================================================== */
 
         .header {
-
             display: flex;
-
             align-items: center;
             justify-content: space-between;
 
             margin-bottom: 30px;
-
         }
 
-
         .back-button {
-
             width: 48px;
             height: 48px;
 
-            border:
-                1px solid
-                var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 15px;
 
-            background:
-                var(--fundo-card);
-
-            color:
-                var(--roxo-claro);
+            background: var(--fundo-card);
+            color: var(--roxo-claro);
 
             display: flex;
-
             justify-content: center;
             align-items: center;
 
             cursor: pointer;
-
             transition: .2s;
-
         }
-
 
         .back-button:hover {
-
-            border-color:
-                var(--roxo);
-
-            background:
-                #18131f;
-
+            border-color: var(--roxo);
+            background: #18131f;
         }
-
 
         .back-button svg {
-
             width: 24px;
             height: 24px;
-
         }
-
 
         .header-title {
-
             font-size: 25px;
-
             font-weight: 600;
-
         }
-
 
         .header-space {
-
             width: 48px;
-
         }
-
 
         /* =====================================================
            PERFIL PRINCIPAL
         ===================================================== */
 
         .profile-card {
-
             position: relative;
 
-            padding:
-                30px 25px;
-
+            padding: 30px 25px;
             margin-bottom: 25px;
 
             text-align: center;
 
-            border:
-                1px solid
-                rgba(166, 92, 255, .35);
-
+            border: 1px solid rgba(166, 92, 255, .35);
             border-radius: 28px;
 
             background:
@@ -215,44 +175,31 @@
                     #15111c,
                     #0c0c10
                 );
-
         }
-
 
         /* =====================================================
            FOTO
         ===================================================== */
 
         .profile-photo-container {
-
             position: relative;
 
             width: 115px;
             height: 115px;
 
-            margin:
-                auto
-                auto
-                18px;
-
+            margin: auto auto 18px;
         }
 
-
         .profile-photo {
-
             width: 115px;
             height: 115px;
 
             display: flex;
-
             justify-content: center;
             align-items: center;
 
             border-radius: 50%;
-
-            border:
-                3px solid
-                var(--roxo);
+            border: 3px solid var(--roxo);
 
             background:
                 linear-gradient(
@@ -261,11 +208,9 @@
                     #6e32ad
                 );
 
-            color:
-                white;
+            color: white;
 
             font-size: 42px;
-
             font-weight: 600;
 
             box-shadow:
@@ -273,28 +218,21 @@
                 rgba(166, 92, 255, .25);
 
             overflow: hidden;
-
         }
 
-
         .profile-photo img {
-
             width: 100%;
             height: 100%;
 
             object-fit: cover;
-
             display: block;
-
         }
-
 
         /* =====================================================
            BOTÃO EDITAR FOTO
         ===================================================== */
 
         .edit-photo {
-
             position: absolute;
 
             right: -3px;
@@ -304,176 +242,113 @@
             height: 39px;
 
             display: flex;
-
             justify-content: center;
             align-items: center;
 
-            border:
-                3px solid
-                #101015;
-
+            border: 3px solid #101015;
             border-radius: 50%;
 
-            background:
-                var(--roxo);
-
-            color:
-                white;
+            background: var(--roxo);
+            color: white;
 
             cursor: pointer;
-
             transition: .2s;
-
         }
-
 
         .edit-photo:hover {
-
-            background:
-                var(--roxo-claro);
-
-            transform:
-                scale(1.06);
-
+            background: var(--roxo-claro);
+            transform: scale(1.06);
         }
-
 
         .edit-photo svg {
-
             width: 18px;
             height: 18px;
-
         }
-
 
         #inputFoto {
-
             display: none;
-
         }
-
 
         /* =====================================================
            NOME
         ===================================================== */
 
         .profile-name {
-
             font-size: 28px;
-
             font-weight: 600;
-
             margin-bottom: 5px;
-
         }
-
 
         .profile-email {
-
-            color:
-                var(--cinza);
-
+            color: var(--cinza);
             font-size: 15px;
-
             margin-bottom: 18px;
-
         }
 
-
         .profile-status {
-
             display: inline-flex;
-
             align-items: center;
 
             gap: 8px;
 
-            padding:
-                8px 14px;
+            padding: 8px 14px;
 
             border-radius: 20px;
 
-            background:
-                rgba(85, 223, 145, .09);
-
-            color:
-                var(--verde);
+            background: rgba(85, 223, 145, .09);
+            color: var(--verde);
 
             font-size: 13px;
-
             font-weight: 600;
-
         }
 
-
         .profile-status-dot {
-
             width: 8px;
             height: 8px;
 
             border-radius: 50%;
 
-            background:
-                var(--verde);
+            background: var(--verde);
 
             box-shadow:
                 0 0 8px
                 rgba(85, 223, 145, .6);
-
         }
-
 
         /* =====================================================
            SEÇÕES
         ===================================================== */
 
         .section-title {
-
             font-size: 21px;
-
             font-weight: 500;
 
             margin-bottom: 15px;
-
         }
-
 
         .info-section {
-
             margin-bottom: 25px;
-
         }
-
 
         .info-list {
-
             display: flex;
-
             flex-direction: column;
-
             gap: 10px;
-
         }
-
 
         /* =====================================================
            ITEM DO PERFIL
         ===================================================== */
 
         .profile-item {
-
             display: flex;
-
             align-items: center;
 
             gap: 15px;
 
             padding: 17px;
 
-            border:
-                1px solid
-                var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 19px;
 
             background:
@@ -484,106 +359,65 @@
                 );
 
             transition: .2s;
-
             cursor: pointer;
-
         }
-
 
         .profile-item:hover {
-
-            border-color:
-                rgba(166, 92, 255, .45);
-
-            transform:
-                translateY(-1px);
-
+            border-color: rgba(166, 92, 255, .45);
+            transform: translateY(-1px);
         }
 
-
         .item-icon {
-
             width: 45px;
             height: 45px;
-
             min-width: 45px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
             border-radius: 14px;
 
-            background:
-                rgba(166, 92, 255, .12);
-
-            color:
-                var(--roxo-claro);
-
+            background: rgba(166, 92, 255, .12);
+            color: var(--roxo-claro);
         }
-
 
         .item-icon svg {
-
             width: 22px;
             height: 22px;
-
         }
-
 
         .item-content {
-
             flex: 1;
-
         }
 
-
         .item-label {
-
-            color:
-                var(--cinza);
-
+            color: var(--cinza);
             font-size: 12px;
 
             margin-bottom: 4px;
-
         }
 
-
         .item-value {
-
             font-size: 16px;
-
             font-weight: 500;
 
             word-break: break-word;
-
         }
-
 
         .item-arrow {
-
-            color:
-                var(--cinza-escuro);
-
+            color: var(--cinza-escuro);
             font-size: 25px;
-
         }
-
 
         /* =====================================================
            CÓDIGO DO RESPONSÁVEL
         ===================================================== */
 
         .responsible-card {
-
             padding: 20px;
 
-            border:
-                1px solid
-                var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 20px;
 
             background:
@@ -594,7 +428,6 @@
                 );
 
             margin-bottom: 25px;
-
         }
 
         .responsible-card p {
@@ -611,28 +444,39 @@
 
         .code-display {
             flex: 1;
+
             padding: 14px;
+
             background: var(--fundo);
+
             border: 1px dashed var(--roxo);
             border-radius: 14px;
+
             font-family: monospace;
             font-size: 18px;
             font-weight: bold;
+
             text-align: center;
             letter-spacing: 2px;
+
             color: var(--roxo-claro);
         }
 
         .action-code-btn {
             padding: 14px 18px;
+
             border: none;
             border-radius: 14px;
+
             background: var(--roxo);
             color: white;
+
             font-weight: 600;
             font-size: 14px;
+
             cursor: pointer;
             transition: .2s;
+
             white-space: nowrap;
         }
 
@@ -643,6 +487,7 @@
         .action-code-btn.secondary {
             background: rgba(166, 92, 255, 0.15);
             color: var(--roxo-claro);
+
             border: 1px solid rgba(166, 92, 255, 0.3);
         }
 
@@ -653,6 +498,7 @@
         .code-actions {
             display: flex;
             gap: 10px;
+
             margin-top: 10px;
         }
 
@@ -660,32 +506,22 @@
             flex: 1;
         }
 
-
         /* =====================================================
            AJUDA E SUPORTE
         ===================================================== */
 
         .security-section {
-
             margin-bottom: 25px;
-
         }
 
-
         .security-card {
-
             display: flex;
-
             align-items: center;
 
             gap: 15px;
-
             padding: 19px;
 
-            border:
-                1px solid
-                var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 20px;
 
             background:
@@ -696,112 +532,69 @@
                 );
 
             cursor: pointer;
-
             transition: .2s;
-
         }
-
 
         .security-card:hover {
-
-            border-color:
-                rgba(166, 92, 255, .45);
-
-            transform:
-                translateY(-1px);
-
+            border-color: rgba(166, 92, 255, .45);
+            transform: translateY(-1px);
         }
 
-
         .security-card-icon {
-
             width: 48px;
             height: 48px;
-
             min-width: 48px;
 
             display: flex;
-
             justify-content: center;
             align-items: center;
 
             border-radius: 15px;
 
-            background:
-                rgba(166, 92, 255, .13);
-
-            color:
-                var(--roxo-claro);
-
+            background: rgba(166, 92, 255, .13);
+            color: var(--roxo-claro);
         }
-
 
         .security-card-icon svg {
-
             width: 24px;
             height: 24px;
-
         }
-
 
         .security-card-content {
-
             flex: 1;
-
         }
 
-
         .security-card-content h3 {
-
             font-size: 16px;
-
             font-weight: 500;
 
             margin-bottom: 4px;
-
         }
-
 
         .security-card-content p {
-
-            color:
-                var(--cinza);
-
+            color: var(--cinza);
             font-size: 13px;
-
         }
-
 
         .security-arrow {
-
-            color:
-                var(--cinza-escuro);
-
+            color: var(--cinza-escuro);
             font-size: 25px;
-
         }
-
 
         /* =====================================================
            CONTATOS
         ===================================================== */
 
         .contacts-card {
-
             display: flex;
-
             align-items: center;
 
             gap: 15px;
-
             padding: 20px;
 
             margin-bottom: 25px;
 
-            border:
-                1px solid
-                rgba(166, 92, 255, .30);
-
+            border: 1px solid rgba(166, 92, 255, .30);
             border-radius: 21px;
 
             background:
@@ -812,16 +605,11 @@
                 );
 
             cursor: pointer;
-
             transition: .2s;
-
         }
 
-
         .contacts-card:hover {
-
-            border-color:
-                var(--roxo);
+            border-color: var(--roxo);
 
             background:
                 linear-gradient(
@@ -830,185 +618,121 @@
                     rgba(166, 92, 255, .06)
                 );
 
-            transform:
-                translateY(-2px);
-
+            transform: translateY(-2px);
         }
 
-
         .contacts-icon {
-
             width: 52px;
             height: 52px;
-
             min-width: 52px;
 
             display: flex;
-
             justify-content: center;
             align-items: center;
 
             border-radius: 16px;
 
-            background:
-                rgba(166, 92, 255, .16);
-
-            color:
-                var(--roxo-claro);
-
+            background: rgba(166, 92, 255, .16);
+            color: var(--roxo-claro);
         }
-
 
         .contacts-icon svg {
-
             width: 27px;
             height: 27px;
-
         }
-
 
         .contacts-content {
-
             flex: 1;
-
         }
-
 
         .contacts-content h3 {
-
             font-size: 17px;
-
             margin-bottom: 5px;
-
         }
 
-
         .contacts-content p {
-
-            color:
-                var(--cinza);
-
+            color: var(--cinza);
             font-size: 13px;
 
             margin-bottom: 8px;
-
         }
 
-
         .add-contact-text {
-
             display: inline-flex;
-
             align-items: center;
 
             gap: 6px;
 
-            color:
-                var(--roxo-claro);
+            color: var(--roxo-claro);
 
             font-size: 13px;
-
             font-weight: 600;
-
         }
 
-
         .add-contact-plus {
-
             width: 19px;
             height: 19px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
             border-radius: 50%;
 
-            background:
-                var(--roxo);
-
-            color:
-                white;
+            background: var(--roxo);
+            color: white;
 
             font-size: 15px;
-
         }
-
 
         .contacts-arrow {
-
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
             font-size: 27px;
-
         }
-
 
         /* =====================================================
            SAIR
         ===================================================== */
 
         .logout-button {
-
             width: 100%;
 
             padding: 16px;
 
-            border:
-                1px solid
-                rgba(255, 101, 122, .25);
-
+            border: 1px solid rgba(255, 101, 122, .25);
             border-radius: 17px;
 
-            background:
-                rgba(255, 101, 122, .06);
-
-            color:
-                var(--vermelho);
+            background: rgba(255, 101, 122, .06);
+            color: var(--vermelho);
 
             font-size: 15px;
-
             font-weight: 600;
 
             cursor: pointer;
-
             transition: .2s;
-
         }
-
 
         .logout-button:hover {
-
-            background:
-                rgba(255, 101, 122, .12);
-
-            border-color:
-                rgba(255, 101, 122, .45);
-
+            background: rgba(255, 101, 122, .12);
+            border-color: rgba(255, 101, 122, .45);
         }
-
 
         /* =====================================================
            MENU INFERIOR
         ===================================================== */
 
         .bottom-nav {
-
             position: fixed;
 
             left: 50%;
             bottom: 15px;
 
-            transform:
-                translateX(-50%);
+            transform: translateX(-50%);
 
-            width:
-                min(
-                    calc(100% - 30px),
-                    850px
-                );
+            width: min(
+                calc(100% - 30px),
+                850px
+            );
 
             height: 82px;
 
@@ -1021,8 +745,7 @@
 
             padding: 5px;
 
-            background:
-                rgba(18, 18, 22, .97);
+            background: rgba(18, 18, 22, .97);
 
             border:
                 1px solid
@@ -1030,26 +753,18 @@
 
             border-radius: 28px;
 
-            backdrop-filter:
-                blur(15px);
-
-            -webkit-backdrop-filter:
-                blur(15px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
 
             z-index: 1000;
-
             overflow: hidden;
-
         }
 
-
         .nav-button {
-
             width: 100%;
             height: 100%;
 
             display: flex;
-
             flex-direction: column;
 
             justify-content: center;
@@ -1060,107 +775,78 @@
             padding: 0;
 
             border: none;
-
             outline: none;
 
-            background:
-                transparent;
+            background: transparent;
 
-            color:
-                #85858e;
+            color: #85858e;
 
             cursor: pointer;
 
             font-size: 12px;
-
             font-weight: 500;
 
             transition:
                 color .2s,
                 background .2s;
-
         }
 
-
         .nav-button svg {
-
             width: 25px;
             height: 25px;
 
             flex-shrink: 0;
-
         }
-
 
         .nav-button span {
-
             white-space: nowrap;
-
         }
-
 
         .nav-button.active,
         .nav-button:hover {
-
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
-
 
         /* =====================================================
            TOAST
         ===================================================== */
 
         .toast {
-
             position: fixed;
 
             left: 50%;
             bottom: 130px;
 
-            transform:
-                translate(-50%, 30px);
+            transform: translate(-50%, 30px);
 
             opacity: 0;
-
             pointer-events: none;
 
             z-index: 5000;
 
-            padding:
-                15px 22px;
+            padding: 15px 22px;
 
             border-radius: 15px;
 
-            background:
-                #18181f;
+            background: #18181f;
 
-            border:
-                1px solid
-                var(--roxo);
+            border: 1px solid var(--roxo);
 
-            color:
-                white;
+            color: white;
 
             transition: .3s;
 
             text-align: center;
 
             max-width: 90%;
-
         }
 
-
         .toast.show {
-
             opacity: 1;
 
             transform:
                 translate(-50%, 0);
-
         }
-
 
         /* =====================================================
            RESPONSIVO
@@ -1169,48 +855,32 @@
         @media (max-width: 700px) {
 
             .app {
-
                 padding:
                     18px
                     15px
                     120px;
-
             }
-
 
             .header-title {
-
                 font-size: 21px;
-
             }
-
 
             .profile-card {
-
                 padding:
                     25px 18px;
-
             }
-
 
             .profile-photo,
             .profile-photo-container {
-
                 width: 100px;
                 height: 100px;
-
             }
-
 
             .profile-name {
-
                 font-size: 25px;
-
             }
 
-
             .bottom-nav {
-
                 width:
                     calc(100% - 24px);
 
@@ -1219,75 +889,46 @@
                 bottom: 10px;
 
                 border-radius: 24px;
-
             }
-
 
             .nav-button {
-
                 gap: 4px;
-
                 font-size: 10px;
-
             }
-
 
             .nav-button svg {
-
                 width: 23px;
                 height: 23px;
-
             }
-
         }
-
 
         @media (max-width: 400px) {
 
             .header-title {
-
                 font-size: 19px;
-
             }
-
 
             .profile-name {
-
                 font-size: 23px;
-
             }
-
 
             .item-value {
-
                 font-size: 14px;
-
             }
-
 
             .profile-item {
-
                 padding: 14px;
-
             }
-
 
             .contacts-card {
-
                 padding: 16px;
-
             }
-
 
             .contacts-content h3 {
-
                 font-size: 15px;
-
             }
 
-
             .bottom-nav {
-
                 width:
                     calc(100% - 20px);
 
@@ -1296,38 +937,26 @@
                 bottom: 8px;
 
                 border-radius: 22px;
-
             }
-
 
             .nav-button {
-
                 gap: 3px;
-
                 font-size: 9px;
-
             }
-
 
             .nav-button svg {
-
                 width: 21px;
                 height: 21px;
-
             }
-
         }
 
     </style>
 
 </head>
 
-
 <body>
 
-
     <main class="app">
-
 
         <!-- =================================================
              CABEÇALHO
@@ -1354,11 +983,9 @@
 
             </button>
 
-
             <h1 class="header-title">
                 Meu Perfil
             </h1>
-
 
             <div class="header-space"></div>
 
@@ -1371,16 +998,14 @@
 
         <section class="profile-card">
 
-
             <div class="profile-photo-container">
 
                 <div
                     class="profile-photo"
                     id="profilePhoto"
                 >
-                    J
+                    <?= htmlspecialchars(strtoupper(substr($usuario['nome'] ?? 'U', 0, 1)), ENT_QUOTES, 'UTF-8') ?>
                 </div>
-
 
                 <button
                     class="edit-photo"
@@ -1406,7 +1031,6 @@
 
                 </button>
 
-
                 <input
                     type="file"
                     id="inputFoto"
@@ -1420,7 +1044,7 @@
                 class="profile-name"
                 id="nomePerfil"
             >
-                Julia
+                <?= $nomeUsuario ?>
             </h2>
 
 
@@ -1428,7 +1052,7 @@
                 class="profile-email"
                 id="emailPerfil"
             >
-                julia@email.com
+                <?= $emailUsuario ?>
             </p>
 
 
@@ -1453,13 +1077,9 @@
                 Dados pessoais
             </h2>
 
-
             <div class="info-list">
 
-
-                <!-- =================================================
-                     NOME
-                ================================================== -->
+                <!-- NOME -->
 
                 <div
                     class="profile-item"
@@ -1500,7 +1120,7 @@
                             class="item-value"
                             id="nomeUsuario"
                         >
-                            Julia
+                            <?= $nomeUsuario ?>
                         </div>
 
                     </div>
@@ -1513,9 +1133,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     EMAIL
-                ================================================== -->
+                <!-- EMAIL -->
 
                 <div
                     class="profile-item"
@@ -1558,7 +1176,7 @@
                             class="item-value"
                             id="emailUsuario"
                         >
-                            julia@email.com
+                            <?= $emailUsuario ?>
                         </div>
 
                     </div>
@@ -1571,9 +1189,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     TELEFONE
-                ================================================== -->
+                <!-- TELEFONE -->
 
                 <div
                     class="profile-item"
@@ -1608,7 +1224,7 @@
                             class="item-value"
                             id="telefoneUsuario"
                         >
-                            (12) 99999-9999
+                            <?= $telefoneUsuario ?>
                         </div>
 
                     </div>
@@ -1636,16 +1252,43 @@
             </h2>
 
             <div class="responsible-card">
-                <p>Gere um código de vínculo para o responsável utilizar ao criar a conta dele no sistema:</p>
-                
+
+                <p>
+                    Gere um código de vínculo para o responsável utilizar ao criar a conta dele no sistema:
+                </p>
+
+
                 <div class="code-box-wrapper">
-                    <div class="code-display" id="codigoResponsavelDisplay">-------</div>
+
+                    <div
+                        class="code-display"
+                        id="codigoResponsavelDisplay"
+                    >
+                        -------
+                    </div>
+
                 </div>
 
+
                 <div class="code-actions">
-                    <button class="action-code-btn secondary" onclick="gerarCodigoResponsavel()">Gerar Código</button>
-                    <button class="action-code-btn" onclick="copiarCodigoResponsavel()">Copiar Código</button>
+
+                    <button
+                        class="action-code-btn secondary"
+                        onclick="gerarCodigoResponsavel()"
+                    >
+                        Gerar Código
+                    </button>
+
+
+                    <button
+                        class="action-code-btn"
+                        onclick="copiarCodigoResponsavel()"
+                    >
+                        Copiar Código
+                    </button>
+
                 </div>
+
             </div>
 
         </section>
@@ -1808,9 +1451,7 @@
             class="logout-button"
             onclick="sairConta()"
         >
-
             Sair da conta
-
         </button>
 
     </main>
@@ -1821,7 +1462,6 @@
     ====================================================== -->
 
     <nav class="bottom-nav">
-
 
         <!-- INÍCIO -->
 
@@ -1968,31 +1608,20 @@
         ===================================================== */
 
         function abrirPagina(pagina) {
-
             window.location.href = pagina;
-
         }
-
 
         function voltarInicio() {
-
             window.location.href = "index.php";
-
         }
-
 
         function abrirAjuda() {
-
             window.location.href = "ajuda.php";
-
         }
 
-
         function abrirContatos() {
-
             window.location.href =
                 "contatos-emergencia.php";
-
         }
 
 
@@ -2022,7 +1651,6 @@
                         return;
                     }
 
-
                     if (!arquivo.type.startsWith("image/")) {
 
                         mostrarMensagem(
@@ -2030,7 +1658,6 @@
                         );
 
                         return;
-
                     }
 
 
@@ -2093,7 +1720,6 @@
 
 
             img.src = imagem;
-
             img.alt = "Foto de perfil";
 
 
@@ -2103,16 +1729,19 @@
 
 
         /* =====================================================
-           DADOS PADRÃO
+           DADOS DO USUÁRIO
         ===================================================== */
 
         const dadosPadrao = {
 
-            nome: "Julia",
+            nome:
+                <?= json_encode($usuario['nome'] ?? 'Usuário', JSON_UNESCAPED_UNICODE) ?>,
 
-            email: "julia@email.com",
+            email:
+                <?= json_encode($usuario['email'] ?? 'Não informado', JSON_UNESCAPED_UNICODE) ?>,
 
-            telefone: "(12) 99999-9999"
+            telefone:
+                <?= json_encode($usuario['telefone'] ?? 'Não informado', JSON_UNESCAPED_UNICODE) ?>
 
         };
 
@@ -2178,40 +1807,123 @@
         ===================================================== */
 
         function gerarCodigoResponsavel() {
-            // Gera um código alfanumérico aleatório de 6 caracteres maiúsculos
-            const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            const caracteres =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
             let codigo = "";
+
+
             for (let i = 0; i < 6; i++) {
-                codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+
+                codigo +=
+                    caracteres.charAt(
+                        Math.floor(
+                            Math.random() *
+                            caracteres.length
+                        )
+                    );
+
             }
 
-            // Salva no localStorage para persistir caso mude de página
-            localStorage.setItem("silenthelpCodigoResponsavel", codigo);
 
-            document.getElementById("codigoResponsavelDisplay").textContent = codigo;
-            mostrarMensagem("Novo código gerado com sucesso!");
+            localStorage.setItem(
+                "silenthelpCodigoResponsavel",
+                codigo
+            );
+
+
+            document
+                .getElementById(
+                    "codigoResponsavelDisplay"
+                )
+                .textContent =
+                codigo;
+
+
+            mostrarMensagem(
+                "Novo código gerado com sucesso!"
+            );
+
         }
+
 
         function carregarCodigoResponsavel() {
-            const codigoSalvo = localStorage.getItem("silenthelpCodigoResponsavel");
+
+            const codigoSalvo =
+                localStorage.getItem(
+                    "silenthelpCodigoResponsavel"
+                );
+
+
             if (codigoSalvo) {
-                document.getElementById("codigoResponsavelDisplay").textContent = codigoSalvo;
+
+                document
+                    .getElementById(
+                        "codigoResponsavelDisplay"
+                    )
+                    .textContent =
+                    codigoSalvo;
+
             }
+
         }
 
+
         function copiarCodigoResponsavel() {
-            const codigo = document.getElementById("codigoResponsavelDisplay").textContent;
-            
-            if (codigo === "-------" || !codigo) {
-                mostrarMensagem("Gere um código primeiro.");
+
+            const codigo =
+                document
+                    .getElementById(
+                        "codigoResponsavelDisplay"
+                    )
+                    .textContent;
+
+
+            if (
+                codigo === "-------" ||
+                !codigo
+            ) {
+
+                mostrarMensagem(
+                    "Gere um código primeiro."
+                );
+
                 return;
+
             }
 
-            navigator.clipboard.writeText(codigo).then(() => {
-                mostrarMensagem("Código copiado para a área de transferência!");
-            }).catch(() => {
-                mostrarMensagem("Erro ao copiar o código.");
-            });
+
+            if (
+                navigator.clipboard &&
+                navigator.clipboard.writeText
+            ) {
+
+                navigator.clipboard
+                    .writeText(codigo)
+                    .then(function() {
+
+                        mostrarMensagem(
+                            "Código copiado para a área de transferência!"
+                        );
+
+                    })
+                    .catch(function() {
+
+                        mostrarMensagem(
+                            "Erro ao copiar o código."
+                        );
+
+                    });
+
+            } else {
+
+                mostrarMensagem(
+                    "Seu navegador não permite copiar automaticamente."
+                );
+
+            }
+
         }
 
 
@@ -2307,8 +2019,6 @@
             const emailFinal =
                 novoEmail.trim();
 
-
-            /* Validação simples */
 
             if (
                 !emailFinal.includes("@") ||
@@ -2446,10 +2156,10 @@
                     function() {
 
                         window.location.href =
-                            "index.php";
+                            "logout.php";
 
                     },
-                    1500
+                    800
                 );
 
             }
@@ -2501,9 +2211,7 @@
             function() {
 
                 carregarDados();
-
                 carregarFotoPerfil();
-
                 carregarCodigoResponsavel();
 
             }
@@ -2511,7 +2219,9 @@
 
     </script>
 
-<script src="assets/db-sync.js"></script>
+
+    <script src="assets/db-sync.js"></script>
+
 </body>
 
 </html>

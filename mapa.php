@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/auth.php'; exigirLogin(); ?>
+<?php
+require_once __DIR__ . '/auth.php';
+exigirLogin();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -12,11 +16,6 @@
     >
 
     <title>SilentHelp - Mapa</title>
-
-
-    <!-- =====================================================
-         LEAFLET
-    ====================================================== -->
 
     <link
         rel="stylesheet"
@@ -1277,6 +1276,7 @@
                 height: 21px;
             }
         }
+
     </style>
 
 </head>
@@ -1284,25 +1284,213 @@
 
 <body>
 
+<main class="app">
 
-    <!-- =====================================================
-         CONTEÚDO
-    ====================================================== -->
+    <header class="header">
 
-    <main class="app">
+        <button
+            class="back-button"
+            onclick="voltarHome()"
+            aria-label="Voltar"
+        >
 
-
-        <!-- =================================================
-             CABEÇALHO
-        ================================================== -->
-
-        <header class="header">
-
-            <button
-                class="back-button"
-                onclick="voltarHome()"
-                aria-label="Voltar"
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
             >
+
+                <path d="M19 12H5"/>
+                <path d="M12 19l-7-7 7-7"/>
+
+            </svg>
+
+        </button>
+
+
+        <div class="header-text">
+
+            <h1>Mapa</h1>
+
+            <p>
+                Locais seguros próximos a você
+            </p>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Localização ativa
+
+        </div>
+
+    </header>
+
+
+    <section class="map-card">
+
+        <div id="map"></div>
+
+
+        <button
+            class="location-button"
+            onclick="localizarUsuario()"
+            aria-label="Minha localização"
+        >
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+            >
+
+                <circle cx="12" cy="12" r="7"/>
+
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="2"
+                    fill="currentColor"
+                />
+
+                <path d="M12 2v3"/>
+                <path d="M12 19v3"/>
+                <path d="M2 12h3"/>
+                <path d="M19 12h3"/>
+
+            </svg>
+
+        </button>
+
+
+        <div class="map-legend">
+
+            <div class="legend-title">
+                Legenda
+            </div>
+
+            <div class="legend-item">
+
+                <span class="legend-dot you"></span>
+
+                Sua localização
+
+            </div>
+
+            <div class="legend-item">
+
+                <span class="legend-dot safe"></span>
+
+                Local seguro
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="info-section">
+
+        <h2 class="section-title">
+            Sua localização
+        </h2>
+
+
+        <div class="location-info">
+
+            <div class="location-info-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+
+                    <path
+                        d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"
+                    />
+
+                    <circle
+                        cx="12"
+                        cy="10"
+                        r="2.5"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="location-info-text">
+
+                <h3>
+                    Localização do dispositivo
+                </h3>
+
+                <p id="locationText">
+                    Aguardando localização...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="safe-section">
+
+        <h2 class="section-title">
+            Locais seguros próximos
+        </h2>
+
+
+        <div
+            class="safe-card"
+            onclick="selecionarLocal(0)"
+        >
+
+            <div class="safe-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+
+                    <path d="M3 21h18"/>
+                    <path d="M5 21V7l7-4 7 4v14"/>
+                    <path d="M9 21v-5h6v5"/>
+                    <path d="M9 9h1"/>
+                    <path d="M14 9h1"/>
+
+                </svg>
+
+            </div>
+
+
+            <div class="safe-text">
+
+                <h3>
+                    Posto de atendimento
+                </h3>
+
+                <p>
+                    Local seguro para atendimento
+                </p>
+
+            </div>
+
+
+            <div class="safe-arrow">
 
                 <svg
                     viewBox="0 0 24 24"
@@ -1311,371 +1499,81 @@
                     stroke-width="2"
                 >
 
-                    <path d="M19 12H5"/>
-
-                    <path d="M12 19l-7-7 7-7"/>
+                    <path d="M9 18l6-6-6-6"/>
 
                 </svg>
 
-            </button>
+            </div>
+
+        </div>
 
 
-            <div class="header-text">
+        <div
+            class="safe-card"
+            onclick="selecionarLocal(1)"
+        >
 
-                <h1>
-                    Mapa
-                </h1>
+            <div class="safe-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+
+                    <path
+                        d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"
+                    />
+
+                    <circle
+                        cx="12"
+                        cy="10"
+                        r="2.5"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="safe-text">
+
+                <h3>
+                    Ponto SilentHelp
+                </h3>
 
                 <p>
-                    Locais seguros próximos a você
+                    Ponto de apoio cadastrado
                 </p>
 
             </div>
 
 
-            <div class="status">
-
-                <span class="status-dot"></span>
-
-                Localização ativa
-
-            </div>
-
-        </header>
-
-
-        <!-- =================================================
-             MAPA
-        ================================================== -->
-
-        <section class="map-card">
-
-            <div id="map"></div>
-
-
-            <button
-                class="location-button"
-                onclick="localizarUsuario()"
-                aria-label="Minha localização"
-            >
+            <div class="safe-arrow">
 
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="1.8"
+                    stroke-width="2"
                 >
 
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="7"
-                    />
-
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="2"
-                        fill="currentColor"
-                    />
-
-                    <path d="M12 2v3"/>
-
-                    <path d="M12 19v3"/>
-
-                    <path d="M2 12h3"/>
-
-                    <path d="M19 12h3"/>
+                    <path d="M9 18l6-6-6-6"/>
 
                 </svg>
 
-            </button>
-
-
-            <div class="map-legend">
-
-                <div class="legend-title">
-                    Legenda
-                </div>
-
-
-                <div class="legend-item">
-
-                    <span class="legend-dot you"></span>
-
-                    Sua localização
-
-                </div>
-
-
-                <div class="legend-item">
-
-                    <span class="legend-dot safe"></span>
-
-                    Local seguro
-
-                </div>
-
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- =================================================
-             LOCALIZAÇÃO
-        ================================================== -->
+        <div
+            class="safe-card"
+            onclick="selecionarLocal(2)"
+        >
 
-        <section class="info-section">
-
-            <h2 class="section-title">
-                Sua localização
-            </h2>
-
-
-            <div class="location-info">
-
-                <div class="location-info-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
-
-                        <path
-                            d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"
-                        />
-
-                        <circle
-                            cx="12"
-                            cy="10"
-                            r="2.5"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div class="location-info-text">
-
-                    <h3>
-                        Localização do dispositivo
-                    </h3>
-
-                    <p id="locationText">
-                        Aguardando localização...
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             LOCAIS SEGUROS
-        ================================================== -->
-
-        <section class="safe-section">
-
-            <h2 class="section-title">
-                Locais seguros próximos
-            </h2>
-
-
-            <!-- LOCAL 1 -->
-
-            <div
-                class="safe-card"
-                onclick="selecionarLocal(0)"
-            >
-
-                <div class="safe-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
-
-                        <path d="M3 21h18"/>
-
-                        <path d="M5 21V7l7-4 7 4v14"/>
-
-                        <path d="M9 21v-5h6v5"/>
-
-                        <path d="M9 9h1"/>
-
-                        <path d="M14 9h1"/>
-
-                    </svg>
-
-                </div>
-
-
-                <div class="safe-text">
-
-                    <h3>
-                        Posto de atendimento
-                    </h3>
-
-                    <p>
-                        Local seguro para atendimento
-                    </p>
-
-                </div>
-
-
-                <div class="safe-arrow">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-
-                        <path d="M9 18l6-6-6-6"/>
-
-                    </svg>
-
-                </div>
-
-            </div>
-
-
-            <!-- LOCAL 2 -->
-
-            <div
-                class="safe-card"
-                onclick="selecionarLocal(1)"
-            >
-
-                <div class="safe-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
-
-                        <path
-                            d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"
-                        />
-
-                        <circle
-                            cx="12"
-                            cy="10"
-                            r="2.5"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div class="safe-text">
-
-                    <h3>
-                        Ponto SilentHelp
-                    </h3>
-
-                    <p>
-                        Ponto de apoio cadastrado
-                    </p>
-
-                </div>
-
-
-                <div class="safe-arrow">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-
-                        <path d="M9 18l6-6-6-6"/>
-
-                    </svg>
-
-                </div>
-
-            </div>
-
-
-            <!-- LOCAL 3 -->
-
-            <div
-                class="safe-card"
-                onclick="selecionarLocal(2)"
-            >
-
-                <div class="safe-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
-
-                        <path
-                            d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-                        />
-
-                        <path
-                            d="M8 12l2.5 2.5L16 9"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div class="safe-text">
-
-                    <h3>
-                        Área protegida
-                    </h3>
-
-                    <p>
-                        Região com suporte SilentHelp
-                    </p>
-
-                </div>
-
-
-                <div class="safe-arrow">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-
-                        <path d="M9 18l6-6-6-6"/>
-
-                    </svg>
-
-                </div>
-
-            </div>
-
-
-            <!-- BOTÃO ROTA -->
-
-            <button
-                class="route-button"
-                onclick="abrirRotas()"
-            >
+            <div class="safe-icon">
 
                 <svg
                     viewBox="0 0 24 24"
@@ -1684,81 +1582,53 @@
                     stroke-width="1.8"
                 >
 
-                    <circle
-                        cx="6"
-                        cy="19"
-                        r="2"
-                    />
-
-                    <circle
-                        cx="18"
-                        cy="5"
-                        r="2"
+                    <path
+                        d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
                     />
 
                     <path
-                        d="M8 18c4 0 4-12 8-12"
+                        d="M8 12l2.5 2.5L16 9"
                     />
 
                 </svg>
 
-                Encontrar o local seguro mais próximo
-
-            </button>
-
-        </section>
-
-    </main>
+            </div>
 
 
-    <!-- =====================================================
-         TOAST
-    ====================================================== -->
+            <div class="safe-text">
 
-    <div
-        class="toast"
-        id="toast"
-    ></div>
+                <h3>
+                    Área protegida
+                </h3>
+
+                <p>
+                    Região com suporte SilentHelp
+                </p>
+
+            </div>
 
 
-    <!-- =====================================================
-         MENU INFERIOR
-         IGUAL AO ANTERIOR
-         SEM HISTÓRICO
-    ====================================================== -->
+            <div class="safe-arrow">
 
-    <nav class="bottom-nav">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
 
-        <!-- INÍCIO -->
+                    <path d="M9 18l6-6-6-6"/>
+
+                </svg>
+
+            </div>
+
+        </div>
+
 
         <button
-            class="nav-button"
-            onclick="abrirPagina('index.php')"
-        >
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-            >
-
-                <path
-                    d="M3 11.5L12 4l9 7.5v8.5a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"
-                />
-
-            </svg>
-
-            <span>
-                Início
-            </span>
-
-        </button>
-
-
-        <!-- MAPA -->
-
-        <button
-            class="nav-button active"
-            onclick="abrirPagina('mapa.php')"
+            class="route-button"
+            onclick="abrirRotas()"
         >
 
             <svg
@@ -1768,471 +1638,336 @@
                 stroke-width="1.8"
             >
 
-                <path
-                    d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"
-                />
+                <circle cx="6" cy="19" r="2"/>
+                <circle cx="18" cy="5" r="2"/>
 
-                <path d="M9 3v15"/>
-
-                <path d="M15 6v15"/>
+                <path d="M8 18c4 0 4-12 8-12"/>
 
             </svg>
 
-            <span>
-                Mapa
-            </span>
+            Encontrar o local seguro mais próximo
 
         </button>
 
+    </section>
 
-        <!-- CONFIGURAÇÕES -->
+</main>
 
-        <button
-            class="nav-button"
-            onclick="abrirPagina('config.php')"
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-button"
+        onclick="abrirPagina('index.php')"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
         >
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-            >
+            <path
+                d="M3 11.5L12 4l9 7.5v8.5a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"
+            />
 
-                <circle
-                    cx="12"
-                    cy="12"
-                    r="3"
-                />
+        </svg>
 
-                <path
-                    d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-3v-.8a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-2-2 .1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-1.6-1h-.8v-3h.8a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L6 7.9l2-2 .1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V4h3v.8a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9.3l.1-.1 2 2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.8v3h-.8a1.7 1.7 0 0 0-1.6 1z"
-                />
+        <span>Início</span>
 
-            </svg>
-
-            <span>
-                Config.
-            </span>
-
-        </button>
+    </button>
 
 
-        <!-- PERFIL -->
+    <button
+        class="nav-button active"
+        onclick="abrirPagina('mapa.php')"
+    >
 
-        <button
-            class="nav-button"
-            onclick="abrirPagina('perfil.php')"
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
         >
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-            >
+            <path
+                d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"
+            />
 
-                <circle
-                    cx="12"
-                    cy="8"
-                    r="4"
-                />
+            <path d="M9 3v15"/>
+            <path d="M15 6v15"/>
 
-                <path
-                    d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-                />
+        </svg>
 
-            </svg>
+        <span>Mapa</span>
 
-            <span>
-                Perfil
-            </span>
+    </button>
 
-        </button>
 
-    </nav>
+    <button
+        class="nav-button"
+        onclick="abrirPagina('config.php')"
+    >
 
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+        >
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+            <circle
+                cx="12"
+                cy="12"
+                r="3"
+            />
 
-    <script>
+            <path
+                d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-3v-.8a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-2-2 .1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-1.6-1h-.8v-3h.8a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L6 7.9l2-2 .1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V4h3v.8a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9.3l.1-.1 2 2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.8v3h-.8a1.7 1.7 0 0 0-1.6 1z"
+            />
 
-        /* =====================================================
-           VARIÁVEIS
-        ===================================================== */
+        </svg>
 
-        let mapa = null;
+        <span>Config.</span>
 
-        let marcadorUsuario = null;
+    </button>
 
-        let precisaoUsuario = null;
 
-        let usuarioLatitude = null;
+    <button
+        class="nav-button"
+        onclick="abrirPagina('perfil.php')"
+    >
 
-        let usuarioLongitude = null;
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+        >
 
+            <circle
+                cx="12"
+                cy="8"
+                r="4"
+            />
 
-        /* =====================================================
-           LOCAIS SEGUROS
-        ===================================================== */
+            <path
+                d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+            />
 
-        const locaisSeguros = [
+        </svg>
 
-            {
-                nome: "Posto de atendimento",
-                descricao: "Local seguro para atendimento",
-                latitude: -23.0264,
-                longitude: -45.5554
-            },
+        <span>Perfil</span>
 
-            {
-                nome: "Ponto SilentHelp",
-                descricao: "Ponto de apoio cadastrado",
-                latitude: -23.0200,
-                longitude: -45.5600
-            },
+    </button>
 
-            {
-                nome: "Área protegida",
-                descricao: "Região com suporte SilentHelp",
-                latitude: -23.0320,
-                longitude: -45.5480
-            }
+</nav>
 
-        ];
 
+<script>
 
-        /* =====================================================
-           ÍCONE USUÁRIO
-        ===================================================== */
+let mapa = null;
+let marcadorUsuario = null;
+let precisaoUsuario = null;
 
-        const iconeUsuario = L.divIcon({
+let usuarioLatitude = null;
+let usuarioLongitude = null;
 
-            className: "",
 
-            html: `
+const locaisSeguros = [
 
-                <div class="custom-marker">
+    {
+        nome: "Posto de atendimento",
+        descricao: "Local seguro para atendimento",
+        latitude: -23.0264,
+        longitude: -45.5554
+    },
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="white"
-                        stroke="white"
-                        stroke-width="1.2"
-                    >
+    {
+        nome: "Ponto SilentHelp",
+        descricao: "Ponto de apoio cadastrado",
+        latitude: -23.0200,
+        longitude: -45.5600
+    },
 
-                        <path
-                            d="M12 21s-7-4.35-7-10A7 7 0 0 1 19 11c0 5.65-7 10-7 10z"
-                        />
+    {
+        nome: "Área protegida",
+        descricao: "Região com suporte SilentHelp",
+        latitude: -23.0320,
+        longitude: -45.5480
+    }
 
-                    </svg>
+];
 
-                </div>
 
-            `,
+function criarIconeUsuario() {
 
-            iconSize: [48, 48],
+    return L.divIcon({
 
-            iconAnchor: [24, 48],
+        className: "",
 
-            popupAnchor: [0, -45]
+        html: `
+            <div class="custom-marker">
 
-        });
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="white"
+                    stroke="white"
+                    stroke-width="1.2"
+                >
 
+                    <path
+                        d="M12 21s-7-4.35-7-10A7 7 0 0 1 19 11c0 5.65-7 10-7 10z"
+                    />
 
-        /* =====================================================
-           ÍCONE SEGURO
-        ===================================================== */
+                </svg>
 
-        const iconeSeguro = L.divIcon({
+            </div>
+        `,
 
-            className: "",
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+        popupAnchor: [0, -45]
 
-            html: `
+    });
 
-                <div class="safe-marker">
+}
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="white"
-                        stroke="white"
-                        stroke-width="1.5"
-                    >
 
-                        <path
-                            d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-                        />
+function criarIconeSeguro() {
 
-                        <path
-                            d="M8 12l2.5 2.5L16 9"
-                            fill="none"
-                        />
+    return L.divIcon({
 
-                    </svg>
+        className: "",
 
-                </div>
+        html: `
+            <div class="safe-marker">
 
-            `,
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="white"
+                    stroke="white"
+                    stroke-width="1.5"
+                >
 
-            iconSize: [40, 40],
+                    <path
+                        d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                    />
 
-            iconAnchor: [20, 40],
+                    <path
+                        d="M8 12l2.5 2.5L16 9"
+                        fill="none"
+                    />
 
-            popupAnchor: [0, -38]
+                </svg>
 
-        });
+            </div>
+        `,
 
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+        popupAnchor: [0, -38]
 
-        /* =====================================================
-           INICIAR MAPA
-        ===================================================== */
+    });
 
-        function iniciarMapa() {
+}
 
-            const latitudeInicial = -23.0264;
 
-            const longitudeInicial = -45.5554;
+function iniciarMapa() {
 
+    if (typeof L === "undefined") {
 
-            mapa = L.map("map", {
+        mostrarToast(
+            "O mapa não conseguiu carregar."
+        );
 
-                zoomControl: true,
+        document.getElementById("locationText").textContent =
+            "Não foi possível carregar o mapa.";
 
-                attributionControl: true
+        return;
 
-            }).setView(
+    }
 
-                [
-                    latitudeInicial,
-                    longitudeInicial
-                ],
 
-                14
+    const elementoMapa =
+        document.getElementById("map");
 
-            );
 
+    if (!elementoMapa) {
+        return;
+    }
 
-            L.tileLayer(
 
-                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    mapa = L.map("map", {
 
-                {
+        zoomControl: true,
+        attributionControl: true
 
-                    maxZoom: 19,
+    }).setView(
 
-                    attribution:
-                        "&copy; OpenStreetMap contributors"
+        [
+            -23.0264,
+            -45.5554
+        ],
 
-                }
+        14
 
-            ).addTo(mapa);
+    );
 
 
-            locaisSeguros.forEach(
+    L.tileLayer(
 
-                function(local, index) {
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 
-                    const marcador = L.marker(
+        {
 
-                        [
-                            local.latitude,
-                            local.longitude
-                        ],
+            maxZoom: 19,
 
-                        {
-                            icon: iconeSeguro
-                        }
-
-                    ).addTo(mapa);
-
-
-                    marcador.bindPopup(`
-
-                        <div style="
-                            min-width:180px;
-                            font-family:Arial,sans-serif;
-                        ">
-
-                            <strong>
-                                ${local.nome}
-                            </strong>
-
-                            <br>
-
-                            <span style="
-                                color:#666;
-                                font-size:12px;
-                            ">
-                                ${local.descricao}
-                            </span>
-
-                            <br><br>
-
-                            <button
-                                onclick="selecionarLocal(${index})"
-                                style="
-                                    width:100%;
-                                    padding:8px;
-                                    border:none;
-                                    border-radius:8px;
-                                    background:#a65cff;
-                                    color:white;
-                                    cursor:pointer;
-                                "
-                            >
-                                Ver localização
-                            </button>
-
-                        </div>
-
-                    `);
-
-                }
-
-            );
-
-
-            localizarUsuario();
+            attribution:
+                "&copy; OpenStreetMap contributors"
 
         }
 
-
-        /* =====================================================
-           LOCALIZAR USUÁRIO
-        ===================================================== */
-
-        function localizarUsuario() {
-
-            if (!navigator.geolocation) {
-
-                mostrarToast(
-                    "Seu navegador não suporta localização."
-                );
-
-                return;
-
-            }
+    ).addTo(mapa);
 
 
-            mostrarToast(
-                "Obtendo sua localização..."
-            );
+    const iconeSeguro =
+        criarIconeSeguro();
 
 
-            navigator.geolocation.getCurrentPosition(
+    locaisSeguros.forEach(
 
-                function(posicao) {
+        function(local, index) {
 
-                    usuarioLatitude =
-                        posicao.coords.latitude;
+            const marcador =
+                L.marker(
 
-                    usuarioLongitude =
-                        posicao.coords.longitude;
+                    [
+                        local.latitude,
+                        local.longitude
+                    ],
 
+                    {
+                        icon: iconeSeguro
+                    }
 
-                    atualizarLocalizacao(
-
-                        usuarioLatitude,
-
-                        usuarioLongitude,
-
-                        posicao.coords.accuracy
-
-                    );
-
-                },
-
-                function(erro) {
-
-                    console.log(
-                        "Erro de localização:",
-                        erro
-                    );
+                ).addTo(mapa);
 
 
-                    document
-                        .getElementById("locationText")
-                        .textContent =
-                        "Não foi possível obter sua localização.";
-
-
-                    mostrarToast(
-                        "Não foi possível obter sua localização."
-                    );
-
-                },
-
-                {
-
-                    enableHighAccuracy: true,
-
-                    timeout: 10000,
-
-                    maximumAge: 0
-
-                }
-
-            );
-
-        }
-
-
-        /* =====================================================
-           ATUALIZAR LOCALIZAÇÃO
-        ===================================================== */
-
-        function atualizarLocalizacao(
-
-            latitude,
-            longitude,
-            precisao
-
-        ) {
-
-            if (marcadorUsuario) {
-
-                mapa.removeLayer(
-                    marcadorUsuario
-                );
-
-            }
-
-
-            if (precisaoUsuario) {
-
-                mapa.removeLayer(
-                    precisaoUsuario
-                );
-
-            }
-
-
-            marcadorUsuario = L.marker(
-
-                [
-                    latitude,
-                    longitude
-                ],
-
-                {
-                    icon: iconeUsuario
-                }
-
-            ).addTo(mapa);
-
-
-            marcadorUsuario.bindPopup(`
+            marcador.bindPopup(`
 
                 <div style="
+                    min-width:180px;
                     font-family:Arial,sans-serif;
-                    text-align:center;
-                    min-width:150px;
                 ">
 
                     <strong>
-                        ❤️ Você está aqui
+                        ${escaparHTML(local.nome)}
                     </strong>
 
                     <br>
@@ -2241,412 +1976,615 @@
                         color:#666;
                         font-size:12px;
                     ">
-                        Localização aproximada
+                        ${escaparHTML(local.descricao)}
                     </span>
+
+                    <br><br>
+
+                    <button
+                        onclick="selecionarLocal(${index})"
+                        style="
+                            width:100%;
+                            padding:8px;
+                            border:none;
+                            border-radius:8px;
+                            background:#a65cff;
+                            color:white;
+                            cursor:pointer;
+                        "
+                    >
+                        Ver localização
+                    </button>
 
                 </div>
 
             `);
 
+        }
 
-            precisaoUsuario = L.circle(
-
-                [
-                    latitude,
-                    longitude
-                ],
-
-                {
-
-                    radius:
-                        Math.min(
-                            precisao || 100,
-                            500
-                        ),
-
-                    color:
-                        "#a65cff",
-
-                    fillColor:
-                        "#a65cff",
-
-                    fillOpacity:
-                        .08,
-
-                    weight:
-                        1
-
-                }
-
-            ).addTo(mapa);
+    );
 
 
-            mapa.setView(
+    localizarUsuario();
 
-                [
-                    latitude,
-                    longitude
-                ],
+}
 
-                16,
 
-                {
-                    animate: true
-                }
+function localizarUsuario() {
+
+    if (!mapa) {
+
+        mostrarToast(
+            "O mapa ainda está carregando."
+        );
+
+        return;
+
+    }
+
+
+    if (!navigator.geolocation) {
+
+        document.getElementById("locationText").textContent =
+            "Seu navegador não suporta localização.";
+
+        mostrarToast(
+            "Seu navegador não suporta localização."
+        );
+
+        return;
+
+    }
+
+
+    mostrarToast(
+        "Obtendo sua localização..."
+    );
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(posicao) {
+
+            usuarioLatitude =
+                posicao.coords.latitude;
+
+            usuarioLongitude =
+                posicao.coords.longitude;
+
+
+            atualizarLocalizacao(
+
+                usuarioLatitude,
+
+                usuarioLongitude,
+
+                posicao.coords.accuracy
 
             );
+
+        },
+
+
+        function(erro) {
+
+            console.error(
+                "Erro de localização:",
+                erro
+            );
+
+
+            let mensagem =
+                "Não foi possível obter sua localização.";
+
+
+            if (erro.code === 1) {
+
+                mensagem =
+                    "Permita o acesso à localização no navegador.";
+
+            }
+
+            else if (erro.code === 2) {
+
+                mensagem =
+                    "Sua localização não está disponível.";
+
+            }
+
+            else if (erro.code === 3) {
+
+                mensagem =
+                    "A localização demorou muito para responder.";
+
+            }
 
 
             document
                 .getElementById("locationText")
                 .textContent =
-
-                "Localização obtida com sucesso. Precisão aproximada: " +
-
-                Math.round(
-                    precisao || 0
-                ) +
-
-                " metros.";
-
-
-            mostrarToast(
-                "✓ Sua localização foi encontrada."
-            );
-
-        }
-
-
-        /* =====================================================
-           SELECIONAR LOCAL
-        ===================================================== */
-
-        function selecionarLocal(index) {
-
-            const local =
-                locaisSeguros[index];
-
-
-            if (!local || !mapa) {
-                return;
-            }
-
-
-            mapa.setView(
-
-                [
-                    local.latitude,
-                    local.longitude
-                ],
-
-                17,
-
-                {
-                    animate: true
-                }
-
-            );
-
-
-            mostrarToast(
-                "Local seguro selecionado."
-            );
-
-        }
-
-
-        /* =====================================================
-           ROTAS
-        ===================================================== */
-
-        function abrirRotas() {
-
-            if (
-
-                usuarioLatitude === null ||
-
-                usuarioLongitude === null
-
-            ) {
-
-                mostrarToast(
-                    "Primeiro precisamos encontrar sua localização."
-                );
-
-
-                localizarUsuario();
-
-                return;
-
-            }
-
-
-            let menorDistancia =
-                Infinity;
-
-            let localMaisProximo =
-                null;
-
-
-            locaisSeguros.forEach(
-
-                function(local) {
-
-                    const distancia =
-                        calcularDistancia(
-
-                            usuarioLatitude,
-                            usuarioLongitude,
-
-                            local.latitude,
-                            local.longitude
-
-                        );
-
-
-                    if (
-                        distancia <
-                        menorDistancia
-                    ) {
-
-                        menorDistancia =
-                            distancia;
-
-                        localMaisProximo =
-                            local;
-
-                    }
-
-                }
-
-            );
-
-
-            if (!localMaisProximo) {
-                return;
-            }
-
-
-            const url =
-
-                "https://www.google.com/maps/dir/?api=1" +
-
-                "&origin=" +
-
-                usuarioLatitude +
-
-                "," +
-
-                usuarioLongitude +
-
-                "&destination=" +
-
-                localMaisProximo.latitude +
-
-                "," +
-
-                localMaisProximo.longitude;
-
-
-            window.open(
-                url,
-                "_blank"
-            );
-
-
-            mostrarToast(
-                "Abrindo rota para o local seguro mais próximo."
-            );
-
-        }
-
-
-        /* =====================================================
-           DISTÂNCIA
-        ===================================================== */
-
-        function calcularDistancia(
-
-            lat1,
-            lon1,
-            lat2,
-            lon2
-
-        ) {
-
-            const R = 6371;
-
-
-            const dLat =
-                grausParaRad(
-                    lat2 - lat1
-                );
-
-
-            const dLon =
-                grausParaRad(
-                    lon2 - lon1
-                );
-
-
-            const a =
-
-                Math.sin(dLat / 2) *
-                Math.sin(dLat / 2)
-
-                +
-
-                Math.cos(
-                    grausParaRad(lat1)
-                ) *
-
-                Math.cos(
-                    grausParaRad(lat2)
-                ) *
-
-                Math.sin(dLon / 2) *
-                Math.sin(dLon / 2);
-
-
-            const c =
-
-                2 *
-
-                Math.atan2(
-
-                    Math.sqrt(a),
-
-                    Math.sqrt(
-                        1 - a
-                    )
-
-                );
-
-
-            return R * c;
-
-        }
-
-
-        /* =====================================================
-           GRAUS PARA RADIANOS
-        ===================================================== */
-
-        function grausParaRad(graus) {
-
-            return graus *
-                Math.PI /
-                180;
-
-        }
-
-
-        /* =====================================================
-           VOLTAR
-        ===================================================== */
-
-        function voltarHome() {
-
-            window.location.href =
-                "index.php";
-
-        }
-
-
-        /* =====================================================
-           NAVEGAÇÃO
-        ===================================================== */
-
-        function abrirPagina(pagina) {
-
-            window.location.href =
-                pagina;
-
-        }
-
-
-        /* =====================================================
-           TOAST
-        ===================================================== */
-
-        function mostrarToast(mensagem) {
-
-            const toast =
-                document.getElementById("toast");
-
-
-            toast.textContent =
                 mensagem;
 
 
-            toast.classList.add(
-                "show"
+            mostrarToast(
+                mensagem
             );
 
-
-            clearTimeout(
-                window.toastTimeout
-            );
+        },
 
 
-            window.toastTimeout =
-                setTimeout(
+        {
 
-                    function() {
+            enableHighAccuracy: true,
 
-                        toast.classList.remove(
-                            "show"
-                        );
+            timeout: 15000,
 
-                    },
-
-                    2800
-
-                );
+            maximumAge: 0
 
         }
 
+    );
 
-        /* =====================================================
-           INICIAR
-        ===================================================== */
+}
 
-        window.addEventListener(
 
-            "load",
+function atualizarLocalizacao(
 
-            function() {
+    latitude,
+    longitude,
+    precisao
 
-                iniciarMapa();
+) {
+
+    if (!mapa) {
+        return;
+    }
+
+
+    if (marcadorUsuario) {
+
+        mapa.removeLayer(
+            marcadorUsuario
+        );
+
+    }
+
+
+    if (precisaoUsuario) {
+
+        mapa.removeLayer(
+            precisaoUsuario
+        );
+
+    }
+
+
+    marcadorUsuario =
+        L.marker(
+
+            [
+                latitude,
+                longitude
+            ],
+
+            {
+                icon: criarIconeUsuario()
+            }
+
+        ).addTo(mapa);
+
+
+    marcadorUsuario.bindPopup(`
+
+        <div style="
+            font-family:Arial,sans-serif;
+            text-align:center;
+            min-width:150px;
+        ">
+
+            <strong>
+                ❤️ Você está aqui
+            </strong>
+
+            <br>
+
+            <span style="
+                color:#666;
+                font-size:12px;
+            ">
+                Localização aproximada
+            </span>
+
+        </div>
+
+    `);
+
+
+    const raio =
+        Number.isFinite(precisao) && precisao > 0
+            ? precisao
+            : 100;
+
+
+    precisaoUsuario =
+        L.circle(
+
+            [
+                latitude,
+                longitude
+            ],
+
+            {
+
+                radius:
+                    Math.min(raio, 500),
+
+                color:
+                    "#a65cff",
+
+                fillColor:
+                    "#a65cff",
+
+                fillOpacity:
+                    .08,
+
+                weight:
+                    1
 
             }
+
+        ).addTo(mapa);
+
+
+    mapa.setView(
+
+        [
+            latitude,
+            longitude
+        ],
+
+        16,
+
+        {
+            animate: true
+        }
+
+    );
+
+
+    document
+        .getElementById("locationText")
+        .textContent =
+
+        "Localização obtida com sucesso. Precisão aproximada: " +
+
+        Math.round(raio) +
+
+        " metros.";
+
+
+    mostrarToast(
+        "✓ Sua localização foi encontrada."
+    );
+
+}
+
+
+function selecionarLocal(index) {
+
+    const local =
+        locaisSeguros[index];
+
+
+    if (!local || !mapa) {
+        return;
+    }
+
+
+    mapa.setView(
+
+        [
+            local.latitude,
+            local.longitude
+        ],
+
+        17,
+
+        {
+            animate: true
+        }
+
+    );
+
+
+    mostrarToast(
+        local.nome + " selecionado."
+    );
+
+}
+
+
+function abrirRotas() {
+
+    if (
+
+        usuarioLatitude === null ||
+
+        usuarioLongitude === null
+
+    ) {
+
+        mostrarToast(
+            "Primeiro precisamos encontrar sua localização."
+        );
+
+
+        localizarUsuario();
+
+        return;
+
+    }
+
+
+    let menorDistancia =
+        Infinity;
+
+    let localMaisProximo =
+        null;
+
+
+    locaisSeguros.forEach(
+
+        function(local) {
+
+            const distancia =
+                calcularDistancia(
+
+                    usuarioLatitude,
+                    usuarioLongitude,
+
+                    local.latitude,
+                    local.longitude
+
+                );
+
+
+            if (
+                distancia <
+                menorDistancia
+            ) {
+
+                menorDistancia =
+                    distancia;
+
+                localMaisProximo =
+                    local;
+
+            }
+
+        }
+
+    );
+
+
+    if (!localMaisProximo) {
+
+        mostrarToast(
+            "Nenhum local seguro encontrado."
+        );
+
+        return;
+
+    }
+
+
+    const url =
+
+        "https://www.google.com/maps/dir/?api=1" +
+
+        "&origin=" +
+
+        encodeURIComponent(
+            usuarioLatitude + "," + usuarioLongitude
+        ) +
+
+        "&destination=" +
+
+        encodeURIComponent(
+            localMaisProximo.latitude +
+            "," +
+            localMaisProximo.longitude
+        ) +
+
+        "&travelmode=walking";
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+function calcularDistancia(
+
+    lat1,
+    lon1,
+    lat2,
+    lon2
+
+) {
+
+    const R = 6371;
+
+
+    const dLat =
+        grausParaRad(
+            lat2 - lat1
+        );
+
+
+    const dLon =
+        grausParaRad(
+            lon2 - lon1
+        );
+
+
+    const a =
+
+        Math.sin(dLat / 2) *
+        Math.sin(dLat / 2)
+
+        +
+
+        Math.cos(
+            grausParaRad(lat1)
+        ) *
+
+        Math.cos(
+            grausParaRad(lat2)
+        ) *
+
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+
+    const c =
+
+        2 *
+
+        Math.atan2(
+
+            Math.sqrt(a),
+
+            Math.sqrt(
+                1 - a
+            )
 
         );
 
 
-        /* =====================================================
-           REDIMENSIONAR MAPA
-        ===================================================== */
+    return R * c;
 
-        window.addEventListener(
+}
 
-            "resize",
+
+function grausParaRad(graus) {
+
+    return graus *
+        Math.PI /
+        180;
+
+}
+
+
+function voltarHome() {
+
+    window.location.href =
+        "index.php";
+
+}
+
+
+function abrirPagina(pagina) {
+
+    window.location.href =
+        pagina;
+
+}
+
+
+function escaparHTML(texto) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        texto;
+
+    return div.innerHTML;
+
+}
+
+
+function mostrarToast(mensagem) {
+
+    const toast =
+        document.getElementById("toast");
+
+
+    if (!toast) {
+        return;
+    }
+
+
+    toast.textContent =
+        mensagem;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.toastTimeout
+    );
+
+
+    window.toastTimeout =
+        setTimeout(
 
             function() {
 
-                if (mapa) {
+                toast.classList.remove(
+                    "show"
+                );
 
-                    mapa.invalidateSize();
+            },
 
-                }
-
-            }
+            2800
 
         );
 
-    </script>
+}
+
+
+window.addEventListener(
+
+    "load",
+
+    function() {
+
+        iniciarMapa();
+
+    }
+
+);
+
+
+window.addEventListener(
+
+    "resize",
+
+    function() {
+
+        if (mapa) {
+
+            mapa.invalidateSize();
+
+        }
+
+    }
+
+);
+
+</script>
+
 
 <script src="assets/db-sync.js"></script>
+
 </body>
 
 </html>

@@ -5,16 +5,12 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SilentHelp - Login</title>
 
 
     <style>
-
         /* =====================================================
            RESET
         ===================================================== */
@@ -70,17 +66,13 @@
 
             background:
 
-                radial-gradient(
-                    circle at 50% 0%,
+                radial-gradient(circle at 50% 0%,
                     rgba(166, 92, 255, .18),
-                    transparent 38%
-                ),
+                    transparent 38%),
 
-                radial-gradient(
-                    circle at 0% 100%,
+                radial-gradient(circle at 0% 100%,
                     rgba(110, 50, 173, .10),
-                    transparent 35%
-                ),
+                    transparent 35%),
 
                 var(--fundo);
 
@@ -204,20 +196,16 @@
 
             background:
 
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(166, 92, 255, .20),
-                    rgba(110, 50, 173, .12)
-                );
+                    rgba(110, 50, 173, .12));
 
             border:
-                1px solid
-                rgba(166, 92, 255, .35);
+                1px solid rgba(166, 92, 255, .35);
 
             box-shadow:
 
-                0 0 35px
-                rgba(166, 92, 255, .10);
+                0 0 35px rgba(166, 92, 255, .10);
 
         }
 
@@ -275,22 +263,18 @@
 
             background:
 
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #141219,
-                    #0c0c11
-                );
+                    #0c0c11);
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 26px;
 
             box-shadow:
 
-                0 20px 60px
-                rgba(0,0,0,.30);
+                0 20px 60px rgba(0, 0, 0, .30);
 
         }
 
@@ -392,8 +376,7 @@
                 #09090e;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 14px;
 
@@ -424,8 +407,7 @@
 
             box-shadow:
 
-                0 0 0 3px
-                rgba(166,92,255,.08);
+                0 0 0 3px rgba(166, 92, 255, .08);
 
         }
 
@@ -575,11 +557,9 @@
 
             background:
 
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     var(--roxo),
-                    var(--roxo-escuro)
-                );
+                    var(--roxo-escuro));
 
             color:
                 var(--branco);
@@ -594,8 +574,7 @@
 
             box-shadow:
 
-                0 8px 25px
-                rgba(166,92,255,.15);
+                0 8px 25px rgba(166, 92, 255, .15);
 
         }
 
@@ -607,8 +586,7 @@
 
             box-shadow:
 
-                0 12px 30px
-                rgba(166,92,255,.25);
+                0 12px 30px rgba(166, 92, 255, .25);
 
         }
 
@@ -777,8 +755,7 @@
                 #18181f;
 
             border:
-                1px solid
-                var(--roxo);
+                1px solid var(--roxo);
 
             color:
                 white;
@@ -895,7 +872,6 @@
             }
 
         }
-
     </style>
 
 </head>
@@ -911,22 +887,13 @@
              VOLTAR
         ================================================== -->
 
-        <button
-            class="back-button"
-            onclick="abrirPagina('index.php')"
-            aria-label="Voltar para o início"
-        >
+        <button class="back-button" onclick="abrirPagina('index.php')" aria-label="Voltar para o início">
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-            >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 
-                <path d="M19 12H5"/>
+                <path d="M19 12H5" />
 
-                <path d="M12 19l-7-7 7-7"/>
+                <path d="M12 19l-7-7 7-7" />
 
             </svg>
 
@@ -943,37 +910,28 @@
 
             <div class="logo">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
 
                     <!-- ESCUDO -->
 
-                    <path
-                        d="M12 3
+                    <path d="M12 3
                            C9.5 5.4 6.3 6.2 4 6.4
                            V11
                            C4 16.2 7.2 19.3 12 21
                            C16.8 19.3 20 16.2 20 11
                            V6.4
-                           C17.7 6.2 14.5 5.4 12 3Z"
-                    />
+                           C17.7 6.2 14.5 5.4 12 3Z" />
 
 
                     <!-- CORAÇÃO -->
 
-                    <path
-                        d="M8.5 12
+                    <path d="M8.5 12
                            C8.5 10.7 9.5 9.8 10.7 9.8
                            C11.4 9.8 11.8 10.1 12 10.6
                            C12.2 10.1 12.6 9.8 13.3 9.8
                            C14.5 9.8 15.5 10.7 15.5 12
                            C15.5 13.8 12 16 12 16
-                           C12 16 8.5 13.8 8.5 12Z"
-                    />
+                           C12 16 8.5 13.8 8.5 12Z" />
 
                 </svg>
 
@@ -1016,10 +974,7 @@
 
 
 
-            <form
-                id="loginForm"
-                onsubmit="fazerLogin(event)"
-            >
+            <form id="loginForm" onsubmit="fazerLogin(event)">
 
 
                 <!-- =================================================
@@ -1035,34 +990,15 @@
 
                     <div class="input-wrapper">
 
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Digite seu e-mail"
-                            autocomplete="email"
-                            required
-                        >
+                        <input type="email" id="email" placeholder="Digite seu e-mail" autocomplete="email" required>
 
 
-                        <svg
-                            class="input-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
 
-                            <rect
-                                x="3"
-                                y="5"
-                                width="18"
-                                height="14"
-                                rx="2"
-                            />
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
 
-                            <path
-                                d="M3 7l9 6 9-6"
-                            />
+                            <path d="M3 7l9 6 9-6" />
 
                         </svg>
 
@@ -1085,67 +1021,32 @@
 
                     <div class="input-wrapper">
 
-                        <input
-                            type="password"
-                            id="senha"
-                            placeholder="Digite sua senha"
-                            autocomplete="current-password"
-                            required
-                        >
+                        <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password"
+                            required>
 
 
-                        <svg
-                            class="input-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
 
-                            <rect
-                                x="5"
-                                y="10"
-                                width="14"
-                                height="10"
-                                rx="2"
-                            />
+                            <rect x="5" y="10" width="14" height="10" rx="2" />
 
-                            <path
-                                d="M8 10V7
-                                   a4 4 0 0 1 8 0v3"
-                            />
+                            <path d="M8 10V7
+                                   a4 4 0 0 1 8 0v3" />
 
                         </svg>
 
 
-                        <button
-                            type="button"
-                            class="password-button"
-                            onclick="mostrarSenha()"
-                            aria-label="Mostrar senha"
-                            id="passwordToggle"
-                        >
+                        <button type="button" class="password-button" onclick="mostrarSenha()"
+                            aria-label="Mostrar senha" id="passwordToggle">
 
-                            <svg
-                                id="eyeIcon"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                            >
+                            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
-                                <path
-                                    d="M2 12s3.5-6 10-6
+                                <path d="M2 12s3.5-6 10-6
                                        10 6 10 6
                                        -3.5 6-10 6
-                                       -10-6-10-6Z"
-                                />
+                                       -10-6-10-6Z" />
 
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="2.5"
-                                />
+                                <circle cx="12" cy="12" r="2.5" />
 
                             </svg>
 
@@ -1166,10 +1067,7 @@
 
                     <label class="remember">
 
-                        <input
-                            type="checkbox"
-                            id="lembrar"
-                        >
+                        <input type="checkbox" id="lembrar">
 
                         <span>
                             Lembrar de mim
@@ -1178,11 +1076,7 @@
                     </label>
 
 
-                    <button
-                        type="button"
-                        class="forgot-password"
-                        onclick="recuperarSenha()"
-                    >
+                    <button type="button" class="forgot-password" onclick="recuperarSenha()">
 
                         Esqueci minha senha
 
@@ -1197,10 +1091,7 @@
                      ENTRAR
                 ================================================== -->
 
-                <button
-                    type="submit"
-                    class="login-button"
-                >
+                <button type="submit" class="login-button">
 
                     Entrar na conta
 
@@ -1231,11 +1122,7 @@
 
                 Ainda não possui uma conta?
 
-                <button
-                    type="button"
-                    class="register-button"
-                    onclick="abrirPagina('cadastro.php')"
-                >
+                <button type="button" class="register-button" onclick="abrirPagina('cadastro.php')">
 
                     Criar conta
 
@@ -1254,24 +1141,15 @@
 
         <div class="security-info">
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-            >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
-                <path
-                    d="M12 3
+                <path d="M12 3
                        l8 3v5
                        c0 5.2-3.4 8.7-8 10
-                       c-4.6-1.3-8-4.8-8-10V6l8-3Z"
-                />
+                       c-4.6-1.3-8-4.8-8-10V6l8-3Z" />
 
-                <path
-                    d="M8.5 12l2.3 2.3
-                       4.5-5"
-                />
+                <path d="M8.5 12l2.3 2.3
+                       4.5-5" />
 
             </svg>
 
@@ -1290,10 +1168,7 @@
          TOAST
     ====================================================== -->
 
-    <div
-        class="toast"
-        id="toast"
-    ></div>
+    <div class="toast" id="toast"></div>
 
 
 
@@ -1462,18 +1337,25 @@
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { mostrarToast("Digite um e-mail válido.", "error"); return; }
             if (!senha) { mostrarToast("Digite sua senha.", "error"); return; }
 
-            const resposta = await window.SilentHelpAPI.post('login', {email, senha});
+            const resposta = await window.SilentHelpAPI.post('login', { email, senha });
             if (!resposta.ok) { mostrarToast(resposta.message || "E-mail ou senha incorretos.", "error"); return; }
 
-            if (lembrar) localStorage.setItem("silenthelp_login", JSON.stringify({email}));
+            if (lembrar) localStorage.setItem("silenthelp_login", JSON.stringify({ email }));
             else localStorage.removeItem("silenthelp_login");
 
             sessionStorage.setItem("silenthelp_logado", "true");
             sessionStorage.setItem("silenthelp_usuario", JSON.stringify(resposta.user));
             localStorage.setItem("silenthelp_usuario", JSON.stringify(resposta.user));
-            if (botao) { botao.disabled = true; botao.textContent = "Entrando..."; }
+            if (botao) {
+                botao.disabled = true;
+                botao.textContent = "Entrando...";
+            }
+
             mostrarToast("Login realizado com sucesso!", "success");
-            setTimeout(() => window.location.href = resposta.user.tipo === 'responsavel' ? 'responsavel.php' : 'index.php', 800);
+
+            setTimeout(() => {
+                window.location.href = "index.php";
+            }, 800);
         }
 
 
@@ -1556,7 +1438,7 @@
             .getElementById("loginForm")
             .addEventListener(
                 "keydown",
-                function(event) {
+                function (event) {
 
                     if (
                         event.key === "Enter"
@@ -1575,7 +1457,7 @@
     </script>
 
 
-<script src="assets/db-sync.js"></script>
+    <script src="assets/db-sync.js"></script>
 </body>
 
 </html>

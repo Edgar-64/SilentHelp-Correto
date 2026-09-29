@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-
 header("Content-Type: application/json; charset=utf-8");
 
 require_once __DIR__ . "/db.php";
@@ -27,7 +26,9 @@ function input()
 
 function uid()
 {
-    return !empty($_SESSION["usuario_id"]) ? (int) $_SESSION["usuario_id"] : 0;
+    return !empty($_SESSION["usuario_id"])
+        ? (int) $_SESSION["usuario_id"]
+        : 0;
 }
 
 function needUser()
@@ -42,49 +43,30 @@ function needUser()
 
 function needAdmin()
 {
-
     needUser();
 
     global $conn;
 
     $id = uid();
 
-    $stmt = $conn->prepare("
-        SELECT tipo
-        FROM usuarios
-        WHERE id = ?
-    ");
+    $stmt = $conn->prepare("SELECT type FROM users WHERE id = ? LIMIT 1");
+    if (!$stmt) {
+        throw new Exception($conn->error);
+    }
 
     $stmt->bind_param("i", $id);
     $stmt->execute();
+    $stmt->bind_result($tipo);
 
-    $resultado = $stmt->get_result();
-    $usuario = $resultado->fetch_assoc();
-
-    if (!$usuario || $usuario["tipo"] !== "admin") {
+    if (!$stmt->fetch() || $tipo !== "admin") {
+        $stmt->close();
         out([
             "ok" => false,
             "message" => "Acesso negado."
         ], 403);
     }
-}
 
-function logAction($action, $descricao = "")
-{
-
-    global $conn;
-
-    $usuarioId = uid();
-    $ip = $_SERVER["REMOTE_ADDR"] ?? null;
-
-    $stmt = $conn->prepare("
-        INSERT INTO logs_sistema
-        (usuario_id, acao, descricao, ip)
-        VALUES (?, ?, ?, ?)
-    ");
-
-    $stmt->bind_param("isss", $usuarioId, $action, $descricao, $ip);
-    $stmt->execute();
+    $stmt->close();
 }
 
 $action = $_GET["action"] ?? "";
@@ -94,6 +76,9 @@ try {
 
     switch ($action) {
 
+        /* =========================
+           CADASTRO
+        ========================= */
         case "register":
 
             $nome = trim($d["nome"] ?? "");
@@ -113,132 +98,57 @@ try {
                 $tipo = "protegida";
             }
 
-            $stmt = $conn->prepare("
-                SELECT id
-                FROM usuarios
-                WHERE email = ?
-            ");
+            $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
             $stmt->bind_param("s", $email);
             $stmt->execute();
+            $stmt->bind_result($idExistente);
+            $existe = $stmt->fetch();
+            $stmt->close();
 
-            if ($stmt->get_result()->fetch_assoc()) {
+            if ($existe) {
                 out([
                     "ok" => false,
                     "message" => "Este e-mail já está cadastrado."
                 ], 409);
             }
 
-            $conn->begin_transaction();
-
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+            $codigoConvite = trim($d["codigoConvite"] ?? "");
+            $contatoEmergencia = trim($d["contatoEmergencia"] ?? "");
+            $telefoneEmergencia = trim($d["telefoneEmergencia"] ?? "");
+            $relacao = trim($d["relacao"] ?? "");
 
-            $stmt = $conn->prepare("
-                INSERT INTO usuarios
-                (nome, email, telefone, senha, tipo)
-                VALUES (?, ?, ?, ?, ?)
-            ");
+            $stmt = $conn->prepare("\n                INSERT INTO users\n                (type, name, email, phone, password_hash, invite_code, emergency_contact, emergency_phone, relationship)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
+            // O código de convite pertence ao responsável/protegida no banco atual.
+            // Guardamos o valor informado sem criar uma tabela que não existe no SQL.
             $stmt->bind_param(
-                "sssss",
+                "sssssssss",
+                $tipo,
                 $nome,
                 $email,
                 $telefone,
                 $senhaHash,
-                $tipo
+                $codigoConvite,
+                $contatoEmergencia,
+                $telefoneEmergencia,
+                $relacao
             );
 
             $stmt->execute();
-
             $id = $conn->insert_id;
-
-            $stmt = $conn->prepare("
-                INSERT INTO configuracoes (usuario_id)
-                VALUES (?)
-            ");
-
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-
-            if (
-                $tipo === "protegida" &&
-                !empty($d["contatoEmergencia"]) &&
-                !empty($d["telefoneEmergencia"])
-            ) {
-
-                $nomeContato = trim($d["contatoEmergencia"]);
-                $telefoneContato = trim($d["telefoneEmergencia"]);
-                $principal = 1;
-
-                $stmt = $conn->prepare("
-                    INSERT INTO contatos_emergencia
-                    (usuario_id, nome, telefone, principal)
-                    VALUES (?, ?, ?, ?)
-                ");
-
-                $stmt->bind_param(
-                    "issi",
-                    $id,
-                    $nomeContato,
-                    $telefoneContato,
-                    $principal
-                );
-
-                $stmt->execute();
-            }
-
-            if ($tipo === "responsavel" && !empty($d["codigoConvite"])) {
-
-                $codigo = strtoupper(trim($d["codigoConvite"]));
-
-                $stmt = $conn->prepare("
-                    SELECT usuario_id
-                    FROM convites
-                    WHERE codigo = ?
-                    AND utilizado = 0
-                    LIMIT 1
-                ");
-
-                $stmt->bind_param("s", $codigo);
-                $stmt->execute();
-
-                $convite = $stmt->get_result()->fetch_assoc();
-
-                if ($convite) {
-
-                    $usuarioProtegido = (int) $convite["usuario_id"];
-                    $relacao = trim($d["relacao"] ?? "");
-
-                    $stmt = $conn->prepare("
-                        INSERT INTO responsaveis
-                        (usuario_protegido_id, usuario_responsavel_id, relacao)
-                        VALUES (?, ?, ?)
-                    ");
-
-                    $stmt->bind_param(
-                        "iis",
-                        $usuarioProtegido,
-                        $id,
-                        $relacao
-                    );
-
-                    $stmt->execute();
-
-                    $stmt = $conn->prepare("
-                        UPDATE convites
-                        SET utilizado = 1
-                        WHERE codigo = ?
-                    ");
-
-                    $stmt->bind_param("s", $codigo);
-                    $stmt->execute();
-                }
-            }
-
-            $conn->commit();
+            $stmt->close();
 
             $_SESSION["usuario_id"] = $id;
             $_SESSION["usuario_tipo"] = $tipo;
+            $_SESSION["nome"] = $nome;
 
             out([
                 "ok" => true,
@@ -251,22 +161,23 @@ try {
                 ]
             ]);
 
+
+        /* =========================
+           LOGIN
+        ========================= */
         case "login":
 
             $email = strtolower(trim($d["email"] ?? ""));
             $senha = $d["senha"] ?? "";
 
-            $stmt = $conn->prepare("
-        SELECT id, nome, email, telefone, senha, tipo
-        FROM usuarios
-        WHERE email = ?
-        AND ativo = 1
-        LIMIT 1
-    ");
+            $stmt = $conn->prepare("\n                SELECT id, name, email, phone, password_hash, type\n                FROM users\n                WHERE email = ?\n                AND status = 'active'\n                LIMIT 1\n            ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
             $stmt->bind_param("s", $email);
             $stmt->execute();
-
             $stmt->bind_result(
                 $id,
                 $nome,
@@ -277,11 +188,14 @@ try {
             );
 
             if (!$stmt->fetch()) {
+                $stmt->close();
                 out([
                     "ok" => false,
                     "message" => "E-mail ou senha incorretos."
                 ], 401);
             }
+
+            $stmt->close();
 
             if (!password_verify($senha, $senhaBanco)) {
                 out([
@@ -294,13 +208,12 @@ try {
 
             $_SESSION["usuario_id"] = (int) $id;
             $_SESSION["usuario_tipo"] = $tipo;
-
-            logAction("login", "Login realizado");
+            $_SESSION["nome"] = $nome;
 
             out([
                 "ok" => true,
                 "user" => [
-                    "id" => $id,
+                    "id" => (int) $id,
                     "nome" => $nome,
                     "email" => $emailBanco,
                     "telefone" => $telefone,
@@ -308,26 +221,43 @@ try {
                 ]
             ]);
 
+
+        /* =========================
+           LOGIN ADMIN
+        ========================= */
         case "admin_login":
 
             $email = strtolower(trim($d["email"] ?? ""));
             $senha = $d["senha"] ?? "";
 
-            $stmt = $conn->prepare("
-                SELECT *
-                FROM usuarios
-                WHERE email = ?
-                AND tipo = 'admin'
-                AND ativo = 1
-                LIMIT 1
-            ");
+            $stmt = $conn->prepare("\n                SELECT id, name, email, phone, password_hash, type\n                FROM users\n                WHERE email = ?\n                AND type = 'admin'\n                AND status = 'active'\n                LIMIT 1\n            ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
             $stmt->bind_param("s", $email);
             $stmt->execute();
+            $stmt->bind_result(
+                $id,
+                $nome,
+                $emailBanco,
+                $telefone,
+                $senhaBanco,
+                $tipo
+            );
 
-            $usuario = $stmt->get_result()->fetch_assoc();
+            if (!$stmt->fetch()) {
+                $stmt->close();
+                out([
+                    "ok" => false,
+                    "message" => "Credenciais administrativas inválidas."
+                ], 401);
+            }
 
-            if (!$usuario || !password_verify($senha, $usuario["senha"])) {
+            $stmt->close();
+
+            if (!password_verify($senha, $senhaBanco)) {
                 out([
                     "ok" => false,
                     "message" => "Credenciais administrativas inválidas."
@@ -335,12 +265,25 @@ try {
             }
 
             session_regenerate_id(true);
-
-            $_SESSION["usuario_id"] = (int) $usuario["id"];
+            $_SESSION["usuario_id"] = (int) $id;
             $_SESSION["usuario_tipo"] = "admin";
+            $_SESSION["nome"] = $nome;
 
-            out(["ok" => true]);
+            out([
+                "ok" => true,
+                "user" => [
+                    "id" => (int) $id,
+                    "nome" => $nome,
+                    "email" => $emailBanco,
+                    "telefone" => $telefone,
+                    "tipo" => "admin"
+                ]
+            ]);
 
+
+        /* =========================
+           LOGOUT
+        ========================= */
         case "logout":
 
             session_unset();
@@ -348,66 +291,83 @@ try {
 
             out(["ok" => true]);
 
+
+        /* =========================
+           DADOS INICIAIS DO USUÁRIO
+        ========================= */
         case "bootstrap":
 
             needUser();
-
             $id = uid();
 
-            $stmt = $conn->prepare("
-                SELECT id, nome, email, telefone, tipo
-                FROM usuarios
-                WHERE id = ?
-            ");
+            $stmt = $conn->prepare("\n                SELECT id, name, email, phone, type\n                FROM users\n                WHERE id = ?\n                LIMIT 1\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
             $stmt->bind_param("i", $id);
             $stmt->execute();
+            $stmt->bind_result($uidBanco, $nome, $email, $telefone, $tipo);
 
-            $usuario = $stmt->get_result()->fetch_assoc();
+            if (!$stmt->fetch()) {
+                $stmt->close();
+                out(["ok" => false, "message" => "Usuário não encontrado."], 404);
+            }
+            $stmt->close();
 
-            $stmt = $conn->prepare("
-                SELECT id, nome, telefone, relacao, principal
-                FROM contatos_emergencia
-                WHERE usuario_id = ?
-                AND ativo = 1
-                ORDER BY principal DESC, nome
-            ");
+            $usuario = [
+                "id" => (int) $uidBanco,
+                "nome" => $nome,
+                "email" => $email,
+                "telefone" => $telefone,
+                "tipo" => $tipo
+            ];
 
+            $contatos = [];
+            $stmt = $conn->prepare("\n                SELECT id, name, phone, relationship, is_primary\n                FROM emergency_contacts\n                WHERE user_id = ?\n                ORDER BY is_primary DESC, name\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
             $stmt->bind_param("i", $id);
             $stmt->execute();
+            $stmt->bind_result($cid, $cnome, $ctelefone, $crelacao, $cprincipal);
 
-            $contatos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            while ($stmt->fetch()) {
+                $contatos[] = [
+                    "id" => (int) $cid,
+                    "nome" => $cnome,
+                    "telefone" => $ctelefone,
+                    "relacao" => $crelacao,
+                    "principal" => (int) $cprincipal
+                ];
+            }
+            $stmt->close();
 
-            $stmt = $conn->prepare("
-                SELECT
-                    id,
-                    data_relato AS data,
-                    horario,
-                    pessoa,
-                    local,
-                    relato,
-                    observacoes
-                FROM diario
-                WHERE usuario_id = ?
-                ORDER BY data_relato DESC, horario DESC
-            ");
-
+            $relatos = [];
+            $stmt = $conn->prepare("\n                SELECT id, title, content, mood, entry_date, created_at\n                FROM diary_entries\n                WHERE user_id = ?\n                ORDER BY entry_date DESC, id DESC\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
             $stmt->bind_param("i", $id);
             $stmt->execute();
+            $stmt->bind_result($rid, $titulo, $conteudo, $humor, $dataRelato, $criadoEm);
 
-            $relatos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            while ($stmt->fetch()) {
+                $relatos[] = [
+                    "id" => (int) $rid,
+                    "data" => $dataRelato,
+                    "horario" => date("H:i", strtotime($criadoEm)),
+                    "pessoa" => $titulo,
+                    "local" => "",
+                    "relato" => $conteudo,
+                    "observacoes" => $humor
+                ];
+            }
+            $stmt->close();
 
-            $stmt = $conn->prepare("
-                SELECT id, remetente, mensagem, criado_em
-                FROM mensagens_chat
-                WHERE usuario_id = ?
-                ORDER BY id
-            ");
-
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-
-            $chat = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            // O SQL enviado não possui tabela de chat.
+            // Retornamos lista vazia para não quebrar o frontend.
+            $chat = [];
 
             out([
                 "ok" => true,
@@ -417,10 +377,13 @@ try {
                 "chat" => $chat
             ]);
 
+
+        /* =========================
+           CONTATOS DE EMERGÊNCIA
+        ========================= */
         case "save_contacts":
 
             needUser();
-
             $items = $d["contatos"] ?? [];
 
             if (!is_array($items)) {
@@ -434,81 +397,85 @@ try {
 
             $conn->begin_transaction();
 
-            $stmt = $conn->prepare("
-                DELETE FROM contatos_emergencia
-                WHERE usuario_id = ?
-            ");
-
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-
-            $stmt = $conn->prepare("
-                INSERT INTO contatos_emergencia
-                (usuario_id, nome, telefone, relacao, principal)
-                VALUES (?, ?, ?, ?, ?)
-            ");
-
-            foreach ($items as $contato) {
-
-                if (!empty($contato["nome"]) && !empty($contato["telefone"])) {
-
-                    $nome = trim($contato["nome"]);
-                    $telefone = trim($contato["telefone"]);
-                    $relacao = trim($contato["relacao"] ?? "");
-                    $principal = !empty($contato["principal"]) ? 1 : 0;
-
-                    $stmt->bind_param(
-                        "isssi",
-                        $id,
-                        $nome,
-                        $telefone,
-                        $relacao,
-                        $principal
-                    );
-
-                    $stmt->execute();
+            try {
+                $stmt = $conn->prepare("DELETE FROM emergency_contacts WHERE user_id = ?");
+                if (!$stmt) {
+                    throw new Exception($conn->error);
                 }
-            }
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $stmt->close();
 
-            $conn->commit();
+                $stmt = $conn->prepare("\n                    INSERT INTO emergency_contacts\n                    (user_id, name, phone, relationship, is_primary)\n                    VALUES (?, ?, ?, ?, ?)\n                ");
+                if (!$stmt) {
+                    throw new Exception($conn->error);
+                }
+
+                foreach ($items as $contato) {
+                    if (!empty($contato["nome"]) && !empty($contato["telefone"])) {
+                        $nome = trim($contato["nome"]);
+                        $telefone = trim($contato["telefone"]);
+                        $relacao = trim($contato["relacao"] ?? "");
+                        $principal = !empty($contato["principal"]) ? 1 : 0;
+
+                        $stmt->bind_param(
+                            "isssi",
+                            $id,
+                            $nome,
+                            $telefone,
+                            $relacao,
+                            $principal
+                        );
+                        $stmt->execute();
+                    }
+                }
+
+                $stmt->close();
+                $conn->commit();
+
+            } catch (Throwable $e) {
+                $conn->rollback();
+                throw $e;
+            }
 
             out(["ok" => true]);
 
+
+        /* =========================
+           DIÁRIO
+        ========================= */
         case "save_diary":
 
             needUser();
 
             $id = uid();
             $data = $d["data"] ?? date("Y-m-d");
-            $horario = $d["horario"] ?? date("H:i");
-            $pessoa = trim($d["pessoa"] ?? "");
-            $local = trim($d["local"] ?? "");
-            $relato = trim($d["relato"] ?? "");
-            $observacoes = trim($d["observacoes"] ?? "");
+            $pessoa = trim($d["pessoa"] ?? $d["titulo"] ?? "");
+            $relato = trim($d["relato"] ?? $d["conteudo"] ?? "");
+            $observacoes = trim($d["observacoes"] ?? $d["humor"] ?? "");
 
-            $stmt = $conn->prepare("
-                INSERT INTO diario
-                (usuario_id, data_relato, horario, pessoa, local, relato, observacoes)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ");
+            $stmt = $conn->prepare("\n                INSERT INTO diary_entries\n                (user_id, title, content, mood, entry_date)\n                VALUES (?, ?, ?, ?, ?)\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
             $stmt->bind_param(
-                "issssss",
+                "issss",
                 $id,
-                $data,
-                $horario,
                 $pessoa,
-                $local,
                 $relato,
-                $observacoes
+                $observacoes,
+                $data
             );
-
             $stmt->execute();
+            $novoId = $conn->insert_id;
+            $stmt->close();
 
             out([
                 "ok" => true,
-                "id" => $conn->insert_id
+                "id" => $novoId
             ]);
+
 
         case "delete_diary":
 
@@ -517,72 +484,64 @@ try {
             $idRelato = (int) ($d["id"] ?? 0);
             $idUsuario = uid();
 
-            $stmt = $conn->prepare("
-                DELETE FROM diario
-                WHERE id = ?
-                AND usuario_id = ?
-            ");
+            $stmt = $conn->prepare("\n                DELETE FROM diary_entries\n                WHERE id = ?\n                AND user_id = ?\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
             $stmt->bind_param("ii", $idRelato, $idUsuario);
             $stmt->execute();
+            $stmt->close();
 
             out(["ok" => true]);
 
+
+        /* =========================
+           ALERTA
+        ========================= */
         case "create_alert":
 
             needUser();
 
             $idUsuario = uid();
-            $tipo = $d["tipo"] ?? "emergencia";
+            $tipo = trim($d["tipo"] ?? "emergencia");
             $titulo = trim($d["titulo"] ?? "Alerta de emergência");
             $descricao = trim($d["descricao"] ?? "");
+            $latitude = $d["latitude"] ?? null;
+            $longitude = $d["longitude"] ?? null;
 
-            $stmt = $conn->prepare("
-                INSERT INTO alertas
-                (usuario_id, tipo, titulo, descricao, status)
-                VALUES (?, ?, ?, ?, 'ativo')
-            ");
+            // A tabela alerts possui uma coluna message, não descricao/titulo.
+            $mensagem = $titulo;
+            if ($descricao !== "") {
+                $mensagem .= " - " . $descricao;
+            }
+
+            $stmt = $conn->prepare("\n                INSERT INTO alerts\n                (user_id, type, message, latitude, longitude, status)\n                VALUES (?, ?, ?, ?, ?, 'open')\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $lat = $latitude !== null ? (float) $latitude : null;
+            $lng = $longitude !== null ? (float) $longitude : null;
 
             $stmt->bind_param(
-                "isss",
+                "issdd",
                 $idUsuario,
                 $tipo,
-                $titulo,
-                $descricao
+                $mensagem,
+                $lat,
+                $lng
             );
 
             $stmt->execute();
-
             $idAlerta = $conn->insert_id;
-
-            if (isset($d["latitude"], $d["longitude"])) {
-
-                $latitude = $d["latitude"];
-                $longitude = $d["longitude"];
-                $precisao = $d["precisao"] ?? null;
-
-                $stmt = $conn->prepare("
-                    INSERT INTO localizacoes
-                    (usuario_id, alerta_id, latitude, longitude, precisao)
-                    VALUES (?, ?, ?, ?, ?)
-                ");
-
-                $stmt->bind_param(
-                    "iiddi",
-                    $idUsuario,
-                    $idAlerta,
-                    $latitude,
-                    $longitude,
-                    $precisao
-                );
-
-                $stmt->execute();
-            }
+            $stmt->close();
 
             out([
                 "ok" => true,
                 "id" => $idAlerta
             ]);
+
 
         case "resolve_alert":
 
@@ -591,104 +550,107 @@ try {
             $idAlerta = (int) ($d["id"] ?? 0);
             $idUsuario = uid();
 
-            $stmt = $conn->prepare("
-                UPDATE alertas
-                SET status = 'resolvido',
-                    data_fim = NOW()
-                WHERE id = ?
-                AND usuario_id = ?
-            ");
+            $stmt = $conn->prepare("\n                UPDATE alerts\n                SET status = 'resolved'\n                WHERE id = ?\n                AND user_id = ?\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
             $stmt->bind_param("ii", $idAlerta, $idUsuario);
             $stmt->execute();
+            $stmt->close();
 
             out(["ok" => true]);
 
+
+        /* =========================
+           LOCALIZAÇÃO
+        ========================= */
         case "location":
 
             needUser();
 
             $idUsuario = uid();
-            $alertaId = $d["alerta_id"] ?? null;
-            $latitude = $d["latitude"];
-            $longitude = $d["longitude"];
-            $precisao = $d["precisao"] ?? null;
+            $alertaId = (int) ($d["alerta_id"] ?? 0);
+            $latitude = (float) ($d["latitude"] ?? 0);
+            $longitude = (float) ($d["longitude"] ?? 0);
 
-            $stmt = $conn->prepare("
-                INSERT INTO localizacoes
-                (usuario_id, alerta_id, latitude, longitude, precisao)
-                VALUES (?, ?, ?, ?, ?)
-            ");
+            // O SQL não possui uma tabela localizacoes.
+            // Se houver um alerta informado, atualizamos a localização dele.
+            if ($alertaId > 0) {
+                $stmt = $conn->prepare("\n                    UPDATE alerts\n                    SET latitude = ?, longitude = ?\n                    WHERE id = ? AND user_id = ?\n                ");
+                if (!$stmt) {
+                    throw new Exception($conn->error);
+                }
 
-            $stmt->bind_param(
-                "iiddi",
-                $idUsuario,
-                $alertaId,
-                $latitude,
-                $longitude,
-                $precisao
-            );
+                $stmt->bind_param(
+                    "ddii",
+                    $latitude,
+                    $longitude,
+                    $alertaId,
+                    $idUsuario
+                );
+                $stmt->execute();
+                $stmt->close();
 
-            $stmt->execute();
+                out(["ok" => true]);
+            }
 
-            out(["ok" => true]);
+            out([
+                "ok" => false,
+                "message" => "O banco atual não possui uma tabela própria para localizações."
+            ], 422);
 
+
+        /* =========================
+           PERFIL
+        ========================= */
         case "save_profile":
 
             needUser();
 
             $id = uid();
-
             $nome = trim($d["nome"] ?? "");
-            $email = trim($d["email"] ?? "");
+            $email = strtolower(trim($d["email"] ?? ""));
             $telefone = trim($d["telefone"] ?? "");
 
-            $stmt = $conn->prepare("
-                UPDATE usuarios
-                SET nome = ?, email = ?, telefone = ?
-                WHERE id = ?
-            ");
+            if (!$nome || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                out([
+                    "ok" => false,
+                    "message" => "Nome ou e-mail inválido."
+                ], 422);
+            }
 
-            $stmt->bind_param(
-                "sssi",
-                $nome,
-                $email,
-                $telefone,
-                $id
-            );
+            $stmt = $conn->prepare("\n                UPDATE users\n                SET name = ?, email = ?, phone = ?\n                WHERE id = ?\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
+            $stmt->bind_param("sssi", $nome, $email, $telefone, $id);
             $stmt->execute();
+            $stmt->close();
+
+            $_SESSION["nome"] = $nome;
 
             out(["ok" => true]);
 
+
+        /* =========================
+           CHAT
+        ========================= */
         case "chat":
 
             needUser();
 
-            $id = uid();
-            $remetente = $d["remetente"] ?? "usuario";
-            $mensagem = trim($d["mensagem"] ?? "");
-
-            $stmt = $conn->prepare("
-                INSERT INTO mensagens_chat
-                (usuario_id, remetente, mensagem)
-                VALUES (?, ?, ?)
-            ");
-
-            $stmt->bind_param(
-                "iss",
-                $id,
-                $remetente,
-                $mensagem
-            );
-
-            $stmt->execute();
-
+            // Não existe tabela de chat no SQL enviado.
             out([
-                "ok" => true,
-                "id" => $conn->insert_id
-            ]);
+                "ok" => false,
+                "message" => "O banco atual não possui uma tabela para o chat."
+            ], 422);
 
+
+        /* =========================
+           CONVITE
+        ========================= */
         case "generate_invite":
 
             needUser();
@@ -696,184 +658,241 @@ try {
             $id = uid();
             $codigo = strtoupper(substr(bin2hex(random_bytes(5)), 0, 8));
 
-            $stmt = $conn->prepare("
-                INSERT INTO convites
-                (usuario_id, codigo)
-                VALUES (?, ?)
-            ");
+            $stmt = $conn->prepare("\n                UPDATE users\n                SET invite_code = ?\n                WHERE id = ?\n            ");
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
 
-            $stmt->bind_param("is", $id, $codigo);
+            $stmt->bind_param("si", $codigo, $id);
             $stmt->execute();
+            $stmt->close();
 
             out([
                 "ok" => true,
                 "codigo" => $codigo
             ]);
 
+
+        /* =========================
+           ESTATÍSTICAS ADMIN
+        ========================= */
         case "admin_stats":
 
             needAdmin();
 
             $stats = [];
 
-            $stmt = $conn->prepare("
-                SELECT COUNT(*)
-                FROM usuarios
-                WHERE tipo <> 'admin'
-            ");
-
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE type <> 'admin'");
+            if (!$stmt) throw new Exception($conn->error);
             $stmt->execute();
-            $stats["usuarios"] = (int) $stmt->get_result()->fetch_row()[0];
+            $stmt->bind_result($total);
+            $stmt->fetch();
+            $stmt->close();
+            $stats["usuarios"] = (int) $total;
 
-            $stmt = $conn->prepare("
-                SELECT COUNT(*)
-                FROM dispositivos
-            ");
-
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM devices");
+            if (!$stmt) throw new Exception($conn->error);
             $stmt->execute();
-            $stats["dispositivos"] = (int) $stmt->get_result()->fetch_row()[0];
+            $stmt->bind_result($total);
+            $stmt->fetch();
+            $stmt->close();
+            $stats["dispositivos"] = (int) $total;
 
-            $stmt = $conn->prepare("
-                SELECT COUNT(*)
-                FROM alertas
-            ");
-
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM alerts");
+            if (!$stmt) throw new Exception($conn->error);
             $stmt->execute();
-            $stats["alertas"] = (int) $stmt->get_result()->fetch_row()[0];
+            $stmt->bind_result($total);
+            $stmt->fetch();
+            $stmt->close();
+            $stats["alertas"] = (int) $total;
 
-            $stmt = $conn->prepare("
-                SELECT COUNT(*)
-                FROM alertas
-                WHERE status = 'ativo'
-            ");
-
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM alerts WHERE status = 'open'");
+            if (!$stmt) throw new Exception($conn->error);
             $stmt->execute();
-            $stats["ativos"] = (int) $stmt->get_result()->fetch_row()[0];
+            $stmt->bind_result($total);
+            $stmt->fetch();
+            $stmt->close();
+            $stats["ativos"] = (int) $total;
 
-            $stmt = $conn->prepare("
-                SELECT COUNT(*)
-                FROM alertas
-                WHERE status = 'resolvido'
-            ");
-
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM alerts WHERE status = 'resolved'");
+            if (!$stmt) throw new Exception($conn->error);
             $stmt->execute();
-            $stats["resolvidos"] = (int) $stmt->get_result()->fetch_row()[0];
+            $stmt->bind_result($total);
+            $stmt->fetch();
+            $stmt->close();
+            $stats["resolvidos"] = (int) $total;
 
             out([
                 "ok" => true,
                 "stats" => $stats
             ]);
 
+
+        /* =========================
+           ADMIN - USUÁRIOS
+        ========================= */
         case "admin_users":
 
             needAdmin();
 
-            $stmt = $conn->prepare("
-                SELECT id, nome, email, telefone, tipo, ativo, criado_em
-                FROM usuarios
-                WHERE tipo <> 'admin'
-                ORDER BY id DESC
-            ");
+            $stmt = $conn->prepare("\n                SELECT id, name, email, phone, type, status, created_at\n                FROM users\n                WHERE type <> 'admin'\n                ORDER BY id DESC\n            ");
+            if (!$stmt) throw new Exception($conn->error);
 
             $stmt->execute();
+            $stmt->bind_result($id, $nome, $email, $telefone, $tipo, $status, $criado);
 
-            $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $items = [];
+            while ($stmt->fetch()) {
+                $items[] = [
+                    "id" => (int) $id,
+                    "nome" => $nome,
+                    "email" => $email,
+                    "telefone" => $telefone,
+                    "tipo" => $tipo,
+                    "ativo" => $status === "active" ? 1 : 0,
+                    "criado_em" => $criado
+                ];
+            }
+            $stmt->close();
 
             out([
                 "ok" => true,
                 "items" => $items
             ]);
 
+
+        /* =========================
+           ADMIN - ALERTAS
+        ========================= */
         case "admin_alerts":
 
             needAdmin();
 
-            $stmt = $conn->prepare("
-                SELECT
-                    a.id,
-                    a.tipo,
-                    a.titulo,
-                    a.descricao,
-                    a.status,
-                    a.data_inicio,
-                    a.data_fim,
-                    u.nome AS usuario
-                FROM alertas a
-                JOIN usuarios u ON u.id = a.usuario_id
-                ORDER BY a.id DESC
-            ");
+            $stmt = $conn->prepare("\n                SELECT\n                    a.id,\n                    a.type,\n                    a.message,\n                    a.status,\n                    a.latitude,\n                    a.longitude,\n                    a.created_at,\n                    u.name AS usuario\n                FROM alerts a\n                LEFT JOIN users u ON u.id = a.user_id\n                ORDER BY a.id DESC\n            ");
+            if (!$stmt) throw new Exception($conn->error);
 
             $stmt->execute();
+            $stmt->bind_result($id, $tipo, $mensagem, $status, $latitude, $longitude, $criado, $usuario);
 
-            $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $items = [];
+            while ($stmt->fetch()) {
+                $items[] = [
+                    "id" => (int) $id,
+                    "tipo" => $tipo,
+                    "titulo" => $mensagem,
+                    "descricao" => $mensagem,
+                    "status" => $status,
+                    "latitude" => $latitude,
+                    "longitude" => $longitude,
+                    "data_inicio" => $criado,
+                    "data_fim" => null,
+                    "usuario" => $usuario
+                ];
+            }
+            $stmt->close();
 
             out([
                 "ok" => true,
                 "items" => $items
             ]);
 
+
+        /* =========================
+           ADMIN - DISPOSITIVOS
+        ========================= */
         case "admin_devices":
 
             needAdmin();
 
-            $stmt = $conn->prepare("
-                SELECT d.*, u.nome AS usuario
-                FROM dispositivos d
-                LEFT JOIN usuarios u ON u.id = d.usuario_id
-                ORDER BY d.id DESC
-            ");
+            $stmt = $conn->prepare("\n                SELECT d.id, d.user_id, d.name, d.device_code, d.status, d.last_seen, d.created_at,\n                       u.name AS usuario\n                FROM devices d\n                LEFT JOIN users u ON u.id = d.user_id\n                ORDER BY d.id DESC\n            ");
+            if (!$stmt) throw new Exception($conn->error);
 
             $stmt->execute();
+            $stmt->bind_result($id, $userId, $nome, $codigo, $status, $lastSeen, $criado, $usuario);
 
-            $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $items = [];
+            while ($stmt->fetch()) {
+                $items[] = [
+                    "id" => (int) $id,
+                    "usuario_id" => (int) $userId,
+                    "nome" => $nome,
+                    "device_code" => $codigo,
+                    "status" => $status,
+                    "last_seen" => $lastSeen,
+                    "criado_em" => $criado,
+                    "usuario" => $usuario
+                ];
+            }
+            $stmt->close();
 
             out([
                 "ok" => true,
                 "items" => $items
             ]);
 
+
+        /* =========================
+           ADMIN - CONTATOS
+        ========================= */
         case "admin_contacts":
 
             needAdmin();
 
-            $stmt = $conn->prepare("
-                SELECT c.*, u.nome AS usuario
-                FROM contatos_emergencia c
-                JOIN usuarios u ON u.id = c.usuario_id
-                ORDER BY c.id DESC
-            ");
+            $stmt = $conn->prepare("\n                SELECT c.id, c.user_id, c.name, c.phone, c.relationship, c.is_primary, c.created_at,\n                       u.name AS usuario\n                FROM emergency_contacts c\n                JOIN users u ON u.id = c.user_id\n                ORDER BY c.id DESC\n            ");
+            if (!$stmt) throw new Exception($conn->error);
 
             $stmt->execute();
+            $stmt->bind_result($id, $userId, $nome, $telefone, $relacao, $principal, $criado, $usuario);
 
-            $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $items = [];
+            while ($stmt->fetch()) {
+                $items[] = [
+                    "id" => (int) $id,
+                    "usuario_id" => (int) $userId,
+                    "nome" => $nome,
+                    "telefone" => $telefone,
+                    "relacao" => $relacao,
+                    "principal" => (int) $principal,
+                    "criado_em" => $criado,
+                    "usuario" => $usuario
+                ];
+            }
+            $stmt->close();
 
             out([
                 "ok" => true,
                 "items" => $items
             ]);
 
+
+        /* =========================
+           ADMIN - RELATÓRIO
+        ========================= */
         case "admin_report":
 
             needAdmin();
 
-            $stmt = $conn->prepare("
-                SELECT
-                    DATE(data_inicio) AS dia,
-                    tipo,
-                    COUNT(*) AS quantidade
-                FROM alertas
-                GROUP BY DATE(data_inicio), tipo
-                ORDER BY dia
-            ");
+            $stmt = $conn->prepare("\n                SELECT\n                    entry_date AS dia,\n                    mood AS tipo,\n                    COUNT(*) AS quantidade\n                FROM diary_entries\n                GROUP BY entry_date, mood\n                ORDER BY dia\n            ");
+            if (!$stmt) throw new Exception($conn->error);
 
             $stmt->execute();
+            $stmt->bind_result($dia, $tipo, $quantidade);
 
-            $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $items = [];
+            while ($stmt->fetch()) {
+                $items[] = [
+                    "dia" => $dia,
+                    "tipo" => $tipo,
+                    "quantidade" => (int) $quantidade
+                ];
+            }
+            $stmt->close();
 
             out([
                 "ok" => true,
                 "items" => $items
             ]);
+
 
         default:
 
@@ -884,10 +903,6 @@ try {
     }
 
 } catch (Throwable $e) {
-
-    if ($conn->errno) {
-        // Não interrompe a resposta caso o erro não seja de transação.
-    }
 
     out([
         "ok" => false,

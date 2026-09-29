@@ -22,7 +22,6 @@
 
     <title>SilentHelp - Ajuda e suporte</title>
 
-
     <style>
 
         /* =====================================================
@@ -35,38 +34,30 @@
             box-sizing: border-box;
         }
 
-
         /* =====================================================
            VARIÁVEIS
         ===================================================== */
 
         :root {
-
             --roxo: #a65cff;
             --roxo-claro: #c58aff;
             --roxo-escuro: #6e32ad;
-
             --fundo: #050507;
             --fundo-card: #101015;
             --fundo-card-2: #15151c;
-
             --borda: #292933;
-
             --branco: #ffffff;
             --cinza: #aaaab3;
             --cinza-escuro: #777781;
-
             --verde: #55df91;
             --vermelho: #ff657a;
         }
-
 
         /* =====================================================
            BODY
         ===================================================== */
 
         body {
-
             min-height: 100vh;
 
             background:
@@ -90,137 +81,87 @@
             overflow-x: hidden;
         }
 
-
         button,
         textarea {
-
             font-family: inherit;
-
         }
-
 
         /* =====================================================
            APP
         ===================================================== */
 
         .app {
-
             width: 100%;
-
             max-width: 900px;
-
             margin: auto;
-
-            padding:
-                25px;
+            padding: 25px;
         }
-
 
         /* =====================================================
            CABEÇALHO
         ===================================================== */
 
         .header {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             margin-bottom: 25px;
         }
 
-
         .back-button {
-
             width: 48px;
             height: 48px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
-            border:
-                1px solid
-                var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 15px;
 
-            background:
-                var(--fundo-card);
-
-            color:
-                var(--roxo-claro);
+            background: var(--fundo-card);
+            color: var(--roxo-claro);
 
             cursor: pointer;
-
             transition: .2s;
         }
 
-
         .back-button:hover {
-
-            border-color:
-                var(--roxo);
-
-            background:
-                #18131f;
-
-            transform:
-                translateX(-2px);
+            border-color: var(--roxo);
+            background: #18131f;
+            transform: translateX(-2px);
         }
-
 
         .back-button:active {
-
-            transform:
-                scale(.95);
+            transform: scale(.95);
         }
 
-
         .back-button svg {
-
             width: 24px;
             height: 24px;
         }
 
-
         .header-title {
-
             font-size: 25px;
-
             font-weight: 600;
-
             text-align: center;
         }
 
-
         .header-space {
-
             width: 48px;
         }
-
 
         /* =====================================================
            HERO
         ===================================================== */
 
         .help-hero {
-
-            padding:
-                30px
-                25px;
-
+            padding: 30px 25px;
             margin-bottom: 28px;
 
             text-align: center;
 
-            border:
-                1px solid
-                rgba(166, 92, 255, .35);
-
+            border: 1px solid rgba(166, 92, 255, .35);
             border-radius: 28px;
 
             background:
@@ -236,27 +177,20 @@
                 );
         }
 
-
         .help-icon {
-
             width: 70px;
             height: 70px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
-            margin:
-                0 auto 15px;
+            margin: 0 auto 15px;
 
             border-radius: 22px;
 
-            background:
-                rgba(166, 92, 255, .15);
-
-            color:
-                var(--roxo-claro);
+            background: rgba(166, 92, 255, .15);
+            color: var(--roxo-claro);
 
             font-size: 38px;
 
@@ -265,83 +199,56 @@
                 rgba(166, 92, 255, .12);
         }
 
-
         .help-hero h2 {
-
             font-size: 25px;
-
             margin-bottom: 8px;
         }
 
-
         .help-hero p {
-
-            color:
-                var(--cinza);
-
+            color: var(--cinza);
             font-size: 14px;
-
             line-height: 1.6;
 
             max-width: 600px;
-
             margin: auto;
         }
-
 
         /* =====================================================
            TÍTULO
         ===================================================== */
 
         .section-title {
-
             font-size: 21px;
-
             font-weight: 500;
-
             margin-bottom: 15px;
         }
-
 
         /* =====================================================
            LISTA
         ===================================================== */
 
         .help-list {
-
             display: flex;
-
             flex-direction: column;
-
             gap: 10px;
-
             margin-bottom: 28px;
         }
-
 
         /* =====================================================
            ITEM DE AJUDA
         ===================================================== */
 
         .help-card {
-
             width: 100%;
-
             min-height: 82px;
 
             display: flex;
-
             align-items: center;
 
             gap: 15px;
+            padding: 16px 18px;
 
-            padding:
-                16px 18px;
-
-            border:
-                1px solid
-                var(--borda);
-
+            border: 1px solid var(--borda);
             border-radius: 20px;
 
             background:
@@ -351,9 +258,7 @@
                     #0c0c10
                 );
 
-            color:
-                var(--branco);
-
+            color: var(--branco);
             text-align: left;
 
             cursor: pointer;
@@ -364,11 +269,8 @@
                 background .2s;
         }
 
-
         .help-card:hover {
-
-            border-color:
-                rgba(166, 92, 255, .45);
+            border-color: rgba(166, 92, 255, .45);
 
             background:
                 linear-gradient(
@@ -377,114 +279,78 @@
                     #0c0c10
                 );
 
-            transform:
-                translateY(-1px);
+            transform: translateY(-1px);
         }
-
 
         .help-card:active {
-
-            transform:
-                scale(.99);
+            transform: scale(.99);
         }
-
 
         /* =====================================================
            ÍCONE
         ===================================================== */
 
         .help-card-icon {
-
             width: 50px;
             height: 50px;
-
             min-width: 50px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
             border-radius: 15px;
 
-            background:
-                rgba(166, 92, 255, .12);
-
-            color:
-                var(--roxo-claro);
+            background: rgba(166, 92, 255, .12);
+            color: var(--roxo-claro);
         }
 
-
         .help-card-icon svg {
-
             width: 25px;
             height: 25px;
         }
-
 
         /* =====================================================
            CONTEÚDO
         ===================================================== */
 
         .help-card-content {
-
             flex: 1;
         }
 
-
         .help-card-content h3 {
-
             font-size: 16px;
-
             font-weight: 500;
-
             margin-bottom: 5px;
         }
 
-
         .help-card-content p {
-
-            color:
-                var(--cinza);
-
+            color: var(--cinza);
             font-size: 13px;
-
             line-height: 1.4;
         }
 
-
         .help-arrow {
-
-            color:
-                var(--cinza-escuro);
-
+            color: var(--cinza-escuro);
             font-size: 27px;
 
             transition:
                 transform .2s;
         }
 
-
         .help-card.open .help-arrow {
-
-            transform:
-                rotate(90deg);
-
-            color:
-                var(--roxo-claro);
+            transform: rotate(90deg);
+            color: var(--roxo-claro);
         }
-
 
         /* =====================================================
            RESPOSTA
         ===================================================== */
 
         .answer-box {
-
             display: none;
 
             margin-top: -10px;
-
             padding: 20px;
 
             border:
@@ -497,75 +363,55 @@
             background:
                 rgba(166, 92, 255, .05);
 
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 14px;
-
             line-height: 1.7;
 
             animation:
                 aparecer .2s ease;
         }
 
-
         .answer-box.show {
-
             display: block;
         }
 
-
         .answer-box strong {
-
             display: block;
 
-            color:
-                var(--branco);
+            color: var(--branco);
 
             font-size: 15px;
-
             margin-bottom: 8px;
         }
 
-
         .answer-box b {
-
-            color:
-                var(--branco);
+            color: var(--branco);
         }
-
 
         @keyframes aparecer {
 
             from {
-
                 opacity: 0;
 
                 transform:
                     translateY(-5px);
-
             }
 
             to {
-
                 opacity: 1;
 
                 transform:
                     translateY(0);
-
             }
-
         }
-
 
         /* =====================================================
            SUPORTE
         ===================================================== */
 
         .support-card {
-
             padding: 22px;
-
             margin-bottom: 25px;
 
             border:
@@ -582,86 +428,57 @@
                 );
         }
 
-
         .support-card h3 {
-
             font-size: 18px;
-
             margin-bottom: 7px;
         }
 
-
         .support-card p {
-
-            color:
-                var(--cinza);
-
+            color: var(--cinza);
             font-size: 13px;
-
             line-height: 1.5;
-
             margin-bottom: 16px;
         }
-
 
         /* =====================================================
            BOTÃO SUPORTE
         ===================================================== */
 
         .support-button {
-
             width: 100%;
 
-            padding:
-                14px 18px;
+            padding: 14px 18px;
 
             border: none;
-
             border-radius: 15px;
 
-            background:
-                var(--roxo);
-
-            color:
-                white;
+            background: var(--roxo);
+            color: white;
 
             font-size: 14px;
-
             font-weight: 600;
 
             cursor: pointer;
-
             transition: .2s;
         }
 
-
         .support-button:hover {
-
-            background:
-                var(--roxo-escuro);
-
-            transform:
-                translateY(-1px);
+            background: var(--roxo-escuro);
+            transform: translateY(-1px);
         }
-
 
         .support-button:active {
-
-            transform:
-                scale(.98);
+            transform: scale(.98);
         }
-
 
         /* =====================================================
            FORMULÁRIO DE SUPORTE
         ===================================================== */
 
         .support-form {
-
             display: none;
 
             margin-top: 18px;
-
             padding: 18px;
 
             border:
@@ -677,32 +494,23 @@
                 aparecer .25s ease;
         }
 
-
         .support-form.show {
-
             display: block;
         }
 
-
         .support-form label {
-
             display: block;
 
             margin-bottom: 8px;
 
-            color:
-                var(--branco);
+            color: var(--branco);
 
             font-size: 13px;
-
             font-weight: 500;
         }
 
-
         .support-form textarea {
-
             width: 100%;
-
             min-height: 130px;
 
             padding: 14px;
@@ -717,14 +525,10 @@
 
             outline: none;
 
-            background:
-                #0b0b10;
-
-            color:
-                var(--branco);
+            background: #0b0b10;
+            color: var(--branco);
 
             font-size: 14px;
-
             line-height: 1.5;
 
             transition:
@@ -732,73 +536,53 @@
                 box-shadow .2s;
         }
 
-
         .support-form textarea::placeholder {
-
-            color:
-                var(--cinza-escuro);
+            color: var(--cinza-escuro);
         }
 
-
         .support-form textarea:focus {
-
-            border-color:
-                var(--roxo);
+            border-color: var(--roxo);
 
             box-shadow:
                 0 0 0 3px
                 rgba(166, 92, 255, .10);
         }
 
-
         /* =====================================================
            AÇÕES DO FORMULÁRIO
         ===================================================== */
 
         .support-actions {
-
             display: flex;
-
             gap: 10px;
-
             margin-top: 12px;
         }
 
-
         .support-send,
         .support-cancel {
-
             flex: 1;
 
-            padding:
-                13px 15px;
+            padding: 13px 15px;
 
             border-radius: 13px;
 
             font-size: 13px;
-
             font-weight: 600;
 
             cursor: pointer;
-
             transition: .2s;
         }
 
-
         .support-send {
-
             border: none;
 
             background:
                 var(--roxo);
 
-            color:
-                white;
+            color: white;
         }
 
-
         .support-send:hover {
-
             background:
                 var(--roxo-escuro);
 
@@ -806,9 +590,7 @@
                 translateY(-1px);
         }
 
-
         .support-cancel {
-
             border:
                 1px solid
                 var(--borda);
@@ -820,9 +602,7 @@
                 var(--cinza);
         }
 
-
         .support-cancel:hover {
-
             color:
                 var(--branco);
 
@@ -830,17 +610,14 @@
                 var(--roxo);
         }
 
-
         /* =====================================================
            STATUS DO SUPORTE
         ===================================================== */
 
         .support-status {
-
             display: none;
 
             margin-top: 10px;
-
             padding: 10px;
 
             border-radius: 10px;
@@ -852,25 +629,19 @@
                 var(--verde);
 
             font-size: 12px;
-
             line-height: 1.5;
         }
 
-
         .support-status.show {
-
             display: block;
         }
-
 
         /* =====================================================
            SEGURANÇA
         ===================================================== */
 
         .security-info {
-
             padding: 20px;
-
             margin-bottom: 25px;
 
             border:
@@ -883,28 +654,20 @@
                 rgba(85, 223, 145, .05);
         }
 
-
         .security-info-header {
-
             display: flex;
-
             align-items: center;
 
             gap: 12px;
-
             margin-bottom: 10px;
         }
 
-
         .security-info-icon {
-
             width: 42px;
             height: 42px;
-
             min-width: 42px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
@@ -917,50 +680,37 @@
                 var(--verde);
         }
 
-
         .security-info-icon svg {
-
             width: 22px;
             height: 22px;
         }
 
-
         .security-info h3 {
-
             font-size: 16px;
-
             font-weight: 500;
         }
 
-
         .security-info p {
-
-            color:
-                var(--cinza);
+            color: var(--cinza);
 
             font-size: 13px;
-
             line-height: 1.6;
         }
-
 
         /* =====================================================
            TOAST
         ===================================================== */
 
         .toast {
-
             position: fixed;
 
             left: 50%;
-
             bottom: 30px;
 
             transform:
                 translate(-50%, 30px);
 
             opacity: 0;
-
             pointer-events: none;
 
             z-index: 5000;
@@ -985,20 +735,19 @@
             color:
                 white;
 
-            text-align: center;
+            text-align:
+                center;
 
-            transition: .3s;
+            transition:
+                .3s;
         }
 
-
         .toast.show {
-
             opacity: 1;
 
             transform:
                 translate(-50%, 0);
         }
-
 
         /* =====================================================
            RESPONSIVO
@@ -1007,142 +756,100 @@
         @media (max-width: 700px) {
 
             .app {
-
                 padding:
                     18px
                     15px;
             }
 
-
             .header-title {
-
                 font-size: 21px;
             }
 
-
             .help-hero {
-
                 padding:
                     25px 18px;
             }
 
-
             .help-hero h2 {
-
                 font-size: 22px;
             }
 
-
             .help-card {
-
                 min-height: 78px;
 
                 padding:
                     15px;
             }
 
-
             .help-card-icon {
-
                 width: 46px;
                 height: 46px;
-
                 min-width: 46px;
             }
 
-
             .help-card-content h3 {
-
                 font-size: 15px;
             }
 
-
             .help-card-content p {
-
                 font-size: 12px;
             }
-
         }
-
 
         @media (max-width: 400px) {
 
             .header-title {
-
                 font-size: 19px;
             }
 
-
             .help-hero h2 {
-
                 font-size: 20px;
             }
 
-
             .help-card {
-
                 gap: 10px;
-
-                padding:
-                    13px;
+                padding: 13px;
             }
 
-
             .help-card-icon {
-
                 width: 42px;
                 height: 42px;
-
                 min-width: 42px;
             }
 
-
             .help-card-icon svg {
-
                 width: 21px;
                 height: 21px;
             }
 
-
             .help-card-content h3 {
-
                 font-size: 14px;
             }
 
-
             .help-card-content p {
-
                 font-size: 11px;
             }
 
-
             .help-arrow {
-
                 font-size: 22px;
             }
 
-
             .support-actions {
-
                 flex-direction: column;
             }
-
         }
 
     </style>
 
 </head>
 
-
 <body>
-
 
     <!-- =====================================================
          CONTEÚDO
     ====================================================== -->
 
     <main class="app">
-
 
         <!-- =================================================
              CABEÇALHO
@@ -1173,16 +880,13 @@
 
             </button>
 
-
             <h1 class="header-title">
                 Ajuda e suporte
             </h1>
 
-
             <div class="header-space"></div>
 
         </header>
-
 
         <!-- =================================================
              HERO
@@ -1194,11 +898,9 @@
                 🆘
             </div>
 
-
             <h2>
                 Como podemos ajudar?
             </h2>
-
 
             <p>
                 Encontre informações sobre o SilentHelp,
@@ -1208,7 +910,6 @@
 
         </section>
 
-
         <!-- =================================================
              CENTRAL DE AJUDA
         ================================================== -->
@@ -1217,9 +918,7 @@
             Central de ajuda
         </h2>
 
-
         <div class="help-list">
-
 
             <!-- COMO USAR -->
 
@@ -1257,7 +956,6 @@
 
                 </div>
 
-
                 <div class="help-card-content">
 
                     <h3>
@@ -1270,13 +968,11 @@
 
                 </div>
 
-
                 <span class="help-arrow">
                     ›
                 </span>
 
             </button>
-
 
             <div
                 id="comoUsar"
@@ -1316,7 +1012,6 @@
                 de confiança.
 
             </div>
-
 
             <!-- FAQ -->
 
@@ -1358,7 +1053,6 @@
 
                 </div>
 
-
                 <div class="help-card-content">
 
                     <h3>
@@ -1371,13 +1065,11 @@
 
                 </div>
 
-
                 <span class="help-arrow">
                     ›
                 </span>
 
             </button>
-
 
             <div
                 id="faq"
@@ -1426,7 +1118,6 @@
 
             </div>
 
-
             <!-- FALAR COM SUPORTE -->
 
             <button
@@ -1464,7 +1155,6 @@
 
                 </div>
 
-
                 <div class="help-card-content">
 
                     <h3>
@@ -1477,13 +1167,11 @@
 
                 </div>
 
-
                 <span class="help-arrow">
                     ›
                 </span>
 
             </button>
-
 
             <!-- DISPOSITIVO -->
 
@@ -1523,7 +1211,6 @@
 
                 </div>
 
-
                 <div class="help-card-content">
 
                     <h3>
@@ -1536,13 +1223,11 @@
 
                 </div>
 
-
                 <span class="help-arrow">
                     ›
                 </span>
 
             </button>
-
 
             <div
                 id="dispositivo"
@@ -1585,7 +1270,6 @@
 
             </div>
 
-
             <!-- SEGURANÇA -->
 
             <button
@@ -1616,7 +1300,6 @@
 
                 </div>
 
-
                 <div class="help-card-content">
 
                     <h3>
@@ -1629,13 +1312,11 @@
 
                 </div>
 
-
                 <span class="help-arrow">
                     ›
                 </span>
 
             </button>
-
 
             <div
                 id="seguranca"
@@ -1666,7 +1347,6 @@
 
         </div>
 
-
         <!-- =================================================
              SUPORTE
         ================================================== -->
@@ -1677,13 +1357,11 @@
                 Precisa de mais ajuda?
             </h3>
 
-
             <p>
                 Se você não encontrou a resposta que
                 procurava, entre em contato com nossa
                 equipe de suporte.
             </p>
-
 
             <button
                 id="supportOpenButton"
@@ -1691,11 +1369,8 @@
                 type="button"
                 onclick="falarComSuporte()"
             >
-
                 Falar com suporte
-
             </button>
-
 
             <div
                 id="supportForm"
@@ -1706,13 +1381,11 @@
                     Escreva sua mensagem
                 </label>
 
-
                 <textarea
                     id="supportMessage"
                     maxlength="1000"
                     placeholder="Descreva sua dúvida ou o problema que está acontecendo..."
                 ></textarea>
-
 
                 <div class="support-actions">
 
@@ -1721,24 +1394,18 @@
                         type="button"
                         onclick="enviarSuporte()"
                     >
-
                         Enviar mensagem
-
                     </button>
-
 
                     <button
                         class="support-cancel"
                         type="button"
                         onclick="fecharSuporte()"
                     >
-
                         Cancelar
-
                     </button>
 
                 </div>
-
 
                 <div
                     id="supportStatus"
@@ -1750,7 +1417,6 @@
             </div>
 
         </section>
-
 
         <!-- =================================================
              INFORMAÇÕES DE SEGURANÇA
@@ -1781,13 +1447,11 @@
 
                 </div>
 
-
                 <h3>
                     Sua segurança é importante
                 </h3>
 
             </div>
-
 
             <p>
                 O SilentHelp é uma ferramenta de apoio.
@@ -1800,7 +1464,6 @@
 
     </main>
 
-
     <!-- =====================================================
          TOAST
     ====================================================== -->
@@ -1811,7 +1474,6 @@
         role="status"
         aria-live="polite"
     ></div>
-
 
     <!-- =====================================================
          JAVASCRIPT
@@ -1826,7 +1488,6 @@
         const EMAIL_SUPORTE =
             "suporte@silenthelp.com";
 
-
         /* =====================================================
            VOLTAR PARA O PERFIL
         ===================================================== */
@@ -1838,7 +1499,6 @@
 
         }
 
-
         /* =====================================================
            ABRIR / FECHAR AJUDA
         ===================================================== */
@@ -1848,19 +1508,14 @@
             const caixa =
                 document.getElementById(id);
 
-
             if (!caixa) {
-
                 return;
-
             }
-
 
             const estavaAberta =
                 caixa.classList.contains("show");
 
-
-            /* Fecha todas as respostas */
+            // Fecha todas as respostas
 
             document
                 .querySelectorAll(".answer-box")
@@ -1870,8 +1525,7 @@
 
                 });
 
-
-            /* Remove estado dos botões */
+            // Remove estado dos botões
 
             document
                 .querySelectorAll(".help-card")
@@ -1886,13 +1540,11 @@
 
                 });
 
-
-            /* Abre a selecionada */
+            // Abre a selecionada
 
             if (!estavaAberta) {
 
                 caixa.classList.add("show");
-
 
                 if (botao) {
 
@@ -1905,13 +1557,11 @@
 
                 }
 
-
                 setTimeout(function() {
 
                     caixa.scrollIntoView({
 
                         behavior: "smooth",
-
                         block: "nearest"
 
                     });
@@ -1921,7 +1571,6 @@
             }
 
         }
-
 
         /* =====================================================
            ABRIR FORMULÁRIO DE SUPORTE
@@ -1938,13 +1587,9 @@
             const botao =
                 document.getElementById("supportOpenButton");
 
-
             if (!formulario || !campo) {
-
                 return;
-
             }
-
 
             if (formulario.classList.contains("show")) {
 
@@ -1953,18 +1598,14 @@
                 formulario.scrollIntoView({
 
                     behavior: "smooth",
-
                     block: "center"
 
                 });
 
                 return;
-
             }
 
-
             formulario.classList.add("show");
-
 
             if (botao) {
 
@@ -1973,8 +1614,7 @@
 
             }
 
-
-            /* Fecha respostas abertas */
+            // Fecha respostas abertas
 
             document
                 .querySelectorAll(".answer-box")
@@ -1983,7 +1623,6 @@
                     elemento.classList.remove("show");
 
                 });
-
 
             document
                 .querySelectorAll(".help-card")
@@ -1998,13 +1637,11 @@
 
                 });
 
-
             setTimeout(function() {
 
                 formulario.scrollIntoView({
 
                     behavior: "smooth",
-
                     block: "center"
 
                 });
@@ -2014,7 +1651,6 @@
             }, 100);
 
         }
-
 
         /* =====================================================
            FECHAR FORMULÁRIO
@@ -2034,13 +1670,11 @@
             const botao =
                 document.getElementById("supportOpenButton");
 
-
             if (formulario) {
 
                 formulario.classList.remove("show");
 
             }
-
 
             if (campo) {
 
@@ -2048,15 +1682,12 @@
 
             }
 
-
             if (status) {
 
                 status.classList.remove("show");
-
                 status.textContent = "";
 
             }
-
 
             if (botao) {
 
@@ -2066,7 +1697,6 @@
             }
 
         }
-
 
         /* =====================================================
            ENVIAR MENSAGEM
@@ -2080,17 +1710,12 @@
             const status =
                 document.getElementById("supportStatus");
 
-
             if (!campo || !status) {
-
                 return;
-
             }
-
 
             const mensagem =
                 campo.value.trim();
-
 
             if (!mensagem) {
 
@@ -2108,9 +1733,7 @@
                 campo.focus();
 
                 return;
-
             }
-
 
             /* =================================================
                CRIA E-MAIL
@@ -2121,22 +1744,14 @@
                     "Ajuda e suporte - SilentHelp"
                 );
 
-
             const corpo =
                 encodeURIComponent(
-
                     "Olá, equipe SilentHelp!\n\n" +
-
                     "Preciso de ajuda com:\n\n" +
-
                     mensagem +
-
                     "\n\n" +
-
                     "Enviado pelo aplicativo SilentHelp."
-
                 );
-
 
             const mailto =
                 "mailto:" +
@@ -2145,7 +1760,6 @@
                 assunto +
                 "&body=" +
                 corpo;
-
 
             status.textContent =
                 "Abrindo seu aplicativo de e-mail para enviar a mensagem...";
@@ -2158,12 +1772,10 @@
 
             status.classList.add("show");
 
-
             window.location.href =
                 mailto;
 
         }
-
 
         /* =====================================================
            TECLA ESC
@@ -2183,7 +1795,6 @@
 
                         });
 
-
                     document
                         .querySelectorAll(".help-card")
                         .forEach(function(elemento) {
@@ -2197,14 +1808,12 @@
 
                         });
 
-
                     fecharSuporte();
 
                 }
 
             }
         );
-
 
         /* =====================================================
            CARREGAMENTO
@@ -2223,7 +1832,8 @@
 
     </script>
 
-<script src="assets/db-sync.js"></script>
+    <script src="assets/db-sync.js"></script>
+
 </body>
 
 </html>

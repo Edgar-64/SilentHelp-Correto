@@ -3622,7 +3622,7 @@ $nomeUsuario = $usuario["nome"];
 
             </div>
 
-            <button type="button" class="diary-button" onclick="window.location.href='diario.php'">
+            <button type="button" class="diary-button" onclick="abrirDiario()">
                 + Novo registro
             </button>
 
@@ -4233,6 +4233,8 @@ $nomeUsuario = $usuario["nome"];
 
     <script>
 
+        const nomeUsuario = <?= json_encode($nomeUsuario, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+
 
 
         /* =====================================================
@@ -4328,7 +4330,7 @@ $nomeUsuario = $usuario["nome"];
                 mensagens = [
                     {
                         remetente: "responsavel",
-                        texto: "Oi, Julia! 💜 Estou aqui. Como você está?",
+                        texto: "Oi, " + nomeUsuario + "! 💜 Estou aqui. Como você está?",
                         hora: horarioChat()
                     }
                 ];
@@ -4736,178 +4738,138 @@ $nomeUsuario = $usuario["nome"];
            CONFIRMAR SOS
         ===================================================== */
 
-        function confirmarSOS() {
+        async function confirmarSOS() {
 
             const botao =
-                document.getElementById(
-                    "confirmSOSButton"
-                );
-
+                document.getElementById("confirmSOSButton");
 
             if (!botao) {
                 return;
             }
 
-
             botao.disabled = true;
+            botao.innerHTML = "⏳ &nbsp; PREPARANDO ALERTA...";
 
-            botao.innerHTML =
-                "⏳ Enviando...";
+            let latitude = null;
+            let longitude = null;
+            let precisao = null;
+            let localizacao = "Não disponível";
 
-
-            setTimeout(function () {
-
-                fecharSOS();
-
-
-                botao.disabled = false;
-
-                botao.innerHTML =
-                    "Enviar alerta";
-
-
-                const agora =
-                    new Date();
-
-
-                const hora =
-                    agora.toLocaleTimeString(
-                        "pt-BR",
-                        {
-                            hour: "2-digit",
-                            minute: "2-digit"
-                        }
-                    );
-
-
-                const data =
-                    agora.toLocaleDateString(
-                        "pt-BR"
-                    );
-
-
-                /*
-                 * Gera um número único
-                 * para identificar o chamado.
-                 */
-
-                const numeroChamado =
-                    "SH-" +
-                    String(
-                        Date.now()
-                    ).slice(-6);
-
-
-                /*
-                 * Cria o registro do chamado.
-                 */
-
-                const alerta = {
-
-                    id:
-                        numeroChamado,
-
-                    tipo:
-                        "Alerta de emergência",
-
-                    mensagem:
-                        "Alerta de emergência enviado.",
-
-                    status:
-                        "Enviado",
-
-                    data:
-                        data,
-
-                    hora:
-                        hora,
-
-                    localizacao:
-                        "Compartilhada",
-
-                    timestamp:
-                        Date.now()
-                };
-
-
-                /*
-                 * Salva o último alerta.
-                 */
-
-                localStorage.setItem(
-                    "ultimoAlertaSilentHelp",
-                    JSON.stringify(
-                        alerta
-                    )
-                );
-
-
-                /*
-                 * Salva no histórico.
-                 */
-
-                let historico = [];
-
-
+            /* Tenta obter a localização real do celular. */
+            if (navigator.geolocation) {
                 try {
+                    const posicao = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(
+                            resolve,
+                            reject,
+                            {
+                                enableHighAccuracy: true,
+                                timeout: 10000,
+                                maximumAge: 0
+                            }
+                        );
+                    });
 
-                    historico =
-                        JSON.parse(
-                            localStorage.getItem(
-                                "historicoAlertasSilentHelp"
-                            )
-                        ) || [];
-
+                    latitude = posicao.coords.latitude;
+                    longitude = posicao.coords.longitude;
+                    precisao = Math.round(posicao.coords.accuracy);
+                    localizacao = "Obtida pelo GPS";
                 } catch (erro) {
-
-                    historico = [];
+                    localizacao = "GPS não autorizado ou indisponível";
                 }
+            }
 
+            const agora = new Date();
 
-                historico.unshift(
-                    alerta
-                );
+            const hora = agora.toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
 
+            const data = agora.toLocaleDateString("pt-BR");
 
-                /*
-                 * Mantém os últimos
-                 * 50 chamados.
-                 */
+            const numeroChamado =
+                "SH-" + String(Date.now()).slice(-6);
 
-                historico =
-                    historico.slice(
-                        0,
-                        50
-                    );
+            const alerta = {
+                id: numeroChamado,
+                tipo: "Alerta de emergência",
+                mensagem: "Alerta de emergência acionado pelo usuário.",
+                status: "Acionado",
+                data: data,
+                hora: hora,
+                localizacao: localizacao,
+                latitude: latitude,
+                longitude: longitude,
+                precisao: precisao,
+                online: navigator.onLine,
+                timestamp: Date.now()
+            };
 
+            localStorage.setItem(
+                "ultimoAlertaSilentHelp",
+                JSON.stringify(alerta)
+            );
 
-                localStorage.setItem(
-                    "historicoAlertasSilentHelp",
-                    JSON.stringify(
-                        historico
-                    )
-                );
+            let historico = [];
 
+            try {
+                historico = JSON.parse(
+                    localStorage.getItem("historicoAlertasSilentHelp")
+                ) || [];
+            } catch (erro) {
+                historico = [];
+            }
 
-                /*
-                 * Atualiza o status
-                 * da página.
-                 */
+            historico.unshift(alerta);
+            historico = historico.slice(0, 50);
 
-                atualizarStatusEmergencia();
+            localStorage.setItem(
+                "historicoAlertasSilentHelp",
+                JSON.stringify(historico)
+            );
 
+            atualizarStatusEmergencia();
 
-                /*
-                 * Mostra a confirmação.
-                 */
+            /* Vibração real, quando suportada pelo aparelho. */
+            if (navigator.vibrate) {
+                navigator.vibrate([250, 120, 250]);
+            }
 
-                mostrarConfirmacaoAlerta(
-                    numeroChamado,
-                    hora
-                );
+            fecharSOS();
 
+            botao.disabled = false;
+            botao.innerHTML = "Enviar alerta";
 
-            }, 1200);
+            /*
+             * Se o navegador oferecer compartilhamento, abre o painel
+             * nativo do celular para que o usuário possa enviar o alerta
+             * para um contato/app de confiança.
+             */
+            if (navigator.share) {
+                try {
+                    let textoCompartilhamento =
+                        "🚨 ALERTA SILENTHELP\n" +
+                        "Chamado: " + numeroChamado + "\n" +
+                        "Horário: " + hora + "\n" +
+                        "Localização: " + localizacao;
+
+                    if (latitude !== null && longitude !== null) {
+                        textoCompartilhamento +=
+                            "\nMapa: https://www.google.com/maps?q=" +
+                            latitude + "," + longitude;
+                    }
+
+                    await navigator.share({
+                        title: "Alerta SilentHelp",
+                        text: textoCompartilhamento
+                    });
+                } catch (erro) {
+                    /* O usuário pode fechar o compartilhamento sem erro. */
+                }
+            }
+
+            mostrarConfirmacaoAlerta(numeroChamado, hora);
         }
 
 
@@ -5053,94 +5015,124 @@ $nomeUsuario = $usuario["nome"];
            TESTAR DISPOSITIVO
         ===================================================== */
 
-        function testarDispositivo() {
+        async function testarDispositivo() {
 
             const botao =
-                document.getElementById(
-                    "testButton"
-                );
-
+                document.getElementById("testButton");
 
             if (!botao) {
                 return;
             }
 
-
-            const textoOriginal =
-                botao.innerHTML;
-
+            const textoOriginal = botao.innerHTML;
 
             botao.disabled = true;
+            botao.innerHTML = "⏳ &nbsp; TESTANDO...";
 
-            botao.innerHTML =
-                "⏳ &nbsp; TESTANDO...";
+            const resultados = [];
 
+            /* 1. Conexão real */
+            const online = navigator.onLine;
+            resultados.push(online ? "Conexão OK" : "Sem conexão");
+
+            /* 2. Bateria real, quando o navegador disponibiliza a API */
+            let nivelBateria = null;
+            try {
+                if (navigator.getBattery) {
+                    const bateria = await navigator.getBattery();
+                    nivelBateria = Math.round(bateria.level * 100);
+
+                    const batteryValue =
+                        document.getElementById("batteryValue");
+
+                    if (batteryValue) {
+                        batteryValue.textContent = nivelBateria + "%";
+                    }
+                }
+            } catch (erro) {
+                /* Alguns navegadores bloqueiam a Battery API. */
+            }
+
+            /* 3. Geolocalização real */
+            let gpsOk = false;
+
+            if (navigator.geolocation) {
+                try {
+                    await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(
+                            resolve,
+                            reject,
+                            {
+                                enableHighAccuracy: true,
+                                timeout: 8000,
+                                maximumAge: 0
+                            }
+                        );
+                    });
+
+                    gpsOk = true;
+                } catch (erro) {
+                    gpsOk = false;
+                }
+            }
+
+            resultados.push(gpsOk ? "GPS OK" : "GPS indisponível");
+
+            /* 4. Vibração */
+            const vibracaoOk = typeof navigator.vibrate === "function";
+
+            if (vibracaoOk) {
+                navigator.vibrate(120);
+                resultados.push("Vibração OK");
+            } else {
+                resultados.push("Vibração não suportada");
+            }
+
+            const tudoCerto = online && gpsOk;
+
+            const deviceStatus =
+                document.getElementById("deviceStatus");
+
+            if (deviceStatus) {
+                deviceStatus.textContent = tudoCerto ? "ATIVO" : "ATENÇÃO";
+                deviceStatus.style.color = tudoCerto
+                    ? "#55df91"
+                    : "#ffb0bb";
+            }
+
+            const lastCheck =
+                document.getElementById("lastCheck");
+
+            if (lastCheck) {
+                lastCheck.textContent = "agora";
+            }
+
+            const textoResultado = resultados.join(" • ");
+
+            botao.innerHTML = tudoCerto
+                ? "✓ &nbsp; DISPOSITIVO OK"
+                : "⚠ &nbsp; VERIFICAR DISPOSITIVO";
+
+            botao.style.color = tudoCerto ? "#55df91" : "#ffb0bb";
+            botao.style.borderColor = tudoCerto
+                ? "rgba(85,223,145,.5)"
+                : "rgba(255,93,115,.5)";
+            botao.style.background = tudoCerto
+                ? "rgba(85,223,145,.08)"
+                : "rgba(255,93,115,.08)";
+
+            mostrarMensagem(
+                (tudoCerto ? "✓ Check-up concluído: " : "⚠ Check-up: ") +
+                textoResultado
+            );
 
             setTimeout(function () {
-
-                botao.innerHTML =
-                    "✓ &nbsp; DISPOSITIVO FUNCIONANDO";
-
-
-                botao.style.color =
-                    "#55df91";
-
-
-                botao.style.borderColor =
-                    "rgba(85,223,145,.5)";
-
-
-                botao.style.background =
-                    "rgba(85,223,145,.08)";
-
-
-                const lastCheck =
-                    document.getElementById(
-                        "lastCheck"
-                    );
-
-
-                if (lastCheck) {
-
-                    lastCheck.textContent =
-                        "agora";
-                }
-
-
-                const deviceStatus =
-                    document.getElementById(
-                        "deviceStatus"
-                    );
-
-
-                if (deviceStatus) {
-
-                    deviceStatus.textContent =
-                        "ATIVO";
-                }
-
-
-                mostrarMensagem(
-                    "✓ Teste concluído. Tudo está funcionando!"
-                );
-
-
-                setTimeout(function () {
-
-                    botao.innerHTML =
-                        textoOriginal;
-
-                    botao.disabled = false;
-
-                    botao.style.color = "";
-
-                    botao.style.borderColor = "";
-
-                    botao.style.background = "";
-
-                }, 3000);
-
-            }, 1600);
+                botao.innerHTML = textoOriginal;
+                botao.disabled = false;
+                botao.style.color = "";
+                botao.style.borderColor = "";
+                botao.style.background = "";
+            }, 4000);
         }
 
 
