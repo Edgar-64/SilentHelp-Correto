@@ -1,4 +1,15 @@
-<?php require_once __DIR__ . '/auth.php';?>
+<?php
+require_once __DIR__ . '/auth.php';
+
+$usuario = exigirLogin();
+
+if (($usuario['tipo'] ?? '') !== 'responsavel') {
+    header('Location: index.php');
+    exit;
+}
+
+$nomeResponsavel = $usuario['nome'] ?? 'Responsável';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -880,9 +891,9 @@
             <div class="alert-icon">🚨</div>
             <div class="alert-info">
                 <h2 id="alertTitle">Alerta de emergência recebido</h2>
-                <p id="alertDescription">Julia solicitou ajuda. A localização está sendo compartilhada com você.</p>
+                <p id="alertDescription">Aguardando informações do próximo alerta.</p>
             </div>
-            <div class="alert-time">Há 2 min</div>
+            <div class="alert-time" id="alertTime">Aguardando</div>
         </section>
 
         <!-- GRID PRINCIPAL -->
@@ -913,9 +924,9 @@
             <div>
                 <section class="card person-card">
                     <div class="person">
-                        <div class="avatar">J</div>
+                        <div class="avatar" id="personAvatar">P</div>
                         <div>
-                            <h3>Julia</h3>
+                            <h3 id="personName">Pessoa protegida</h3>
                             <p>Pessoa protegida</p>
                         </div>
                     </div>
@@ -926,7 +937,7 @@
                             <div class="info-row-icon">📱</div>
                             <div class="info-row-text">
                                 <small>DISPOSITIVO</small>
-                                <strong id="deviceStatus">Conectado</strong>
+                                <strong id="deviceStatus">Aguardando alerta</strong>
                             </div>
                         </div>
 
@@ -934,7 +945,7 @@
                             <div class="info-row-icon">🔋</div>
                             <div class="info-row-text">
                                 <small>BATERIA</small>
-                                <strong>87%</strong>
+                                <strong id="batteryStatus">--</strong>
                             </div>
                         </div>
 
@@ -942,7 +953,7 @@
                             <div class="info-row-icon">📡</div>
                             <div class="info-row-text">
                                 <small>CONEXÃO</small>
-                                <strong>Sinal excelente</strong>
+                                <strong id="connectionStatus">Aguardando</strong>
                             </div>
                         </div>
 
@@ -950,7 +961,7 @@
                             <div class="info-row-icon">📍</div>
                             <div class="info-row-text">
                                 <small>GPS</small>
-                                <strong id="gpsStatus">Funcionando</strong>
+                                <strong id="gpsStatus">Aguardando localização</strong>
                             </div>
                         </div>
                     </div>
@@ -959,8 +970,8 @@
                     <div class="coordinates">
                         <div class="coordinates-title">📍 Coordenadas atuais</div>
                         <p>
-                            Latitude: <strong id="latitude">-23.026600</strong><br>
-                            Longitude: <strong id="longitude">-45.555300</strong>
+                            Latitude: <strong id="latitude">--</strong><br>
+                            Longitude: <strong id="longitude">--</strong>
                         </p>
                     </div>
 
@@ -970,7 +981,7 @@
                 <!-- CARD DE ATENDIMENTO -->
                 <section class="card attendance-card">
                     <h2>Atendimento</h2>
-                    <p id="attendanceText">Você está acompanhando este alerta. Mantenha o contato com a pessoa e verifique a localização.</p>
+                    <p id="attendanceText">Quando um alerta estiver ativo, você poderá confirmar o acompanhamento por aqui.</p>
 
                     <button class="attend-button" id="attendButton" onclick="confirmarAtendimento()">✓ &nbsp; Estou acompanhando</button>
                     <button class="finish-button" onclick="abrirFinalizacao()">Encerrar atendimento</button>
@@ -985,27 +996,13 @@
                 <h2>Histórico do alerta</h2>
             </div>
 
-            <div class="history-item">
-                <div class="history-icon">🚨</div>
-                <div>
-                    <strong>Alerta recebido</strong>
-                    <span>Julia solicitou ajuda.</span>
-                </div>
-            </div>
-
-            <div class="history-item">
-                <div class="history-icon">📍</div>
-                <div>
-                    <strong>Localização compartilhada</strong>
-                    <span>Localização disponibilizada para o responsável.</span>
-                </div>
-            </div>
-
-            <div class="history-item">
-                <div class="history-icon">📱</div>
-                <div>
-                    <strong>Dispositivo conectado</strong>
-                    <span>Comunicação estabelecida com o SilentHelp.</span>
+            <div id="alertHistory">
+                <div class="history-item">
+                    <div class="history-icon">ℹ️</div>
+                    <div>
+                        <strong>Aguardando alerta</strong>
+                        <span>Nenhum alerta ativo foi carregado.</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1066,12 +1063,178 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        /* CONFIGURAÇÕES GERAIS */
-        let latitude = -23.0266;
-        let longitude = -45.5553;
+        const RESPONSAVEL_ID = <?= (int)($usuario['id'] ?? 0) ?>;
+        const RESPONSAVEL_NOME = <?= json_encode($nomeResponsavel, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
 
-        /* MAPA LEAFLET */
-        const map = L.map("map").setView([latitude, longitude], 16);
+        let latitude = null;
+        let longitude = null;
+        let alertaAtual = null;
+        let atendimentoConfirmado = false;
+
+        function lerUltimoAlerta() {
+            try {
+                const salvo = localStorage.getItem("ultimoAlertaSilentHelp");
+                return salvo ? JSON.parse(salvo) : null;
+            } catch (erro) {
+                console.error("Erro ao ler alerta:", erro);
+                return null;
+            }
+        }
+
+        function formatarTempo(timestamp) {
+            if (!timestamp) return "Sem horário";
+            const data = new Date(Number(timestamp));
+            if (Number.isNaN(data.getTime())) return "Sem horário";
+
+            const diff = Math.max(0, Date.now() - data.getTime());
+            const minutos = Math.floor(diff / 60000);
+
+            if (minutos < 1) return "Agora";
+            if (minutos === 1) return "Há 1 min";
+            if (minutos < 60) return `Há ${minutos} min`;
+
+            const horas = Math.floor(minutos / 60);
+            if (horas === 1) return "Há 1 hora";
+            if (horas < 24) return `Há ${horas} horas`;
+
+            return data.toLocaleDateString("pt-BR");
+        }
+
+        function escaparHTML(texto) {
+            return String(texto ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function aplicarDadosDoAlerta() {
+            alertaAtual = lerUltimoAlerta();
+
+            const nome =
+                alertaAtual?.usuario_nome ||
+                alertaAtual?.nome_usuario ||
+                alertaAtual?.usuario ||
+                "Pessoa protegida";
+
+            document.getElementById("personName").textContent = nome;
+            document.getElementById("personAvatar").textContent =
+                nome.trim().charAt(0).toUpperCase() || "P";
+
+            const status = alertaAtual?.status || "";
+            const ativo = ["Enviado", "enviado", "recebido", "em_atendimento"].includes(status);
+
+            if (!alertaAtual) {
+                document.getElementById("alertTitle").textContent = "Nenhum alerta ativo";
+                document.getElementById("alertDescription").textContent =
+                    "Quando uma pessoa protegida enviar um alerta, as informações aparecerão aqui.";
+                document.getElementById("alertTime").textContent = "Aguardando";
+                document.getElementById("liveText").textContent = "AGUARDANDO";
+                document.getElementById("deviceStatus").textContent = "Aguardando alerta";
+                document.getElementById("connectionStatus").textContent = "Aguardando";
+                document.getElementById("gpsStatus").textContent = "Aguardando localização";
+                document.getElementById("latitude").textContent = "--";
+                document.getElementById("longitude").textContent = "--";
+                atualizarHistorico([]);
+                return;
+            }
+
+            document.getElementById("alertTitle").textContent =
+                ativo ? "Alerta de emergência recebido" : "Alerta encerrado";
+
+            document.getElementById("alertDescription").textContent =
+                `${nome} ${ativo ? "solicitou ajuda. A localização compartilhada está disponível." : "teve um alerta registrado."}`;
+
+            document.getElementById("alertTime").textContent =
+                formatarTempo(alertaAtual.timestamp);
+
+            document.getElementById("deviceStatus").textContent = "Conectado";
+            document.getElementById("connectionStatus").textContent = "Conectado";
+            document.getElementById("gpsStatus").textContent =
+                alertaAtual.localizacao === "Compartilhada"
+                    ? "Funcionando"
+                    : "Não compartilhado";
+
+            const lat = Number(alertaAtual.latitude);
+            const lng = Number(alertaAtual.longitude);
+
+            if (Number.isFinite(lat) && Number.isFinite(lng)) {
+                latitude = lat;
+                longitude = lng;
+                atualizarMapa(latitude, longitude);
+            } else {
+                document.getElementById("latitude").textContent = "--";
+                document.getElementById("longitude").textContent = "--";
+            }
+
+            document.getElementById("liveText").textContent =
+                ativo ? "AO VIVO" : "ENCERRADO";
+
+            document.getElementById("liveText").style.color =
+                ativo ? "#55df91" : "#aaaab3";
+
+            atualizarHistorico([
+                {
+                    icone: "🚨",
+                    titulo: "Alerta recebido",
+                    texto: `${nome} enviou um alerta de emergência.`
+                },
+                {
+                    icone: "📍",
+                    titulo: "Localização",
+                    texto: alertaAtual.localizacao === "Compartilhada"
+                        ? "Localização disponibilizada para o responsável."
+                        : "O alerta não possui localização compartilhada."
+                },
+                {
+                    icone: "📱",
+                    titulo: "Chamado",
+                    texto: alertaAtual.id
+                        ? `Número do chamado: ${alertaAtual.id}`
+                        : "Chamado registrado no SilentHelp."
+                }
+            ]);
+
+            if (!ativo) {
+                document.querySelector(".alert-card").style.borderColor =
+                    "rgba(85,223,145,.4)";
+                document.querySelector(".alert-card").style.background =
+                    "rgba(85,223,145,.08)";
+            }
+        }
+
+        function atualizarHistorico(itens) {
+            const container = document.getElementById("alertHistory");
+            if (!container) return;
+
+            if (!itens.length) {
+                container.innerHTML = `
+                    <div class="history-item">
+                        <div class="history-icon">ℹ️</div>
+                        <div>
+                            <strong>Aguardando alerta</strong>
+                            <span>Nenhum alerta ativo foi carregado.</span>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = itens.map(item => `
+                <div class="history-item">
+                    <div class="history-icon">${escaparHTML(item.icone)}</div>
+                    <div>
+                        <strong>${escaparHTML(item.titulo)}</strong>
+                        <span>${escaparHTML(item.texto)}</span>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        /* MAPA */
+        const mapaInicial = [-23.0266, -45.5553];
+
+        const map = L.map("map").setView(mapaInicial, 16);
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 19,
@@ -1082,17 +1245,14 @@
             className: "",
             html: `
                 <div style="width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(166,92,255,.18);border:2px solid #c58aff;box-shadow:0 0 25px rgba(166,92,255,.5);">
-                    <div style="width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#a65cff;color:white;font-size:23px;box-shadow:0 0 18px rgba(166,92,255,.7);">
-                        ♥️
-                    </div>
+                    <div style="width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#a65cff;color:white;font-size:23px;box-shadow:0 0 18px rgba(166,92,255,.7);">♥️</div>
                 </div>`,
             iconSize: [70, 70],
             iconAnchor: [35, 35]
         });
 
-        let personMarker = L.marker([latitude, longitude], { icon: heartIcon }).addTo(map);
-
-        let accuracyCircle = L.circle([latitude, longitude], {
+        let personMarker = L.marker(mapaInicial, { icon: heartIcon }).addTo(map);
+        let accuracyCircle = L.circle(mapaInicial, {
             radius: 120,
             color: "#a65cff",
             fillColor: "#a65cff",
@@ -1100,45 +1260,54 @@
             weight: 1
         }).addTo(map);
 
-        personMarker.bindPopup(`<strong>Julia</strong><br>Pessoa que pediu ajuda<br><small>Localização compartilhada</small>`);
-
-        /* FUNÇÕES DE LOCALIZAÇÃO */
-        function atualizarLocalizacao() {
-            const botao = document.querySelector(".update-button");
-            botao.innerHTML = "⏳ Atualizando...";
-            botao.disabled = true;
-
-            setTimeout(() => {
-                latitude += (Math.random() - .5) * .001;
-                longitude += (Math.random() - .5) * .001;
-
-                atualizarMapa(latitude, longitude);
-                document.getElementById("locationText").textContent = "Atualizada agora";
-                botao.innerHTML = "✓ Localização atualizada";
-                mostrarMensagem("Localização atualizada.");
-
-                setTimeout(() => {
-                    botao.innerHTML = "🔄 Atualizar localização";
-                    botao.disabled = false;
-                }, 1800);
-            }, 800);
-        }
-
         function atualizarMapa(lat, lng) {
             personMarker.setLatLng([lat, lng]);
             accuracyCircle.setLatLng([lat, lng]);
             map.setView([lat, lng], 16);
 
-            document.getElementById("latitude").textContent = lat.toFixed(6);
-            document.getElementById("longitude").textContent = lng.toFixed(6);
+            document.getElementById("latitude").textContent = Number(lat).toFixed(6);
+            document.getElementById("longitude").textContent = Number(lng).toFixed(6);
+            document.getElementById("locationText").textContent = "Atualizada agora";
+
+            const nome =
+                document.getElementById("personName")?.textContent ||
+                "Pessoa protegida";
+
+            personMarker.bindPopup(
+                `<strong>${escaparHTML(nome)}</strong><br>Pessoa protegida<br><small>Localização compartilhada</small>`
+            );
         }
 
-        setInterval(() => {
-            latitude += (Math.random() - .5) * .0002;
-            longitude += (Math.random() - .5) * .0002;
-            atualizarMapa(latitude, longitude);
-            document.getElementById("locationText").textContent = "Atualizada agora";
-        }, 10000);
+        function atualizarLocalizacao() {
+            const botao = document.querySelector(".update-button");
+
+            if (!alertaAtual) {
+                mostrarMensagem("Não há um alerta para atualizar.");
+                return;
+            }
+
+            const lat = Number(alertaAtual.latitude);
+            const lng = Number(alertaAtual.longitude);
+
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+                mostrarMensagem("Este alerta não possui coordenadas.");
+                return;
+            }
+
+            botao.disabled = true;
+            botao.innerHTML = "⏳ Atualizando...";
+
+            setTimeout(() => {
+                atualizarMapa(lat, lng);
+                botao.innerHTML = "✓ Localização atualizada";
+                mostrarMensagem("Localização do alerta atualizada.");
+
+                setTimeout(() => {
+                    botao.innerHTML = "🔄 Atualizar localização";
+                    botao.disabled = false;
+                }, 1500);
+            }, 400);
+        }
 
         function minhaLocalizacao() {
             if (!navigator.geolocation) {
@@ -1153,7 +1322,9 @@
                     const minhaLat = position.coords.latitude;
                     const minhaLng = position.coords.longitude;
 
-                    if (window.myMarker) window.myMarker.remove();
+                    if (window.myMarker) {
+                        window.myMarker.remove();
+                    }
 
                     window.myMarker = L.marker([minhaLat, minhaLng])
                         .addTo(map)
@@ -1165,26 +1336,55 @@
                 },
                 error => {
                     let mensagem = "Não foi possível obter sua localização.";
-                    if (error.code === 1) mensagem = "Permita o acesso à localização no navegador.";
+                    if (error.code === 1) {
+                        mensagem = "Permita o acesso à localização no navegador.";
+                    }
                     mostrarMensagem(mensagem);
                 },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         }
 
-        /* FUNÇÕES DE MODAL E ATENDIMENTO */
+        /* ATENDIMENTO */
         function confirmarAtendimento() {
-            document.getElementById("attendanceText").textContent = "Você confirmou que está acompanhando Julia. A localização continuará disponível enquanto o alerta estiver ativo.";
+            if (!alertaAtual) {
+                mostrarMensagem("Não há alerta ativo para acompanhar.");
+                return;
+            }
+
+            atendimentoConfirmado = true;
+
+            const nome =
+                document.getElementById("personName").textContent ||
+                "a pessoa protegida";
+
+            document.getElementById("attendanceText").textContent =
+                `Você confirmou que está acompanhando ${nome}. A localização continuará disponível enquanto o alerta estiver ativo.`;
+
             const botao = document.getElementById("attendButton");
             botao.innerHTML = "✓ Atendimento confirmado";
             botao.style.background = "rgba(85,223,145,.12)";
             botao.style.color = "#55df91";
             botao.style.border = "1px solid rgba(85,223,145,.4)";
 
+            localStorage.setItem(
+                "silentHelpAtendimento",
+                JSON.stringify({
+                    alerta_id: alertaAtual.id || null,
+                    responsavel_id: RESPONSAVEL_ID,
+                    confirmado_em: Date.now()
+                })
+            );
+
             mostrarMensagem("Atendimento confirmado.");
         }
 
         function abrirFinalizacao() {
+            if (!alertaAtual) {
+                mostrarMensagem("Não há atendimento ativo para encerrar.");
+                return;
+            }
+
             document.getElementById("finishModal").classList.add("show");
         }
 
@@ -1194,85 +1394,145 @@
 
         function finalizarAtendimento() {
             fecharFinalizacao();
-            document.querySelector(".alert-card").style.borderColor = "rgba(85,223,145,.4)";
-            document.querySelector(".alert-card").style.background = "rgba(85,223,145,.08)";
-            document.getElementById("alertTitle").textContent = "Atendimento encerrado";
-            document.getElementById("alertDescription").textContent = "O acompanhamento deste alerta foi encerrado.";
+
+            document.querySelector(".alert-card").style.borderColor =
+                "rgba(85,223,145,.4)";
+            document.querySelector(".alert-card").style.background =
+                "rgba(85,223,145,.08)";
+
+            document.getElementById("alertTitle").textContent =
+                "Atendimento encerrado";
+
+            document.getElementById("alertDescription").textContent =
+                "O acompanhamento deste alerta foi encerrado.";
+
             document.getElementById("liveText").textContent = "ENCERRADO";
             document.querySelector(".live").style.color = "#aaaab3";
             document.querySelector(".live-dot").style.background = "#aaaab3";
 
+            if (alertaAtual) {
+                alertaAtual.status = "resolvido";
+                alertaAtual.resolvido_em = Date.now();
+
+                localStorage.setItem(
+                    "ultimoAlertaSilentHelp",
+                    JSON.stringify(alertaAtual)
+                );
+            }
+
+            localStorage.removeItem("silentHelpAtendimento");
+            atualizarHistorico([
+                {
+                    icone: "🚨",
+                    titulo: "Alerta recebido",
+                    texto: "O alerta foi registrado."
+                },
+                {
+                    icone: "✓",
+                    titulo: "Atendimento encerrado",
+                    texto: "O acompanhamento foi finalizado pelo responsável."
+                }
+            ]);
+
             mostrarMensagem("Atendimento encerrado.");
         }
 
-        /* SISTEMA DE TOAST */
+        /* TOAST */
         let toastTimeout;
+
         function mostrarMensagem(mensagem) {
             const toast = document.getElementById("toast");
             toast.textContent = mensagem;
             toast.classList.add("show");
 
             clearTimeout(toastTimeout);
+
             toastTimeout = setTimeout(() => {
                 toast.classList.remove("show");
             }, 3000);
         }
 
-        /* LÓGICA DO CHAT FLUTUANTE DA JULIA */
-        const JULIA_CHAT_KEY = "silentHelpChatJulia";
+        /* CHAT */
+        const CHAT_KEY = "silentHelpChatJulia_" + RESPONSAVEL_ID;
 
-        function chatJuliaMensagens() {
-            try { return JSON.parse(localStorage.getItem(JULIA_CHAT_KEY)) || []; }
-            catch (e) { return []; }
+        function chatMensagens() {
+            try {
+                return JSON.parse(localStorage.getItem(CHAT_KEY)) || [];
+            } catch (erro) {
+                return [];
+            }
         }
 
-        function chatJuliaSalvar(m) {
-            localStorage.setItem(JULIA_CHAT_KEY, JSON.stringify(m.slice(-80)));
+        function salvarChat(mensagens) {
+            localStorage.setItem(CHAT_KEY, JSON.stringify(mensagens.slice(-80)));
         }
 
-        function chatJuliaHora() {
-            return new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+        function chatHora() {
+            return new Date().toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
         }
 
-        function chatJuliaEsc(s) {
-            return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function renderizarChatJulia() {
+        function renderizarChat() {
             const container = document.getElementById("juliaChatMessages");
             if (!container) return;
+
             container.innerHTML = "";
-            chatJuliaMensagens().forEach(m => {
-                const b = document.createElement("div");
-                b.className = "chat-message " + (m.remetente === "julia" ? "julia" : "responsavel");
-                b.innerHTML = chatJuliaEsc(m.texto) + '<span class="chat-time">' + chatJuliaEsc(m.hora) + '</span>';
-                container.appendChild(b);
+
+            chatMensagens().forEach(mensagem => {
+                const bolha = document.createElement("div");
+                bolha.className =
+                    "chat-message " +
+                    (mensagem.remetente === "julia" ? "julia" : "responsavel");
+
+                bolha.innerHTML =
+                    escaparHTML(mensagem.texto) +
+                    '<span class="chat-time">' +
+                    escaparHTML(mensagem.hora) +
+                    "</span>";
+
+                container.appendChild(bolha);
             });
+
             container.scrollTop = container.scrollHeight;
         }
 
-        function iniciarChatJulia() {
-            let m = chatJuliaMensagens();
-            if (!m.length) {
-                m = [{ remetente: "julia", texto: "Oi! 💜 Estou aqui. Pode falar comigo quando quiser.", hora: chatJuliaHora() }];
-                chatJuliaSalvar(m);
+        function iniciarChat() {
+            let mensagens = chatMensagens();
+
+            if (!mensagens.length) {
+                mensagens = [{
+                    remetente: "julia",
+                    texto: "Oi! 💜 Estou aqui. Pode falar comigo quando quiser.",
+                    hora: chatHora()
+                }];
+
+                salvarChat(mensagens);
             }
-            renderizarChatJulia();
+
+            renderizarChat();
         }
 
         function alternarChatJulia() {
-            const c = document.getElementById("juliaChat");
-            const b = document.getElementById("chatFloatButton");
-            const u = document.getElementById("chatUnread");
-            const aberto = c.classList.toggle("show");
+            const chat = document.getElementById("juliaChat");
+            const botao = document.getElementById("chatFloatButton");
+            const unread = document.getElementById("chatUnread");
 
-            c.setAttribute("aria-hidden", String(!aberto));
-            b.setAttribute("aria-expanded", String(aberto));
+            if (!chat) return;
 
-            if (u && aberto) u.style.display = "none";
+            const aberto = chat.classList.toggle("show");
+
+            chat.setAttribute("aria-hidden", String(!aberto));
+            botao?.setAttribute("aria-expanded", String(aberto));
+
+            if (unread && aberto) unread.style.display = "none";
+
             if (aberto) {
-                renderizarChatJulia();
-                setTimeout(() => document.getElementById("juliaChatInput")?.focus(), 150);
+                renderizarChat();
+                setTimeout(() => {
+                    document.getElementById("juliaChatInput")?.focus();
+                }, 150);
             }
         }
 
@@ -1282,38 +1542,63 @@
             document.getElementById("chatFloatButton")?.setAttribute("aria-expanded", "false");
         }
 
-        function adicionarChatJulia(remetente, texto) {
-            let m = chatJuliaMensagens();
-            m.push({ remetente, texto, hora: chatJuliaHora() });
-            chatJuliaSalvar(m);
-            renderizarChatJulia();
+        function adicionarChat(remetente, texto) {
+            const mensagens = chatMensagens();
+            mensagens.push({
+                remetente,
+                texto,
+                hora: chatHora()
+            });
+
+            salvarChat(mensagens);
+            renderizarChat();
         }
 
-        function enviarChatJulia(e) {
-            e.preventDefault();
+        function enviarChatJulia(evento) {
+            evento.preventDefault();
+
             const input = document.getElementById("juliaChatInput");
             const texto = input.value.trim();
+
             if (!texto) return;
 
-            adicionarChatJulia("responsavel", texto);
+            adicionarChat("responsavel", texto);
             input.value = "";
-            setTimeout(() => adicionarChatJulia("julia", "Recebi sua mensagem. 💜 Estou aqui com você e vou acompanhar o que você precisar."), 700);
+
+            setTimeout(() => {
+                adicionarChat(
+                    "julia",
+                    "Recebi sua mensagem. 💜 Estou aqui e vou acompanhar o que você precisar."
+                );
+            }, 700);
         }
 
-        /* EVENTOS GERAIS */
-        document.getElementById("finishModal").addEventListener("click", function (e) {
-            if (e.target === this) fecharFinalizacao();
+        /* EVENTOS */
+        document.getElementById("finishModal").addEventListener("click", function (evento) {
+            if (evento.target === this) {
+                fecharFinalizacao();
+            }
         });
 
-        document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape") {
+        document.addEventListener("keydown", function (evento) {
+            if (evento.key === "Escape") {
                 fecharFinalizacao();
                 fecharChatJulia();
             }
         });
 
         /* INICIALIZAÇÃO */
-        iniciarChatJulia();
+        window.addEventListener("load", function () {
+            aplicarDadosDoAlerta();
+            iniciarChat();
+
+            setInterval(() => {
+                if (alertaAtual) {
+                    document.getElementById("alertTime").textContent =
+                        formatarTempo(alertaAtual.timestamp);
+                }
+            }, 30000);
+        });
     </script>
 <script src="assets/db-sync.js"></script>
 </body>

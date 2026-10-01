@@ -1333,14 +1333,23 @@
             const lembrar = document.getElementById("lembrar").checked;
             const botao = document.querySelector(".login-button");
 
-            if (!email) { mostrarToast("Digite seu e-mail.", "error"); return; }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { mostrarToast("Digite um e-mail válido.", "error"); return; }
-            if (!senha) { mostrarToast("Digite sua senha.", "error"); return; }
+            if (!email) {
+                mostrarToast("Digite seu e-mail.", "error"); return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                mostrarToast("Digite um e-mail válido.", "error"); return;
+            }
+            if (!senha) {
+                mostrarToast("Digite sua senha.", "error"); return;
+            }
 
             const resposta = await window.SilentHelpAPI.post('login', { email, senha });
-            if (!resposta.ok) { mostrarToast(resposta.message || "E-mail ou senha incorretos.", "error"); return; }
+            if (!resposta.ok) {
+                mostrarToast(resposta.message || "E-mail ou senha incorretos.", "error"); return;
+            }
 
-            if (lembrar) localStorage.setItem("silenthelp_login", JSON.stringify({ email }));
+            if (lembrar)
+                localStorage.setItem("silenthelp_login", JSON.stringify({ email }));
             else localStorage.removeItem("silenthelp_login");
 
             sessionStorage.setItem("silenthelp_logado", "true");
@@ -1354,7 +1363,14 @@
             mostrarToast("Login realizado com sucesso!", "success");
 
             setTimeout(() => {
-                window.location.href = "index.php";
+
+                if (resposta.user.tipo === "responsavel") {
+                    window.location.href = "responsavel.php";
+                }
+                else if (resposta.user.tipo === "protegido") {
+                    window.location.href = "index.php";
+                }
+
             }, 800);
         }
 

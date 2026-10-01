@@ -3622,7 +3622,7 @@ $nomeUsuario = $usuario["nome"];
 
             </div>
 
-            <button type="button" class="diary-button" onclick="abrirDiario()">
+            <button type="button" class="diary-button" onclick="ir()">
                 + Novo registro
             </button>
 
@@ -4232,6 +4232,10 @@ $nomeUsuario = $usuario["nome"];
     ====================================================== -->
 
     <script>
+
+        function ir() {
+            window.location.href = 'diario.php';
+        }
 
         const nomeUsuario = <?= json_encode($nomeUsuario, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 
