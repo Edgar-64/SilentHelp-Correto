@@ -39,10 +39,10 @@
 
             --fundo: #07060a;
             --fundo-2: #0d0a12;
-
             --card: #121018;
 
-            --borda: rgba(255,255,255,.08);
+            --borda:
+                rgba(255, 255, 255, .08);
 
             --branco: #ffffff;
 
@@ -52,7 +52,7 @@
             --vermelho: #ff5d73;
 
             --sombra:
-                0 25px 70px rgba(0,0,0,.45);
+                0 25px 70px rgba(0, 0, 0, .45);
         }
 
 
@@ -67,7 +67,6 @@
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             padding: 25px;
@@ -76,13 +75,13 @@
 
                 radial-gradient(
                     circle at 50% -10%,
-                    rgba(168,85,247,.22),
+                    rgba(168, 85, 247, .22),
                     transparent 38%
                 ),
 
                 radial-gradient(
                     circle at 0% 100%,
-                    rgba(112,45,181,.12),
+                    rgba(112, 45, 181, .12),
                     transparent 35%
                 ),
 
@@ -133,7 +132,6 @@
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             gap: 10px;
@@ -145,7 +143,6 @@
         .logo-heart {
 
             width: 45px;
-
             height: 45px;
 
             color: var(--roxo-2);
@@ -153,7 +150,7 @@
             filter:
                 drop-shadow(
                     0 0 14px
-                    rgba(168,85,247,.45)
+                    rgba(168, 85, 247, .45)
                 );
         }
 
@@ -195,12 +192,12 @@
 
             border:
                 1px solid
-                rgba(168,85,247,.22);
+                rgba(168, 85, 247, .22);
 
             border-radius: 20px;
 
             background:
-                rgba(168,85,247,.08);
+                rgba(168, 85, 247, .08);
 
             color:
                 var(--roxo-claro);
@@ -218,8 +215,70 @@
         .admin-badge svg {
 
             width: 13px;
-
             height: 13px;
+        }
+
+
+        /* =====================================================
+           BOTÃO VOLTAR / TOGGLE
+        ===================================================== */
+
+        .admin-toggle {
+
+            position: fixed;
+
+            top: 20px;
+            right: 20px;
+
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(166, 92, 255, .3);
+
+            border-radius: 14px;
+
+            background:
+                rgba(166, 92, 255, .08);
+
+            color:
+                #c58aff;
+
+            cursor: pointer;
+
+            transition: .25s;
+
+            z-index: 1000;
+        }
+
+
+        .admin-toggle:hover {
+
+            background:
+                rgba(166, 92, 255, .18);
+
+            border-color:
+                #a65cff;
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(166, 92, 255, .15);
+        }
+
+
+        .admin-toggle svg {
+
+            width: 22px;
+            height: 22px;
         }
 
 
@@ -233,15 +292,16 @@
 
             border:
                 1px solid
-                rgba(168,85,247,.16);
+                rgba(168, 85, 247, .16);
 
             border-radius: 24px;
 
             background:
+
                 linear-gradient(
                     145deg,
-                    rgba(25,21,32,.96),
-                    rgba(13,10,18,.96)
+                    rgba(25, 21, 32, .96),
+                    rgba(13, 10, 18, .96)
                 );
 
             box-shadow:
@@ -325,14 +385,12 @@
             position: absolute;
 
             left: 14px;
-
             top: 50%;
 
             transform:
                 translateY(-50%);
 
             width: 19px;
-
             height: 19px;
 
             color:
@@ -360,7 +418,7 @@
             outline: none;
 
             background:
-                rgba(7,6,10,.65);
+                rgba(7, 6, 10, .65);
 
             color:
                 white;
@@ -384,74 +442,11 @@
         .form-group input:focus {
 
             border-color:
-                rgba(168,85,247,.65);
+                rgba(168, 85, 247, .65);
 
             box-shadow:
                 0 0 0 3px
-                rgba(168,85,247,.08);
-        }
-
-
-        .form-group input:focus + .input-icon {
-
-            color:
-                var(--roxo-claro);
-        }
-
-
-        /* =====================================================
-           MOSTRAR SENHA
-        ===================================================== */
-
-        .password-toggle {
-
-            position: absolute;
-
-            right: 12px;
-
-            top: 50%;
-
-            transform:
-                translateY(-50%);
-
-            width: 30px;
-
-            height: 30px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border: none;
-
-            background: transparent;
-
-            color:
-                var(--cinza-2);
-
-            cursor: pointer;
-
-            border-radius: 8px;
-        }
-
-
-        .password-toggle:hover {
-
-            color:
-                var(--roxo-claro);
-
-            background:
-                rgba(168,85,247,.08);
-        }
-
-
-        .password-toggle svg {
-
-            width: 18px;
-
-            height: 18px;
+                rgba(168, 85, 247, .08);
         }
 
 
@@ -494,7 +489,6 @@
         .remember input {
 
             width: 15px;
-
             height: 15px;
 
             accent-color:
@@ -508,7 +502,8 @@
 
             border: none;
 
-            background: transparent;
+            background:
+                transparent;
 
             color:
                 var(--roxo-claro);
@@ -541,7 +536,6 @@
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             gap: 9px;
@@ -551,6 +545,7 @@
             border-radius: 12px;
 
             background:
+
                 linear-gradient(
                     100deg,
                     var(--roxo-escuro),
@@ -570,7 +565,7 @@
 
             box-shadow:
                 0 10px 25px
-                rgba(168,85,247,.18);
+                rgba(168, 85, 247, .18);
 
             transition:
                 .2s;
@@ -584,7 +579,7 @@
 
             box-shadow:
                 0 14px 30px
-                rgba(168,85,247,.28);
+                rgba(168, 85, 247, .28);
         }
 
 
@@ -598,7 +593,6 @@
         .login-button svg {
 
             width: 18px;
-
             height: 18px;
         }
 
@@ -613,7 +607,8 @@
 
             margin-top: 15px;
 
-            padding: 11px 13px;
+            padding:
+                11px 13px;
 
             border-radius: 10px;
 
@@ -633,11 +628,11 @@
                 #ff9aaa;
 
             background:
-                rgba(255,93,115,.08);
+                rgba(255, 93, 115, .08);
 
             border:
                 1px solid
-                rgba(255,93,115,.15);
+                rgba(255, 93, 115, .15);
         }
 
 
@@ -649,11 +644,11 @@
                 #80e8ad;
 
             background:
-                rgba(85,223,145,.08);
+                rgba(85, 223, 145, .08);
 
             border:
                 1px solid
-                rgba(85,223,145,.15);
+                rgba(85, 223, 145, .15);
         }
 
 
@@ -719,59 +714,12 @@
         .security-info svg {
 
             width: 15px;
-
             height: 15px;
 
             color:
                 var(--roxo-claro);
 
             flex-shrink: 0;
-        }
-
-
-        /* =====================================================
-           VOLTAR
-        ===================================================== */
-
-        .back-link {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 6px;
-
-            margin-top: 20px;
-
-            border: none;
-
-            background: transparent;
-
-            color:
-                var(--cinza);
-
-            font-family: inherit;
-
-            font-size: 11px;
-
-            cursor: pointer;
-        }
-
-
-        .back-link:hover {
-
-            color:
-                var(--roxo-claro);
-        }
-
-
-        .back-link svg {
-
-            width: 15px;
-
-            height: 15px;
         }
 
 
@@ -794,7 +742,7 @@
             padding: 20px;
 
             background:
-                rgba(0,0,0,.72);
+                rgba(0, 0, 0, .72);
 
             backdrop-filter:
                 blur(7px);
@@ -819,7 +767,7 @@
 
             border:
                 1px solid
-                rgba(168,85,247,.18);
+                rgba(168, 85, 247, .18);
 
             border-radius: 20px;
 
@@ -828,7 +776,7 @@
 
             box-shadow:
                 0 25px 80px
-                rgba(0,0,0,.55);
+                rgba(0, 0, 0, .55);
 
             animation:
                 modalIn .2s ease;
@@ -860,13 +808,11 @@
         .modal-icon {
 
             width: 45px;
-
             height: 45px;
 
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             margin-bottom: 16px;
@@ -874,7 +820,7 @@
             border-radius: 13px;
 
             background:
-                rgba(168,85,247,.10);
+                rgba(168, 85, 247, .10);
 
             color:
                 var(--roxo-claro);
@@ -884,7 +830,6 @@
         .modal-icon svg {
 
             width: 22px;
-
             height: 22px;
         }
 
@@ -943,7 +888,7 @@
         .modal-button.cancel {
 
             background:
-                rgba(255,255,255,.05);
+                rgba(255, 255, 255, .05);
 
             color:
                 var(--cinza);
@@ -953,6 +898,7 @@
         .modal-button.confirm {
 
             background:
+
                 linear-gradient(
                     100deg,
                     var(--roxo-escuro),
@@ -984,7 +930,7 @@
 
             border:
                 1px solid
-                rgba(168,85,247,.18);
+                rgba(168, 85, 247, .18);
 
             border-radius: 11px;
 
@@ -998,7 +944,7 @@
 
             box-shadow:
                 0 15px 40px
-                rgba(0,0,0,.4);
+                rgba(0, 0, 0, .4);
 
             opacity: 0;
 
@@ -1073,9 +1019,19 @@
                 flex-direction:
                     column;
 
-                gap: 12px;
+                gap:
+                    12px;
             }
 
+
+            .admin-toggle {
+
+                top:
+                    12px;
+
+                right:
+                    12px;
+            }
         }
 
     </style>
@@ -1084,6 +1040,34 @@
 
 
 <body>
+
+
+    <!-- =====================================================
+         BOTÃO VOLTAR PARA LOGIN NORMAL
+    ====================================================== -->
+
+    <button
+        type="button"
+        class="admin-toggle"
+        onclick="window.location.href='../login.php'"
+        title="Voltar para login"
+        aria-label="Voltar para login"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+        >
+
+            <path d="M15 18l-6-6 6-6" />
+
+            <path d="M9 12h12" />
+
+        </svg>
+
+    </button>
 
 
     <!-- =====================================================
@@ -1107,7 +1091,16 @@
                 >
 
                     <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"
+                        d="
+                            M20.84 4.61
+                            a5.5 5.5 0 0 0-7.78 0
+                            L12 5.67
+                            10.94 4.61
+                            a5.5 5.5 0 0 0-7.78 7.78
+                            L12 21.23
+                            l8.84-8.84
+                            a5.5 5.5 0 0 0 0-7.78Z
+                        "
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"
@@ -1164,7 +1157,6 @@
         </div>
 
 
-
         <!-- =================================================
              CARD
         ================================================== -->
@@ -1175,8 +1167,10 @@
             <div class="login-header">
 
                 <h1>
-                    Acesso ao <span>painel</span>
+                    Acesso ao
+                    <span>painel</span>
                 </h1>
+
 
                 <p>
                     Entre com suas credenciais para acessar
@@ -1186,8 +1180,9 @@
             </div>
 
 
-
-            <!-- FORM -->
+            <!-- =================================================
+                 FORM
+            ================================================== -->
 
             <form
                 id="loginForm"
@@ -1244,7 +1239,6 @@
                 </div>
 
 
-
                 <!-- SENHA -->
 
                 <div class="form-group">
@@ -1289,48 +1283,14 @@
 
                         </svg>
 
-
-                        <button
-                            type="button"
-                            class="password-toggle"
-                            onclick="togglePassword()"
-                            aria-label="Mostrar senha"
-                        >
-
-                            <svg
-                                id="eyeIcon"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-
-                                <path
-                                    d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
-                                />
-
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="3"
-                                />
-
-                            </svg>
-
-                        </button>
-
                     </div>
 
                 </div>
 
 
-
                 <!-- OPÇÕES -->
 
                 <div class="form-options">
-
 
                     <label class="remember">
 
@@ -1355,7 +1315,6 @@
                     </button>
 
                 </div>
-
 
 
                 <!-- ENTRAR -->
@@ -1405,13 +1364,13 @@
             </form>
 
 
-
             <!-- DIVISOR -->
 
             <div class="divider">
-                acesso protegido
-            </div>
 
+                acesso protegido
+
+            </div>
 
 
             <!-- SEGURANÇA -->
@@ -1443,36 +1402,7 @@
 
         </div>
 
-
-
-        <!-- VOLTAR -->
-
-        <button
-            class="back-link"
-            onclick="goBack()"
-        >
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-
-                <path
-                    d="m15 18-6-6 6-6"
-                />
-
-            </svg>
-
-            Voltar
-
-        </button>
-
     </div>
-
 
 
     <!-- =====================================================
@@ -1499,13 +1429,9 @@
                     stroke-linejoin="round"
                 >
 
-                    <path
-                        d="M4 4h16v16H4z"
-                    />
+                    <path d="M4 4h16v16H4z" />
 
-                    <path
-                        d="m4 7 8 5 8-5"
-                    />
+                    <path d="m4 7 8 5 8-5" />
 
                 </svg>
 
@@ -1575,7 +1501,9 @@
                     class="modal-button cancel"
                     onclick="closeRecovery()"
                 >
+
                     Cancelar
+
                 </button>
 
 
@@ -1584,7 +1512,9 @@
                     class="modal-button confirm"
                     onclick="sendRecovery()"
                 >
+
                     Enviar instruções
+
                 </button>
 
             </div>
@@ -1592,7 +1522,6 @@
         </div>
 
     </div>
-
 
 
     <!-- =====================================================
@@ -1605,91 +1534,105 @@
     ></div>
 
 
-
     <script>
 
         /* =====================================================
-           LOGIN
+           LOGIN ADMINISTRATIVO
         ===================================================== */
 
         async function login(event) {
+
             event.preventDefault();
-            const email = document.getElementById("email").value.trim().toLowerCase();
-            const senha = document.getElementById("password").value;
-            const message = document.getElementById("message");
-            const resposta = await window.SilentHelpAPI.post('admin_login', {email, senha});
-            if (!resposta.ok) {
-                message.className = "message error";
-                message.textContent = resposta.message || "Credenciais inválidas.";
-                return;
+
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+            const senha =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            const message =
+                document.getElementById("message");
+
+
+            try {
+
+                const resposta =
+                    await window.SilentHelpAPI.post(
+                        "admin_login",
+                        {
+                            email,
+                            senha
+                        }
+                    );
+
+
+                if (!resposta.ok) {
+
+                    message.className =
+                        "message error";
+
+                    message.textContent =
+                        resposta.message ||
+                        "Credenciais inválidas.";
+
+                    return;
+                }
+
+
+                message.className =
+                    "message success";
+
+                message.textContent =
+                    "Login realizado com sucesso. Entrando no painel...";
+
+
+                /*
+                 * O login administrativo está em:
+                 *
+                 * /login-admin.php
+                 *
+                 * e o painel está em:
+                 *
+                 * /admin.php
+                 *
+                 * Por isso usamos ./admin.php.
+                 */
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "admin.php";
+
+                }, 500);
+
             }
-            message.className = "message success";
-            message.textContent = "Login realizado com sucesso. Entrando no painel...";
-            setTimeout(() => window.location.href = "admin.php", 500);
-        }\n\n\n        function togglePassword() {
 
-            const password =
-                document.getElementById("password");
+            catch (erro) {
 
-
-            const icon =
-                document.getElementById("eyeIcon");
+                console.error(
+                    "Erro no login administrativo:",
+                    erro
+                );
 
 
-            if (
-                password.type === "password"
-            ) {
+                message.className =
+                    "message error";
 
-                password.type =
-                    "text";
-
-
-                icon.innerHTML = `
-
-                    <path
-                        d="M3 3l18 18"
-                    />
-
-                    <path
-                        d="M10.58 10.58a2 2 0 0 0 2.83 2.83"
-                    />
-
-                    <path
-                        d="M9.88 4.24A10.7 10.7 0 0 1 12 4c6.5 0 10 8 10 8a17.4 17.4 0 0 1-3.03 4.11"
-                    />
-
-                    <path
-                        d="M6.61 6.61C3.5 8.5 2 12 2 12s3.5 8 10 8a10.7 10.7 0 0 0 3.73-.68"
-                    />
-
-                `;
-
-            }
-
-            else {
-
-                password.type =
-                    "password";
-
-
-                icon.innerHTML = `
-
-                    <path
-                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
-                    />
-
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="3"
-                    />
-
-                `;
+                message.textContent =
+                    "Não foi possível conectar ao servidor.";
 
             }
 
         }
-
 
 
         /* =====================================================
@@ -1718,7 +1661,6 @@
         }
 
 
-
         function closeRecovery() {
 
             document
@@ -1727,7 +1669,6 @@
                 .remove("show");
 
         }
-
 
 
         function closeRecoveryOutside(event) {
@@ -1744,7 +1685,6 @@
             }
 
         }
-
 
 
         /* =====================================================
@@ -1767,20 +1707,16 @@
                 );
 
                 return;
-
             }
 
 
-            if (
-                !email.includes("@")
-            ) {
+            if (!email.includes("@")) {
 
                 showToast(
                     "Digite um e-mail válido."
                 );
 
                 return;
-
             }
 
 
@@ -1792,7 +1728,6 @@
             );
 
         }
-
 
 
         /* =====================================================
@@ -1828,32 +1763,6 @@
         }
 
 
-
-        /* =====================================================
-           VOLTAR
-        ===================================================== */
-
-        function goBack() {
-
-            if (
-                document.referrer
-            ) {
-
-                window.history.back();
-
-            }
-
-            else {
-
-                window.location.href =
-                    "index.php";
-
-            }
-
-        }
-
-
-
         /* =====================================================
            ENTER NO MODAL
         ===================================================== */
@@ -1862,7 +1771,7 @@
             .getElementById("recoveryEmail")
             .addEventListener(
                 "keydown",
-                function(event) {
+                function (event) {
 
                     if (
                         event.key === "Enter"
@@ -1877,11 +1786,13 @@
                 }
             );
 
-
     </script>
 
-<script src="../assets/db-sync.js"></script>
-<script src="../assets/admin-db.js"></script>
+
+    <script src="../assets/db-sync.js"></script>
+
+    <script src="../assets/admin-db.js"></script>
+
 </body>
 
 </html>

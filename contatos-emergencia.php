@@ -1760,7 +1760,7 @@ $usuario = exigirLogin();
 
     <button
         class="nav-button"
-        data-page="index.php"
+        data-page="inicio.php"
         type="button"
     >
 

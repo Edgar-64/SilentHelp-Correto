@@ -48,10 +48,6 @@ function usuarioAtual()
 
     $stmt->close();
 
-    if ($status !== "active") {
-        return null;
-    }
-
     return [
         "id" => $idBanco,
         "nome" => $nome,

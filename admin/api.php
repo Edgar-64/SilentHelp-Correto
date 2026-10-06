@@ -94,7 +94,7 @@ try {
                 ], 422);
             }
 
-            if (!in_array($tipo, ["protegida", "responsavel", "admin"], true)) {
+            if (!in_array($tipo, ["protegida", "responsavel","admin"], true)) {
                 $tipo = "protegida";
             }
 
@@ -118,10 +118,6 @@ try {
 
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $codigoConvite = trim($d["codigoConvite"] ?? "");
-
-            if ($codigoConvite === "") {
-                $codigoConvite = null;
-            }
             $contatoEmergencia = trim($d["contatoEmergencia"] ?? "");
             $telefoneEmergencia = trim($d["telefoneEmergencia"] ?? "");
             $relacao = trim($d["relacao"] ?? "");
@@ -146,20 +142,8 @@ try {
                 $relacao
             );
 
-            if (!$stmt->execute()) {
-                throw new Exception(
-                    "Erro ao cadastrar usuário: " . $stmt->error
-                );
-            }
-
+            $stmt->execute();
             $id = $conn->insert_id;
-
-            if (!$id) {
-                throw new Exception(
-                    "Usuário foi inserido, mas o ID retornado pelo banco foi 0."
-                );
-            }
-
             $stmt->close();
 
             $_SESSION["usuario_id"] = $id;
@@ -784,7 +768,7 @@ try {
                     "email" => $email,
                     "telefone" => $telefone,
                     "tipo" => $tipo,
-                    "ativo" => $status === "admin" ? 1 : 0,
+                    "ativo" => !in_array(strtolower((string) $status), ["inactive", "inativo", "disabled", "desativada", "desativado"], true) ? 1 : 0,
                     "criado_em" => $criado
                 ];
             }
@@ -794,6 +778,126 @@ try {
                 "ok" => true,
                 "items" => $items
             ]);
+
+
+        /* =========================
+           ADMIN - ATIVAR / DESATIVAR USUÁRIO
+        ========================= */
+        case "admin_toggle_user":
+
+            needAdmin();
+
+            $idUsuario = (int) ($d["id"] ?? 0);
+            $ativo = !empty($d["ativo"]);
+
+            if ($idUsuario <= 0) {
+                out([
+                    "ok" => false,
+                    "message" => "Usuário inválido."
+                ], 422);
+            }
+
+            $stmt = $conn->prepare("
+                UPDATE users
+                SET status = ?
+                WHERE id = ?
+                AND type <> 'admin'
+            ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $novoStatus = $ativo ? "active" : "inactive";
+            $stmt->bind_param("si", $novoStatus, $idUsuario);
+            $stmt->execute();
+
+            if ($stmt->affected_rows < 1) {
+                $stmt->close();
+                out([
+                    "ok" => false,
+                    "message" => "Usuário não encontrado."
+                ], 404);
+            }
+
+            $stmt->close();
+
+            out([
+                "ok" => true,
+                "ativo" => $ativo ? 1 : 0
+            ]);
+
+
+        /* =========================
+           ADMIN - ALTERAR SENHA
+        ========================= */
+        case "change_password":
+
+            needAdmin();
+
+            $atual = $d["atual"] ?? "";
+            $nova = $d["nova"] ?? "";
+
+            if (strlen($nova) < 6) {
+                out([
+                    "ok" => false,
+                    "message" => "A nova senha deve possuir pelo menos 6 caracteres."
+                ], 422);
+            }
+
+            $idUsuario = uid();
+
+            $stmt = $conn->prepare("
+                SELECT password_hash
+                FROM users
+                WHERE id = ?
+                AND type = 'admin'
+                LIMIT 1
+            ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param("i", $idUsuario);
+            $stmt->execute();
+            $stmt->bind_result($senhaBanco);
+
+            if (!$stmt->fetch()) {
+                $stmt->close();
+                out([
+                    "ok" => false,
+                    "message" => "Administrador não encontrado."
+                ], 404);
+            }
+
+            $stmt->close();
+
+            if (!password_verify($atual, $senhaBanco)) {
+                out([
+                    "ok" => false,
+                    "message" => "A senha atual está incorreta."
+                ], 401);
+            }
+
+            $hash = password_hash($nova, PASSWORD_DEFAULT);
+
+            $stmt = $conn->prepare("
+                UPDATE users
+                SET password_hash = ?
+                WHERE id = ?
+                AND type = 'admin'
+            ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param("si", $hash, $idUsuario);
+            $stmt->execute();
+            $stmt->close();
+
+            out(["ok" => true]);
 
 
         /* =========================
@@ -910,7 +1014,7 @@ try {
 
             needAdmin();
 
-            $stmt = $conn->prepare("\n                SELECT\n                    entry_date AS dia,\n                    mood AS tipo,\n                    COUNT(*) AS quantidade\n                FROM diary_entries\n                GROUP BY entry_date, mood\n                ORDER BY dia\n            ");
+            $stmt = $conn->prepare("\n                SELECT\n                    DATE(created_at) AS dia,\n                    type AS tipo,\n                    COUNT(*) AS quantidade\n                FROM alerts\n                GROUP BY DATE(created_at), type\n                ORDER BY dia\n            ");
             if (!$stmt)
                 throw new Exception($conn->error);
 

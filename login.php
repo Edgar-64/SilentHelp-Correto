@@ -872,6 +872,49 @@
             }
 
         }
+
+        .admin-toggle {
+            position: fixed;
+
+            top: 20px;
+            right: 20px;
+
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(166, 92, 255, .3);
+            border-radius: 14px;
+
+            background: rgba(166, 92, 255, .08);
+
+            color: #c58aff;
+
+            cursor: pointer;
+
+            transition: .25s;
+
+            z-index: 1000;
+        }
+
+        .admin-toggle:hover {
+            background: rgba(166, 92, 255, .18);
+
+            border-color: #a65cff;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 25px rgba(166, 92, 255, .15);
+        }
+
+        .admin-toggle svg {
+            width: 22px;
+            height: 22px;
+        }
     </style>
 
 </head>
@@ -882,21 +925,14 @@
 
     <main class="login-container">
 
+        <button type="button" class="admin-toggle" onclick="window.location.href='admin/login-admin.php'"
+            title="Área administrativa" aria-label="Área administrativa">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10
+            c-4.6-1.3-8-4.8-8-10V6l8-3Z" />
 
-        <!-- =================================================
-             VOLTAR
-        ================================================== -->
-
-        <button class="back-button" onclick="abrirPagina('index.php')" aria-label="Voltar para o início">
-
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-
-                <path d="M19 12H5" />
-
-                <path d="M12 19l-7-7 7-7" />
-
+                <path d="M9 12l2 2 4-4" />
             </svg>
-
         </button>
 
 
@@ -1321,7 +1357,6 @@
         }
 
 
-
         /* =====================================================
            LOGIN
         ===================================================== */
@@ -1333,45 +1368,91 @@
             const lembrar = document.getElementById("lembrar").checked;
             const botao = document.querySelector(".login-button");
 
-            if (!email) {
-                mostrarToast("Digite seu e-mail.", "error"); return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                mostrarToast("Digite um e-mail válido.", "error"); return;
-            }
-            if (!senha) {
-                mostrarToast("Digite sua senha.", "error"); return;
-            }
+            if (!email) { mostrarToast("Digite seu e-mail.", "error"); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { mostrarToast("Digite um e-mail válido.", "error"); return; }
+            if (!senha) { mostrarToast("Digite sua senha.", "error"); return; }
 
-            const resposta = await window.SilentHelpAPI.post('login', { email, senha });
-            if (!resposta.ok) {
-                mostrarToast(resposta.message || "E-mail ou senha incorretos.", "error"); return;
-            }
+            try {
 
-            if (lembrar)
-                localStorage.setItem("silenthelp_login", JSON.stringify({ email }));
-            else localStorage.removeItem("silenthelp_login");
+                const resposta = await window.SilentHelpAPI.post('login', { email, senha });
 
-            sessionStorage.setItem("silenthelp_logado", "true");
-            sessionStorage.setItem("silenthelp_usuario", JSON.stringify(resposta.user));
-            localStorage.setItem("silenthelp_usuario", JSON.stringify(resposta.user));
-            if (botao) {
-                botao.disabled = true;
-                botao.textContent = "Entrando...";
-            }
-
-            mostrarToast("Login realizado com sucesso!", "success");
-
-            setTimeout(() => {
-
-                if (resposta.user.tipo === "responsavel") {
-                    window.location.href = "responsavel.php";
-                }
-                else if (resposta.user.tipo === "protegido") {
-                    window.location.href = "index.php";
+                if (!resposta || !resposta.ok) {
+                    mostrarToast(
+                        resposta?.message || "E-mail ou senha incorretos.",
+                        "error"
+                    );
+                    return;
                 }
 
-            }, 800);
+                if (!resposta.user || !resposta.user.tipo) {
+                    mostrarToast(
+                        "Não foi possível identificar o tipo da conta.",
+                        "error"
+                    );
+                    return;
+                }
+
+                if (lembrar) {
+                    localStorage.setItem(
+                        "silenthelp_login",
+                        JSON.stringify({ email })
+                    );
+                } else {
+                    localStorage.removeItem("silenthelp_login");
+                }
+
+                sessionStorage.setItem("silenthelp_logado", "true");
+                sessionStorage.setItem(
+                    "silenthelp_usuario",
+                    JSON.stringify(resposta.user)
+                );
+                localStorage.setItem(
+                    "silenthelp_usuario",
+                    JSON.stringify(resposta.user)
+                );
+
+                if (botao) {
+                    botao.disabled = true;
+                    botao.textContent = "Entrando...";
+                }
+
+                mostrarToast("Login realizado com sucesso!", "success");
+
+                setTimeout(() => {
+
+                    if (resposta.user.tipo === "admin") {
+                        window.location.href = "admin/admin.php";
+
+                    } else if (resposta.user.tipo === "responsavel") {
+                        window.location.href = "responsavel.php";
+
+                    } else if (resposta.user.tipo === "protegida") {
+                        window.location.href = "inicio.php";
+
+                    } else {
+                        if (botao) {
+                            botao.disabled = false;
+                            botao.textContent = "Entrar na conta";
+                        }
+                        mostrarToast("Tipo de conta inválido.", "error");
+                    }
+
+                }, 800);
+
+            } catch (erro) {
+
+                console.error("Erro no login:", erro);
+
+                if (botao) {
+                    botao.disabled = false;
+                    botao.textContent = "Entrar na conta";
+                }
+
+                mostrarToast(
+                    "Não foi possível conectar ao servidor.",
+                    "error"
+                );
+            }
         }
 
 

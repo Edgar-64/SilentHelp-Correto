@@ -1467,7 +1467,7 @@ $telefoneUsuario = htmlspecialchars($telefoneUsuario, ENT_QUOTES, 'UTF-8');
 
         <button
             class="nav-button"
-            onclick="abrirPagina('index.php')"
+            onclick="abrirPagina('inicio.php')"
         >
 
             <svg
@@ -1612,7 +1612,7 @@ $telefoneUsuario = htmlspecialchars($telefoneUsuario, ENT_QUOTES, 'UTF-8');
         }
 
         function voltarInicio() {
-            window.location.href = "index.php";
+            window.location.href = "inicio.php";
         }
 
         function abrirAjuda() {

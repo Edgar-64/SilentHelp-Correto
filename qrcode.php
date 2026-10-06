@@ -2292,7 +2292,7 @@
 
 
             window.location.href =
-                "index.php";
+                "inicio.php";
 
         }
 

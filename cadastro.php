@@ -2,16 +2,10 @@
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SilentHelp - Cadastro</title>
-
 
     <style>
 
@@ -31,7 +25,6 @@
         ===================================================== */
 
         :root {
-
             --roxo: #a65cff;
             --roxo-claro: #c58aff;
             --roxo-escuro: #6e32ad;
@@ -39,7 +32,6 @@
             --fundo: #050507;
             --card: #101015;
             --card-2: #15151c;
-
             --borda: #292933;
 
             --branco: #ffffff;
@@ -48,7 +40,6 @@
 
             --verde: #55df91;
             --vermelho: #ff5c70;
-
         }
 
 
@@ -57,31 +48,25 @@
         ===================================================== */
 
         body {
-
             min-height: 100vh;
 
             display: flex;
-
             justify-content: center;
-
             align-items: center;
 
             padding: 30px 15px;
 
             background:
-
                 radial-gradient(
                     circle at 50% 0%,
                     rgba(166, 92, 255, .18),
                     transparent 35%
                 ),
-
                 radial-gradient(
                     circle at 90% 90%,
                     rgba(110, 50, 173, .08),
                     transparent 35%
                 ),
-
                 var(--fundo);
 
             color: var(--branco);
@@ -93,16 +78,13 @@
                 Roboto,
                 Arial,
                 sans-serif;
-
         }
 
 
         input,
         button,
         select {
-
             font-family: inherit;
-
         }
 
 
@@ -111,11 +93,8 @@
         ===================================================== */
 
         .container {
-
             width: 100%;
-
             max-width: 560px;
-
         }
 
 
@@ -124,72 +103,46 @@
         ===================================================== */
 
         .logo {
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
 
             gap: 10px;
 
             margin-bottom: 25px;
-
         }
 
-
         .logo-icon {
-
             width: 48px;
-
             height: 48px;
 
             display: flex;
-
             align-items: center;
-
             justify-content: center;
 
             border-radius: 15px;
 
-            background:
-                rgba(166, 92, 255, .13);
+            background: rgba(166, 92, 255, .13);
 
-            border:
-                1px solid
-                rgba(166, 92, 255, .3);
+            border: 1px solid rgba(166, 92, 255, .3);
 
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
-
 
         .logo-icon svg {
-
             width: 28px;
-
             height: 28px;
-
         }
 
-
         .logo-text {
-
             font-size: 25px;
-
             font-weight: 700;
 
             letter-spacing: -.5px;
-
         }
 
-
         .logo-text span {
-
-            color:
-                var(--roxo-claro);
-
+            color: var(--roxo-claro);
         }
 
 
@@ -198,29 +151,23 @@
         ===================================================== */
 
         .register-card {
-
             width: 100%;
 
             padding: 32px;
 
             background:
-
                 linear-gradient(
                     145deg,
-                    rgba(22,18,29,.98),
-                    rgba(10,10,15,.98)
+                    rgba(22, 18, 29, .98),
+                    rgba(10, 10, 15, .98)
                 );
 
-            border:
-                1px solid
-                var(--borda);
+            border: 1px solid var(--borda);
 
             border-radius: 28px;
 
             box-shadow:
-                0 25px 70px
-                rgba(0,0,0,.4);
-
+                0 25px 70px rgba(0, 0, 0, .4);
         }
 
 
@@ -229,33 +176,24 @@
         ===================================================== */
 
         .card-header {
-
             text-align: center;
 
             margin-bottom: 28px;
-
         }
 
-
         .card-header h1 {
-
             font-size: 28px;
-
             font-weight: 600;
 
             margin-bottom: 8px;
-
         }
 
-
         .card-header p {
-
             color: var(--cinza);
 
             font-size: 14px;
 
             line-height: 1.5;
-
         }
 
 
@@ -264,14 +202,10 @@
         ===================================================== */
 
         .account-type {
-
             margin-bottom: 28px;
-
         }
 
-
         .account-title {
-
             text-align: center;
 
             color: var(--cinza);
@@ -279,53 +213,39 @@
             font-size: 13px;
 
             margin-bottom: 14px;
-
         }
-
 
         .type-options {
-
             display: grid;
 
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
 
             gap: 12px;
-
         }
 
-
         .type-option {
-
             position: relative;
 
             cursor: pointer;
-
         }
 
-
         .type-option input {
-
             position: absolute;
 
             opacity: 0;
 
             pointer-events: none;
-
         }
 
-
         .type-card {
+            min-height: 145px;
 
-            min-height: 125px;
-
-            padding: 18px 14px;
+            padding: 18px 12px;
 
             display: flex;
-
             flex-direction: column;
 
             align-items: center;
-
             justify-content: center;
 
             text-align: center;
@@ -339,83 +259,60 @@
             background: #09090d;
 
             transition: .25s;
-
         }
 
-
         .type-card:hover {
-
             border-color:
-                rgba(166,92,255,.5);
+                rgba(166, 92, 255, .5);
 
             transform:
                 translateY(-2px);
-
         }
 
-
         .type-option input:checked + .type-card {
-
             border-color:
                 var(--roxo);
 
             background:
-                rgba(166,92,255,.10);
+                rgba(166, 92, 255, .10);
 
             box-shadow:
-                0 0 0 2px
-                rgba(166,92,255,.08);
-
+                0 0 0 2px rgba(166, 92, 255, .08);
         }
 
-
         .type-icon {
-
             width: 42px;
-
             height: 42px;
 
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             border-radius: 13px;
 
             background:
-                rgba(166,92,255,.12);
+                rgba(166, 92, 255, .12);
 
             color:
                 var(--roxo-claro);
-
         }
-
 
         .type-icon svg {
-
             width: 22px;
-
             height: 22px;
-
         }
-
 
         .type-card strong {
-
             font-size: 14px;
-
         }
 
-
         .type-card small {
-
             color: var(--cinza);
 
             font-size: 11px;
 
             line-height: 1.4;
-
         }
 
 
@@ -424,14 +321,10 @@
         ===================================================== */
 
         .form-section {
-
             margin-bottom: 24px;
-
         }
 
-
         .section-label {
-
             display: flex;
 
             align-items: center;
@@ -446,16 +339,11 @@
             font-weight: 600;
 
             margin-bottom: 15px;
-
         }
 
-
         .section-label svg {
-
             width: 19px;
-
             height: 19px;
-
         }
 
 
@@ -464,14 +352,10 @@
         ===================================================== */
 
         .form-group {
-
             margin-bottom: 16px;
-
         }
 
-
         .form-group label {
-
             display: block;
 
             font-size: 13px;
@@ -482,23 +366,16 @@
 
             color:
                 var(--branco);
-
         }
-
 
         .input-wrapper {
-
             position: relative;
-
         }
 
-
         .input-icon {
-
             position: absolute;
 
             left: 15px;
-
             top: 50%;
 
             transform:
@@ -508,32 +385,23 @@
                 var(--cinza-escuro);
 
             pointer-events: none;
-
         }
-
 
         .input-icon svg {
-
             width: 18px;
-
             height: 18px;
-
         }
 
-
         .form-group input {
-
             width: 100%;
 
             height: 50px;
 
             padding:
-                0 15px
-                0 45px;
+                0 15px 0 45px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 14px;
 
@@ -548,27 +416,19 @@
             font-size: 14px;
 
             transition: .2s;
-
         }
-
 
         .form-group input::placeholder {
-
             color:
                 var(--cinza-escuro);
-
         }
 
-
         .form-group input:focus {
-
             border-color:
                 var(--roxo);
 
             box-shadow:
-                0 0 0 3px
-                rgba(166,92,255,.08);
-
+                0 0 0 3px rgba(166, 92, 255, .08);
         }
 
 
@@ -577,11 +437,9 @@
         ===================================================== */
 
         .password-toggle {
-
             position: absolute;
 
             right: 14px;
-
             top: 50%;
 
             transform:
@@ -589,7 +447,8 @@
 
             border: none;
 
-            background: transparent;
+            background:
+                transparent;
 
             color:
                 var(--cinza);
@@ -597,46 +456,29 @@
             cursor: pointer;
 
             padding: 5px;
-
         }
-
 
         .password-toggle:hover {
-
             color:
                 var(--roxo-claro);
-
         }
 
-
         .password-toggle svg {
-
             width: 19px;
-
             height: 19px;
-
         }
 
 
         /* =====================================================
-           ÁREA PROTEGIDA
+           ÁREAS
         ===================================================== */
 
         #areaProtegida {
-
             display: block;
-
         }
 
-
-        /* =====================================================
-           ÁREA RESPONSÁVEL
-        ===================================================== */
-
         #areaResponsavel {
-
             display: none;
-
         }
 
 
@@ -645,38 +487,29 @@
         ===================================================== */
 
         .info-card {
-
             padding: 18px;
 
             border:
-                1px solid
-                rgba(166,92,255,.22);
+                1px solid rgba(166, 92, 255, .22);
 
             border-radius: 18px;
 
             background:
-                rgba(166,92,255,.045);
+                rgba(166, 92, 255, .045);
 
             margin-bottom: 20px;
-
         }
 
-
         .info-content {
-
             display: flex;
 
             align-items: flex-start;
 
             gap: 10px;
-
         }
 
-
         .info-content svg {
-
             width: 20px;
-
             height: 20px;
 
             min-width: 20px;
@@ -685,19 +518,15 @@
                 var(--roxo-claro);
 
             margin-top: 1px;
-
         }
 
-
         .info-content p {
-
             color:
                 var(--cinza);
 
             font-size: 12px;
 
             line-height: 1.5;
-
         }
 
 
@@ -706,25 +535,20 @@
         ===================================================== */
 
         .emergency-card {
-
             padding: 18px;
 
             border:
-                1px solid
-                rgba(166,92,255,.22);
+                1px solid rgba(166, 92, 255, .22);
 
             border-radius: 18px;
 
             background:
-                rgba(166,92,255,.045);
+                rgba(166, 92, 255, .045);
 
             margin-bottom: 10px;
-
         }
 
-
         .emergency-info {
-
             display: flex;
 
             align-items: flex-start;
@@ -732,14 +556,10 @@
             gap: 10px;
 
             margin-bottom: 17px;
-
         }
 
-
         .emergency-info svg {
-
             width: 20px;
-
             height: 20px;
 
             min-width: 20px;
@@ -748,19 +568,15 @@
                 var(--roxo-claro);
 
             margin-top: 1px;
-
         }
 
-
         .emergency-info p {
-
             color:
                 var(--cinza);
 
             font-size: 12px;
 
             line-height: 1.5;
-
         }
 
 
@@ -769,7 +585,6 @@
         ===================================================== */
 
         .terms {
-
             display: flex;
 
             align-items: flex-start;
@@ -778,14 +593,10 @@
 
             margin:
                 8px 0 20px;
-
         }
 
-
         .terms input {
-
             width: 18px;
-
             height: 18px;
 
             min-width: 18px;
@@ -796,12 +607,9 @@
                 var(--roxo);
 
             cursor: pointer;
-
         }
 
-
         .terms label {
-
             color:
                 var(--cinza);
 
@@ -810,24 +618,17 @@
             line-height: 1.5;
 
             cursor: pointer;
-
         }
 
-
         .terms a {
-
             color:
                 var(--roxo-claro);
 
             text-decoration: none;
-
         }
 
-
         .terms a:hover {
-
             text-decoration: underline;
-
         }
 
 
@@ -836,7 +637,6 @@
         ===================================================== */
 
         .register-button {
-
             width: 100%;
 
             height: 52px;
@@ -846,7 +646,6 @@
             border-radius: 15px;
 
             background:
-
                 linear-gradient(
                     135deg,
                     var(--roxo),
@@ -865,31 +664,20 @@
             transition: .25s;
 
             box-shadow:
-
-                0 8px 25px
-                rgba(166,92,255,.12);
-
+                0 8px 25px rgba(166, 92, 255, .12);
         }
 
-
         .register-button:hover {
-
             transform:
                 translateY(-2px);
 
             box-shadow:
-
-                0 12px 30px
-                rgba(166,92,255,.23);
-
+                0 12px 30px rgba(166, 92, 255, .23);
         }
 
-
         .register-button:active {
-
             transform:
                 translateY(0);
-
         }
 
 
@@ -898,7 +686,6 @@
         ===================================================== */
 
         .login {
-
             text-align: center;
 
             margin-top: 23px;
@@ -907,26 +694,19 @@
                 var(--cinza);
 
             font-size: 13px;
-
         }
 
-
         .login a {
-
             color:
                 var(--roxo-claro);
 
             font-weight: 600;
 
             text-decoration: none;
-
         }
 
-
         .login a:hover {
-
             text-decoration: underline;
-
         }
 
 
@@ -935,11 +715,9 @@
         ===================================================== */
 
         .security {
-
             display: flex;
 
             justify-content: center;
-
             align-items: center;
 
             gap: 7px;
@@ -952,21 +730,16 @@
             font-size: 11px;
 
             text-align: center;
-
         }
 
-
         .security svg {
-
             width: 15px;
-
             height: 15px;
 
             min-width: 15px;
 
             color:
                 var(--verde);
-
         }
 
 
@@ -975,11 +748,9 @@
         ===================================================== */
 
         .toast {
-
             position: fixed;
 
             left: 50%;
-
             bottom: 30px;
 
             transform:
@@ -992,10 +763,7 @@
             z-index: 9999;
 
             width:
-                min(
-                    calc(100% - 30px),
-                    450px
-                );
+                min(calc(100% - 30px), 450px);
 
             padding:
                 15px 20px;
@@ -1006,8 +774,7 @@
                 #18181f;
 
             border:
-                1px solid
-                var(--roxo);
+                1px solid var(--roxo);
 
             color:
                 var(--branco);
@@ -1017,33 +784,23 @@
             font-size: 13px;
 
             transition: .3s;
-
         }
 
-
         .toast.show {
-
             opacity: 1;
 
             transform:
                 translate(-50%, 0);
-
         }
-
 
         .toast.success {
-
             border-color:
                 var(--verde);
-
         }
 
-
         .toast.error {
-
             border-color:
                 var(--vermelho);
-
         }
 
 
@@ -1054,328 +811,82 @@
         @media (max-width: 600px) {
 
             body {
-
                 align-items:
                     flex-start;
 
                 padding:
                     20px 14px;
-
             }
-
 
             .logo {
-
-                margin-bottom: 20px;
-
+                margin-bottom:
+                    20px;
             }
 
-
             .register-card {
-
                 padding:
                     23px 18px;
 
                 border-radius:
                     23px;
-
             }
-
 
             .card-header h1 {
-
-                font-size: 24px;
-
+                font-size:
+                    24px;
             }
-
 
             .card-header {
-
-                margin-bottom: 23px;
-
+                margin-bottom:
+                    23px;
             }
-
 
             .form-group input {
-
-                height: 48px;
-
+                height:
+                    48px;
             }
-
-        }
-
-
-        @media (max-width: 430px) {
 
             .type-options {
-
-                grid-template-columns: 1fr;
-
+                grid-template-columns:
+                    1fr;
             }
-
 
             .type-card {
-
-                min-height: 105px;
-
+                min-height:
+                    105px;
             }
-
         }
 
 
         @media (max-width: 380px) {
 
             .logo-text {
-
-                font-size: 22px;
-
+                font-size:
+                    22px;
             }
-
 
             .register-card {
-
                 padding:
                     20px 15px;
-
             }
-
         }
 
     </style>
-
 </head>
 
 
 <body>
 
+    <div class="container">
 
-<div class="container">
 
+        <!-- =====================================================
+             LOGO
+        ====================================================== -->
 
-    <!-- =================================================
-         LOGO
-    ================================================== -->
+        <div class="logo">
 
-    <div class="logo">
-
-        <div class="logo-icon">
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-            >
-
-                <path
-                    d="M20.8 8.7
-                       C20.8 13.8
-                       12 20
-                       12 20
-                       S3.2 13.8
-                       3.2 8.7
-                       C3.2 5.9
-                       5.4 4
-                       8 4
-                       C9.7 4
-                       11.1 4.9
-                       12 6.2
-                       C12.9 4.9
-                       14.3 4
-                       16 4
-                       C18.6 4
-                       20.8 5.9
-                       20.8 8.7Z"
-                />
-
-            </svg>
-
-        </div>
-
-
-        <div class="logo-text">
-
-            Silent<span>Help</span>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =================================================
-         CARD
-    ================================================== -->
-
-    <main class="register-card">
-
-
-        <!-- CABEÇALHO -->
-
-        <header class="card-header">
-
-            <h1>
-                Criar sua conta
-            </h1>
-
-            <p>
-                Escolha como você participará do
-                sistema SilentHelp.
-            </p>
-
-        </header>
-
-
-
-        <!-- =================================================
-             TIPO DE CONTA
-        ================================================== -->
-
-        <section class="account-type">
-
-            <div class="account-title">
-
-                Como você deseja se cadastrar?
-
-            </div>
-
-
-            <div class="type-options">
-
-
-                <!-- PESSOA PROTEGIDA -->
-
-                <label class="type-option">
-
-                    <input
-                        type="radio"
-                        name="tipoConta"
-                        value="protegida"
-                        checked
-                        onchange="alterarTipoConta()"
-                    >
-
-
-                    <div class="type-card">
-
-                        <div class="type-icon">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                            >
-
-                                <path
-                                    d="M12 3
-                                       l8 3v5
-                                       c0 5.2-3.4 8.7-8 10
-                                       c-4.6-1.3-8-4.8-8-10V6l8-3Z"
-                                />
-
-                                <path
-                                    d="M8.5 12
-                                       l2.3 2.3
-                                       4.5-5"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <strong>
-                            Pessoa protegida
-                        </strong>
-
-                        <small>
-                            Quero utilizar o SilentHelp
-                            para minha segurança.
-                        </small>
-
-                    </div>
-
-                </label>
-
-
-
-                <!-- RESPONSÁVEL -->
-
-                <label class="type-option">
-
-                    <input
-                        type="radio"
-                        name="tipoConta"
-                        value="responsavel"
-                        onchange="alterarTipoConta()"
-                    >
-
-
-                    <div class="type-card">
-
-                        <div class="type-icon">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                            >
-
-                                <circle
-                                    cx="9"
-                                    cy="8"
-                                    r="3"
-                                />
-
-                                <circle
-                                    cx="17"
-                                    cy="9"
-                                    r="2.5"
-                                />
-
-                                <path
-                                    d="M3 20
-                                       c0-3.5 2.7-6 6-6
-                                       s6 2.5 6 6"
-                                />
-
-                                <path
-                                    d="M15 14
-                                       c3 0 5 2 5 5"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <strong>
-                            Responsável
-                        </strong>
-
-                        <small>
-                            Quero receber alertas e
-                            ajudar uma pessoa protegida.
-                        </small>
-
-                    </div>
-
-                </label>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             DADOS PESSOAIS
-        ================================================== -->
-
-        <section class="form-section">
-
-
-            <div class="section-label">
+            <div class="logo-icon">
 
                 <svg
                     viewBox="0 0 24 24"
@@ -1384,480 +895,152 @@
                     stroke-width="1.8"
                 >
 
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="4"
-                    />
-
                     <path
-                        d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+                        d="
+                            M20.8 8.7
+                            C20.8 13.8
+                            12 20
+                            12 20
+                            S3.2 13.8
+                            3.2 8.7
+                            C3.2 5.9
+                            5.4 4
+                            8 4
+                            C9.7 4
+                            11.1 4.9
+                            12 6.2
+                            C12.9 4.9
+                            14.3 4
+                            16 4
+                            C18.6 4
+                            20.8 5.9
+                            20.8 8.7Z
+                        "
                     />
 
                 </svg>
 
-                Dados pessoais
-
             </div>
 
 
-
-            <!-- NOME -->
-
-            <div class="form-group">
-
-                <label for="nome">
-                    Nome completo
-                </label>
-
-
-                <div class="input-wrapper">
-
-                    <span class="input-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="8"
-                                r="4"
-                            />
-
-                            <path
-                                d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-                            />
-
-                        </svg>
-
-                    </span>
-
-
-                    <input
-                        type="text"
-                        id="nome"
-                        placeholder="Digite seu nome completo"
-                        autocomplete="name"
-                        required
-                    >
-
-                </div>
-
+            <div class="logo-text">
+                Silent<span>Help</span>
             </div>
 
+        </div>
 
 
-            <!-- EMAIL -->
+        <!-- =====================================================
+             CARD
+        ====================================================== -->
 
-            <div class="form-group">
+        <main class="register-card">
 
-                <label for="email">
-                    E-mail
-                </label>
 
+            <!-- CABEÇALHO -->
 
-                <div class="input-wrapper">
+            <header class="card-header">
 
-                    <span class="input-icon">
+                <h1>
+                    Criar sua conta
+                </h1>
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
+                <p>
+                    Escolha como você participará do
+                    sistema SilentHelp.
+                </p>
 
-                            <rect
-                                x="3"
-                                y="5"
-                                width="18"
-                                height="14"
-                                rx="2"
-                            />
+            </header>
 
-                            <path
-                                d="M3 7l9 6 9-6"
-                            />
 
-                        </svg>
+            <!-- =================================================
+                 TIPO DE CONTA
+            ================================================== -->
 
-                    </span>
+            <section class="account-type">
 
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Digite seu e-mail"
-                        autocomplete="email"
-                        required
-                    >
-
-                </div>
-
-            </div>
-
-
-
-            <!-- TELEFONE -->
-
-            <div class="form-group">
-
-                <label for="telefone">
-                    Telefone
-                </label>
-
-
-                <div class="input-wrapper">
-
-                    <span class="input-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <path
-                                d="M6.5 3h3l1.5 5-2 1.5
-                                   a14 14 0 0 0 5.5 5.5
-                                   l1.5-2 5 1.5v3
-                                   c0 1.1-.9 2-2 2
-                                   C10.7 19.5 4.5 13.3
-                                   4.5 5c0-1.1.9-2 2-2Z"
-                            />
-
-                        </svg>
-
-                    </span>
-
-
-                    <input
-                        type="tel"
-                        id="telefone"
-                        placeholder="(00) 00000-0000"
-                        autocomplete="tel"
-                        maxlength="15"
-                        required
-                    >
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SEGURANÇA DA CONTA
-        ================================================== -->
-
-        <section class="form-section">
-
-
-            <div class="section-label">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                >
-
-                    <rect
-                        x="4"
-                        y="10"
-                        width="16"
-                        height="11"
-                        rx="2"
-                    />
-
-                    <path
-                        d="M8 10V7a4 4 0 0 1 8 0v3"
-                    />
-
-                </svg>
-
-                Segurança da conta
-
-            </div>
-
-
-
-            <!-- SENHA -->
-
-            <div class="form-group">
-
-                <label for="senha">
-                    Senha
-                </label>
-
-
-                <div class="input-wrapper">
-
-                    <span class="input-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <rect
-                                x="4"
-                                y="10"
-                                width="16"
-                                height="11"
-                                rx="2"
-                            />
-
-                            <path
-                                d="M8 10V7a4 4 0 0 1 8 0v3"
-                            />
-
-                        </svg>
-
-                    </span>
-
-
-                    <input
-                        type="password"
-                        id="senha"
-                        placeholder="Crie uma senha"
-                        autocomplete="new-password"
-                        required
-                    >
-
-
-                    <button
-                        type="button"
-                        class="password-toggle"
-                        onclick="alternarSenha('senha', this)"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <path
-                                d="M2 12s3.5-6 10-6
-                                   10 6 10 6
-                                   -3.5 6-10 6
-                                   -10-6-10-6Z"
-                            />
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="3"
-                            />
-
-                        </svg>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- CONFIRMAR SENHA -->
-
-            <div class="form-group">
-
-                <label for="confirmarSenha">
-                    Confirmar senha
-                </label>
-
-
-                <div class="input-wrapper">
-
-                    <span class="input-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <rect
-                                x="4"
-                                y="10"
-                                width="16"
-                                height="11"
-                                rx="2"
-                            />
-
-                            <path
-                                d="M8 10V7a4 4 0 0 1 8 0v3"
-                            />
-
-                        </svg>
-
-                    </span>
-
-
-                    <input
-                        type="password"
-                        id="confirmarSenha"
-                        placeholder="Digite a senha novamente"
-                        autocomplete="new-password"
-                        required
-                    >
-
-
-                    <button
-                        type="button"
-                        class="password-toggle"
-                        onclick="alternarSenha('confirmarSenha', this)"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <path
-                                d="M2 12s3.5-6 10-6
-                                   10 6 10 6
-                                   -3.5 6-10 6
-                                   -10-6-10-6Z"
-                            />
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="3"
-                            />
-
-                        </svg>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             ÁREA DA PESSOA PROTEGIDA
-        ================================================== -->
-
-        <div id="areaProtegida">
-
-
-            <section class="form-section">
-
-
-                <div class="section-label">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
-
-                        <path
-                            d="M12 3
-                               l8 3v5
-                               c0 5.2-3.4 8.7-8 10
-                               c-4.6-1.3-8-4.8-8-10V6l8-3Z"
-                        />
-
-                        <path
-                            d="M12 8v4"
-                        />
-
-                        <circle
-                            cx="12"
-                            cy="15.5"
-                            r=".8"
-                            fill="currentColor"
-                            stroke="none"
-                        />
-
-                    </svg>
-
-                    Contato de emergência
-
+                <div class="account-title">
+                    Como você deseja se cadastrar?
                 </div>
 
 
-                <div class="emergency-card">
+                <div class="type-options">
 
 
-                    <div class="emergency-info">
+                    <!-- =================================================
+                         PESSOA PROTEGIDA
+                    ================================================== -->
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
+                    <label class="type-option">
+
+                        <input
+                            type="radio"
+                            name="tipoConta"
+                            value="protegida"
+                            checked
+                            onchange="alterarTipoConta()"
                         >
 
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
+                        <div class="type-card">
 
-                            <path
-                                d="M12 8v4"
-                            />
+                            <div class="type-icon">
 
-                            <circle
-                                cx="12"
-                                cy="16"
-                                r=".8"
-                                fill="currentColor"
-                                stroke="none"
-                            />
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
 
-                        </svg>
+                                    <path
+                                        d="
+                                            M12 3
+                                            l8 3
+                                            v5
+                                            c0 5.2-3.4 8.7-8 10
+                                            c-4.6-1.3-8-4.8-8-10
+                                            V6l8-3Z
+                                        "
+                                    />
+
+                                    <path
+                                        d="M8.5 12l2.3 2.3 4.5-5"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                            <strong>
+                                Pessoa protegida
+                            </strong>
+
+                            <small>
+                                Quero utilizar o SilentHelp
+                                para minha segurança.
+                            </small>
+
+                        </div>
+
+                    </label>
 
 
-                        <p>
+                    <!-- =================================================
+                         RESPONSÁVEL
+                    ================================================== -->
 
-                            Cadastre uma pessoa de confiança
-                            que poderá receber os alertas
-                            de segurança enviados pelo
-                            SilentHelp.
+                    <label class="type-option">
 
-                        </p>
+                        <input
+                            type="radio"
+                            name="tipoConta"
+                            value="responsavel"
+                            onchange="alterarTipoConta()"
+                        >
 
-                    </div>
+                        <div class="type-card">
 
-
-
-                    <!-- NOME CONTATO -->
-
-                    <div class="form-group">
-
-                        <label for="contatoEmergencia">
-                            Nome do contato
-                        </label>
-
-
-                        <div class="input-wrapper">
-
-                            <span class="input-icon">
+                            <div class="type-icon">
 
                                 <svg
                                     viewBox="0 0 24 24"
@@ -1867,44 +1050,68 @@
                                 >
 
                                     <circle
-                                        cx="12"
+                                        cx="9"
                                         cy="8"
-                                        r="4"
+                                        r="3"
+                                    />
+
+                                    <circle
+                                        cx="17"
+                                        cy="9"
+                                        r="2.5"
                                     />
 
                                     <path
-                                        d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+                                        d="
+                                            M3 20
+                                            c0-3.5 2.7-6 6-6
+                                            s6 2.5 6 6
+                                        "
+                                    />
+
+                                    <path
+                                        d="
+                                            M15 14
+                                            c3 0 5 2 5 5
+                                        "
                                     />
 
                                 </svg>
 
-                            </span>
+                            </div>
 
+                            <strong>
+                                Responsável
+                            </strong>
 
-                            <input
-                                type="text"
-                                id="contatoEmergencia"
-                                placeholder="Ex.: Maria Silva"
-                            >
+                            <small>
+                                Quero receber alertas e
+                                ajudar uma pessoa protegida.
+                            </small>
 
                         </div>
 
-                    </div>
+                    </label>
 
 
+                    <!-- =================================================
+                         ADMINISTRADOR — DESATIVADO
+                         
+                         Mantido no código para uso futuro.
+                    ==================================================
 
-                    <!-- TELEFONE CONTATO -->
+                    <label class="type-option">
 
-                    <div class="form-group">
+                        <input
+                            type="radio"
+                            name="tipoConta"
+                            value="admin"
+                            onchange="alterarTipoConta()"
+                        >
 
-                        <label for="telefoneEmergencia">
-                            Telefone do contato
-                        </label>
+                        <div class="type-card">
 
-
-                        <div class="input-wrapper">
-
-                            <span class="input-icon">
+                            <div class="type-icon">
 
                                 <svg
                                     viewBox="0 0 24 24"
@@ -1914,48 +1121,52 @@
                                 >
 
                                     <path
-                                        d="M6.5 3h3l1.5 5-2 1.5
-                                           a14 14 0 0 0 5.5 5.5
-                                           l1.5-2 5 1.5v3
-                                           c0 1.1-.9 2-2 2
-                                           C10.7 19.5 4.5 13.3
-                                           4.5 5c0-1.1.9-2 2-2Z"
+                                        d="
+                                            M12 3
+                                            l8 3
+                                            v5
+                                            c0 5.2-3.4 8.7-8 10
+                                            c-4.6-1.3-8-4.8-8-10
+                                            V6l8-3Z
+                                        "
+                                    />
+
+                                    <path
+                                        d="M9 12l2 2 4-4"
                                     />
 
                                 </svg>
 
-                            </span>
+                            </div>
 
+                            <strong>
+                                Administrador
+                            </strong>
 
-                            <input
-                                type="tel"
-                                id="telefoneEmergencia"
-                                placeholder="(00) 00000-0000"
-                                maxlength="15"
-                            >
+                            <small>
+                                Gerenciar usuários e
+                                recursos do sistema.
+                            </small>
 
                         </div>
 
-                    </div>
+                    </label>
+
+                    ==================================================
+                         FIM — ADMINISTRADOR
+                    ================================================== -->
+
 
                 </div>
 
             </section>
 
 
-        </div>
-
-
-
-        <!-- =================================================
-             ÁREA DO RESPONSÁVEL
-        ================================================== -->
-
-        <div id="areaResponsavel">
-
+            <!-- =================================================
+                 DADOS PESSOAIS
+            ================================================== -->
 
             <section class="form-section">
-
 
                 <div class="section-label">
 
@@ -1967,92 +1178,210 @@
                     >
 
                         <circle
-                            cx="9"
+                            cx="12"
                             cy="8"
-                            r="3"
-                        />
-
-                        <circle
-                            cx="17"
-                            cy="9"
-                            r="2.5"
+                            r="4"
                         />
 
                         <path
-                            d="M3 20
-                               c0-3.5 2.7-6 6-6
-                               s6 2.5 6 6"
-                        />
-
-                        <path
-                            d="M15 14
-                               c3 0 5 2 5 5"
+                            d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
                         />
 
                     </svg>
 
-                    Vínculo de responsável
+                    Dados pessoais
 
                 </div>
 
 
-                <div class="info-card">
+                <!-- NOME -->
 
-                    <div class="info-content">
+                <div class="form-group">
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
+                    <label for="nome">
+                        Nome completo
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4"
+                                />
+
+                                <path
+                                    d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+                                />
+
+                            </svg>
+
+                        </span>
+
+
+                        <input
+                            type="text"
+                            id="nome"
+                            placeholder="Digite seu nome completo"
+                            autocomplete="name"
+                            required
                         >
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
-
-                            <path
-                                d="M12 11v5"
-                            />
-
-                            <circle
-                                cx="12"
-                                cy="7.5"
-                                r=".8"
-                                fill="currentColor"
-                                stroke="none"
-                            />
-
-                        </svg>
-
-
-                        <p>
-
-                            Para ser responsável, você deverá
-                            estar vinculado a uma pessoa que
-                            utiliza o SilentHelp. Utilize o
-                            código de convite fornecido por ela.
-
-                        </p>
 
                     </div>
 
                 </div>
 
 
-
-                <!-- CÓDIGO -->
+                <!-- EMAIL -->
 
                 <div class="form-group">
 
-                    <label for="codigoConvite">
-
-                        Código de convite
-
+                    <label for="email">
+                        E-mail
                     </label>
 
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
+
+                                <rect
+                                    x="3"
+                                    y="5"
+                                    width="18"
+                                    height="14"
+                                    rx="2"
+                                />
+
+                                <path
+                                    d="M3 7l9 6 9-6"
+                                />
+
+                            </svg>
+
+                        </span>
+
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Digite seu e-mail"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- TELEFONE -->
+
+                <div class="form-group">
+
+                    <label for="telefone">
+                        Telefone
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
+
+                                <path
+                                    d="
+                                        M6.5 3h3l1.5 5-2 1.5
+                                        a14 14 0 0 0 5.5 5.5
+                                        l1.5-2 5 1.5v3
+                                        c0 1.1-.9 2-2 2
+                                        C10.7 19.5 4.5 13.3
+                                        4.5 5c0-1.1.9-2 2-2Z
+                                    "
+                                />
+
+                            </svg>
+
+                        </span>
+
+
+                        <input
+                            type="tel"
+                            id="telefone"
+                            placeholder="(00) 00000-0000"
+                            autocomplete="tel"
+                            maxlength="15"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SEGURANÇA DA CONTA
+            ================================================== -->
+
+            <section class="form-section">
+
+                <div class="section-label">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+
+                        <rect
+                            x="4"
+                            y="10"
+                            width="16"
+                            height="11"
+                            rx="2"
+                        />
+
+                        <path
+                            d="M8 10V7a4 4 0 0 1 8 0v3"
+                        />
+
+                    </svg>
+
+                    Segurança da conta
+
+                </div>
+
+
+                <!-- SENHA -->
+
+                <div class="form-group">
+
+                    <label for="senha">
+                        Senha
+                    </label>
 
                     <div class="input-wrapper">
 
@@ -2067,14 +1396,14 @@
 
                                 <rect
                                     x="4"
-                                    y="5"
+                                    y="10"
                                     width="16"
-                                    height="14"
+                                    height="11"
                                     rx="2"
                                 />
 
                                 <path
-                                    d="M8 9h8M8 13h5"
+                                    d="M8 10V7a4 4 0 0 1 8 0v3"
                                 />
 
                             </svg>
@@ -2083,27 +1412,58 @@
 
 
                         <input
-                            type="text"
-                            id="codigoConvite"
-                            placeholder="Ex.: SH-8F4K2"
-                            maxlength="12"
+                            type="password"
+                            id="senha"
+                            placeholder="Crie uma senha"
+                            autocomplete="new-password"
+                            required
                         >
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="alternarSenha('senha', this)"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
+
+                                <path
+                                    d="
+                                        M2 12s3.5-6 10-6
+                                        10 6 10 6
+                                        -3.5 6-10 6
+                                        -10-6-10-6Z
+                                    "
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="3"
+                                />
+
+                            </svg>
+
+                        </button>
 
                     </div>
 
                 </div>
 
 
-                <!-- RELAÇÃO -->
+                <!-- CONFIRMAR SENHA -->
 
                 <div class="form-group">
 
-                    <label for="relacao">
-
-                        Relação com a pessoa
-
+                    <label for="confirmarSenha">
+                        Confirmar senha
                     </label>
-
 
                     <div class="input-wrapper">
 
@@ -2116,14 +1476,16 @@
                                 stroke-width="1.8"
                             >
 
+                                <rect
+                                    x="4"
+                                    y="10"
+                                    width="16"
+                                    height="11"
+                                    rx="2"
+                                />
+
                                 <path
-                                    d="M12 21
-                                       s-7-4.5-7-10
-                                       a4 4 0 0 1
-                                       7-2.5
-                                       A4 4 0 0 1
-                                       19 11
-                                       c0 5.5-7 10-7 10Z"
+                                    d="M8 10V7a4 4 0 0 1 8 0v3"
                                 />
 
                             </svg>
@@ -2132,10 +1494,45 @@
 
 
                         <input
-                            type="text"
-                            id="relacao"
-                            placeholder="Ex.: Mãe, irmã, amiga..."
+                            type="password"
+                            id="confirmarSenha"
+                            placeholder="Digite a senha novamente"
+                            autocomplete="new-password"
+                            required
                         >
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="alternarSenha('confirmarSenha', this)"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
+
+                                <path
+                                    d="
+                                        M2 12s3.5-6 10-6
+                                        10 6 10 6
+                                        -3.5 6-10 6
+                                        -10-6-10-6Z
+                                    "
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="3"
+                                />
+
+                            </svg>
+
+                        </button>
 
                     </div>
 
@@ -2144,480 +1541,1120 @@
             </section>
 
 
-        </div>
+            <!-- =================================================
+                 ÁREA DA PESSOA PROTEGIDA
+            ================================================== -->
+
+            <div id="areaProtegida">
+
+                <section class="form-section">
+
+                    <div class="section-label">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                        >
+
+                            <path
+                                d="
+                                    M12 3
+                                    l8 3
+                                    v5
+                                    c0 5.2-3.4 8.7-8 10
+                                    c-4.6-1.3-8-4.8-8-10
+                                    V6l8-3Z
+                                "
+                            />
+
+                            <path
+                                d="M12 8v4"
+                            />
+
+                            <circle
+                                cx="12"
+                                cy="15.5"
+                                r=".8"
+                                fill="currentColor"
+                                stroke="none"
+                            />
+
+                        </svg>
+
+                        Contato de emergência
+
+                    </div>
 
 
+                    <div class="emergency-card">
 
-        <!-- =================================================
-             TERMOS
-        ================================================== -->
+                        <div class="emergency-info">
 
-        <div class="terms">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
 
-            <input
-                type="checkbox"
-                id="termos"
-            >
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="9"
+                                />
+
+                                <path
+                                    d="M12 8v4"
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="16"
+                                    r=".8"
+                                    fill="currentColor"
+                                    stroke="none"
+                                />
+
+                            </svg>
 
 
-            <label for="termos">
+                            <p>
+                                Cadastre uma pessoa de confiança
+                                que poderá receber os alertas
+                                de segurança enviados pelo
+                                SilentHelp.
+                            </p>
 
-                Li e concordo com os
+                        </div>
 
-                <a
-                    href="#"
-                    onclick="mostrarTermos(event)"
+
+                        <!-- NOME CONTATO -->
+
+                        <div class="form-group">
+
+                            <label for="contatoEmergencia">
+                                Nome do contato
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    >
+
+                                        <circle
+                                            cx="12"
+                                            cy="8"
+                                            r="4"
+                                        />
+
+                                        <path
+                                            d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
+                                        />
+
+                                    </svg>
+
+                                </span>
+
+
+                                <input
+                                    type="text"
+                                    id="contatoEmergencia"
+                                    placeholder="Ex.: Maria Silva"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TELEFONE CONTATO -->
+
+                        <div class="form-group">
+
+                            <label for="telefoneEmergencia">
+                                Telefone do contato
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    >
+
+                                        <path
+                                            d="
+                                                M6.5 3h3l1.5 5-2 1.5
+                                                a14 14 0 0 0 5.5 5.5
+                                                l1.5-2 5 1.5v3
+                                                c0 1.1-.9 2-2 2
+                                                C10.7 19.5 4.5 13.3
+                                                4.5 5c0-1.1.9-2 2-2Z
+                                            "
+                                        />
+
+                                    </svg>
+
+                                </span>
+
+
+                                <input
+                                    type="tel"
+                                    id="telefoneEmergencia"
+                                    placeholder="(00) 00000-0000"
+                                    maxlength="15"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- =================================================
+                 ÁREA DO RESPONSÁVEL
+            ================================================== -->
+
+            <div id="areaResponsavel">
+
+                <section class="form-section">
+
+                    <div class="section-label">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                        >
+
+                            <circle
+                                cx="9"
+                                cy="8"
+                                r="3"
+                            />
+
+                            <circle
+                                cx="17"
+                                cy="9"
+                                r="2.5"
+                            />
+
+                            <path
+                                d="
+                                    M3 20
+                                    c0-3.5 2.7-6 6-6
+                                    s6 2.5 6 6
+                                "
+                            />
+
+                            <path
+                                d="M15 14c3 0 5 2 5 5"
+                            />
+
+                        </svg>
+
+                        Vínculo de responsável
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <div class="info-content">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="9"
+                                />
+
+                                <path
+                                    d="M12 11v5"
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="7.5"
+                                    r=".8"
+                                    fill="currentColor"
+                                    stroke="none"
+                                />
+
+                            </svg>
+
+
+                            <p>
+                                Para ser responsável, você deverá
+                                estar vinculado a uma pessoa que
+                                utiliza o SilentHelp. Utilize o
+                                código de convite fornecido por ela.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CÓDIGO -->
+
+                    <div class="form-group">
+
+                        <label for="codigoConvite">
+                            Código de convite
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+
+                                    <rect
+                                        x="4"
+                                        y="5"
+                                        width="16"
+                                        height="14"
+                                        rx="2"
+                                    />
+
+                                    <path
+                                        d="M8 9h8M8 13h5"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+
+                            <input
+                                type="text"
+                                id="codigoConvite"
+                                placeholder="Ex.: SH-8F4K2"
+                                maxlength="12"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RELAÇÃO -->
+
+                    <div class="form-group">
+
+                        <label for="relacao">
+                            Relação com a pessoa
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+
+                                    <path
+                                        d="
+                                            M12 21
+                                            s-7-4.5-7-10
+                                            a4 4 0 0 1
+                                            7-2.5
+                                            A4 4 0 0 1
+                                            19 11
+                                            c0 5.5-7 10-7 10Z
+                                        "
+                                    />
+
+                                </svg>
+
+                            </span>
+
+
+                            <input
+                                type="text"
+                                id="relacao"
+                                placeholder="Ex.: Mãe, irmã, amiga..."
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- =================================================
+                 TERMOS
+            ================================================== -->
+
+            <div class="terms">
+
+                <input
+                    type="checkbox"
+                    id="termos"
                 >
-                    termos de uso
+
+                <label for="termos">
+
+                    Li e concordo com os
+
+                    <a
+                        href="#"
+                        onclick="mostrarTermos(event)"
+                    >
+                        termos de uso
+                    </a>
+
+                    e a política de privacidade
+                    do SilentHelp.
+
+                </label>
+
+            </div>
+
+
+            <!-- =================================================
+                 BOTÃO
+            ================================================== -->
+
+            <button
+                type="button"
+                class="register-button"
+                onclick="cadastrar()"
+            >
+                Criar minha conta
+            </button>
+
+
+            <!-- =================================================
+                 LOGIN
+            ================================================== -->
+
+            <div class="login">
+
+                Já possui uma conta?
+
+                <a href="login.php">
+                    Entrar
                 </a>
 
-                e a política de privacidade
-                do SilentHelp.
-
-            </label>
-
-        </div>
+            </div>
 
 
+            <!-- =================================================
+                 SEGURANÇA
+            ================================================== -->
 
-        <!-- =================================================
-             BOTÃO
-        ================================================== -->
+            <div class="security">
 
-        <button
-            type="button"
-            class="register-button"
-            onclick="cadastrar()"
-        >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
 
-            Criar minha conta
+                    <path
+                        d="
+                            M12 3
+                            l8 3
+                            v5
+                            c0 5.2-3.4 8.7-8 10
+                            c-4.6-1.3-8-4.8-8-10
+                            V6l8-3Z
+                        "
+                    />
 
-        </button>
+                    <path
+                        d="M8.5 12l2.3 2.3 4.5-5"
+                    />
 
+                </svg>
 
+                Seus dados são utilizados para
+                a segurança da conta.
 
-        <!-- =================================================
-             LOGIN
-        ================================================== -->
+            </div>
 
-        <div class="login">
+        </main>
 
-            Já possui uma conta?
-
-            <a href="login.php">
-                Entrar
-            </a>
-
-        </div>
-
-
-
-        <!-- =================================================
-             SEGURANÇA
-        ================================================== -->
-
-        <div class="security">
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-            >
-
-                <path
-                    d="M12 3
-                       l8 3v5
-                       c0 5.2-3.4 8.7-8 10
-                       c-4.6-1.3-8-4.8-8-10V6l8-3Z"
-                />
-
-                <path
-                    d="M8.5 12l2.3 2.3
-                       4.5-5"
-                />
-
-            </svg>
-
-            Seus dados são utilizados para
-            a segurança da conta.
-
-        </div>
+    </div>
 
 
-    </main>
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
 
-</div>
-
-
-
-<!-- =====================================================
-     TOAST
-====================================================== -->
-
-<div
-    id="toast"
-    class="toast"
-></div>
+    <div
+        id="toast"
+        class="toast"
+    ></div>
 
 
+    <script>
 
-<script>
+        /* =====================================================
+           ALTERAR TIPO DE CONTA
+        ===================================================== */
 
+        function alterarTipoConta() {
 
-    /* =====================================================
-       ALTERAR TIPO DE CONTA
-    ===================================================== */
-
-    function alterarTipoConta() {
-
-        const tipo =
-            document.querySelector(
+            const tipo = document.querySelector(
                 'input[name="tipoConta"]:checked'
             ).value;
 
+            const areaProtegida =
+                document.getElementById("areaProtegida");
 
-        const areaProtegida =
-            document.getElementById(
-                "areaProtegida"
+            const areaResponsavel =
+                document.getElementById("areaResponsavel");
+
+
+            if (tipo === "protegida") {
+
+                areaProtegida.style.display = "block";
+                areaResponsavel.style.display = "none";
+
+            }
+
+            else if (tipo === "responsavel") {
+
+                areaProtegida.style.display = "none";
+                areaResponsavel.style.display = "block";
+
+            }
+
+
+            /*
+            =====================================================
+            ADMINISTRADOR — DESATIVADO
+
+            Mantido para uso futuro.
+
+            else if (tipo === "admin") {
+
+                areaProtegida.style.display = "none";
+                areaResponsavel.style.display = "none";
+
+            }
+            =====================================================
+            */
+        }
+
+
+        /* =====================================================
+           MÁSCARA DE TELEFONE
+        ===================================================== */
+
+        function aplicarMascaraTelefone(input) {
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    let valor =
+                        input.value.replace(/\D/g, "");
+
+
+                    if (valor.length > 11) {
+
+                        valor =
+                            valor.substring(0, 11);
+
+                    }
+
+
+                    if (valor.length > 6) {
+
+                        valor =
+                            valor.replace(
+                                /^(\d{2})(\d{5})(\d{0,4})/,
+                                "($1) $2-$3"
+                            );
+
+                    }
+
+                    else if (valor.length > 2) {
+
+                        valor =
+                            valor.replace(
+                                /^(\d{2})(\d{0,5})/,
+                                "($1) $2"
+                            );
+
+                    }
+
+                    else {
+
+                        valor =
+                            valor.replace(
+                                /^(\d*)/,
+                                "($1"
+                            );
+
+                    }
+
+
+                    input.value = valor;
+
+                }
             );
-
-
-        const areaResponsavel =
-            document.getElementById(
-                "areaResponsavel"
-            );
-
-
-        if (tipo === "protegida") {
-
-            areaProtegida.style.display =
-                "block";
-
-            areaResponsavel.style.display =
-                "none";
 
         }
 
-        else {
 
-            areaProtegida.style.display =
-                "none";
+        aplicarMascaraTelefone(
+            document.getElementById("telefone")
+        );
 
-            areaResponsavel.style.display =
-                "block";
+        aplicarMascaraTelefone(
+            document.getElementById("telefoneEmergencia")
+        );
+
+
+        /* =====================================================
+           MOSTRAR / OCULTAR SENHA
+        ===================================================== */
+
+        function alternarSenha(id, botao) {
+
+            const campo =
+                document.getElementById(id);
+
+
+            if (campo.type === "password") {
+
+                campo.type = "text";
+
+
+                botao.innerHTML = `
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+
+                        <path d="M3 3l18 18"/>
+
+                        <path
+                            d="
+                                M10.6 10.6
+                                a2 2 0 0 0
+                                2.8 2.8
+                            "
+                        />
+
+                        <path
+                            d="
+                                M9.9 5.2
+                                A10.6 10.6 0 0 1
+                                12 5
+                                c6.5 0 10 7 10 7
+                            "
+                        />
+
+                    </svg>
+
+                `;
+
+            }
+
+            else {
+
+                campo.type = "password";
+
+
+                botao.innerHTML = `
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+
+                        <path
+                            d="
+                                M2 12s3.5-6 10-6
+                                10 6 10 6
+                                -3.5 6-10 6
+                                -10-6-10-6Z
+                            "
+                        />
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                        />
+
+                    </svg>
+
+                `;
+
+            }
 
         }
 
-    }
+
+        /* =====================================================
+           CADASTRO
+        ===================================================== */
+
+        async function cadastrar() {
+
+            const nome =
+                document.getElementById("nome")
+                    .value
+                    .trim();
 
 
+            const email =
+                document.getElementById("email")
+                    .value
+                    .trim()
+                    .toLowerCase();
 
-    /* =====================================================
-       MÁSCARA DE TELEFONE
-    ===================================================== */
 
-    function aplicarMascaraTelefone(input) {
+            const telefone =
+                document.getElementById("telefone")
+                    .value
+                    .trim();
 
-        input.addEventListener(
-            "input",
-            function () {
 
-                let valor =
-                    input.value.replace(
-                        /\D/g,
-                        ""
+            const senha =
+                document.getElementById("senha")
+                    .value;
+
+
+            const confirmarSenha =
+                document.getElementById("confirmarSenha")
+                    .value;
+
+
+            const termos =
+                document.getElementById("termos")
+                    .checked;
+
+
+            const tipo =
+                document.querySelector(
+                    'input[name="tipoConta"]:checked'
+                )?.value || "protegida";
+
+
+            /* ---------------------------------------------
+               VALIDAÇÕES BÁSICAS
+            --------------------------------------------- */
+
+            if (
+                !nome ||
+                !email ||
+                !telefone ||
+                !senha ||
+                !confirmarSenha
+            ) {
+
+                mostrarToast(
+                    "Preencha todos os campos obrigatórios.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+            ) {
+
+                mostrarToast(
+                    "Digite um e-mail válido.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (senha.length < 6) {
+
+                mostrarToast(
+                    "A senha deve ter pelo menos 6 caracteres.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (senha !== confirmarSenha) {
+
+                mostrarToast(
+                    "As senhas não coincidem.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!termos) {
+
+                mostrarToast(
+                    "Você precisa aceitar os termos de uso.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /* ---------------------------------------------
+               DADOS PRINCIPAIS
+            --------------------------------------------- */
+
+            const dados = {
+                nome,
+                email,
+                telefone,
+                senha,
+                tipo
+            };
+
+
+            /* ---------------------------------------------
+               PESSOA PROTEGIDA
+            --------------------------------------------- */
+
+            if (tipo === "protegida") {
+
+                dados.contatoEmergencia =
+                    document
+                        .getElementById("contatoEmergencia")
+                        ?.value
+                        .trim() || "";
+
+
+                dados.telefoneEmergencia =
+                    document
+                        .getElementById("telefoneEmergencia")
+                        ?.value
+                        .trim() || "";
+
+
+                if (
+                    !dados.contatoEmergencia ||
+                    !dados.telefoneEmergencia
+                ) {
+
+                    mostrarToast(
+                        "Preencha os dados do contato de emergência.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+            }
+
+
+            /* ---------------------------------------------
+               RESPONSÁVEL
+            --------------------------------------------- */
+
+            else if (tipo === "responsavel") {
+
+                dados.codigoConvite =
+                    document
+                        .getElementById("codigoConvite")
+                        ?.value
+                        .trim()
+                        .toUpperCase() || "";
+
+
+                dados.relacao =
+                    document
+                        .getElementById("relacao")
+                        ?.value
+                        .trim() || "";
+
+
+                if (
+                    !dados.codigoConvite ||
+                    !dados.relacao
+                ) {
+
+                    mostrarToast(
+                        "Informe o código de convite e sua relação.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+            }
+
+
+            /*
+            =================================================
+               ADMINISTRADOR — DESATIVADO
+
+               Mantido para uso futuro.
+
+            else if (tipo === "admin") {
+
+                // Administrador não precisa
+                // de campos adicionais.
+
+            }
+            =================================================
+            */
+
+
+            /* ---------------------------------------------
+               ENVIO PARA API
+            --------------------------------------------- */
+
+            try {
+
+                const resposta =
+                    await window.SilentHelpAPI.post(
+                        "register",
+                        dados
                     );
 
 
-                if (valor.length > 11) {
+                if (!resposta.ok) {
 
-                    valor =
-                        valor.substring(
-                            0,
-                            11
-                        );
+                    mostrarToast(
+                        resposta.message ||
+                        "Não foi possível criar a conta.",
+                        "error"
+                    );
 
+                    return;
                 }
 
 
-                if (valor.length > 6) {
+                /* -----------------------------------------
+                   SALVAR USUÁRIO LOCALMENTE
+                ----------------------------------------- */
 
-                    valor =
-                        valor.replace(
-                            /^(\d{2})(\d{5})(\d{0,4}).*/,
-                            "($1) $2-$3"
-                        );
-
-                }
-
-                else if (valor.length > 2) {
-
-                    valor =
-                        valor.replace(
-                            /^(\d{2})(\d{0,5})/,
-                            "($1) $2"
-                        );
-
-                }
-
-                else {
-
-                    valor =
-                        valor.replace(
-                            /^(\d*)/,
-                            "($1"
-                        );
-
-                }
+                sessionStorage.setItem(
+                    "silenthelp_logado",
+                    "true"
+                );
 
 
-                input.value = valor;
+                sessionStorage.setItem(
+                    "silenthelp_usuario",
+                    JSON.stringify(
+                        resposta.user
+                    )
+                );
+
+
+                localStorage.setItem(
+                    "silenthelp_usuario",
+                    JSON.stringify(
+                        resposta.user
+                    )
+                );
+
+
+                mostrarToast(
+                    "Conta criada com sucesso!",
+                    "success"
+                );
+
+
+                /* -----------------------------------------
+                   REDIRECIONAMENTO
+                ----------------------------------------- */
+
+                setTimeout(() => {
+
+                    /*
+                    =================================================
+                    ADMINISTRADOR — DESATIVADO
+
+                    Mantido para uso futuro.
+
+                    if (tipo === "admin") {
+
+                        window.location.href =
+                            "admin/admin.php";
+
+                    }
+
+                    else
+                    =================================================
+                    */
+
+
+                    if (tipo === "responsavel") {
+
+                        window.location.href =
+                            "responsavel.php";
+
+                    }
+
+                    else {
+
+                        window.location.href =
+                            "inicio.php";
+
+                    }
+
+                }, 1200);
 
             }
-        );
 
-    }
+            catch (erro) {
 
-
-
-    aplicarMascaraTelefone(
-        document.getElementById(
-            "telefone"
-        )
-    );
+                console.error(
+                    "Erro no cadastro:",
+                    erro
+                );
 
 
-    aplicarMascaraTelefone(
-        document.getElementById(
-            "telefoneEmergencia"
-        )
-    );
+                mostrarToast(
+                    "Não foi possível conectar ao servidor.",
+                    "error"
+                );
+
+            }
+
+        }
 
 
+        /* =====================================================
+           TERMOS
+        ===================================================== */
 
-    /* =====================================================
-       MOSTRAR / OCULTAR SENHA
-    ===================================================== */
+        function mostrarTermos(event) {
 
-    function alternarSenha(
-        id,
-        botao
-    ) {
-
-        const campo =
-            document.getElementById(id);
+            event.preventDefault();
 
 
-        if (
-            campo.type ===
-            "password"
+            mostrarToast(
+                "Os termos de uso serão apresentados nesta seção."
+            );
+
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        function mostrarToast(
+            mensagem,
+            tipo = ""
         ) {
 
-            campo.type =
-                "text";
+            const toast =
+                document.getElementById("toast");
 
 
-            botao.innerHTML = `
+            toast.textContent =
+                mensagem;
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                >
 
-                    <path d="M3 3l18 18"/>
+            toast.className =
+                "toast show " + tipo;
 
-                    <path
-                        d="M10.6 10.6
-                           a2 2 0 0 0
-                           2.8 2.8"
-                    />
 
-                    <path
-                        d="M9.9 5.2
-                           A10.6 10.6 0 0 1
-                           12 5
-                           c6.5 0
-                           10 7
-                           10 7"
-                    />
+            setTimeout(
+                function () {
 
-                </svg>
+                    toast.className =
+                        "toast";
 
-            `;
+                },
+                3000
+            );
 
         }
 
-        else {
 
-            campo.type =
-                "password";
+        /* =====================================================
+           CÓDIGO DE CONVITE
+        ===================================================== */
 
-
-            botao.innerHTML = `
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                >
-
-                    <path
-                        d="M2 12s3.5-6 10-6
-                           10 6 10 6
-                           -3.5 6-10 6
-                           -10-6-10-6Z"
-                    />
-
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="3"
-                    />
-
-                </svg>
-
-            `;
-
-        }
-
-    }
-
-
-
-    /* =====================================================
-       CADASTRO
-    ===================================================== */
-
-    async function cadastrar() {
-
-        const nome = document.getElementById("nome").value.trim();
-        const email = document.getElementById("email").value.trim().toLowerCase();
-        const telefone = document.getElementById("telefone").value.trim();
-        const senha = document.getElementById("senha").value;
-        const confirmarSenha = document.getElementById("confirmarSenha").value;
-        const termos = document.getElementById("termos").checked;
-        const tipo = document.querySelector('input[name="tipoConta"]:checked')?.value || 'protegida';
-
-        if (!nome || !email || !telefone || !senha || !confirmarSenha) {
-            mostrarToast("Preencha todos os campos obrigatórios.", "error"); return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            mostrarToast("Digite um e-mail válido.", "error"); return;
-        }
-        if (senha.length < 6) { mostrarToast("A senha deve ter pelo menos 6 caracteres.", "error"); return; }
-        if (senha !== confirmarSenha) { mostrarToast("As senhas não coincidem.", "error"); return; }
-        if (!termos) { mostrarToast("Você precisa aceitar os termos de uso.", "error"); return; }
-
-        const dados = {nome,email,telefone,senha,tipo};
-        if (tipo === 'protegida') {
-            dados.contatoEmergencia = document.getElementById("contatoEmergencia")?.value.trim() || '';
-            dados.telefoneEmergencia = document.getElementById("telefoneEmergencia")?.value.trim() || '';
-            if (!dados.contatoEmergencia || !dados.telefoneEmergencia) {
-                mostrarToast("Preencha os dados do contato de emergência.", "error"); return;
-            }
-        } else {
-            dados.codigoConvite = document.getElementById("codigoConvite")?.value.trim().toUpperCase() || '';
-            dados.relacao = document.getElementById("relacao")?.value.trim() || '';
-            if (!dados.codigoConvite || !dados.relacao) {
-                mostrarToast("Informe o código de convite e sua relação.", "error"); return;
-            }
-        }
-
-        const resposta = await window.SilentHelpAPI.post('register', dados);
-        if (!resposta.ok) { mostrarToast(resposta.message || "Não foi possível criar a conta.", "error"); return; }
-
-        sessionStorage.setItem("silenthelp_logado", "true");
-        sessionStorage.setItem("silenthelp_usuario", JSON.stringify(resposta.user));
-        localStorage.setItem("silenthelp_usuario", JSON.stringify(resposta.user));
-        mostrarToast("Conta criada com sucesso!", "success");
-        setTimeout(() => window.location.href = tipo === 'responsavel' ? 'responsavel.php' : 'index.php', 1200);
-    }
-
-
-    /* =====================================================
-       TERMOS
-    ===================================================== */
-
-    function mostrarTermos(event) {
-
-        event.preventDefault();
-
-
-        mostrarToast(
-            "Os termos de uso serão apresentados nesta seção."
-        );
-
-    }
-
-
-
-    /* =====================================================
-       TOAST
-    ===================================================== */
-
-    function mostrarToast(
-        mensagem,
-        tipo = ""
-    ) {
-
-        const toast =
+        const codigoConvite =
             document.getElementById(
-                "toast"
+                "codigoConvite"
             );
 
 
-        toast.textContent =
-            mensagem;
+        if (codigoConvite) {
+
+            codigoConvite.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value
+                            .toUpperCase()
+                            .replace(
+                                /[^A-Z0-9-]/g,
+                                ""
+                            );
+
+                }
+            );
+
+        }
+
+    </script>
 
 
-        toast.className =
-            "toast show " +
-            tipo;
+    <!-- =====================================================
+         SINCRONIZAÇÃO COM API
+    ====================================================== -->
 
+    <script src="assets/db-sync.js"></script>
 
-        setTimeout(
-            function () {
-
-                toast.className =
-                    "toast";
-
-            },
-            3000
-        );
-
-    }
-
-
-
-    /* =====================================================
-       CÓDIGO DE CONVITE
-    ===================================================== */
-
-    document
-        .getElementById("codigoConvite")
-        .addEventListener(
-            "input",
-            function () {
-
-                this.value =
-                    this.value
-                        .toUpperCase()
-                        .replace(
-                            /[^A-Z0-9-]/g,
-                            ""
-                        );
-
-            }
-        );
-
-</script>
-
-
-<script src="assets/db-sync.js"></script>
 </body>
 
 </html>

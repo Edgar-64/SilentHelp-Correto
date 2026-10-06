@@ -1664,7 +1664,7 @@ exigirLogin();
 
     <button
         class="nav-button"
-        onclick="abrirPagina('index.php')"
+        onclick="abrirPagina('inicio.php')"
     >
 
         <svg
@@ -1942,7 +1942,7 @@ function iniciarMapa() {
 
     locaisSeguros.forEach(
 
-        function(local, index) {
+        function(local, inicio) {
 
             const marcador =
                 L.marker(
@@ -1982,7 +1982,7 @@ function iniciarMapa() {
                     <br><br>
 
                     <button
-                        onclick="selecionarLocal(${index})"
+                        onclick="selecionarLocal(${inicio})"
                         style="
                             width:100%;
                             padding:8px;
@@ -2270,10 +2270,10 @@ function atualizarLocalizacao(
 }
 
 
-function selecionarLocal(index) {
+function selecionarLocal(inicio) {
 
     const local =
-        locaisSeguros[index];
+        locaisSeguros[inicio];
 
 
     if (!local || !mapa) {
@@ -2482,7 +2482,7 @@ function grausParaRad(graus) {
 function voltarHome() {
 
     window.location.href =
-        "index.php";
+        "inicio.php";
 
 }
 

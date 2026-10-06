@@ -4,7 +4,7 @@ require_once __DIR__ . '/auth.php';
 $usuario = exigirLogin();
 
 if (($usuario['tipo'] ?? '') !== 'responsavel') {
-    header('Location: index.php');
+    header('Location: inicio.php');
     exit;
 }
 

@@ -1145,7 +1145,7 @@ $primeiraLetra = mb_strtoupper(
 
             <button
                 class="back-button"
-                onclick="abrirPagina('index.php')"
+                onclick="abrirPagina('inicio.php')"
                 aria-label="Voltar"
             >
 
@@ -1815,7 +1815,7 @@ $primeiraLetra = mb_strtoupper(
 
         <button
             class="nav-button"
-            onclick="abrirPagina('index.php')"
+            onclick="abrirPagina('inicio.php')"
         >
 
             <svg

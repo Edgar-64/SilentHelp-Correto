@@ -1769,7 +1769,7 @@
 
     function voltar() {
 
-        window.location.href = "index.php";
+        window.location.href = "inicio.php";
 
     }
 
@@ -1876,7 +1876,7 @@
         setTimeout(function () {
 
             window.location.href =
-                "index.php";
+                "inicio.php";
 
         }, 1500);
 

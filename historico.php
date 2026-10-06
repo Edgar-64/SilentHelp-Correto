@@ -1512,7 +1512,7 @@ exigirLogin();
 
         <button
             class="logo-button"
-            onclick="goTo('index.php')"
+            onclick="goTo('inicio.php')"
         >
 
             <svg
