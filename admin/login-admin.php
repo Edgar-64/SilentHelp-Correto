@@ -5,16 +5,12 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SilentHelp Admin - Login</title>
 
 
     <style>
-
         /* =====================================================
            RESET
         ===================================================== */
@@ -73,17 +69,13 @@
 
             background:
 
-                radial-gradient(
-                    circle at 50% -10%,
+                radial-gradient(circle at 50% -10%,
                     rgba(168, 85, 247, .22),
-                    transparent 38%
-                ),
+                    transparent 38%),
 
-                radial-gradient(
-                    circle at 0% 100%,
+                radial-gradient(circle at 0% 100%,
                     rgba(112, 45, 181, .12),
-                    transparent 35%
-                ),
+                    transparent 35%),
 
                 var(--fundo);
 
@@ -115,67 +107,61 @@
            LOGO
         ===================================================== */
 
-        .logo-area {
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            margin-bottom: 28px;
-        }
-
+        /* =====================================================
+   LOGO SILENTHELP
+===================================================== */
 
         .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
-            gap: 10px;
+            border-radius: 15px;
 
-            margin-bottom: 13px;
+            background: rgba(166, 92, 255, .13);
+
+            border: 1px solid rgba(166, 92, 255, .3);
+
+            color: var(--roxo-claro);
+
+            transition: .25s;
         }
 
+        .logo-icon:hover {
+            background: rgba(166, 92, 255, .18);
+            border-color: rgba(166, 92, 255, .5);
 
-        .logo-heart {
+            transform: translateY(-2px);
 
-            width: 45px;
-            height: 45px;
-
-            color: var(--roxo-2);
-
-            filter:
-                drop-shadow(
-                    0 0 14px
-                    rgba(168, 85, 247, .45)
-                );
+            box-shadow:
+                0 8px 25px rgba(166, 92, 255, .15);
         }
 
+        .logo-icon svg {
+            width: 28px;
+            height: 28px;
+        }
 
         .logo-text {
-
-            font-size: 29px;
-
-            font-weight: 750;
-
-            letter-spacing: -1.2px;
+            font-size: 25px;
+            font-weight: 700;
+            letter-spacing: -.5px;
+            color: var(--branco);
         }
 
-
-        .logo-text .silent {
-
-            color:
-                var(--roxo-2);
-        }
-
-
-        .logo-text .help {
-
-            color:
-                white;
+        .logo-text span {
+            color: var(--roxo-claro);
         }
 
 
@@ -191,8 +177,7 @@
                 6px 11px;
 
             border:
-                1px solid
-                rgba(168, 85, 247, .22);
+                1px solid rgba(168, 85, 247, .22);
 
             border-radius: 20px;
 
@@ -239,8 +224,7 @@
             justify-content: center;
 
             border:
-                1px solid
-                rgba(166, 92, 255, .3);
+                1px solid rgba(166, 92, 255, .3);
 
             border-radius: 14px;
 
@@ -270,8 +254,7 @@
                 translateY(-2px);
 
             box-shadow:
-                0 8px 25px
-                rgba(166, 92, 255, .15);
+                0 8px 25px rgba(166, 92, 255, .15);
         }
 
 
@@ -291,18 +274,15 @@
             padding: 32px;
 
             border:
-                1px solid
-                rgba(168, 85, 247, .16);
+                1px solid rgba(168, 85, 247, .16);
 
             border-radius: 24px;
 
             background:
 
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(25, 21, 32, .96),
-                    rgba(13, 10, 18, .96)
-                );
+                    rgba(13, 10, 18, .96));
 
             box-shadow:
                 var(--sombra);
@@ -410,8 +390,7 @@
                 0 45px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 12px;
 
@@ -445,8 +424,7 @@
                 rgba(168, 85, 247, .65);
 
             box-shadow:
-                0 0 0 3px
-                rgba(168, 85, 247, .08);
+                0 0 0 3px rgba(168, 85, 247, .08);
         }
 
 
@@ -546,11 +524,9 @@
 
             background:
 
-                linear-gradient(
-                    100deg,
+                linear-gradient(100deg,
                     var(--roxo-escuro),
-                    var(--roxo)
-                );
+                    var(--roxo));
 
             color:
                 white;
@@ -564,8 +540,7 @@
             cursor: pointer;
 
             box-shadow:
-                0 10px 25px
-                rgba(168, 85, 247, .18);
+                0 10px 25px rgba(168, 85, 247, .18);
 
             transition:
                 .2s;
@@ -578,8 +553,7 @@
                 translateY(-2px);
 
             box-shadow:
-                0 14px 30px
-                rgba(168, 85, 247, .28);
+                0 14px 30px rgba(168, 85, 247, .28);
         }
 
 
@@ -631,8 +605,7 @@
                 rgba(255, 93, 115, .08);
 
             border:
-                1px solid
-                rgba(255, 93, 115, .15);
+                1px solid rgba(255, 93, 115, .15);
         }
 
 
@@ -647,8 +620,7 @@
                 rgba(85, 223, 145, .08);
 
             border:
-                1px solid
-                rgba(85, 223, 145, .15);
+                1px solid rgba(85, 223, 145, .15);
         }
 
 
@@ -766,8 +738,7 @@
             padding: 28px;
 
             border:
-                1px solid
-                rgba(168, 85, 247, .18);
+                1px solid rgba(168, 85, 247, .18);
 
             border-radius: 20px;
 
@@ -775,8 +746,7 @@
                 #121018;
 
             box-shadow:
-                0 25px 80px
-                rgba(0, 0, 0, .55);
+                0 25px 80px rgba(0, 0, 0, .55);
 
             animation:
                 modalIn .2s ease;
@@ -790,8 +760,7 @@
                 opacity: 0;
 
                 transform:
-                    translateY(10px)
-                    scale(.98);
+                    translateY(10px) scale(.98);
             }
 
             to {
@@ -799,8 +768,7 @@
                 opacity: 1;
 
                 transform:
-                    translateY(0)
-                    scale(1);
+                    translateY(0) scale(1);
             }
         }
 
@@ -899,11 +867,9 @@
 
             background:
 
-                linear-gradient(
-                    100deg,
+                linear-gradient(100deg,
                     var(--roxo-escuro),
-                    var(--roxo)
-                );
+                    var(--roxo));
 
             color:
                 white;
@@ -929,8 +895,7 @@
                 12px 18px;
 
             border:
-                1px solid
-                rgba(168, 85, 247, .18);
+                1px solid rgba(168, 85, 247, .18);
 
             border-radius: 11px;
 
@@ -943,8 +908,7 @@
             font-size: 11px;
 
             box-shadow:
-                0 15px 40px
-                rgba(0, 0, 0, .4);
+                0 15px 40px rgba(0, 0, 0, .4);
 
             opacity: 0;
 
@@ -1033,7 +997,6 @@
                     12px;
             }
         }
-
     </style>
 
 </head>
@@ -1046,20 +1009,10 @@
          BOTÃO VOLTAR PARA LOGIN NORMAL
     ====================================================== -->
 
-    <button
-        type="button"
-        class="admin-toggle"
-        onclick="window.location.href='../login.php'"
-        title="Voltar para login"
-        aria-label="Voltar para login"
-    >
+    <button type="button" class="admin-toggle" onclick="window.location.href='../login.php'" title="Voltar para login"
+        aria-label="Voltar para login">
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-        >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
             <path d="M15 18l-6-6 6-6" />
 
@@ -1083,43 +1036,26 @@
 
             <div class="logo">
 
-                <svg
-                    class="logo-heart"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
+                <div class="logo-icon">
 
-                    <path
-                        d="
-                            M20.84 4.61
-                            a5.5 5.5 0 0 0-7.78 0
-                            L12 5.67
-                            10.94 4.61
-                            a5.5 5.5 0 0 0-7.78 7.78
-                            L12 21.23
-                            l8.84-8.84
-                            a5.5 5.5 0 0 0 0-7.78Z
-                        "
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
 
-                </svg>
+                        <path d="
+                        M20.8 8.7
+                        C20.8 13.8 12 20 12 20
+                        S3.2 13.8 3.2 8.7
+                        C3.2 5.9 5.4 4 8 4
+                        C9.7 4 11.1 4.9 12 6.2
+                        C12.9 4.9 14.3 4 16 4
+                        C18.6 4 20.8 5.9 20.8 8.7Z
+                    " />
 
+                    </svg>
+
+                </div>
 
                 <div class="logo-text">
-
-                    <span class="silent">
-                        Silent
-                    </span>
-
-                    <span class="help">
-                        Help
-                    </span>
-
+                    Silent<span>Help</span>
                 </div>
 
             </div>
@@ -1127,26 +1063,12 @@
 
             <div class="admin-badge">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
 
-                    <rect
-                        x="3"
-                        y="11"
-                        width="18"
-                        height="10"
-                        rx="2"
-                    />
+                    <rect x="3" y="11" width="18" height="10" rx="2" />
 
-                    <path
-                        d="M7 11V7a5 5 0 0 1 10 0v4"
-                    />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
 
                 </svg>
 
@@ -1184,10 +1106,7 @@
                  FORM
             ================================================== -->
 
-            <form
-                id="loginForm"
-                onsubmit="login(event)"
-            >
+            <form id="loginForm" onsubmit="login(event)">
 
 
                 <!-- E-MAIL -->
@@ -1201,36 +1120,15 @@
 
                     <div class="input-wrapper">
 
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Digite seu e-mail"
-                            autocomplete="email"
-                            required
-                        >
+                        <input type="email" id="email" placeholder="Digite seu e-mail" autocomplete="email" required>
 
 
-                        <svg
-                            class="input-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
 
-                            <rect
-                                x="3"
-                                y="5"
-                                width="18"
-                                height="14"
-                                rx="2"
-                            />
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
 
-                            <path
-                                d="m3 7 9 6 9-6"
-                            />
+                            <path d="m3 7 9 6 9-6" />
 
                         </svg>
 
@@ -1250,36 +1148,16 @@
 
                     <div class="input-wrapper">
 
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Digite sua senha"
-                            autocomplete="current-password"
-                            required
-                        >
+                        <input type="password" id="password" placeholder="Digite sua senha"
+                            autocomplete="current-password" required>
 
 
-                        <svg
-                            class="input-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
 
-                            <rect
-                                x="3"
-                                y="11"
-                                width="18"
-                                height="10"
-                                rx="2"
-                            />
+                            <rect x="3" y="11" width="18" height="10" rx="2" />
 
-                            <path
-                                d="M7 11V7a5 5 0 0 1 10 0v4"
-                            />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
 
                         </svg>
 
@@ -1294,21 +1172,14 @@
 
                     <label class="remember">
 
-                        <input
-                            type="checkbox"
-                            id="remember"
-                        >
+                        <input type="checkbox" id="remember">
 
                         Lembrar acesso
 
                     </label>
 
 
-                    <button
-                        type="button"
-                        class="forgot-password"
-                        onclick="openRecovery()"
-                    >
+                    <button type="button" class="forgot-password" onclick="openRecovery()">
 
                         Esqueci minha senha
 
@@ -1319,34 +1190,16 @@
 
                 <!-- ENTRAR -->
 
-                <button
-                    type="submit"
-                    class="login-button"
-                >
+                <button type="submit" class="login-button">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
 
-                        <path
-                            d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
-                        />
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
 
-                        <polyline
-                            points="10 17 15 12 10 7"
-                        />
+                        <polyline points="10 17 15 12 10 7" />
 
-                        <line
-                            x1="15"
-                            y1="12"
-                            x2="3"
-                            y2="12"
-                        />
+                        <line x1="15" y1="12" x2="3" y2="12" />
 
                     </svg>
 
@@ -1355,10 +1208,7 @@
                 </button>
 
 
-                <div
-                    id="message"
-                    class="message"
-                ></div>
+                <div id="message" class="message"></div>
 
 
             </form>
@@ -1377,22 +1227,12 @@
 
             <div class="security-info">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
 
-                    <path
-                        d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
-                    />
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
 
-                    <path
-                        d="m9 12 2 2 4-4"
-                    />
+                    <path d="m9 12 2 2 4-4" />
 
                 </svg>
 
@@ -1409,25 +1249,15 @@
          MODAL RECUPERAÇÃO
     ====================================================== -->
 
-    <div
-        class="modal-overlay"
-        id="recoveryModal"
-        onclick="closeRecoveryOutside(event)"
-    >
+    <div class="modal-overlay" id="recoveryModal" onclick="closeRecoveryOutside(event)">
 
         <div class="modal">
 
 
             <div class="modal-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
 
                     <path d="M4 4h16v16H4z" />
 
@@ -1458,34 +1288,15 @@
 
                 <div class="input-wrapper">
 
-                    <input
-                        type="email"
-                        id="recoveryEmail"
-                        placeholder="admin@silenthelp.com"
-                    >
+                    <input type="email" id="recoveryEmail" placeholder="admin@silenthelp.com">
 
 
-                    <svg
-                        class="input-icon"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
 
-                        <rect
-                            x="3"
-                            y="5"
-                            width="18"
-                            height="14"
-                            rx="2"
-                        />
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
 
-                        <path
-                            d="m3 7 9 6 9-6"
-                        />
+                        <path d="m3 7 9 6 9-6" />
 
                     </svg>
 
@@ -1496,22 +1307,14 @@
 
             <div class="modal-actions">
 
-                <button
-                    type="button"
-                    class="modal-button cancel"
-                    onclick="closeRecovery()"
-                >
+                <button type="button" class="modal-button cancel" onclick="closeRecovery()">
 
                     Cancelar
 
                 </button>
 
 
-                <button
-                    type="button"
-                    class="modal-button confirm"
-                    onclick="sendRecovery()"
-                >
+                <button type="button" class="modal-button confirm" onclick="sendRecovery()">
 
                     Enviar instruções
 
@@ -1528,10 +1331,7 @@
          TOAST
     ====================================================== -->
 
-    <div
-        class="toast"
-        id="toast"
-    ></div>
+    <div class="toast" id="toast"></div>
 
 
     <script>

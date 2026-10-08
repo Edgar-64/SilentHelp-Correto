@@ -1515,27 +1515,7 @@ exigirLogin();
             onclick="goTo('inicio.php')"
         >
 
-            <svg
-                class="logo-heart"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-            >
-                <path
-                    d="M20.8 8.7
-                       C20.8 5.7 18.5 3.5 15.7 3.5
-                       C13.9 3.5 12.4 4.4 11.5 5.8
-                       C10.6 4.4 9.1 3.5 7.3 3.5
-                       C4.5 3.5 2.2 5.7 2.2 8.7
-                       C2.2 13.8 7.1 17.3 11.5 20.5
-                       C15.9 17.3 20.8 13.8 20.8 8.7Z"
-                />
-            </svg>
-
-            <span class="logo-text">
-                <span class="silent">Silent</span><span class="help">Help</span>
-            </span>
+            <?php include 'components/logo.php'; ?>
 
         </button>
 

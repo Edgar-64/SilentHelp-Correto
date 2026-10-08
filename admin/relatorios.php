@@ -1557,10 +1557,7 @@
 
     <aside class="sidebar" id="sidebar">
     <div class="brand">
-        <svg class="brand-heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <div class="brand-name"><span class="silent">Silent</span><span class="help">Help</span></div>
+        <?php include '../components/logo.php'; ?>
     </div>
 
     <div class="admin-profile">
@@ -1623,10 +1620,7 @@
     </nav>
 
     <div class="sidebar-bottom">
-        <a href="login-admin.php" class="sidebar-link" onclick="if (typeof logout === 'function') { logout(); return false; }">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            <span>Sair</span>
-        </a>
+        <?php include '../components/logout.php'; ?>
     </div>
 </aside>
 

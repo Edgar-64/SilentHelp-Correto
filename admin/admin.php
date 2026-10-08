@@ -2121,26 +2121,7 @@
 
         <div class="brand">
 
-            <svg
-                class="brand-heart"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-
-                <path
-                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-
-            </svg>
-
-            <div class="brand-name">
-                <span class="silent">Silent</span><span class="help">Help</span>
-            </div>
+            <?php include '../components/logo.php'; ?>
 
         </div>
 
@@ -2464,16 +2445,7 @@
 
         <div class="sidebar-bottom">
 
-            <a
-                href="login-admin.php"
-                class="sidebar-link"
-            >
-
-                <button class="logout-button" onclick="sairConta()">
-                    Sair da conta
-                </button>
-
-            </a>
+            <?php include '../components/logout.php'; ?>
 
         </div>
 

@@ -891,14 +891,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         <!-- HEADER -->
         <header class="header">
             <div class="logo">
-                <svg class="logo-heart" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M32 54 C27 50 7 38 7 21 C7 12 13 7 21 7 C26 7 30 10 32 14 C34 10 38 7 43 7 C51 7 57 12 57 21 C57 38 37 50 32 54Z"
-                        stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <div class="logo-text">
-                    <span class="silent">silent</span><span class="help">help</span>
-                </div>
+                <?php include 'components/logo.php'; ?>
             </div>
             <div class="responsible-badge">
                 <span></span> Modo Responsável

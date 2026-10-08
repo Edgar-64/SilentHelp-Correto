@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../auth.php';?>
+<?php require_once __DIR__ . '/../auth.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -6,10 +6,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SilentHelp Admin - Mapa de Ocorrências</title>
 
@@ -17,13 +14,9 @@
          LEAFLET
     ====================================================== -->
 
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    >
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
     <style>
-
         /* =====================================================
            RESET
         ===================================================== */
@@ -52,7 +45,7 @@
             --card: #121018;
             --card-2: #191520;
 
-            --borda: rgba(255,255,255,.08);
+            --borda: rgba(255, 255, 255, .08);
 
             --branco: #ffffff;
 
@@ -64,7 +57,7 @@
             --amarelo: #f4c95d;
 
             --sombra:
-                0 20px 60px rgba(0,0,0,.35);
+                0 20px 60px rgba(0, 0, 0, .35);
         }
 
 
@@ -78,11 +71,9 @@
 
             background:
 
-                radial-gradient(
-                    circle at 30% -10%,
-                    rgba(168,85,247,.18),
-                    transparent 35%
-                ),
+                radial-gradient(circle at 30% -10%,
+                    rgba(168, 85, 247, .18),
+                    transparent 35%),
 
                 var(--fundo);
 
@@ -130,11 +121,10 @@
             padding: 25px 16px;
 
             background:
-                rgba(12,10,16,.96);
+                rgba(12, 10, 16, .96);
 
             border-right:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             display: flex;
 
@@ -157,8 +147,7 @@
             gap: 10px;
 
             padding:
-                5px 10px
-                28px;
+                5px 10px 28px;
 
             cursor: default;
         }
@@ -172,10 +161,7 @@
             color: var(--roxo-2);
 
             filter:
-                drop-shadow(
-                    0 0 13px
-                    rgba(168,85,247,.4)
-                );
+                drop-shadow(0 0 13px rgba(168, 85, 247, .4));
         }
 
 
@@ -210,8 +196,7 @@
         .admin-label {
 
             padding:
-                0 12px
-                10px;
+                0 12px 10px;
 
             color:
                 var(--cinza-2);
@@ -289,7 +274,7 @@
         .nav-button:hover {
 
             background:
-                rgba(168,85,247,.08);
+                rgba(168, 85, 247, .08);
 
             color:
                 var(--roxo-claro);
@@ -299,18 +284,15 @@
         .nav-button.active {
 
             background:
-                linear-gradient(
-                    100deg,
-                    rgba(168,85,247,.18),
-                    rgba(168,85,247,.06)
-                );
+                linear-gradient(100deg,
+                    rgba(168, 85, 247, .18),
+                    rgba(168, 85, 247, .06));
 
             color:
                 var(--roxo-claro);
 
             border:
-                1px solid
-                rgba(168,85,247,.18);
+                1px solid rgba(168, 85, 247, .18);
         }
 
 
@@ -325,8 +307,7 @@
             padding-top: 15px;
 
             border-top:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
         }
 
 
@@ -356,7 +337,7 @@
             border-radius: 12px;
 
             background:
-                rgba(168,85,247,.15);
+                rgba(168, 85, 247, .15);
 
             color:
                 var(--roxo-claro);
@@ -456,13 +437,12 @@
             justify-content: center;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 13px;
 
             background:
-                rgba(255,255,255,.03);
+                rgba(255, 255, 255, .03);
 
             color:
                 var(--roxo-claro);
@@ -495,13 +475,12 @@
             margin-bottom: 18px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 18px;
 
             background:
-                rgba(18,16,24,.85);
+                rgba(18, 16, 24, .85);
 
             box-shadow:
                 var(--sombra);
@@ -541,8 +520,7 @@
                 0 12px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 11px;
 
@@ -563,7 +541,7 @@
         .filter-group select:focus {
 
             border-color:
-                rgba(168,85,247,.5);
+                rgba(168, 85, 247, .5);
         }
 
 
@@ -579,11 +557,9 @@
             border-radius: 11px;
 
             background:
-                linear-gradient(
-                    100deg,
+                linear-gradient(100deg,
                     var(--roxo-escuro),
-                    var(--roxo)
-                );
+                    var(--roxo));
 
             color: white;
 
@@ -603,8 +579,7 @@
                 translateY(-2px);
 
             box-shadow:
-                0 8px 20px
-                rgba(168,85,247,.25);
+                0 8px 20px rgba(168, 85, 247, .25);
         }
 
 
@@ -621,8 +596,7 @@
             gap: 18px;
 
             padding:
-                0 4px
-                14px;
+                0 4px 14px;
 
             color:
                 var(--cinza);
@@ -656,8 +630,7 @@
                 var(--vermelho);
 
             box-shadow:
-                0 0 8px
-                rgba(255,93,115,.5);
+                0 0 8px rgba(255, 93, 115, .5);
         }
 
 
@@ -681,8 +654,7 @@
                 var(--amarelo);
 
             box-shadow:
-                0 0 8px
-                rgba(244,201,93,.5);
+                0 0 8px rgba(244, 201, 93, .5);
         }
 
 
@@ -701,8 +673,7 @@
             overflow: hidden;
 
             border:
-                1px solid
-                rgba(168,85,247,.20);
+                1px solid rgba(168, 85, 247, .20);
 
             border-radius: 22px;
 
@@ -710,8 +681,7 @@
                 #15131a;
 
             box-shadow:
-                0 20px 60px
-                rgba(0,0,0,.35);
+                0 20px 60px rgba(0, 0, 0, .35);
         }
 
 
@@ -750,13 +720,12 @@
                 9px 12px;
 
             border:
-                1px solid
-                rgba(255,255,255,.10);
+                1px solid rgba(255, 255, 255, .10);
 
             border-radius: 11px;
 
             background:
-                rgba(12,10,16,.90);
+                rgba(12, 10, 16, .90);
 
             backdrop-filter:
                 blur(12px);
@@ -844,13 +813,12 @@
             padding: 15px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 16px;
 
             background:
-                rgba(18,16,24,.85);
+                rgba(18, 16, 24, .85);
 
             transition: .2s;
         }
@@ -862,7 +830,7 @@
                 translateY(-2px);
 
             border-color:
-                rgba(168,85,247,.3);
+                rgba(168, 85, 247, .3);
         }
 
 
@@ -881,7 +849,7 @@
             border-radius: 12px;
 
             background:
-                rgba(255,93,115,.09);
+                rgba(255, 93, 115, .09);
 
             color:
                 var(--vermelho);
@@ -894,7 +862,7 @@
                 var(--verde);
 
             background:
-                rgba(85,223,145,.08);
+                rgba(85, 223, 145, .08);
         }
 
 
@@ -904,7 +872,7 @@
                 var(--cinza);
 
             background:
-                rgba(255,255,255,.05);
+                rgba(255, 255, 255, .05);
         }
 
 
@@ -959,7 +927,7 @@
                 var(--amarelo);
 
             background:
-                rgba(244,201,93,.08);
+                rgba(244, 201, 93, .08);
         }
 
 
@@ -969,7 +937,7 @@
                 var(--verde);
 
             background:
-                rgba(85,223,145,.08);
+                rgba(85, 223, 145, .08);
         }
 
 
@@ -979,7 +947,7 @@
                 var(--cinza);
 
             background:
-                rgba(255,255,255,.05);
+                rgba(255, 255, 255, .05);
         }
 
 
@@ -1003,7 +971,7 @@
                 white !important;
 
             border-color:
-                rgba(255,255,255,.1) !important;
+                rgba(255, 255, 255, .1) !important;
         }
 
 
@@ -1098,8 +1066,7 @@
                 border-right: none;
 
                 border-top:
-                    1px solid
-                    var(--borda);
+                    1px solid var(--borda);
 
                 flex-direction: row;
 
@@ -1166,9 +1133,7 @@
                 margin-left: 0;
 
                 padding:
-                    20px
-                    15px
-                    90px;
+                    20px 15px 90px;
             }
 
 
@@ -1261,9 +1226,8 @@
                 padding: 12px;
             }
         }
-
     </style>
-<style id="admin-sidebar-structure">
+    <style id="admin-sidebar-structure">
         /* Estrutura comum da sidebar administrativa */
         .sidebar {
             position: fixed;
@@ -1304,8 +1268,13 @@
             letter-spacing: -1px;
         }
 
-        .sidebar .brand-name .silent { color: var(--roxo-2, #b76cff); }
-        .sidebar .brand-name .help { color: white; }
+        .sidebar .brand-name .silent {
+            color: var(--roxo-2, #b76cff);
+        }
+
+        .sidebar .brand-name .help {
+            color: white;
+        }
 
         .sidebar .admin-profile {
             display: flex;
@@ -1332,9 +1301,20 @@
             font-size: 14px;
         }
 
-        .sidebar .admin-info { min-width: 0; }
-        .sidebar .admin-info strong { display: block; margin-bottom: 3px; font-size: 13px; }
-        .sidebar .admin-info span { color: var(--cinza-2, #817b8c); font-size: 10px; }
+        .sidebar .admin-info {
+            min-width: 0;
+        }
+
+        .sidebar .admin-info strong {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 13px;
+        }
+
+        .sidebar .admin-info span {
+            color: var(--cinza-2, #817b8c);
+            font-size: 10px;
+        }
 
         .sidebar .nav-label {
             color: var(--cinza-2, #817b8c);
@@ -1371,14 +1351,48 @@
             transition: background .2s, color .2s, transform .2s;
         }
 
-        .sidebar .sidebar-link svg { width: 19px; height: 19px; flex: 0 0 19px; }
-        .sidebar .sidebar-link:hover { color: white; background: rgba(168, 85, 247, .08); transform: translateX(2px); }
-        .sidebar .sidebar-link.active { color: var(--roxo-claro, #d0a0ff); background: linear-gradient(100deg, rgba(168, 85, 247, .16), rgba(168, 85, 247, .06)); border-color: rgba(168, 85, 247, .18); }
-        .sidebar .sidebar-link .link-badge { margin-left: auto; min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 7px; background: rgba(255, 93, 115, .12); color: #ff8798; font-size: 9px; font-weight: 750; }
+        .sidebar .sidebar-link svg {
+            width: 19px;
+            height: 19px;
+            flex: 0 0 19px;
+        }
 
-        .sidebar .sidebar-bottom { margin-top: auto; padding-top: 15px; border-top: 1px solid var(--borda, rgba(255, 255, 255, .08)); }
-        .sidebar .sidebar-bottom .sidebar-link { margin: 0; }
-    
+        .sidebar .sidebar-link:hover {
+            color: white;
+            background: rgba(168, 85, 247, .08);
+            transform: translateX(2px);
+        }
+
+        .sidebar .sidebar-link.active {
+            color: var(--roxo-claro, #d0a0ff);
+            background: linear-gradient(100deg, rgba(168, 85, 247, .16), rgba(168, 85, 247, .06));
+            border-color: rgba(168, 85, 247, .18);
+        }
+
+        .sidebar .sidebar-link .link-badge {
+            margin-left: auto;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 7px;
+            background: rgba(255, 93, 115, .12);
+            color: #ff8798;
+            font-size: 9px;
+            font-weight: 750;
+        }
+
+        .sidebar .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--borda, rgba(255, 255, 255, .08));
+        }
+
+        .sidebar .sidebar-bottom .sidebar-link {
+            margin: 0;
+        }
+
 
         /* Barra de rolagem personalizada da área admin */
         html {
@@ -1418,7 +1432,6 @@
         ::-webkit-scrollbar-corner {
             background: #0c0a10;
         }
-
     </style>
 </head>
 
@@ -1426,653 +1439,595 @@
 <body>
 
 
-<div class="layout">
+    <div class="layout">
 
 
-    <!-- =====================================================
+        <!-- =====================================================
          SIDEBAR
     ====================================================== -->
 
-    <aside class="sidebar" id="sidebar">
-    <div class="brand">
-        <svg class="brand-heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <div class="brand-name"><span class="silent">Silent</span><span class="help">Help</span></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <?php include '../components/logo.php'; ?>
+            </div>
+
+            <div class="admin-profile">
+                <div class="admin-avatar">AD</div>
+                <div class="admin-info">
+                    <strong>Administrador</strong>
+                    <span>Painel administrativo</span>
+                </div>
+            </div>
+
+            <div class="nav-label">Principal</div>
+            <nav class="sidebar-nav">
+                <a href="admin.php" class="sidebar-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg>
+                    <span>Dashboard</span>
+
+                </a>
+
+                <a href="usuarios.php" class="sidebar-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    <span>Usuárias</span>
+
+                </a>
+
+                <a href="alertas.php" class="sidebar-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    <span>Alertas</span>
+                    <span class="link-badge">3</span>
+                </a>
+
+                <a href="mapa-admin.php" class="sidebar-link active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                        <circle cx="12" cy="10" r="2.5" />
+                    </svg>
+                    <span>Mapa de ocorrências</span>
+
+                </a>
+
+                <a href="dispositivos.php" class="sidebar-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" />
+                        <line x1="9" y1="18" x2="15" y2="18" />
+                    </svg>
+                    <span>Dispositivos</span>
+
+                </a>
+
+                <a href="contatos-admin.php" class="sidebar-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    </svg>
+                    <span>Contatos</span>
+
+                </a>
+
+                <a href="relatorios.php" class="sidebar-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M3 3v18h18" />
+                        <path d="m7 16 4-5 3 3 5-7" />
+                    </svg>
+                    <span>Relatórios</span>
+
+                </a>
+
+                <a href="config-admin.php" class="sidebar-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.42 1.42-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-2v-.48a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.42-1.42.06-.06A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.56-1.03H6v-2h.48A1.7 1.7 0 0 0 8.04 11a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.42-1.42.06.06A1.7 1.7 0 0 0 11 8.04 1.7 1.7 0 0 0 12.03 6.48V6h2v.48A1.7 1.7 0 0 0 15.06 8a1.7 1.7 0 0 0 1.88-.34l.06-.06 1.42 1.42-.06.06A1.7 1.7 0 0 0 18.04 11c.24.63.84 1.03 1.56 1.03H20v2h-.48A1.7 1.7 0 0 0 19.4 15Z" />
+                    </svg>
+                    <span>Configurações</span>
+
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <?php include '../components/logout.php'; ?>
+            </div>
+        </aside>
+
+
+
+        <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+        <main class="main">
+
+
+            <!-- =================================================
+             HEADER
+        ================================================== -->
+
+            <header class="top-header">
+
+                <div class="page-title">
+
+                    <h1>
+                        Mapa de <span>ocorrências</span>
+                    </h1>
+
+                    <p>
+                        Acompanhe a localização dos alertas registrados.
+                    </p>
+
+                </div>
+
+
+                <button class="header-button" onclick="showNotification()" aria-label="Notificações">
+
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+
+                    </svg>
+
+                </button>
+
+            </header>
+
+
+
+            <!-- =================================================
+             FILTROS
+        ================================================== -->
+
+            <section class="filters-card">
+
+
+                <div class="filter-group">
+
+                    <label for="periodo">
+                        Período
+                    </label>
+
+                    <select id="periodo">
+
+                        <option value="todos">
+                            Todos os períodos
+                        </option>
+
+                        <option value="hoje">
+                            Hoje
+                        </option>
+
+                        <option value="7dias">
+                            Últimos 7 dias
+                        </option>
+
+                        <option value="30dias">
+                            Últimos 30 dias
+                        </option>
+
+                        <option value="ano">
+                            Este ano
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label for="tipo">
+                        Tipo de alerta
+                    </label>
+
+                    <select id="tipo">
+
+                        <option value="todos">
+                            Todos os tipos
+                        </option>
+
+                        <option value="emergency">
+                            Emergência
+                        </option>
+
+                        <option value="test">
+                            Teste
+                        </option>
+
+                        <option value="cancelled">
+                            Cancelado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select id="status">
+
+                        <option value="todos">
+                            Todos
+                        </option>
+
+                        <option value="active">
+                            Ativos
+                        </option>
+
+                        <option value="resolved">
+                            Resolvidos
+                        </option>
+
+                        <option value="cancelled">
+                            Cancelados
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button class="filter-button" onclick="applyFilters()">
+
+                    Aplicar filtros
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =================================================
+             LEGENDA
+        ================================================== -->
+
+            <div class="legend">
+
+                <div class="legend-item">
+
+                    <span class="legend-dot emergency"></span>
+
+                    Emergência
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-dot active"></span>
+
+                    Alerta ativo
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-dot test"></span>
+
+                    Teste
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-dot cancelled"></span>
+
+                    Cancelado
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+             MAPA
+        ================================================== -->
+
+            <section class="map-card">
+
+
+                <div class="map-stats">
+
+                    <div class="map-stat">
+
+                        <strong id="mapTotal">
+                            8
+                        </strong>
+
+                        ocorrências
+
+                    </div>
+
+
+                    <div class="map-stat active">
+
+                        <strong id="mapActive">
+                            2
+                        </strong>
+
+                        ativas
+
+                    </div>
+
+                </div>
+
+
+                <div id="map"></div>
+
+            </section>
+
+
+
+            <!-- =================================================
+             OCORRÊNCIAS RECENTES
+        ================================================== -->
+
+            <section class="occurrences">
+
+
+                <div class="section-header">
+
+                    <h2>
+                        Ocorrências recentes
+                    </h2>
+
+                    <span id="occurrenceCount">
+                        4 ocorrências
+                    </span>
+
+                </div>
+
+
+                <div class="occurrence-list" id="occurrenceList">
+
+
+                    <!-- OCORRÊNCIA 1 -->
+
+                    <article class="occurrence" data-type="emergency" data-status="active">
+
+                        <div class="occurrence-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                <path
+                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+
+                                <line x1="12" y1="9" x2="12" y2="13" />
+
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="occurrence-info">
+
+                            <h3>
+                                Alerta de emergência
+                            </h3>
+
+                            <p>
+                                Usuária: Ana Silva • Hoje, 10:42
+                            </p>
+
+                        </div>
+
+
+                        <span class="status active">
+                            Ativo
+                        </span>
+
+                    </article>
+
+
+
+                    <!-- OCORRÊNCIA 2 -->
+
+                    <article class="occurrence" data-type="emergency" data-status="resolved">
+
+                        <div class="occurrence-icon">
+
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                <path
+                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+
+                                <line x1="12" y1="9" x2="12" y2="13" />
+
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="occurrence-info">
+
+                            <h3>
+                                Alerta de emergência
+                            </h3>
+
+                            <p>
+                                Usuária: Beatriz Santos • Hoje, 08:15
+                            </p>
+
+                        </div>
+
+
+                        <span class="status resolved">
+                            Resolvido
+                        </span>
+
+                    </article>
+
+
+
+                    <!-- OCORRÊNCIA 3 -->
+
+                    <article class="occurrence" data-type="test" data-status="resolved">
+
+                        <div class="occurrence-icon test">
+
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                <circle cx="12" cy="12" r="9" />
+
+                                <path d="m8 12 2.5 2.5L16 9" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="occurrence-info">
+
+                            <h3>
+                                Teste de segurança
+                            </h3>
+
+                            <p>
+                                Usuária: Carla Oliveira • Ontem, 21:37
+                            </p>
+
+                        </div>
+
+
+                        <span class="status resolved">
+                            Resolvido
+                        </span>
+
+                    </article>
+
+
+
+                    <!-- OCORRÊNCIA 4 -->
+
+                    <article class="occurrence" data-type="cancelled" data-status="cancelled">
+
+                        <div class="occurrence-icon cancelled">
+
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                                <circle cx="12" cy="12" r="9" />
+
+                                <path d="m9 9 6 6" />
+
+                                <path d="m15 9-6 6" />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="occurrence-info">
+
+                            <h3>
+                                Alerta cancelado
+                            </h3>
+
+                            <p>
+                                Usuária: Mariana Costa • 14/08/2026
+                            </p>
+
+                        </div>
+
+
+                        <span class="status cancelled">
+                            Cancelado
+                        </span>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+        </main>
+
     </div>
-
-    <div class="admin-profile">
-        <div class="admin-avatar">AD</div>
-        <div class="admin-info">
-            <strong>Administrador</strong>
-            <span>Painel administrativo</span>
-        </div>
-    </div>
-
-    <div class="nav-label">Principal</div>
-    <nav class="sidebar-nav">
-            <a href="admin.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                <span>Dashboard</span>
-                
-            </a>
-
-            <a href="usuarios.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span>Usuárias</span>
-                
-            </a>
-
-            <a href="alertas.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span>Alertas</span>
-                <span class="link-badge">3</span>
-            </a>
-
-            <a href="mapa-admin.php" class="sidebar-link active">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                <span>Mapa de ocorrências</span>
-                
-            </a>
-
-            <a href="dispositivos.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
-                <span>Dispositivos</span>
-                
-            </a>
-
-            <a href="contatos-admin.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
-                <span>Contatos</span>
-                
-            </a>
-
-            <a href="relatorios.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 16 4-5 3 3 5-7"/></svg>
-                <span>Relatórios</span>
-                
-            </a>
-
-            <a href="config-admin.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.42 1.42-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-2v-.48a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.42-1.42.06-.06A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.56-1.03H6v-2h.48A1.7 1.7 0 0 0 8.04 11a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.42-1.42.06.06A1.7 1.7 0 0 0 11 8.04 1.7 1.7 0 0 0 12.03 6.48V6h2v.48A1.7 1.7 0 0 0 15.06 8a1.7 1.7 0 0 0 1.88-.34l.06-.06 1.42 1.42-.06.06A1.7 1.7 0 0 0 18.04 11c.24.63.84 1.03 1.56 1.03H20v2h-.48A1.7 1.7 0 0 0 19.4 15Z"/></svg>
-                <span>Configurações</span>
-                
-            </a>
-    </nav>
-
-    <div class="sidebar-bottom">
-        <a href="login-admin.php" class="sidebar-link" onclick="if (typeof logout === 'function') { logout(); return false; }">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            <span>Sair</span>
-        </a>
-    </div>
-</aside>
 
 
 
     <!-- =====================================================
-         CONTEÚDO
-    ====================================================== -->
-
-    <main class="main">
-
-
-        <!-- =================================================
-             HEADER
-        ================================================== -->
-
-        <header class="top-header">
-
-            <div class="page-title">
-
-                <h1>
-                    Mapa de <span>ocorrências</span>
-                </h1>
-
-                <p>
-                    Acompanhe a localização dos alertas registrados.
-                </p>
-
-            </div>
-
-
-            <button
-                class="header-button"
-                onclick="showNotification()"
-                aria-label="Notificações"
-            >
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-
-                    <path
-                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-                    />
-
-                    <path
-                        d="M13.73 21a2 2 0 0 1-3.46 0"
-                    />
-
-                </svg>
-
-            </button>
-
-        </header>
-
-
-
-        <!-- =================================================
-             FILTROS
-        ================================================== -->
-
-        <section class="filters-card">
-
-
-            <div class="filter-group">
-
-                <label for="periodo">
-                    Período
-                </label>
-
-                <select id="periodo">
-
-                    <option value="todos">
-                        Todos os períodos
-                    </option>
-
-                    <option value="hoje">
-                        Hoje
-                    </option>
-
-                    <option value="7dias">
-                        Últimos 7 dias
-                    </option>
-
-                    <option value="30dias">
-                        Últimos 30 dias
-                    </option>
-
-                    <option value="ano">
-                        Este ano
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="filter-group">
-
-                <label for="tipo">
-                    Tipo de alerta
-                </label>
-
-                <select id="tipo">
-
-                    <option value="todos">
-                        Todos os tipos
-                    </option>
-
-                    <option value="emergency">
-                        Emergência
-                    </option>
-
-                    <option value="test">
-                        Teste
-                    </option>
-
-                    <option value="cancelled">
-                        Cancelado
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="filter-group">
-
-                <label for="status">
-                    Status
-                </label>
-
-                <select id="status">
-
-                    <option value="todos">
-                        Todos
-                    </option>
-
-                    <option value="active">
-                        Ativos
-                    </option>
-
-                    <option value="resolved">
-                        Resolvidos
-                    </option>
-
-                    <option value="cancelled">
-                        Cancelados
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <button
-                class="filter-button"
-                onclick="applyFilters()"
-            >
-
-                Aplicar filtros
-
-            </button>
-
-        </section>
-
-
-
-        <!-- =================================================
-             LEGENDA
-        ================================================== -->
-
-        <div class="legend">
-
-            <div class="legend-item">
-
-                <span class="legend-dot emergency"></span>
-
-                Emergência
-
-            </div>
-
-
-            <div class="legend-item">
-
-                <span class="legend-dot active"></span>
-
-                Alerta ativo
-
-            </div>
-
-
-            <div class="legend-item">
-
-                <span class="legend-dot test"></span>
-
-                Teste
-
-            </div>
-
-
-            <div class="legend-item">
-
-                <span class="legend-dot cancelled"></span>
-
-                Cancelado
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             MAPA
-        ================================================== -->
-
-        <section class="map-card">
-
-
-            <div class="map-stats">
-
-                <div class="map-stat">
-
-                    <strong id="mapTotal">
-                        8
-                    </strong>
-
-                    ocorrências
-
-                </div>
-
-
-                <div class="map-stat active">
-
-                    <strong id="mapActive">
-                        2
-                    </strong>
-
-                    ativas
-
-                </div>
-
-            </div>
-
-
-            <div id="map"></div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             OCORRÊNCIAS RECENTES
-        ================================================== -->
-
-        <section class="occurrences">
-
-
-            <div class="section-header">
-
-                <h2>
-                    Ocorrências recentes
-                </h2>
-
-                <span id="occurrenceCount">
-                    4 ocorrências
-                </span>
-
-            </div>
-
-
-            <div
-                class="occurrence-list"
-                id="occurrenceList"
-            >
-
-
-                <!-- OCORRÊNCIA 1 -->
-
-                <article
-                    class="occurrence"
-                    data-type="emergency"
-                    data-status="active"
-                >
-
-                    <div class="occurrence-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <path
-                                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="9"
-                                x2="12"
-                                y2="13"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="17"
-                                x2="12.01"
-                                y2="17"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="occurrence-info">
-
-                        <h3>
-                            Alerta de emergência
-                        </h3>
-
-                        <p>
-                            Usuária: Ana Silva • Hoje, 10:42
-                        </p>
-
-                    </div>
-
-
-                    <span class="status active">
-                        Ativo
-                    </span>
-
-                </article>
-
-
-
-                <!-- OCORRÊNCIA 2 -->
-
-                <article
-                    class="occurrence"
-                    data-type="emergency"
-                    data-status="resolved"
-                >
-
-                    <div class="occurrence-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <path
-                                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="9"
-                                x2="12"
-                                y2="13"
-                            />
-
-                            <line
-                                x1="12"
-                                y1="17"
-                                x2="12.01"
-                                y2="17"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="occurrence-info">
-
-                        <h3>
-                            Alerta de emergência
-                        </h3>
-
-                        <p>
-                            Usuária: Beatriz Santos • Hoje, 08:15
-                        </p>
-
-                    </div>
-
-
-                    <span class="status resolved">
-                        Resolvido
-                    </span>
-
-                </article>
-
-
-
-                <!-- OCORRÊNCIA 3 -->
-
-                <article
-                    class="occurrence"
-                    data-type="test"
-                    data-status="resolved"
-                >
-
-                    <div class="occurrence-icon test">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
-
-                            <path
-                                d="m8 12 2.5 2.5L16 9"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="occurrence-info">
-
-                        <h3>
-                            Teste de segurança
-                        </h3>
-
-                        <p>
-                            Usuária: Carla Oliveira • Ontem, 21:37
-                        </p>
-
-                    </div>
-
-
-                    <span class="status resolved">
-                        Resolvido
-                    </span>
-
-                </article>
-
-
-
-                <!-- OCORRÊNCIA 4 -->
-
-                <article
-                    class="occurrence"
-                    data-type="cancelled"
-                    data-status="cancelled"
-                >
-
-                    <div class="occurrence-icon cancelled">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                            />
-
-                            <path
-                                d="m9 9 6 6"
-                            />
-
-                            <path
-                                d="m15 9-6 6"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="occurrence-info">
-
-                        <h3>
-                            Alerta cancelado
-                        </h3>
-
-                        <p>
-                            Usuária: Mariana Costa • 14/08/2026
-                        </p>
-
-                    </div>
-
-
-                    <span class="status cancelled">
-                        Cancelado
-                    </span>
-
-                </article>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
-
-
-<!-- =====================================================
      LEAFLET
 ====================================================== -->
 
-<script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
 
 
-<script>
+    <script>
 
-    /* =====================================================
-       MAPA
-    ===================================================== */
+        /* =====================================================
+           MAPA
+        ===================================================== */
 
-    const map =
-        L.map("map").setView(
-            [-23.0227, -45.5550],
-            13
-        );
+        const map =
+            L.map("map").setView(
+                [-23.0227, -45.5550],
+                13
+            );
 
-    window.map = map;
-
-
-    L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            attribution:
-                '&copy; OpenStreetMap contributors'
-        }
-    ).addTo(map);
+        window.map = map;
 
 
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution:
+                    '&copy; OpenStreetMap contributors'
+            }
+        ).addTo(map);
 
-    /* =====================================================
-       ÍCONES
-    ===================================================== */
 
-    function createIcon(color) {
 
-        return L.divIcon({
+        /* =====================================================
+           ÍCONES
+        ===================================================== */
 
-            className: "",
+        function createIcon(color) {
 
-            html: `
+            return L.divIcon({
+
+                className: "",
+
+                html: `
                 <div style="
                     width: 18px;
                     height: 18px;
@@ -2083,187 +2038,187 @@
                 "></div>
             `,
 
-            iconSize: [18,18],
+                iconSize: [18, 18],
 
-            iconAnchor: [9,9],
+                iconAnchor: [9, 9],
 
-            popupAnchor: [0,-10]
+                popupAnchor: [0, -10]
 
-        });
+            });
 
-    }
-
-
-    const emergencyIcon =
-        createIcon("#ff5d73");
-
-
-    const activeIcon =
-        createIcon("#f4c95d");
-
-
-    const testIcon =
-        createIcon("#55df91");
-
-
-    const cancelledIcon =
-        createIcon("#817b8c");
-
-
-
-    /* =====================================================
-       OCORRÊNCIAS
-    ===================================================== */
-
-    const occurrences = [
-
-        {
-            lat: -23.0227,
-            lng: -45.5550,
-            type: "emergency",
-            status: "active",
-            title: "Alerta de emergência",
-            user: "Ana Silva",
-            date: "Hoje, 10:42"
-        },
-
-        {
-            lat: -23.0305,
-            lng: -45.5480,
-            type: "emergency",
-            status: "resolved",
-            title: "Alerta de emergência",
-            user: "Beatriz Santos",
-            date: "Hoje, 08:15"
-        },
-
-        {
-            lat: -23.0150,
-            lng: -45.5620,
-            type: "test",
-            status: "resolved",
-            title: "Teste de segurança",
-            user: "Carla Oliveira",
-            date: "Ontem, 21:37"
-        },
-
-        {
-            lat: -23.0380,
-            lng: -45.5700,
-            type: "cancelled",
-            status: "cancelled",
-            title: "Alerta cancelado",
-            user: "Mariana Costa",
-            date: "14/08/2026"
-        },
-
-        {
-            lat: -23.0100,
-            lng: -45.5400,
-            type: "emergency",
-            status: "active",
-            title: "Alerta de emergência",
-            user: "Juliana Souza",
-            date: "13/08/2026"
-        },
-
-        {
-            lat: -23.0270,
-            lng: -45.5750,
-            type: "test",
-            status: "resolved",
-            title: "Teste de segurança",
-            user: "Fernanda Lima",
-            date: "12/08/2026"
-        },
-
-        {
-            lat: -23.0450,
-            lng: -45.5500,
-            type: "emergency",
-            status: "resolved",
-            title: "Alerta de emergência",
-            user: "Larissa Alves",
-            date: "11/08/2026"
-        },
-
-        {
-            lat: -23.0180,
-            lng: -45.5300,
-            type: "cancelled",
-            status: "cancelled",
-            title: "Alerta cancelado",
-            user: "Camila Rocha",
-            date: "10/08/2026"
         }
 
-    ];
+
+        const emergencyIcon =
+            createIcon("#ff5d73");
 
 
-    let markers = [];
+        const activeIcon =
+            createIcon("#f4c95d");
+
+
+        const testIcon =
+            createIcon("#55df91");
+
+
+        const cancelledIcon =
+            createIcon("#817b8c");
 
 
 
-    /* =====================================================
-       ADICIONAR MARCADORES
-    ===================================================== */
+        /* =====================================================
+           OCORRÊNCIAS
+        ===================================================== */
 
-    function renderMarkers() {
+        const occurrences = [
 
-        markers.forEach(marker => {
+            {
+                lat: -23.0227,
+                lng: -45.5550,
+                type: "emergency",
+                status: "active",
+                title: "Alerta de emergência",
+                user: "Ana Silva",
+                date: "Hoje, 10:42"
+            },
 
-            map.removeLayer(marker);
+            {
+                lat: -23.0305,
+                lng: -45.5480,
+                type: "emergency",
+                status: "resolved",
+                title: "Alerta de emergência",
+                user: "Beatriz Santos",
+                date: "Hoje, 08:15"
+            },
 
-        });
+            {
+                lat: -23.0150,
+                lng: -45.5620,
+                type: "test",
+                status: "resolved",
+                title: "Teste de segurança",
+                user: "Carla Oliveira",
+                date: "Ontem, 21:37"
+            },
 
-        markers = [];
+            {
+                lat: -23.0380,
+                lng: -45.5700,
+                type: "cancelled",
+                status: "cancelled",
+                title: "Alerta cancelado",
+                user: "Mariana Costa",
+                date: "14/08/2026"
+            },
 
+            {
+                lat: -23.0100,
+                lng: -45.5400,
+                type: "emergency",
+                status: "active",
+                title: "Alerta de emergência",
+                user: "Juliana Souza",
+                date: "13/08/2026"
+            },
 
-        occurrences.forEach(item => {
+            {
+                lat: -23.0270,
+                lng: -45.5750,
+                type: "test",
+                status: "resolved",
+                title: "Teste de segurança",
+                user: "Fernanda Lima",
+                date: "12/08/2026"
+            },
 
-            let icon;
+            {
+                lat: -23.0450,
+                lng: -45.5500,
+                type: "emergency",
+                status: "resolved",
+                title: "Alerta de emergência",
+                user: "Larissa Alves",
+                date: "11/08/2026"
+            },
 
-
-            if (
-                item.type === "emergency" &&
-                item.status === "active"
-            ) {
-
-                icon = activeIcon;
-
+            {
+                lat: -23.0180,
+                lng: -45.5300,
+                type: "cancelled",
+                status: "cancelled",
+                title: "Alerta cancelado",
+                user: "Camila Rocha",
+                date: "10/08/2026"
             }
 
-            else if (
-                item.type === "emergency"
-            ) {
-
-                icon = emergencyIcon;
-
-            }
-
-            else if (
-                item.type === "test"
-            ) {
-
-                icon = testIcon;
-
-            }
-
-            else {
-
-                icon = cancelledIcon;
-
-            }
+        ];
 
 
-            const marker =
-                L.marker(
-                    [item.lat, item.lng],
-                    { icon }
-                ).addTo(map);
+        let markers = [];
 
 
-            marker.bindPopup(`
+
+        /* =====================================================
+           ADICIONAR MARCADORES
+        ===================================================== */
+
+        function renderMarkers() {
+
+            markers.forEach(marker => {
+
+                map.removeLayer(marker);
+
+            });
+
+            markers = [];
+
+
+            occurrences.forEach(item => {
+
+                let icon;
+
+
+                if (
+                    item.type === "emergency" &&
+                    item.status === "active"
+                ) {
+
+                    icon = activeIcon;
+
+                }
+
+                else if (
+                    item.type === "emergency"
+                ) {
+
+                    icon = emergencyIcon;
+
+                }
+
+                else if (
+                    item.type === "test"
+                ) {
+
+                    icon = testIcon;
+
+                }
+
+                else {
+
+                    icon = cancelledIcon;
+
+                }
+
+
+                const marker =
+                    L.marker(
+                        [item.lat, item.lng],
+                        { icon }
+                    ).addTo(map);
+
+
+                marker.bindPopup(`
 
                 <div class="popup-title">
                     ${item.title}
@@ -2284,251 +2239,251 @@
             `);
 
 
-            marker.data = item;
+                marker.data = item;
 
-            markers.push(marker);
+                markers.push(marker);
 
-        });
+            });
 
-    }
-
-
-    renderMarkers();
-
-
-
-    /* =====================================================
-       STATUS
-    ===================================================== */
-
-    function getStatusName(status) {
-
-        if (status === "active") {
-            return "Ativo";
         }
 
-        if (status === "resolved") {
-            return "Resolvido";
+
+        renderMarkers();
+
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        function getStatusName(status) {
+
+            if (status === "active") {
+                return "Ativo";
+            }
+
+            if (status === "resolved") {
+                return "Resolvido";
+            }
+
+            if (status === "cancelled") {
+                return "Cancelado";
+            }
+
+            return status;
         }
 
-        if (status === "cancelled") {
-            return "Cancelado";
-        }
-
-        return status;
-    }
 
 
+        /* =====================================================
+           FILTROS
+        ===================================================== */
 
-    /* =====================================================
-       FILTROS
-    ===================================================== */
+        function applyFilters() {
 
-    function applyFilters() {
+            const type =
+                document.getElementById("tipo").value;
 
-        const type =
-            document.getElementById("tipo").value;
-
-        const status =
-            document.getElementById("status").value;
-
-
-        markers.forEach(marker => {
-
-            const item =
-                marker.data;
+            const status =
+                document.getElementById("status").value;
 
 
-            const typeMatch =
-                type === "todos" ||
-                item.type === type;
+            markers.forEach(marker => {
+
+                const item =
+                    marker.data;
 
 
-            const statusMatch =
-                status === "todos" ||
-                item.status === status;
+                const typeMatch =
+                    type === "todos" ||
+                    item.type === type;
 
 
-            if (
-                typeMatch &&
-                statusMatch
-            ) {
+                const statusMatch =
+                    status === "todos" ||
+                    item.status === status;
 
-                if (!map.hasLayer(marker)) {
 
-                    marker.addTo(map);
+                if (
+                    typeMatch &&
+                    statusMatch
+                ) {
+
+                    if (!map.hasLayer(marker)) {
+
+                        marker.addTo(map);
+
+                    }
 
                 }
 
-            }
+                else {
 
-            else {
+                    if (map.hasLayer(marker)) {
 
-                if (map.hasLayer(marker)) {
+                        map.removeLayer(marker);
 
-                    map.removeLayer(marker);
+                    }
 
                 }
 
-            }
-
-        });
+            });
 
 
-        updateMapCounters();
+            updateMapCounters();
 
 
-        updateOccurrenceList(
+            updateOccurrenceList(
+                type,
+                status
+            );
+
+
+            showNotification(
+                "Filtros aplicados com sucesso."
+            );
+
+        }
+
+
+
+        /* =====================================================
+           CONTADORES
+        ===================================================== */
+
+        function updateMapCounters() {
+
+            const visible =
+                markers.filter(
+                    marker =>
+                        map.hasLayer(marker)
+                );
+
+
+            const active =
+                visible.filter(
+                    marker =>
+                        marker.data.status === "active"
+                );
+
+
+            document.getElementById(
+                "mapTotal"
+            ).textContent =
+                visible.length;
+
+
+            document.getElementById(
+                "mapActive"
+            ).textContent =
+                active.length;
+
+        }
+
+
+
+        /* =====================================================
+           LISTA
+        ===================================================== */
+
+        function updateOccurrenceList(
             type,
             status
-        );
+        ) {
+
+            const cards =
+                document.querySelectorAll(
+                    ".occurrence"
+                );
 
 
-        showNotification(
-            "Filtros aplicados com sucesso."
-        );
-
-    }
+            let visible = 0;
 
 
+            cards.forEach(card => {
 
-    /* =====================================================
-       CONTADORES
-    ===================================================== */
+                const cardType =
+                    card.dataset.type;
 
-    function updateMapCounters() {
-
-        const visible =
-            markers.filter(
-                marker =>
-                    map.hasLayer(marker)
-            );
+                const cardStatus =
+                    card.dataset.status;
 
 
-        const active =
-            visible.filter(
-                marker =>
-                    marker.data.status === "active"
-            );
+                const typeMatch =
+                    type === "todos" ||
+                    cardType === type;
 
 
-        document.getElementById(
-            "mapTotal"
-        ).textContent =
-            visible.length;
+                const statusMatch =
+                    status === "todos" ||
+                    cardStatus === status;
 
 
-        document.getElementById(
-            "mapActive"
-        ).textContent =
-            active.length;
+                if (
+                    typeMatch &&
+                    statusMatch
+                ) {
 
-    }
+                    card.style.display =
+                        "flex";
 
+                    visible++;
 
+                }
 
-    /* =====================================================
-       LISTA
-    ===================================================== */
+                else {
 
-    function updateOccurrenceList(
-        type,
-        status
-    ) {
+                    card.style.display =
+                        "none";
 
-        const cards =
-            document.querySelectorAll(
-                ".occurrence"
-            );
+                }
+
+            });
 
 
-        let visible = 0;
+            document.getElementById(
+                "occurrenceCount"
+            ).textContent =
+                visible +
+                (
+                    visible === 1
+                        ? " ocorrência"
+                        : " ocorrências"
+                );
 
-
-        cards.forEach(card => {
-
-            const cardType =
-                card.dataset.type;
-
-            const cardStatus =
-                card.dataset.status;
-
-
-            const typeMatch =
-                type === "todos" ||
-                cardType === type;
-
-
-            const statusMatch =
-                status === "todos" ||
-                cardStatus === status;
-
-
-            if (
-                typeMatch &&
-                statusMatch
-            ) {
-
-                card.style.display =
-                    "flex";
-
-                visible++;
-
-            }
-
-            else {
-
-                card.style.display =
-                    "none";
-
-            }
-
-        });
-
-
-        document.getElementById(
-            "occurrenceCount"
-        ).textContent =
-            visible +
-            (
-                visible === 1
-                    ? " ocorrência"
-                    : " ocorrências"
-            );
-
-    }
+        }
 
 
 
-    /* =====================================================
-       NOTIFICAÇÃO
-    ===================================================== */
+        /* =====================================================
+           NOTIFICAÇÃO
+        ===================================================== */
 
-    function showNotification(
-        message = "Você não possui novas notificações."
-    ) {
+        function showNotification(
+            message = "Você não possui novas notificações."
+        ) {
 
-        alert(message);
+            alert(message);
 
-    }
+        }
 
 
 
-    /* =====================================================
-       NAVEGAÇÃO
-    ===================================================== */
+        /* =====================================================
+           NAVEGAÇÃO
+        ===================================================== */
 
-    function goTo(page) {
+        function goTo(page) {
 
-        window.location.href =
-            page;
+            window.location.href =
+                page;
 
-    }
+        }
 
-</script>
+    </script>
 
-<script src="../assets/db-sync.js"></script>
-<script src="../assets/admin-db.js"></script>
+    <script src="../assets/db-sync.js"></script>
+    <script src="../assets/admin-db.js"></script>
 </body>
 
 </html>
