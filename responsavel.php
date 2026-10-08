@@ -895,7 +895,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             </div>
             <div class="responsible-badge">
                 <span></span> Modo Responsável
-                
+
             </div>
         </header>
 
@@ -1028,9 +1028,9 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 </div>
             </div>
         </section>
-    <button class="logout-button" onclick="sairConta()">
-                    Sair da conta
-                </button>
+        <button class="logout-button" onclick="sairConta()">
+            Sair da conta
+        </button>
     </main>
 
     <!-- MODAIS -->
@@ -1046,9 +1046,9 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         </div>
     </div>
 
-    <!-- CHAT FLUTUANTE DE JULIA -->
+    <!-- CHAT FLUTUANTE -->
     <button type="button" class="chat-float-button" id="chatFloatButton" onclick="alternarChatJulia()"
-        aria-label="Abrir conversa com Julia" aria-expanded="false">
+        aria-label="Abrir conversa" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path
                 d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-3.6-.8L4 20l1.2-3.7A7.4 7.4 0 0 1 4 11.5 7.5 7.5 0 0 1 12 4a7.5 7.5 0 0 1 8 7.5z" />
@@ -1057,7 +1057,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         <span class="chat-unread" id="chatUnread">1</span>
     </button>
 
-    <section class="responsible-chat" id="juliaChat" aria-hidden="true" aria-label="Conversa com Julia">
+    <section class="responsible-chat" id="juliaChat" aria-hidden="true" aria-label="Conversa com pessoa protegida">
         <header class="chat-header">
             <div class="chat-avatar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -1066,14 +1066,17 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 </svg>
             </div>
             <div class="chat-header-info">
-                <strong>Julia</strong>
-                <span class="chat-online"><span class="chat-online-dot"></span>Disponível para conversar</span>
+                <strong id="chatContactName">Pessoa protegida</strong>
+                <span class="chat-online">
+                    <span class="chat-online-dot"></span>
+                    Conversa ativa
+                </span>
             </div>
             <button type="button" class="chat-close" onclick="fecharChatJulia()" aria-label="Fechar conversa">×</button>
         </header>
         <div class="chat-messages" id="juliaChatMessages" aria-live="polite"></div>
         <form class="chat-input-area" onsubmit="enviarChatJulia(event)">
-            <input type="text" class="chat-input" id="juliaChatInput" placeholder="Digite uma mensagem para Julia..."
+            <input type="text" class="chat-input" id="juliaChatInput" placeholder="Digite uma mensagem..."
                 autocomplete="off" maxlength="500">
             <button type="submit" class="chat-send" aria-label="Enviar mensagem">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
@@ -1481,125 +1484,561 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             }, 3000);
         }
 
-        /* CHAT */
-        const CHAT_KEY = "silentHelpChatJulia_" + RESPONSAVEL_ID;
+        /* =====================================================
+   CHAT REAL COM USUÁRIO PROTEGIDO
+===================================================== */
 
-        function chatMensagens() {
+        let chatDados = null;
+
+
+        /* =====================================================
+           FORMATAR HORÁRIO
+        ===================================================== */
+
+        function chatHora(data) {
+
+            if (!data) {
+                return "";
+            }
+
+            const dataObj = new Date(
+                data.replace(" ", "T")
+            );
+
+
+            if (isNaN(dataObj.getTime())) {
+                return "";
+            }
+
+
+            return dataObj.toLocaleTimeString(
+                "pt-BR",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+        }
+
+
+        /* =====================================================
+           CARREGAR CHAT
+        ===================================================== */
+
+        async function carregarChat() {
+
             try {
-                return JSON.parse(localStorage.getItem(CHAT_KEY)) || [];
+
+                const resposta = await fetch(
+                    "api.php?action=chat&mode=get",
+                    {
+                        method: "GET",
+                        credentials: "same-origin"
+                    }
+                );
+
+
+                const dados =
+                    await resposta.json();
+
+
+                if (!dados.ok) {
+
+                    console.warn(
+                        "Chat:",
+                        dados.message
+                    );
+
+                    return;
+                }
+
+
+                chatDados = dados;
+
+
+                /*
+                 * Atualiza nome da pessoa no cabeçalho
+                 * se existir o elemento.
+                 */
+
+                const nomeContato =
+                    document.getElementById(
+                        "chatContactName"
+                    );
+
+
+                if (
+                    nomeContato &&
+                    dados.contato
+                ) {
+
+                    nomeContato.textContent =
+                        dados.contato.nome;
+                }
+
+
+                renderizarChat();
+
+
             } catch (erro) {
-                return [];
+
+                console.error(
+                    "Erro ao carregar chat:",
+                    erro
+                );
             }
         }
 
-        function salvarChat(mensagens) {
-            localStorage.setItem(CHAT_KEY, JSON.stringify(mensagens.slice(-80)));
-        }
 
-        function chatHora() {
-            return new Date().toLocaleTimeString("pt-BR", {
-                hour: "2-digit",
-                minute: "2-digit"
-            });
-        }
+        /* =====================================================
+           RENDERIZAR
+        ===================================================== */
 
         function renderizarChat() {
-            const container = document.getElementById("juliaChatMessages");
-            if (!container) return;
+
+            const container =
+                document.getElementById(
+                    "juliaChatMessages"
+                );
+
+
+            if (!container || !chatDados) {
+                return;
+            }
+
 
             container.innerHTML = "";
 
-            chatMensagens().forEach(mensagem => {
-                const bolha = document.createElement("div");
-                bolha.className =
-                    "chat-message " +
-                    (mensagem.remetente === "julia" ? "julia" : "responsavel");
 
-                bolha.innerHTML =
-                    escaparHTML(mensagem.texto) +
-                    '<span class="chat-time">' +
-                    escaparHTML(mensagem.hora) +
-                    "</span>";
+            if (
+                !chatDados.messages ||
+                chatDados.messages.length === 0
+            ) {
 
-                container.appendChild(bolha);
-            });
+                container.innerHTML = `
+            <div class="chat-empty">
+                <span>💜</span>
+                <p>
+                    Nenhuma mensagem ainda.
+                </p>
+            </div>
+        `;
 
-            container.scrollTop = container.scrollHeight;
+                return;
+            }
+
+
+            chatDados.messages.forEach(
+                function (mensagem) {
+
+                    const bolha =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    const minhaMensagem =
+                        Number(
+                            mensagem.sender_id
+                        ) ===
+                        Number(
+                            chatDados.usuario_id
+                        );
+
+
+                    bolha.className =
+                        "chat-message " +
+                        (
+                            minhaMensagem
+                                ? "responsavel"
+                                : "julia"
+                        );
+
+
+                    bolha.innerHTML = `
+                ${escaparHTML(
+                        mensagem.message
+                    )}
+
+                <span class="chat-time">
+                    ${escaparHTML(
+                        chatHora(
+                            mensagem.created_at
+                        )
+                    )}
+                </span>
+            `;
+
+
+                    container.appendChild(
+                        bolha
+                    );
+                }
+            );
+
+
+            container.scrollTop =
+                container.scrollHeight;
         }
+
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
 
         function iniciarChat() {
-            let mensagens = chatMensagens();
 
-            if (!mensagens.length) {
-                mensagens = [{
-                    remetente: "julia",
-                    texto: "Oi! 💜 Estou aqui. Pode falar comigo quando quiser.",
-                    hora: chatHora()
-                }];
-
-                salvarChat(mensagens);
-            }
-
-            renderizarChat();
+            carregarChat();
         }
+
+
+        /* =====================================================
+           ABRIR CHAT
+        ===================================================== */
 
         function alternarChatJulia() {
-            const chat = document.getElementById("juliaChat");
-            const botao = document.getElementById("chatFloatButton");
-            const unread = document.getElementById("chatUnread");
 
-            if (!chat) return;
+            const chat =
+                document.getElementById(
+                    "juliaChat"
+                );
 
-            const aberto = chat.classList.toggle("show");
 
-            chat.setAttribute("aria-hidden", String(!aberto));
-            botao?.setAttribute("aria-expanded", String(aberto));
+            const botao =
+                document.getElementById(
+                    "chatFloatButton"
+                );
 
-            if (unread && aberto) unread.style.display = "none";
+
+            const unread =
+                document.getElementById(
+                    "chatUnread"
+                );
+
+
+            if (!chat) {
+                return;
+            }
+
+
+            const aberto =
+                chat.classList.toggle(
+                    "show"
+                );
+
+
+            chat.setAttribute(
+                "aria-hidden",
+                String(!aberto)
+            );
+
+
+            botao?.setAttribute(
+                "aria-expanded",
+                String(aberto)
+            );
+
+
+            if (unread && aberto) {
+
+                unread.style.display =
+                    "none";
+            }
+
 
             if (aberto) {
-                renderizarChat();
-                setTimeout(() => {
-                    document.getElementById("juliaChatInput")?.focus();
-                }, 150);
+
+                carregarChat();
+
+
+                setTimeout(
+                    () => {
+
+                        document
+                            .getElementById(
+                                "juliaChatInput"
+                            )
+                            ?.focus();
+
+                    },
+                    150
+                );
             }
         }
 
+
+        /* =====================================================
+           FECHAR CHAT
+        ===================================================== */
+
         function fecharChatJulia() {
-            document.getElementById("juliaChat")?.classList.remove("show");
-            document.getElementById("juliaChat")?.setAttribute("aria-hidden", "true");
-            document.getElementById("chatFloatButton")?.setAttribute("aria-expanded", "false");
+
+            document
+                .getElementById(
+                    "juliaChat"
+                )
+                ?.classList.remove(
+                    "show"
+                );
+
+
+            document
+                .getElementById(
+                    "juliaChat"
+                )
+                ?.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+
+            document
+                .getElementById(
+                    "chatFloatButton"
+                )
+                ?.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
         }
 
-        function adicionarChat(remetente, texto) {
-            const mensagens = chatMensagens();
-            mensagens.push({
-                remetente,
-                texto,
-                hora: chatHora()
-            });
+        /* =====================================================
+   ALERTA SOS DO BANCO
+===================================================== */
 
-            salvarChat(mensagens);
-            renderizarChat();
+        async function carregarAlertaSOS() {
+
+            try {
+
+                const resposta =
+                    await fetch(
+                        "api.php?action=responsible_alert",
+                        {
+                            method: "GET",
+                            credentials: "same-origin",
+                            cache: "no-store"
+                        }
+                    );
+
+
+                const dados =
+                    await resposta.json();
+
+
+                if (!dados.ok) {
+
+                    console.warn(
+                        "SOS:",
+                        dados.message
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * Nenhum alerta ativo
+                 */
+
+                if (!dados.alerta) {
+
+                    return;
+                }
+
+
+                /*
+                 * Novo alerta recebido
+                 */
+
+                const alerta =
+                    dados.alerta;
+
+
+                /*
+                 * Evita redesenhar exatamente
+                 * o mesmo alerta toda hora.
+                 */
+
+                if (
+                    alertaAtual &&
+                    Number(alertaAtual.id) ===
+                    Number(alerta.id)
+                ) {
+
+                    return;
+                }
+
+
+                alertaAtual = {
+
+                    id:
+                        alerta.id,
+
+                    usuario_id:
+                        alerta.usuario_id,
+
+                    usuario_nome:
+                        alerta.usuario_nome,
+
+                    tipo:
+                        alerta.tipo,
+
+                    mensagem:
+                        alerta.mensagem,
+
+                    status:
+                        alerta.status,
+
+                    latitude:
+                        alerta.latitude,
+
+                    longitude:
+                        alerta.longitude,
+
+                    localizacao:
+                        alerta.localizacao,
+
+                    timestamp:
+                        alerta.timestamp
+                };
+
+
+                /*
+                 * Atualiza a tela
+                 */
+
+                aplicarDadosDoAlerta();
+
+
+                /*
+                 * Aviso visual
+                 */
+
+                mostrarMensagem(
+                    "🚨 Novo alerta de emergência recebido!"
+                );
+
+
+                /*
+                 * Som/vibração, quando disponível
+                 */
+
+                if (navigator.vibrate) {
+
+                    navigator.vibrate([
+                        300,
+                        150,
+                        300,
+                        150,
+                        500
+                    ]);
+                }
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao verificar SOS:",
+                    erro
+                );
+            }
         }
 
-        function enviarChatJulia(evento) {
+
+        /* =====================================================
+           ENVIAR MENSAGEM
+        ===================================================== */
+
+        async function enviarChatJulia(evento) {
+
             evento.preventDefault();
 
-            const input = document.getElementById("juliaChatInput");
-            const texto = input.value.trim();
 
-            if (!texto) return;
-
-            adicionarChat("responsavel", texto);
-            input.value = "";
-
-            setTimeout(() => {
-                adicionarChat(
-                    "julia",
-                    "Recebi sua mensagem. 💜 Estou aqui e vou acompanhar o que você precisar."
+            const input =
+                document.getElementById(
+                    "juliaChatInput"
                 );
-            }, 700);
+
+
+            if (!input) {
+                return;
+            }
+
+
+            const texto =
+                input.value.trim();
+
+
+            if (!texto) {
+                return;
+            }
+
+
+            input.disabled = true;
+
+
+            try {
+
+                const resposta =
+                    await fetch(
+                        "api.php?action=chat&mode=send",
+                        {
+                            method: "POST",
+
+                            credentials:
+                                "same-origin",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                message: texto
+                            })
+                        }
+                    );
+
+
+                const dados =
+                    await resposta.json();
+
+
+                if (!dados.ok) {
+
+                    mostrarMensagem(
+                        dados.message ||
+                        "Não foi possível enviar a mensagem."
+                    );
+
+                    return;
+                }
+
+
+                input.value = "";
+
+
+                await carregarChat();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao enviar mensagem:",
+                    erro
+                );
+
+
+                mostrarMensagem(
+                    "Erro ao conectar com o servidor."
+                );
+
+
+            } finally {
+
+                input.disabled = false;
+                input.focus();
+            }
         }
 
         /* EVENTOS */
@@ -1618,15 +2057,62 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
 
         /* INICIALIZAÇÃO */
         window.addEventListener("load", function () {
-            aplicarDadosDoAlerta();
+
+            /*
+             * Carrega o chat
+             */
             iniciarChat();
 
+
+            /*
+             * Carrega o SOS imediatamente
+             */
+            carregarAlertaSOS();
+
+
+            /*
+             * Verifica novos SOS a cada 3 segundos
+             */
             setInterval(() => {
+
+                carregarAlertaSOS();
+
+            }, 3000);
+
+
+            /*
+             * Verifica novas mensagens do chat
+             */
+            setInterval(() => {
+
+                carregarChat();
+
+            }, 3000);
+
+
+            /*
+             * Atualiza o tempo do alerta
+             */
+            setInterval(() => {
+
                 if (alertaAtual) {
-                    document.getElementById("alertTime").textContent =
-                        formatarTempo(alertaAtual.timestamp);
+
+                    const elemento =
+                        document.getElementById(
+                            "alertTime"
+                        );
+
+                    if (elemento) {
+
+                        elemento.textContent =
+                            formatarTempo(
+                                alertaAtual.timestamp
+                            );
+                    }
                 }
+
             }, 30000);
+
         });
 
         function sairConta() {
@@ -1645,7 +2131,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
 
 
                 setTimeout(
-                    function() {
+                    function () {
 
                         window.location.href =
                             "logout.php";

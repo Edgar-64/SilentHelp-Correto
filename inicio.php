@@ -4219,42 +4219,18 @@ $nomeUsuario = $usuario["nome"];
 
 
         /* =====================================================
-           CHAT COM RESPONSÁVEL
+   CHAT REAL COM RESPONSÁVEL
+===================================================== */
+
+        let chatDados = null;
+
+
+        /* =====================================================
+           ESCAPAR HTML
         ===================================================== */
 
-        const CHAT_STORAGE_KEY = "silentHelpChatResponsavel";
-
-        function obterMensagensChat() {
-            try {
-                return JSON.parse(
-                    localStorage.getItem(CHAT_STORAGE_KEY)
-                ) || [];
-            } catch (erro) {
-                return [];
-            }
-        }
-
-
-        function salvarMensagensChat(mensagens) {
-            localStorage.setItem(
-                CHAT_STORAGE_KEY,
-                JSON.stringify(mensagens.slice(-80))
-            );
-        }
-
-
-        function horarioChat() {
-            return new Date().toLocaleTimeString(
-                "pt-BR",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            );
-        }
-
-
         function escaparHTML(texto) {
+
             return String(texto)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
@@ -4264,88 +4240,331 @@ $nomeUsuario = $usuario["nome"];
         }
 
 
-        function renderizarChat() {
-            const area =
-                document.getElementById("chatMessages");
+        /* =====================================================
+           HORÁRIO
+        ===================================================== */
 
-            if (!area) {
+        function formatarHorarioChat(data) {
+
+            if (!data) {
+                return "";
+            }
+
+            const dataObj = new Date(
+                data.replace(" ", "T")
+            );
+
+            if (isNaN(dataObj.getTime())) {
+                return "";
+            }
+
+            return dataObj.toLocaleTimeString(
+                "pt-BR",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+        }
+
+
+        /* =====================================================
+           CARREGAR CHAT
+        ===================================================== */
+
+        async function carregarChat() {
+
+            try {
+
+                const resposta = await fetch(
+                    "api.php?action=chat&mode=get",
+                    {
+                        method: "GET",
+                        credentials: "same-origin"
+                    }
+                );
+
+                const dados = await resposta.json();
+
+                if (!dados.ok) {
+
+                    console.warn(
+                        "Chat:",
+                        dados.message
+                    );
+
+                    return;
+                }
+
+                chatDados = dados;
+
+                renderizarChat();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao carregar chat:",
+                    erro
+                );
+            }
+        }
+
+
+        /* =====================================================
+           RENDERIZAR CHAT
+        ===================================================== */
+
+        function renderizarChat() {
+
+            const area =
+                document.getElementById(
+                    "chatMessages"
+                );
+
+            if (!area || !chatDados) {
                 return;
             }
 
-            const mensagens =
-                obterMensagensChat();
-
             area.innerHTML = "";
 
-            mensagens.forEach(function (mensagem) {
-                const bolha =
-                    document.createElement("div");
 
-                bolha.className =
-                    "chat-message " +
-                    (
-                        mensagem.remetente === "usuario"
-                            ? "usuario"
-                            : "responsavel"
+            if (
+                !chatDados.messages ||
+                chatDados.messages.length === 0
+            ) {
+
+                area.innerHTML = `
+            <div class="chat-empty">
+                <span>💜</span>
+                <p>
+                    Você ainda não possui mensagens.
+                </p>
+            </div>
+        `;
+
+                return;
+            }
+
+
+            chatDados.messages.forEach(
+                function (mensagem) {
+
+                    const bolha =
+                        document.createElement("div");
+
+
+                    const minhaMensagem =
+                        Number(mensagem.sender_id) ===
+                        Number(chatDados.usuario_id);
+
+
+                    bolha.className =
+                        "chat-message " +
+                        (
+                            minhaMensagem
+                                ? "usuario"
+                                : "responsavel"
+                        );
+
+
+                    bolha.innerHTML = `
+                ${escaparHTML(
+                        mensagem.message
+                    )}
+
+                <span class="chat-time">
+                    ${escaparHTML(
+                        formatarHorarioChat(
+                            mensagem.created_at
+                        )
+                    )}
+                </span>
+            `;
+
+
+                    area.appendChild(
+                        bolha
                     );
+                }
+            );
 
-                bolha.innerHTML =
-                    escaparHTML(mensagem.texto) +
-                    '<span class="chat-time">' +
-                    escaparHTML(mensagem.hora || "") +
-                    "</span>";
-
-                area.appendChild(bolha);
-            });
 
             area.scrollTop =
                 area.scrollHeight;
         }
 
 
-        function iniciarChatResponsavel() {
-            let mensagens =
-                obterMensagensChat();
+        /* =====================================================
+           ENVIAR MENSAGEM
+        ===================================================== */
 
-            if (mensagens.length === 0) {
-                mensagens = [
-                    {
-                        remetente: "responsavel",
-                        texto: "Oi, " + nomeUsuario + "! 💜 Estou aqui. Como você está?",
-                        hora: horarioChat()
-                    }
-                ];
+        async function enviarMensagemChat(event) {
 
-                salvarMensagensChat(mensagens);
+            event.preventDefault();
+
+
+            const input =
+                document.getElementById(
+                    "chatInput"
+                );
+
+
+            if (!input) {
+                return;
             }
 
-            renderizarChat();
+
+            const texto =
+                input.value.trim();
+
+
+            if (!texto) {
+                return;
+            }
+
+
+            input.disabled = true;
+
+
+            try {
+
+                const resposta = await fetch(
+                    "api.php?action=chat&mode=send",
+                    {
+                        method: "POST",
+
+                        credentials: "same-origin",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            message: texto
+                        })
+                    }
+                );
+
+
+                const dados =
+                    await resposta.json();
+
+
+                if (!dados.ok) {
+
+                    alert(
+                        dados.message ||
+                        "Não foi possível enviar a mensagem."
+                    );
+
+                    return;
+                }
+
+
+                input.value = "";
+
+
+                await carregarChat();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao enviar mensagem:",
+                    erro
+                );
+
+                alert(
+                    "Erro ao conectar com o servidor."
+                );
+
+
+            } finally {
+
+                input.disabled = false;
+                input.focus();
+            }
         }
 
 
-        function alternarChatResponsavel() {
+        /* =====================================================
+           MENSAGENS RÁPIDAS
+        ===================================================== */
+
+        function enviarMensagemRapida(texto) {
+
+            const input =
+                document.getElementById(
+                    "chatInput"
+                );
+
+
             const chat =
-                document.getElementById("responsibleChat");
+                document.getElementById(
+                    "responsibleChat"
+                );
+
+
+            if (
+                chat &&
+                !chat.classList.contains("show")
+            ) {
+                alternarChatResponsavel();
+            }
+
+
+            if (!input) {
+                return;
+            }
+
+
+            input.value = texto;
+
+            input.focus();
+        }
+
+
+        /* =====================================================
+           ABRIR / FECHAR
+        ===================================================== */
+
+        function alternarChatResponsavel() {
+
+            const chat =
+                document.getElementById(
+                    "responsibleChat"
+                );
 
             const botao =
-                document.getElementById("chatFloatButton");
+                document.getElementById(
+                    "chatFloatButton"
+                );
 
             const unread =
-                document.getElementById("chatUnread");
+                document.getElementById(
+                    "chatUnread"
+                );
+
 
             if (!chat) {
                 return;
             }
 
+
             const aberto =
                 chat.classList.toggle("show");
+
 
             chat.setAttribute(
                 "aria-hidden",
                 String(!aberto)
             );
 
+
             if (botao) {
+
                 botao.setAttribute(
                     "aria-expanded",
                     String(aberto)
@@ -4357,216 +4576,93 @@ $nomeUsuario = $usuario["nome"];
                 );
             }
 
+
             if (unread && aberto) {
                 unread.style.display = "none";
             }
 
+
             if (aberto) {
-                renderizarChat();
 
-                setTimeout(function () {
-                    const input =
-                        document.getElementById(
-                            "chatInput"
-                        );
+                carregarChat();
 
-                    if (input) {
-                        input.focus();
-                    }
-                }, 180);
+
+                setTimeout(
+                    function () {
+
+                        document
+                            .getElementById(
+                                "chatInput"
+                            )
+                            ?.focus();
+
+                    },
+                    150
+                );
             }
         }
 
+
+        /* =====================================================
+           FECHAR
+        ===================================================== */
 
         function fecharChatResponsavel() {
-            const chat =
-                document.getElementById("responsibleChat");
 
-            const botao =
-                document.getElementById("chatFloatButton");
-
-            if (chat) {
-                chat.classList.remove("show");
-                chat.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-            }
-
-            if (botao) {
-                botao.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                botao.classList.remove(
-                    "chat-open"
-                );
-            }
-        }
-
-
-        function adicionarMensagemChat(
-            remetente,
-            texto
-        ) {
-            const mensagens =
-                obterMensagensChat();
-
-            mensagens.push({
-                remetente: remetente,
-                texto: texto,
-                hora: horarioChat()
-            });
-
-            salvarMensagensChat(mensagens);
-            renderizarChat();
-        }
-
-
-        function enviarMensagemRapida(texto) {
             const chat =
                 document.getElementById(
                     "responsibleChat"
                 );
 
-            if (
-                chat &&
-                !chat.classList.contains("show")
-            ) {
-                alternarChatResponsavel();
-            }
-
-            adicionarMensagemChat(
-                "usuario",
-                texto
-            );
-
-            responderResponsavel(texto);
-        }
-
-
-        function enviarMensagemChat(event) {
-            event.preventDefault();
-
-            const input =
+            const botao =
                 document.getElementById(
-                    "chatInput"
+                    "chatFloatButton"
                 );
 
-            if (!input) {
-                return;
-            }
 
-            const texto =
-                input.value.trim();
-
-            if (!texto) {
-                return;
-            }
-
-            adicionarMensagemChat(
-                "usuario",
-                texto
+            chat?.classList.remove(
+                "show"
             );
 
-            input.value = "";
 
-            responderResponsavel(texto);
-        }
-
-
-        function responderResponsavel(texto) {
-            const area =
-                document.getElementById(
-                    "chatMessages"
-                );
-
-            if (!area) {
-                return;
-            }
-
-            const digitando =
-                document.createElement("div");
-
-            digitando.className =
-                "chat-typing show";
-
-            digitando.id =
-                "chatTyping";
-
-            digitando.innerHTML =
-                "<span></span><span></span><span></span>";
-
-            area.appendChild(digitando);
-            area.scrollTop = area.scrollHeight;
-
-            const mensagem =
-                texto.toLowerCase();
-
-            let resposta =
-                "Estou aqui com você. Pode me contar com calma o que está acontecendo.";
-
-            if (
-                mensagem.includes("oi") ||
-                mensagem.includes("olá") ||
-                mensagem.includes("ola")
-            ) {
-                resposta =
-                    "Oi! 💜 Que bom falar com você. Como você está se sentindo?";
-            } else if (
-                mensagem.includes("bem") ||
-                mensagem.includes("tudo bem")
-            ) {
-                resposta =
-                    "Fico feliz em saber. 💜 Se precisar conversar, estou por aqui.";
-            } else if (
-                mensagem.includes("medo") ||
-                mensagem.includes("assustada") ||
-                mensagem.includes("assustad")
-            ) {
-                resposta =
-                    "Entendi. Você não precisa lidar com isso sozinha. Se estiver em perigo imediato, use o botão SOS do SilentHelp.";
-            } else if (
-                mensagem.includes("ajuda") ||
-                mensagem.includes("socorro") ||
-                mensagem.includes("emergência") ||
-                mensagem.includes("emergencia")
-            ) {
-                resposta =
-                    "Estou com você. Se for uma emergência, use o botão SOS para enviar um alerta aos contatos de confiança.";
-            } else if (
-                mensagem.includes("obrigad")
-            ) {
-                resposta =
-                    "Por nada! 💜 Sempre que precisar conversar, pode me chamar.";
-            }
-
-            setTimeout(function () {
-                const indicador =
-                    document.getElementById(
-                        "chatTyping"
-                    );
-
-                if (indicador) {
-                    indicador.remove();
-                }
-
-                adicionarMensagemChat(
-                    "responsavel",
-                    resposta
-                );
-            }, 850);
-        }
-
-
-        function limparChatResponsavel() {
-            localStorage.removeItem(
-                CHAT_STORAGE_KEY
+            chat?.setAttribute(
+                "aria-hidden",
+                "true"
             );
 
-            iniciarChatResponsavel();
+
+            botao?.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+
+            botao?.classList.remove(
+                "chat-open"
+            );
         }
+
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        window.addEventListener(
+            "load",
+            function () {
+
+                carregarChat();
+
+
+                /*
+                 * Atualiza o chat a cada 3 segundos.
+                 */
+                setInterval(
+                    carregarChat,
+                    3000
+                );
+            }
+        );
 
 
         /* =====================================================
@@ -4728,129 +4824,303 @@ $nomeUsuario = $usuario["nome"];
                 return;
             }
 
+
             botao.disabled = true;
-            botao.innerHTML = "⏳ &nbsp; PREPARANDO ALERTA...";
+
+            botao.innerHTML =
+                "⏳ &nbsp; ENVIANDO ALERTA...";
+
 
             let latitude = null;
             let longitude = null;
             let precisao = null;
             let localizacao = "Não disponível";
 
-            /* Tenta obter a localização real do celular. */
-            if (navigator.geolocation) {
-                try {
-                    const posicao = await new Promise((resolve, reject) => {
-                        navigator.geolocation.getCurrentPosition(
-                            resolve,
-                            reject,
-                            {
-                                enableHighAccuracy: true,
-                                timeout: 10000,
-                                maximumAge: 0
-                            }
-                        );
-                    });
-
-                    latitude = posicao.coords.latitude;
-                    longitude = posicao.coords.longitude;
-                    precisao = Math.round(posicao.coords.accuracy);
-                    localizacao = "Obtida pelo GPS";
-                } catch (erro) {
-                    localizacao = "GPS não autorizado ou indisponível";
-                }
-            }
-
-            const agora = new Date();
-
-            const hora = agora.toLocaleTimeString("pt-BR", {
-                hour: "2-digit",
-                minute: "2-digit"
-            });
-
-            const data = agora.toLocaleDateString("pt-BR");
-
-            const numeroChamado =
-                "SH-" + String(Date.now()).slice(-6);
-
-            const alerta = {
-                id: numeroChamado,
-                tipo: "Alerta de emergência",
-                mensagem: "Alerta de emergência acionado pelo usuário.",
-                status: "Acionado",
-                data: data,
-                hora: hora,
-                localizacao: localizacao,
-                latitude: latitude,
-                longitude: longitude,
-                precisao: precisao,
-                online: navigator.onLine,
-                timestamp: Date.now()
-            };
-
-            localStorage.setItem(
-                "ultimoAlertaSilentHelp",
-                JSON.stringify(alerta)
-            );
-
-            let historico = [];
-
-            try {
-                historico = JSON.parse(
-                    localStorage.getItem("historicoAlertasSilentHelp")
-                ) || [];
-            } catch (erro) {
-                historico = [];
-            }
-
-            historico.unshift(alerta);
-            historico = historico.slice(0, 50);
-
-            localStorage.setItem(
-                "historicoAlertasSilentHelp",
-                JSON.stringify(historico)
-            );
-
-            atualizarStatusEmergencia();
-
-            /* Vibração real, quando suportada pelo aparelho. */
-            if (navigator.vibrate) {
-                navigator.vibrate([250, 120, 250]);
-            }
-
-            fecharSOS();
-
-            botao.disabled = false;
-            botao.innerHTML = "Enviar alerta";
 
             /*
-             * Se o navegador oferecer compartilhamento, abre o painel
-             * nativo do celular para que o usuário possa enviar o alerta
-             * para um contato/app de confiança.
+             * =====================================================
+             * OBTER LOCALIZAÇÃO
+             * =====================================================
              */
-            if (navigator.share) {
+
+            if (navigator.geolocation) {
+
                 try {
-                    let textoCompartilhamento =
-                        "🚨 ALERTA SILENTHELP\n" +
-                        "Chamado: " + numeroChamado + "\n" +
-                        "Horário: " + hora + "\n" +
-                        "Localização: " + localizacao;
 
-                    if (latitude !== null && longitude !== null) {
-                        textoCompartilhamento +=
-                            "\nMapa: https://www.google.com/maps?q=" +
-                            latitude + "," + longitude;
-                    }
+                    const posicao =
+                        await new Promise(
+                            (resolve, reject) => {
 
-                    await navigator.share({
-                        title: "Alerta SilentHelp",
-                        text: textoCompartilhamento
-                    });
+                                navigator.geolocation.getCurrentPosition(
+                                    resolve,
+                                    reject,
+                                    {
+                                        enableHighAccuracy: true,
+                                        timeout: 10000,
+                                        maximumAge: 0
+                                    }
+                                );
+
+                            }
+                        );
+
+                    latitude =
+                        posicao.coords.latitude;
+
+                    longitude =
+                        posicao.coords.longitude;
+
+                    precisao =
+                        Math.round(
+                            posicao.coords.accuracy
+                        );
+
+                    localizacao =
+                        "Obtida pelo GPS";
+
                 } catch (erro) {
-                    /* O usuário pode fechar o compartilhamento sem erro. */
+
+                    console.warn(
+                        "Localização não disponível:",
+                        erro
+                    );
+
+                    localizacao =
+                        "GPS não autorizado ou indisponível";
                 }
             }
 
-            mostrarConfirmacaoAlerta(numeroChamado, hora);
+
+            /*
+             * =====================================================
+             * ENVIAR PARA O BANCO
+             * =====================================================
+             */
+
+            try {
+
+                const resposta =
+                    await fetch(
+                        "api.php?action=create_alert",
+                        {
+                            method: "POST",
+
+                            credentials: "same-origin",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                tipo: "emergencia",
+
+                                titulo:
+                                    "Alerta de emergência",
+
+                                descricao:
+                                    "Alerta de emergência acionado pelo usuário.",
+
+                                latitude:
+                                    latitude,
+
+                                longitude:
+                                    longitude
+                            })
+                        }
+                    );
+
+
+                const dados =
+                    await resposta.json();
+
+
+                /*
+                 * =================================================
+                 * ERRO
+                 * =================================================
+                 */
+
+                if (!dados.ok) {
+
+                    mostrarMensagem(
+                        dados.message ||
+                        "Não foi possível enviar o alerta."
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * =================================================
+                 * ALERTA REGISTRADO
+                 * =================================================
+                 */
+
+                const agora =
+                    new Date();
+
+                const hora =
+                    agora.toLocaleTimeString(
+                        "pt-BR",
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    );
+
+                const data =
+                    agora.toLocaleDateString(
+                        "pt-BR"
+                    );
+
+
+                const alerta = {
+
+                    id:
+                        dados.id,
+
+                    tipo:
+                        "Alerta de emergência",
+
+                    mensagem:
+                        "Alerta de emergência acionado pelo usuário.",
+
+                    status:
+                        "open",
+
+                    data:
+                        data,
+
+                    hora:
+                        hora,
+
+                    localizacao:
+                        localizacao,
+
+                    latitude:
+                        latitude,
+
+                    longitude:
+                        longitude,
+
+                    precisao:
+                        precisao,
+
+                    online:
+                        navigator.onLine,
+
+                    timestamp:
+                        Date.now()
+                };
+
+
+                /*
+                 * Guarda apenas para a própria tela
+                 * e histórico local.
+                 *
+                 * O responsável NÃO depende disso.
+                 */
+
+                localStorage.setItem(
+                    "ultimoAlertaSilentHelp",
+                    JSON.stringify(alerta)
+                );
+
+
+                let historico = [];
+
+                try {
+
+                    historico =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "historicoAlertasSilentHelp"
+                            )
+                        ) || [];
+
+                } catch (erro) {
+
+                    historico = [];
+                }
+
+
+                historico.unshift(
+                    alerta
+                );
+
+                historico =
+                    historico.slice(0, 50);
+
+
+                localStorage.setItem(
+                    "historicoAlertasSilentHelp",
+                    JSON.stringify(historico)
+                );
+
+
+                /*
+                 * =================================================
+                 * VIBRAÇÃO
+                 * =================================================
+                 */
+
+                if (navigator.vibrate) {
+
+                    navigator.vibrate([
+                        250,
+                        120,
+                        250
+                    ]);
+                }
+
+
+                /*
+                 * =================================================
+                 * FINALIZAÇÃO
+                 * =================================================
+                 */
+
+                fecharSOS();
+
+
+                botao.disabled = false;
+
+                botao.innerHTML =
+                    "Enviar alerta";
+
+
+                mostrarConfirmacaoAlerta(
+                    dados.id,
+                    hora
+                );
+
+
+                mostrarMensagem(
+                    "🚨 Alerta enviado ao responsável."
+                );
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao enviar SOS:",
+                    erro
+                );
+
+                mostrarMensagem(
+                    "Erro ao conectar com o servidor."
+                );
+
+            } finally {
+
+                botao.disabled = false;
+
+                botao.innerHTML =
+                    "Enviar alerta";
+            }
         }
 
 

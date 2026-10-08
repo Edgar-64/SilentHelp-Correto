@@ -526,32 +526,105 @@ try {
 
 
         /* =========================
-           ALERTA
-        ========================= */
+   ALERTA
+========================= */
         case "create_alert":
 
             needUser();
 
             $idUsuario = uid();
+
             $tipo = trim($d["tipo"] ?? "emergencia");
             $titulo = trim($d["titulo"] ?? "Alerta de emergência");
             $descricao = trim($d["descricao"] ?? "");
+
             $latitude = $d["latitude"] ?? null;
             $longitude = $d["longitude"] ?? null;
 
-            // A tabela alerts possui uma coluna message, não descricao/titulo.
-            $mensagem = $titulo;
-            if ($descricao !== "") {
-                $mensagem .= " - " . $descricao;
-            }
 
-            $stmt = $conn->prepare("\n                INSERT INTO alerts\n                (user_id, type, message, latitude, longitude, status)\n                VALUES (?, ?, ?, ?, ?, 'open')\n            ");
+            /*
+             * =====================================================
+             * VERIFICAR SE EXISTE RESPONSÁVEL VINCULADO
+             * =====================================================
+             */
+
+            $stmt = $conn->prepare("
+        SELECT id
+        FROM responsible_links
+        WHERE
+            protected_user_id = ?
+            AND status = 'active'
+        LIMIT 1
+    ");
+
             if (!$stmt) {
                 throw new Exception($conn->error);
             }
 
-            $lat = $latitude !== null ? (float) $latitude : null;
-            $lng = $longitude !== null ? (float) $longitude : null;
+            $stmt->bind_param(
+                "i",
+                $idUsuario
+            );
+
+            $stmt->execute();
+            $stmt->bind_result($vinculoId);
+
+            if (!$stmt->fetch()) {
+
+                $stmt->close();
+
+                out([
+                    "ok" => false,
+                    "message" => "Você não possui um responsável vinculado."
+                ], 403);
+            }
+
+            $stmt->close();
+
+
+            /*
+             * =====================================================
+             * MONTAR MENSAGEM
+             * =====================================================
+             */
+
+            $mensagem = $titulo;
+
+            if ($descricao !== "") {
+                $mensagem .= " - " . $descricao;
+            }
+
+
+            /*
+             * =====================================================
+             * SALVAR ALERTA
+             * =====================================================
+             */
+
+            $stmt = $conn->prepare("
+        INSERT INTO alerts
+        (
+            user_id,
+            type,
+            message,
+            latitude,
+            longitude,
+            status
+        )
+        VALUES (?, ?, ?, ?, ?, 'open')
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $lat = $latitude !== null
+                ? (float) $latitude
+                : null;
+
+            $lng = $longitude !== null
+                ? (float) $longitude
+                : null;
 
             $stmt->bind_param(
                 "issdd",
@@ -562,13 +635,149 @@ try {
                 $lng
             );
 
-            $stmt->execute();
+            if (!$stmt->execute()) {
+
+                $erro = $stmt->error;
+                $stmt->close();
+
+                throw new Exception(
+                    "Erro ao registrar alerta: " . $erro
+                );
+            }
+
             $idAlerta = $conn->insert_id;
+
             $stmt->close();
+
+
+            /*
+             * =====================================================
+             * RETORNO
+             * =====================================================
+             */
 
             out([
                 "ok" => true,
-                "id" => $idAlerta
+                "id" => (int) $idAlerta,
+                "status" => "open",
+                "message" => "Alerta enviado ao responsável."
+            ]);
+
+        /* =========================
+ALERTA DO RESPONSÁVEL
+========================= */
+        case "responsible_alert":
+
+            needUser();
+
+            $responsavelId = uid();
+
+
+            /*
+             * =====================================================
+             * BUSCAR ALERTA DA PESSOA PROTEGIDA VINCULADA
+             * =====================================================
+             */
+
+            $stmt = $conn->prepare("
+        SELECT
+            a.id,
+            a.user_id,
+            a.type,
+            a.message,
+            a.status,
+            a.latitude,
+            a.longitude,
+            a.created_at,
+            u.name
+        FROM alerts a
+
+        INNER JOIN responsible_links rl
+            ON rl.protected_user_id = a.user_id
+
+        INNER JOIN users u
+            ON u.id = a.user_id
+
+        WHERE
+            rl.responsible_user_id = ?
+            AND rl.status = 'active'
+            AND a.status = 'open'
+
+        ORDER BY a.id DESC
+
+        LIMIT 1
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param(
+                "i",
+                $responsavelId
+            );
+
+            $stmt->execute();
+
+            $stmt->bind_result(
+                $alertaId,
+                $usuarioId,
+                $tipo,
+                $mensagem,
+                $status,
+                $latitude,
+                $longitude,
+                $criadoEm,
+                $nomeUsuario
+            );
+
+
+            /*
+             * =====================================================
+             * NENHUM ALERTA
+             * =====================================================
+             */
+
+            if (!$stmt->fetch()) {
+
+                $stmt->close();
+
+                out([
+                    "ok" => true,
+                    "alerta" => null
+                ]);
+            }
+
+
+            $stmt->close();
+
+
+            /*
+             * =====================================================
+             * RETORNAR ALERTA
+             * =====================================================
+             */
+
+            out([
+                "ok" => true,
+
+                "alerta" => [
+                    "id" => (int) $alertaId,
+                    "usuario_id" => (int) $usuarioId,
+                    "usuario_nome" => $nomeUsuario,
+                    "tipo" => $tipo,
+                    "mensagem" => $mensagem,
+                    "status" => $status,
+                    "latitude" => $latitude,
+                    "longitude" => $longitude,
+                    "timestamp" => strtotime($criadoEm) * 1000,
+                    "localizacao" => (
+                        $latitude !== null &&
+                        $longitude !== null
+                    )
+                        ? "Compartilhada"
+                        : "Não disponível"
+                ]
             ]);
 
 
@@ -664,18 +873,396 @@ try {
 
 
         /* =========================
-           CHAT
-        ========================= */
+          CHAT
+       ========================= */
         case "chat":
 
             needUser();
 
-            // Não existe tabela de chat no SQL enviado.
-            out([
-                "ok" => false,
-                "message" => "O banco atual não possui uma tabela para o chat."
-            ], 422);
+            $usuarioId = uid();
+            $modo = $_GET["mode"] ?? "get";
 
+
+            /*
+             * =====================================================
+             * LOCALIZAR O USUÁRIO VINCULADO
+             * =====================================================
+             */
+
+            $stmt = $conn->prepare("
+        SELECT
+            CASE
+                WHEN protected_user_id = ?
+                    THEN responsible_user_id
+                ELSE protected_user_id
+            END AS contato_id
+        FROM responsible_links
+        WHERE
+            status = 'active'
+            AND (
+                protected_user_id = ?
+                OR responsible_user_id = ?
+            )
+        LIMIT 1
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param(
+                "iii",
+                $usuarioId,
+                $usuarioId,
+                $usuarioId
+            );
+
+            $stmt->execute();
+            $stmt->bind_result($contatoId);
+
+            if (!$stmt->fetch()) {
+
+                $stmt->close();
+
+                out([
+                    "ok" => false,
+                    "message" => "Você não possui um usuário vinculado."
+                ], 403);
+            }
+
+            $stmt->close();
+
+            $contatoId = (int) $contatoId;
+
+
+            /*
+             * =====================================================
+             * BUSCAR DADOS DO CONTATO
+             * =====================================================
+             */
+
+            $stmt = $conn->prepare("
+        SELECT
+            id,
+            name,
+            type
+        FROM users
+        WHERE id = ?
+        LIMIT 1
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param("i", $contatoId);
+            $stmt->execute();
+
+            $stmt->bind_result(
+                $contatoIdBanco,
+                $contatoNome,
+                $contatoTipo
+            );
+
+            if (!$stmt->fetch()) {
+
+                $stmt->close();
+
+                out([
+                    "ok" => false,
+                    "message" => "Usuário vinculado não encontrado."
+                ], 404);
+            }
+
+            $stmt->close();
+
+
+            /*
+             * =====================================================
+             * ENVIAR MENSAGEM
+             * =====================================================
+             */
+
+            if ($modo === "send") {
+
+                $mensagem = trim($d["message"] ?? "");
+
+                if ($mensagem === "") {
+
+                    out([
+                        "ok" => false,
+                        "message" => "Digite uma mensagem."
+                    ], 422);
+                }
+
+                if (mb_strlen($mensagem) > 500) {
+
+                    out([
+                        "ok" => false,
+                        "message" => "A mensagem deve ter no máximo 500 caracteres."
+                    ], 422);
+                }
+
+
+                /*
+                 * Confirma que o vínculo continua ativo
+                 */
+
+                $stmt = $conn->prepare("
+            SELECT id
+            FROM responsible_links
+            WHERE
+                status = 'active'
+                AND (
+                    (
+                        protected_user_id = ?
+                        AND responsible_user_id = ?
+                    )
+                    OR
+                    (
+                        protected_user_id = ?
+                        AND responsible_user_id = ?
+                    )
+                )
+            LIMIT 1
+        ");
+
+                if (!$stmt) {
+                    throw new Exception($conn->error);
+                }
+
+                $stmt->bind_param(
+                    "iiii",
+                    $usuarioId,
+                    $contatoId,
+                    $contatoId,
+                    $usuarioId
+                );
+
+                $stmt->execute();
+                $stmt->bind_result($vinculoId);
+
+                if (!$stmt->fetch()) {
+
+                    $stmt->close();
+
+                    out([
+                        "ok" => false,
+                        "message" => "Esse usuário não está mais vinculado a você."
+                    ], 403);
+                }
+
+                $stmt->close();
+
+
+                /*
+                 * Salvar mensagem
+                 */
+
+                $stmt = $conn->prepare("
+            INSERT INTO messages
+            (
+                sender_id,
+                receiver_id,
+                message
+            )
+            VALUES (?, ?, ?)
+        ");
+
+                if (!$stmt) {
+                    throw new Exception($conn->error);
+                }
+
+                $stmt->bind_param(
+                    "iis",
+                    $usuarioId,
+                    $contatoId,
+                    $mensagem
+                );
+
+                if (!$stmt->execute()) {
+
+                    $erro = $stmt->error;
+                    $stmt->close();
+
+                    throw new Exception(
+                        "Erro ao salvar mensagem: " . $erro
+                    );
+                }
+
+                $mensagemId = $conn->insert_id;
+
+                $stmt->close();
+
+                out([
+                    "ok" => true,
+                    "message_id" => (int) $mensagemId
+                ]);
+            }
+
+
+            /*
+             * =====================================================
+             * MARCAR MENSAGENS COMO LIDAS
+             * =====================================================
+             */
+
+            if ($modo === "read") {
+
+                $stmt = $conn->prepare("
+            UPDATE messages
+            SET
+                is_read = 1,
+                read_at = NOW()
+            WHERE
+                sender_id = ?
+                AND receiver_id = ?
+                AND is_read = 0
+        ");
+
+                if (!$stmt) {
+                    throw new Exception($conn->error);
+                }
+
+                $stmt->bind_param(
+                    "ii",
+                    $contatoId,
+                    $usuarioId
+                );
+
+                $stmt->execute();
+                $stmt->close();
+
+                out([
+                    "ok" => true
+                ]);
+            }
+
+
+            /*
+             * =====================================================
+             * CARREGAR HISTÓRICO
+             * =====================================================
+             */
+
+            $stmt = $conn->prepare("
+        SELECT
+            m.id,
+            m.sender_id,
+            m.receiver_id,
+            m.message,
+            m.is_read,
+            m.created_at,
+            u.name AS sender_name
+        FROM messages m
+        INNER JOIN users u
+            ON u.id = m.sender_id
+        WHERE
+            (
+                m.sender_id = ?
+                AND m.receiver_id = ?
+            )
+            OR
+            (
+                m.sender_id = ?
+                AND m.receiver_id = ?
+            )
+        ORDER BY m.created_at ASC
+        LIMIT 100
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param(
+                "iiii",
+                $usuarioId,
+                $contatoId,
+                $contatoId,
+                $usuarioId
+            );
+
+            $stmt->execute();
+
+            $stmt->bind_result(
+                $mensagemId,
+                $senderId,
+                $receiverId,
+                $texto,
+                $lida,
+                $criadoEm,
+                $senderName
+            );
+
+            $mensagens = [];
+
+            while ($stmt->fetch()) {
+
+                $mensagens[] = [
+                    "id" => (int) $mensagemId,
+                    "sender_id" => (int) $senderId,
+                    "receiver_id" => (int) $receiverId,
+                    "message" => $texto,
+                    "is_read" => (int) $lida,
+                    "created_at" => $criadoEm,
+                    "sender_name" => $senderName
+                ];
+            }
+
+            $stmt->close();
+
+
+            /*
+             * =====================================================
+             * MARCAR MENSAGENS RECEBIDAS COMO LIDAS
+             * =====================================================
+             */
+
+            $stmt = $conn->prepare("
+        UPDATE messages
+        SET
+            is_read = 1,
+            read_at = NOW()
+        WHERE
+            sender_id = ?
+            AND receiver_id = ?
+            AND is_read = 0
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param(
+                "ii",
+                $contatoId,
+                $usuarioId
+            );
+
+            $stmt->execute();
+            $stmt->close();
+
+
+            /*
+             * =====================================================
+             * RESPOSTA
+             * =====================================================
+             */
+
+            out([
+                "ok" => true,
+
+                "usuario_id" => $usuarioId,
+
+                "contato" => [
+                    "id" => (int) $contatoIdBanco,
+                    "nome" => $contatoNome,
+                    "tipo" => $contatoTipo
+                ],
+
+                "messages" => $mensagens
+            ]);
 
         /* =========================
            CONVITE
