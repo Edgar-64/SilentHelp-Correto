@@ -859,6 +859,29 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 width: 100%;
             }
         }
+
+        .logout-button {
+            width: 100%;
+
+            padding: 16px;
+
+            border: 1px solid rgba(255, 101, 122, .25);
+            border-radius: 17px;
+
+            background: rgba(255, 101, 122, .06);
+            color: var(--vermelho);
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .logout-button:hover {
+            background: rgba(255, 101, 122, .12);
+            border-color: rgba(255, 101, 122, .45);
+        }
     </style>
 </head>
 
@@ -869,7 +892,9 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         <header class="header">
             <div class="logo">
                 <svg class="logo-heart" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M32 54 C27 50 7 38 7 21 C7 12 13 7 21 7 C26 7 30 10 32 14 C34 10 38 7 43 7 C51 7 57 12 57 21 C57 38 37 50 32 54Z" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M32 54 C27 50 7 38 7 21 C7 12 13 7 21 7 C26 7 30 10 32 14 C34 10 38 7 43 7 C51 7 57 12 57 21 C57 38 37 50 32 54Z"
+                        stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <div class="logo-text">
                     <span class="silent">silent</span><span class="help">help</span>
@@ -877,6 +902,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             </div>
             <div class="responsible-badge">
                 <span></span> Modo Responsável
+                
             </div>
         </header>
 
@@ -975,15 +1001,18 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                         </p>
                     </div>
 
-                    <button class="my-location-button" onclick="minhaLocalizacao()">📍 Ver minha localização no mapa</button>
+                    <button class="my-location-button" onclick="minhaLocalizacao()">📍 Ver minha localização no
+                        mapa</button>
                 </section>
 
                 <!-- CARD DE ATENDIMENTO -->
                 <section class="card attendance-card">
                     <h2>Atendimento</h2>
-                    <p id="attendanceText">Quando um alerta estiver ativo, você poderá confirmar o acompanhamento por aqui.</p>
+                    <p id="attendanceText">Quando um alerta estiver ativo, você poderá confirmar o acompanhamento por
+                        aqui.</p>
 
-                    <button class="attend-button" id="attendButton" onclick="confirmarAtendimento()">✓ &nbsp; Estou acompanhando</button>
+                    <button class="attend-button" id="attendButton" onclick="confirmarAtendimento()">✓ &nbsp; Estou
+                        acompanhando</button>
                     <button class="finish-button" onclick="abrirFinalizacao()">Encerrar atendimento</button>
                 </section>
             </div>
@@ -1006,7 +1035,9 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 </div>
             </div>
         </section>
-
+    <button class="logout-button" onclick="sairConta()">
+                    Sair da conta
+                </button>
     </main>
 
     <!-- MODAIS -->
@@ -1023,10 +1054,12 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
     </div>
 
     <!-- CHAT FLUTUANTE DE JULIA -->
-    <button type="button" class="chat-float-button" id="chatFloatButton" onclick="alternarChatJulia()" aria-label="Abrir conversa com Julia" aria-expanded="false">
+    <button type="button" class="chat-float-button" id="chatFloatButton" onclick="alternarChatJulia()"
+        aria-label="Abrir conversa com Julia" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-3.6-.8L4 20l1.2-3.7A7.4 7.4 0 0 1 4 11.5 7.5 7.5 0 0 1 12 4a7.5 7.5 0 0 1 8 7.5z"/>
-            <path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/>
+            <path
+                d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-3.6-.8L4 20l1.2-3.7A7.4 7.4 0 0 1 4 11.5 7.5 7.5 0 0 1 12 4a7.5 7.5 0 0 1 8 7.5z" />
+            <path d="M8.5 12h.01M12 12h.01M15.5 12h.01" />
         </svg>
         <span class="chat-unread" id="chatUnread">1</span>
     </button>
@@ -1035,8 +1068,8 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         <header class="chat-header">
             <div class="chat-avatar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <circle cx="12" cy="8" r="3.5"/>
-                    <path d="M5 20c0-4 3-6 7-6s7 2 7 6"/>
+                    <circle cx="12" cy="8" r="3.5" />
+                    <path d="M5 20c0-4 3-6 7-6s7 2 7 6" />
                 </svg>
             </div>
             <div class="chat-header-info">
@@ -1047,10 +1080,13 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         </header>
         <div class="chat-messages" id="juliaChatMessages" aria-live="polite"></div>
         <form class="chat-input-area" onsubmit="enviarChatJulia(event)">
-            <input type="text" class="chat-input" id="juliaChatInput" placeholder="Digite uma mensagem para Julia..." autocomplete="off" maxlength="500">
+            <input type="text" class="chat-input" id="juliaChatInput" placeholder="Digite uma mensagem para Julia..."
+                autocomplete="off" maxlength="500">
             <button type="submit" class="chat-send" aria-label="Enviar mensagem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M22 2L11 13" />
+                    <path d="M22 2l-7 20-4-9-9-4z" />
                 </svg>
             </button>
         </form>
@@ -1063,7 +1099,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        const RESPONSAVEL_ID = <?= (int)($usuario['id'] ?? 0) ?>;
+        const RESPONSAVEL_ID = <?= (int) ($usuario['id'] ?? 0) ?>;
         const RESPONSAVEL_NOME = <?= json_encode($nomeResponsavel, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
 
         let latitude = null;
@@ -1599,8 +1635,37 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 }
             }, 30000);
         });
+
+        function sairConta() {
+
+            const confirmar =
+                confirm(
+                    "Deseja realmente sair da sua conta?"
+                );
+
+
+            if (confirmar) {
+
+                mostrarMensagem(
+                    "Saindo da conta..."
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "logout.php";
+
+                    },
+                    800
+                );
+
+            }
+
+        }
     </script>
-<script src="assets/db-sync.js"></script>
+    <script src="assets/db-sync.js"></script>
 </body>
 
 </html>

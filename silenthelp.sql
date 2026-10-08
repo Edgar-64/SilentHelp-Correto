@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 29/09/2026 às 19:29
+-- Tempo de geração: 08/10/2026 às 12:34
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -112,11 +112,11 @@ CREATE TABLE `users` (
   `email` varchar(190) NOT NULL,
   `phone` varchar(40) DEFAULT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `invite_code` varchar(32) DEFAULT NULL,
+  `invite_code` varchar(255) DEFAULT NULL,
   `emergency_contact` varchar(160) DEFAULT NULL,
   `emergency_phone` varchar(40) DEFAULT NULL,
   `relationship` varchar(100) DEFAULT NULL,
-  `status` enum('active','blocked') NOT NULL DEFAULT 'active',
+  `status` enum('admin','protegida','responsavel') NOT NULL DEFAULT 'protegida',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -126,7 +126,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `type`, `name`, `email`, `phone`, `password_hash`, `invite_code`, `emergency_contact`, `emergency_phone`, `relationship`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Administrador SilentHelp', 'admin@silenthelp.com', NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC.C4jY7v7M8T6h8kB6', NULL, NULL, NULL, NULL, 'active', '2026-09-08 13:28:01', '2026-09-08 13:28:01');
+(7, 'protegida', 'Edgar', 'edd@gmail.com', '(12) 99191-4394', '$2y$10$W9Yj5QZRd3DsxLFZlaR7gektKnmTkjze20yKBplEQwv6vILo3VsTm', '', 'fdafde', '(21) 32141-2312', '', 'protegida', '2026-10-06 12:33:29', '2026-10-06 12:33:29'),
+(8, 'responsavel', 'eddr', 'eddr@gmail.com', '(12) 99191-4394', '$2y$10$etZtwoH9d6lgVuEgSh2xYu1f452HCCUD/5I9cXwgCBXzV2ppQJpem', 'I47YG5', '', '', 'Eu', 'protegida', '2026-10-06 13:13:01', '2026-10-06 13:13:01'),
+(33, 'admin', 'Admin', 'admin@gmail.com', '(12) 99191-4394', '$2y$10$VxR/FfujstpDZ.Jm717q.OlBpwWu8rHL/WcZf9lu4W1ahC3i0/aNW', NULL, '', '', '', 'protegida', '2026-10-06 16:36:46', '2026-10-06 16:36:46');
 
 --
 -- Índices para tabelas despejadas
@@ -196,13 +198,13 @@ ALTER TABLE `devices`
 -- AUTO_INCREMENT de tabela `diary_entries`
 --
 ALTER TABLE `diary_entries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `emergency_contacts`
 --
 ALTER TABLE `emergency_contacts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `settings`
@@ -214,7 +216,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Restrições para tabelas despejadas

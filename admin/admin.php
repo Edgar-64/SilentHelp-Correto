@@ -2082,6 +2082,29 @@
             background: #0c0a10;
         }
 
+        .logout-button {
+            width: 100%;
+
+            padding: 16px;
+
+            border: 1px solid rgba(255, 101, 122, .25);
+            border-radius: 17px;
+
+            background: rgba(255, 101, 122, .06);
+            color: var(--vermelho);
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .logout-button:hover {
+            background: rgba(255, 101, 122, .12);
+            border-color: rgba(255, 101, 122, .45);
+        }
+
     </style>
 
 </head>
@@ -2446,35 +2469,9 @@
                 class="sidebar-link"
             >
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-
-                    <path
-                        d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-                    />
-
-                    <polyline
-                        points="16 17 21 12 16 7"
-                    />
-
-                    <line
-                        x1="21"
-                        y1="12"
-                        x2="9"
-                        y2="12"
-                    />
-
-                </svg>
-
-                <span>
-                    Sair
-                </span>
+                <button class="logout-button" onclick="sairConta()">
+                    Sair da conta
+                </button>
 
             </a>
 
@@ -3817,6 +3814,35 @@
 
         }
     );
+
+    function sairConta() {
+
+            const confirmar =
+                confirm(
+                    "Deseja realmente sair da sua conta?"
+                );
+
+
+            if (confirmar) {
+
+                mostrarMensagem(
+                    "Saindo da conta..."
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "logout.php";
+
+                    },
+                    800
+                );
+
+            }
+
+        }
 
 </script>
 
