@@ -1,4 +1,114 @@
-<?php require_once __DIR__ . '/../auth.php'; exigirAdmin(); ?>
+<?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+require_once __DIR__ . '/../db.php';
+
+/* Autorização compatível com a tabela users do SQL enviado. */
+if (empty($_SESSION['usuario_id'])) {
+    header('Location: login-admin.php');
+    exit;
+}
+$adminId = (int) $_SESSION['usuario_id'];
+$authStmt = $conn->prepare('SELECT id, type FROM users WHERE id = ? LIMIT 1');
+if (!$authStmt) {
+    error_log('SilentHelp dashboard auth: ' . $conn->error);
+    header('Location: login-admin.php');
+    exit;
+}
+$authStmt->bind_param('i', $adminId);
+$authStmt->execute();
+$authResult = $authStmt->get_result();
+$adminRow = $authResult->fetch_assoc();
+$authStmt->close();
+if (!$adminRow || $adminRow['type'] !== 'admin') {
+    header('Location: login-admin.php');
+    exit;
+}
+
+/* Dashboard vinculado ao esquema real do banco silenthelp. */
+$dashboardStats = [
+    'usuarios' => 0,
+    'dispositivos' => 0,
+    'emergencias' => 0,
+    'resolvidos' => 0,
+    'ativos' => 0,
+    'testes' => 0,
+    'cancelados' => 0,
+];
+$dashboardAlerts = [];
+$chartDays = [];
+$dashboardError = false;
+
+try {
+    global $conn;
+
+    $queries = [
+        'usuarios' => "SELECT COUNT(*) AS total FROM users WHERE type <> 'admin'",
+        'dispositivos' => "SELECT COUNT(*) AS total FROM devices",
+        'emergencias' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(type) = 'emergencia'",
+        'resolvidos' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(status) = 'resolved'",
+        'ativos' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(status) = 'open'",
+        'testes' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(type) IN ('teste', 'test')",
+        'cancelados' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(status) IN ('cancelled', 'canceled', 'cancelado', 'cancelada')",
+    ];
+
+    foreach ($queries as $key => $sql) {
+        $result = $conn->query($sql);
+        if (!$result) {
+            throw new Exception($conn->error);
+        }
+        $row = $result->fetch_assoc();
+        $dashboardStats[$key] = (int)($row['total'] ?? 0);
+        $result->free();
+    }
+
+    $sqlRecent = "SELECT a.id, a.type, a.message, a.status, a.latitude, a.longitude, a.created_at, u.name AS user_name
+                  FROM alerts a
+                  LEFT JOIN users u ON u.id = a.user_id
+                  ORDER BY a.created_at DESC, a.id DESC
+                  LIMIT 5";
+    $resultRecent = $conn->query($sqlRecent);
+    if (!$resultRecent) {
+        throw new Exception($conn->error);
+    }
+    while ($row = $resultRecent->fetch_assoc()) {
+        $dashboardAlerts[] = $row;
+    }
+    $resultRecent->free();
+
+    $sqlChart = "SELECT DATE(created_at) AS dia, COUNT(*) AS total
+                 FROM alerts
+                 WHERE created_at >= CURRENT_DATE - INTERVAL 6 DAY
+                   AND created_at < CURRENT_DATE + INTERVAL 1 DAY
+                 GROUP BY DATE(created_at)";
+    $resultChart = $conn->query($sqlChart);
+    if (!$resultChart) {
+        throw new Exception($conn->error);
+    }
+    $chartTotals = [];
+    while ($row = $resultChart->fetch_assoc()) {
+        $chartTotals[$row['dia']] = (int)$row['total'];
+    }
+    $resultChart->free();
+
+    for ($i = 6; $i >= 0; $i--) {
+        $day = new DateTimeImmutable("today -$i days");
+        $key = $day->format('Y-m-d');
+        $chartDays[] = [
+            'label' => $day->format('d/m'),
+            'total' => $chartTotals[$key] ?? 0,
+        ];
+    }
+} catch (Throwable $e) {
+    $dashboardError = true;
+    error_log('SilentHelp dashboard SQL: ' . $e->getMessage());
+}
+
+function dashboardEscape($value): string {
+    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -2592,7 +2702,7 @@
 
                     <button
                         class="header-button"
-                        onclick="showToast('Você possui 3 novos alertas.')"
+                        onclick="showToast('Notificações do sistema.')"
                         aria-label="Notificações"
                     >
 
@@ -2615,7 +2725,7 @@
 
                         </svg>
 
-                        <span class="notification-dot"></span>
+                        <span class="notification-dot" id="notificationDot" hidden></span>
 
                     </button>
 
@@ -2666,14 +2776,12 @@
 
                         </div>
 
-                        <span class="stat-change">
-                            +8,4%
-                        </span>
+                        <span class="stat-change">Banco de dados</span>
 
                     </div>
 
                     <div class="stat-number" id="usersCount">
-                        248
+                        <?= $dashboardError ? '—' : number_format($dashboardStats['usuarios'], 0, ',', '.') ?>
                     </div>
 
                     <div class="stat-label">
@@ -2716,14 +2824,12 @@
 
                         </div>
 
-                        <span class="stat-change">
-                            +5,2%
-                        </span>
+                        <span class="stat-change">Banco de dados</span>
 
                     </div>
 
                     <div class="stat-number" id="devicesCount">
-                        231
+                        <?= $dashboardError ? '—' : number_format($dashboardStats['dispositivos'], 0, ',', '.') ?>
                     </div>
 
                     <div class="stat-label">
@@ -2771,16 +2877,15 @@
 
                         <span
                             class="stat-change"
+                            id="emergencyTrend"
                             style="color:var(--vermelho);"
                         >
-                            +2 hoje
+                            Banco de dados
                         </span>
 
                     </div>
 
-                    <div class="stat-number" id="emergencyCount">
-                        34
-                    </div>
+                    <div class="stat-number" id="emergencyCount"><?= $dashboardError ? '—' : number_format($dashboardStats['emergencias'], 0, ',', '.') ?></div>
 
                     <div class="stat-label">
                         Alertas de emergência
@@ -2817,15 +2922,11 @@
 
                         </div>
 
-                        <span class="stat-change">
-                            94,1%
-                        </span>
+                        <span class="stat-change">Banco de dados</span>
 
                     </div>
 
-                    <div class="stat-number" id="resolvedCount">
-                        198
-                    </div>
+                    <div class="stat-number" id="resolvedCount"><?= $dashboardError ? '—' : number_format($dashboardStats['resolvidos'], 0, ',', '.') ?></div>
 
                     <div class="stat-label">
                         Alertas resolvidos
@@ -2871,9 +2972,7 @@
 
                     </div>
 
-                    <div class="stat-number" id="activeCount">
-                        3
-                    </div>
+                    <div class="stat-number" id="activeCount"><?= $dashboardError ? '—' : number_format($dashboardStats['ativos'], 0, ',', '.') ?></div>
 
                     <div class="stat-label">
                         Alertas ativos
@@ -2930,74 +3029,23 @@
 
                             </div>
 
-                            <div class="bar-group">
-                                <div
-                                    class="bar"
-                                    style="height:45%;"
-                                    title="Segunda: 18 alertas"
-                                ></div>
-                            </div>
-
-                            <div class="bar-group">
-                                <div
-                                    class="bar"
-                                    style="height:64%;"
-                                    title="Terça: 26 alertas"
-                                ></div>
-                            </div>
-
-                            <div class="bar-group">
-                                <div
-                                    class="bar"
-                                    style="height:53%;"
-                                    title="Quarta: 21 alertas"
-                                ></div>
-                            </div>
-
-                            <div class="bar-group">
-                                <div
-                                    class="bar"
-                                    style="height:78%;"
-                                    title="Quinta: 31 alertas"
-                                ></div>
-                            </div>
-
-                            <div class="bar-group">
-                                <div
-                                    class="bar"
-                                    style="height:68%;"
-                                    title="Sexta: 27 alertas"
-                                ></div>
-                            </div>
-
-                            <div class="bar-group">
-                                <div
-                                    class="bar"
-                                    style="height:88%;"
-                                    title="Sábado: 35 alertas"
-                                ></div>
-                            </div>
-
-                            <div class="bar-group">
-                                <div
-                                    class="bar"
-                                    style="height:59%;"
-                                    title="Domingo: 24 alertas"
-                                ></div>
-                            </div>
+                            <?php if ($dashboardError): ?>
+                                <div style="grid-column:1/-1;padding:25px;text-align:center;color:var(--vermelho)">Não foi possível consultar os dados do banco.</div>
+                            <?php else: ?>
+                                <?php $maxChart = max(1, ...array_column($chartDays, 'total')); ?>
+                                <?php foreach ($chartDays as $day): ?>
+                                    <div class="bar-group" title="<?= dashboardEscape($day['label']) ?>: <?= (int)$day['total'] ?> alerta(s)">
+                                        <div class="bar" style="height:<?= $day['total'] > 0 ? max(5, (int)round(($day['total'] / $maxChart) * 100)) : 2 ?>%"></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
 
                         </div>
 
-                        <div class="bar-labels">
-
-                            <div class="bar-label">Seg</div>
-                            <div class="bar-label">Ter</div>
-                            <div class="bar-label">Qua</div>
-                            <div class="bar-label">Qui</div>
-                            <div class="bar-label">Sex</div>
-                            <div class="bar-label">Sáb</div>
-                            <div class="bar-label">Dom</div>
-
+                        <div class="bar-labels" id="alertsChartLabels">
+                            <?php foreach ($chartDays as $day): ?>
+                                <div class="bar-label"><?= dashboardEscape($day['label']) ?></div>
+                            <?php endforeach; ?>
                         </div>
 
                     </div>
@@ -3034,9 +3082,7 @@
                                 Emergência
                             </span>
 
-                            <strong>
-                                34
-                            </strong>
+                            <strong id="summaryEmergency"><?= $dashboardError ? '—' : number_format($dashboardStats['emergencias'], 0, ',', '.') ?></strong>
 
                         </div>
 
@@ -3048,9 +3094,7 @@
                                 Resolvidos
                             </span>
 
-                            <strong>
-                                198
-                            </strong>
+                            <strong id="summaryResolved"><?= $dashboardError ? '—' : number_format($dashboardStats['resolvidos'], 0, ',', '.') ?></strong>
 
                         </div>
 
@@ -3062,9 +3106,7 @@
                                 Ativos
                             </span>
 
-                            <strong>
-                                3
-                            </strong>
+                            <strong id="summaryActive"><?= $dashboardError ? '—' : number_format($dashboardStats['ativos'], 0, ',', '.') ?></strong>
 
                         </div>
 
@@ -3076,9 +3118,7 @@
                                 Testes
                             </span>
 
-                            <strong>
-                                42
-                            </strong>
+                            <strong id="summaryTests"><?= $dashboardError ? '—' : number_format($dashboardStats['testes'], 0, ',', '.') ?></strong>
 
                         </div>
 
@@ -3093,9 +3133,7 @@
                                 Cancelados
                             </span>
 
-                            <strong>
-                                18
-                            </strong>
+                            <strong id="summaryCancelled"><?= $dashboardError ? '—' : number_format($dashboardStats['cancelados'], 0, ',', '.') ?></strong>
 
                         </div>
 
@@ -3134,310 +3172,34 @@
 
                 </div>
 
-                <div class="recent-list">
-
-                    <!-- ALERTA 1 -->
-
-                    <div
-                        class="recent-alert"
-                        onclick="openAlert(
-                            'Alerta de emergência',
-                            '15/08/2026, 10:42',
-                            'Maria Silva',
-                            'Taubaté - SP',
-                            'Resolvido'
-                        )"
-                    >
-
-                        <div class="recent-icon emergency">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-
-                                <path
-                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                                />
-
-                                <line
-                                    x1="12"
-                                    y1="9"
-                                    x2="12"
-                                    y2="13"
-                                />
-
-                                <line
-                                    x1="12"
-                                    y1="17"
-                                    x2="12.01"
-                                    y2="17"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <div class="recent-info">
-
-                            <strong>
-                                Alerta de emergência
-                            </strong>
-
-                            <span>
-                                Maria Silva • Hoje, 10:42
-                            </span>
-
-                        </div>
-
-                        <span class="recent-status resolved">
-                            Resolvido
-                        </span>
-
-                    </div>
-
-                    <!-- ALERTA 2 -->
-
-                    <div
-                        class="recent-alert"
-                        onclick="openAlert(
-                            'Alerta de emergência',
-                            '15/08/2026, 09:28',
-                            'Ana Oliveira',
-                            'Taubaté - SP',
-                            'Ativo'
-                        )"
-                    >
-
-                        <div class="recent-icon emergency">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-
-                                <path
-                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                                />
-
-                                <line
-                                    x1="12"
-                                    y1="9"
-                                    x2="12"
-                                    y2="13"
-                                />
-
-                                <line
-                                    x1="12"
-                                    y1="17"
-                                    x2="12.01"
-                                    y2="17"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <div class="recent-info">
-
-                            <strong>
-                                Alerta de emergência
-                            </strong>
-
-                            <span>
-                                Ana Oliveira • Hoje, 09:28
-                            </span>
-
-                        </div>
-
-                        <span class="recent-status active">
-                            Ativo
-                        </span>
-
-                    </div>
-
-                    <!-- ALERTA 3 -->
-
-                    <div
-                        class="recent-alert"
-                        onclick="openAlert(
-                            'Teste de segurança',
-                            '15/08/2026, 08:15',
-                            'Juliana Costa',
-                            'São José dos Campos - SP',
-                            'Concluído'
-                        )"
-                    >
-
-                        <div class="recent-icon test">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="9"
-                                />
-
-                                <path
-                                    d="m8 12 2.5 2.5L16 9"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <div class="recent-info">
-
-                            <strong>
-                                Teste de segurança
-                            </strong>
-
-                            <span>
-                                Juliana Costa • Hoje, 08:15
-                            </span>
-
-                        </div>
-
-                        <span class="recent-status resolved">
-                            Concluído
-                        </span>
-
-                    </div>
-
-                    <!-- ALERTA 4 -->
-
-                    <div
-                        class="recent-alert"
-                        onclick="openAlert(
-                            'Alerta de emergência',
-                            '14/08/2026, 21:37',
-                            'Camila Santos',
-                            'Taubaté - SP',
-                            'Resolvido'
-                        )"
-                    >
-
-                        <div class="recent-icon emergency">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-
-                                <path
-                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-                                />
-
-                                <line
-                                    x1="12"
-                                    y1="9"
-                                    x2="12"
-                                    y2="13"
-                                />
-
-                                <line
-                                    x1="12"
-                                    y1="17"
-                                    x2="12.01"
-                                    y2="17"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <div class="recent-info">
-
-                            <strong>
-                                Alerta de emergência
-                            </strong>
-
-                            <span>
-                                Camila Santos • Ontem, 21:37
-                            </span>
-
-                        </div>
-
-                        <span class="recent-status resolved">
-                            Resolvido
-                        </span>
-
-                    </div>
-
-                    <!-- ALERTA 5 -->
-
-                    <div
-                        class="recent-alert"
-                        onclick="openAlert(
-                            'Verificação do dispositivo',
-                            '14/08/2026, 17:20',
-                            'Beatriz Souza',
-                            'Taubaté - SP',
-                            'Concluído'
-                        )"
-                    >
-
-                        <div class="recent-icon test">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-
-                                <path
-                                    d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
-                                />
-
-                                <path
-                                    d="m9 12 2 2 4-4"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                        <div class="recent-info">
-
-                            <strong>
-                                Verificação do dispositivo
-                            </strong>
-
-                            <span>
-                                Beatriz Souza • 14/08/2026, 17:20
-                            </span>
-
-                        </div>
-
-                        <span class="recent-status resolved">
-                            Concluído
-                        </span>
-
-                    </div>
-
+                <div class="recent-list" aria-live="polite">
+                    <?php if ($dashboardError): ?>
+                        <div style="padding:25px;text-align:center;color:var(--vermelho)">Erro ao consultar os alertas do banco de dados.</div>
+                    <?php elseif (!$dashboardAlerts): ?>
+                        <div style="padding:25px;text-align:center;color:var(--cinza)">Nenhum alerta registrado no banco de dados.</div>
+                    <?php else: ?>
+                        <?php foreach ($dashboardAlerts as $alert): ?>
+                            <?php
+                                $status = strtolower((string)$alert['status']);
+                                $statusLabel = in_array($status, ['resolved', 'resolvido', 'resolvida'], true) ? 'Resolvido' : (in_array($status, ['cancelled', 'canceled', 'cancelado', 'cancelada'], true) ? 'Cancelado' : ($status === 'open' ? 'Ativo' : ucfirst($status)));
+                                $statusClass = in_array($status, ['resolved', 'resolvido', 'resolvida'], true) ? 'resolved' : (in_array($status, ['cancelled', 'canceled', 'cancelado', 'cancelada'], true) ? 'cancelled' : 'active');
+                                $alertTitle = trim((string)$alert['type']) !== '' ? ucfirst((string)$alert['type']) : 'Alerta';
+                                $alertDate = date('d/m/Y H:i', strtotime((string)$alert['created_at']));
+                                $alertUser = $alert['user_name'] ?: 'Usuário não identificado';
+                                $alertLocation = ($alert['latitude'] !== null && $alert['longitude'] !== null) ? ((string)$alert['latitude'] . ', ' . (string)$alert['longitude']) : 'Localização não informada';
+                            ?>
+                            <div class="recent-alert" role="button" tabindex="0" onclick="openAlert(<?= htmlspecialchars(json_encode($alertTitle, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertDate, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertUser, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertLocation, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($statusLabel, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>)">
+                                <div class="recent-icon <?= strtolower((string)$alert['type']) === 'emergencia' ? 'emergency' : '' ?>">
+                                    <span aria-hidden="true">!</span>
+                                </div>
+                                <div class="recent-info">
+                                    <strong><?= dashboardEscape($alertTitle) ?></strong>
+                                    <span><?= dashboardEscape($alertUser) ?> · <?= dashboardEscape($alertDate) ?></span>
+                                </div>
+                                <span class="recent-status <?= dashboardEscape($statusClass) ?>"><?= dashboardEscape($statusLabel) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
 
                 <div class="card-footer">
@@ -3818,8 +3580,7 @@
 
 </script>
 
-<script src="../assets/db-sync.js"></script>
-<script src="../assets/admin-db.js"></script>
+
 </body>
 
 </html>

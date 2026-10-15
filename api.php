@@ -87,95 +87,259 @@ try {
             $senha = $d["senha"] ?? "";
             $tipo = $d["tipo"] ?? "protegida";
 
-            if (!$nome || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($senha) < 6) {
+            $codigoInformado = strtoupper(
+                trim($d["codigoConvite"] ?? "")
+            );
+
+            $contatoEmergencia = trim(
+                $d["contatoEmergencia"] ?? ""
+            );
+
+            $telefoneEmergencia = trim(
+                $d["telefoneEmergencia"] ?? ""
+            );
+
+            $relacao = trim($d["relacao"] ?? "");
+
+            // 1. Validar os dados básicos
+            if (
+                !$nome ||
+                !filter_var($email, FILTER_VALIDATE_EMAIL) ||
+                strlen($senha) < 6
+            ) {
                 out([
                     "ok" => false,
-                    "message" => "Dados de cadastro inválidos."
+                    "message" => "Verifique os dados do cadastro."
                 ], 422);
             }
 
-            if (!in_array($tipo, ["protegida", "responsavel", "admin"], true)) {
-                $tipo = "protegida";
+            // Cadastro público não pode criar administradores
+            if (!in_array($tipo, ["protegida", "responsavel"], true)) {
+                out([
+                    "ok" => false,
+                    "message" => "Tipo de conta inválido."
+                ], 422);
             }
 
-            $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
+            if ($tipo === "responsavel" && (!$codigoInformado || !$relacao)) {
+                out([
+                    "ok" => false,
+                    "message" => "Informe o código e sua relação com a pessoa protegida."
+                ], 422);
+            }
+
+            // 2. Verificar se o e-mail já existe
+            $stmt = $conn->prepare("
+        SELECT id
+        FROM users
+        WHERE email = ?
+        LIMIT 1
+    ");
+
             if (!$stmt) {
                 throw new Exception($conn->error);
             }
 
             $stmt->bind_param("s", $email);
             $stmt->execute();
-            $stmt->bind_result($idExistente);
-            $existe = $stmt->fetch();
+            $stmt->store_result();
+
+            $emailExiste = $stmt->num_rows > 0;
+
             $stmt->close();
 
-            if ($existe) {
+            if ($emailExiste) {
                 out([
                     "ok" => false,
                     "message" => "Este e-mail já está cadastrado."
                 ], 409);
             }
 
+            // 3. Se for responsável, localizar a pessoa protegida
+            $protegidoId = 0;
+
+            if ($tipo === "responsavel") {
+
+                $stmt = $conn->prepare("
+            SELECT id
+            FROM users
+            WHERE invite_code = ?
+              AND type = 'protegida'
+            LIMIT 1
+        ");
+
+                if (!$stmt) {
+                    throw new Exception($conn->error);
+                }
+
+                $stmt->bind_param("s", $codigoInformado);
+                $stmt->execute();
+                $stmt->bind_result($protegidoIdBanco);
+
+                if (!$stmt->fetch()) {
+                    $stmt->close();
+
+                    out([
+                        "ok" => false,
+                        "message" => "Código inválido. Confira o código da pessoa protegida."
+                    ], 422);
+                }
+
+                $protegidoId = (int) $protegidoIdBanco;
+                $stmt->close();
+            }
+
+            // 4. Gerar um código exclusivo para uma nova pessoa protegida
+            $codigoGerado = null;
+
+            if ($tipo === "protegida") {
+
+                do {
+                    $codigoGerado = "SH" .
+                        strtoupper(bin2hex(random_bytes(4)));
+
+                    $stmt = $conn->prepare("
+                SELECT id
+                FROM users
+                WHERE invite_code = ?
+                LIMIT 1
+            ");
+
+                    if (!$stmt) {
+                        throw new Exception($conn->error);
+                    }
+
+                    $stmt->bind_param("s", $codigoGerado);
+                    $stmt->execute();
+                    $stmt->store_result();
+
+                    $codigoExiste = $stmt->num_rows > 0;
+
+                    $stmt->close();
+
+                } while ($codigoExiste);
+            }
+
+            // 5. Criar a conta e, se necessário, o vínculo
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-            $codigoConvite = trim($d["codigoConvite"] ?? "");
 
-            if ($codigoConvite === "") {
-                $codigoConvite = null;
-            }
-            $contatoEmergencia = trim($d["contatoEmergencia"] ?? "");
-            $telefoneEmergencia = trim($d["telefoneEmergencia"] ?? "");
-            $relacao = trim($d["relacao"] ?? "");
+            $codigoBanco = $tipo === "protegida"
+                ? $codigoGerado
+                : null;
 
-            $stmt = $conn->prepare("\n                INSERT INTO users\n                (type, name, email, phone, password_hash, invite_code, emergency_contact, emergency_phone, relationship)\n                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)\n            ");
-            if (!$stmt) {
-                throw new Exception($conn->error);
-            }
+            $conn->begin_transaction();
 
-            // O código de convite pertence ao responsável/protegida no banco atual.
-            // Guardamos o valor informado sem criar uma tabela que não existe no SQL.
-            $stmt->bind_param(
-                "sssssssss",
-                $tipo,
-                $nome,
-                $email,
-                $telefone,
-                $senhaHash,
-                $codigoConvite,
-                $contatoEmergencia,
-                $telefoneEmergencia,
-                $relacao
-            );
+            try {
 
-            if (!$stmt->execute()) {
-                throw new Exception(
-                    "Erro ao cadastrar usuário: " . $stmt->error
+                $stmt = $conn->prepare("
+            INSERT INTO users (
+                type,
+                name,
+                email,
+                phone,
+                password_hash,
+                invite_code,
+                emergency_contact,
+                emergency_phone,
+                relationship
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+
+                if (!$stmt) {
+                    throw new Exception($conn->error);
+                }
+
+                $stmt->bind_param(
+                    "sssssssss",
+                    $tipo,
+                    $nome,
+                    $email,
+                    $telefone,
+                    $senhaHash,
+                    $codigoBanco,
+                    $contatoEmergencia,
+                    $telefoneEmergencia,
+                    $relacao
                 );
+
+                if (!$stmt->execute()) {
+                    throw new Exception($stmt->error);
+                }
+
+                $novoUsuarioId = (int) $conn->insert_id;
+                $stmt->close();
+
+                // Se a conta for de responsável, salvar o vínculo
+                if ($tipo === "responsavel") {
+
+                    $stmt = $conn->prepare("
+                INSERT INTO responsible_links (
+                    protected_user_id,
+                    responsible_user_id,
+                    relationship,
+                    status
+                )
+                VALUES (?, ?, ?, 'active')
+            ");
+
+                    if (!$stmt) {
+                        throw new Exception($conn->error);
+                    }
+
+                    $stmt->bind_param(
+                        "iis",
+                        $protegidoId,
+                        $novoUsuarioId,
+                        $relacao
+                    );
+
+                    if (!$stmt->execute()) {
+                        throw new Exception($stmt->error);
+                    }
+
+                    $stmt->close();
+                }
+
+                $conn->commit();
+
+            } catch (Throwable $e) {
+
+                $conn->rollback();
+
+                error_log("Erro no cadastro SilentHelp: " . $e->getMessage());
+
+                out([
+                    "ok" => false,
+                    "message" => "Não foi possível concluir o cadastro. Tente novamente."
+                ], 500);
             }
 
-            $id = $conn->insert_id;
+            // 6. Iniciar sessão
+            session_regenerate_id(true);
 
-            if (!$id) {
-                throw new Exception(
-                    "Usuário foi inserido, mas o ID retornado pelo banco foi 0."
-                );
-            }
-
-            $stmt->close();
-
-            $_SESSION["usuario_id"] = $id;
+            $_SESSION["usuario_id"] = $novoUsuarioId;
             $_SESSION["usuario_tipo"] = $tipo;
             $_SESSION["nome"] = $nome;
 
-            out([
+            // 7. Retornar os dados para o frontend
+            $resposta = [
                 "ok" => true,
                 "user" => [
-                    "id" => $id,
+                    "id" => $novoUsuarioId,
                     "nome" => $nome,
                     "email" => $email,
                     "telefone" => $telefone,
                     "tipo" => $tipo
                 ]
-            ]);
+            ];
+
+            // O código só é devolvido ao criar a conta protegida
+            if ($tipo === "protegida") {
+                $resposta["codigoConvite"] = $codigoGerado;
+            }
+
+            out($resposta);
 
 
         /* =========================

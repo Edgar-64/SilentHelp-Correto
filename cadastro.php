@@ -2083,59 +2083,33 @@
         ===================================================== */
 
         function aplicarMascaraTelefone(input) {
+            input.addEventListener("input", function () {
+                // Mantém somente números e limita a DDD + telefone (10 ou 11 dígitos).
+                const numeros = input.value.replace(/\D/g, "").slice(0, 11);
+                let formatado = "";
 
-            input.addEventListener(
-                "input",
-                function () {
+                if (numeros.length === 0) {
+                    formatado = "";
+                } else if (numeros.length <= 2) {
+                    // Enquanto o DDD está sendo digitado.
+                    formatado = "(" + numeros;
+                } else {
+                    const ddd = numeros.slice(0, 2);
+                    const telefone = numeros.slice(2);
 
-                    let valor =
-                        input.value.replace(/\D/g, "");
-
-
-                    if (valor.length > 11) {
-
-                        valor =
-                            valor.substring(0, 11);
-
+                    if (numeros.length <= 6) {
+                        formatado = `(${ddd}) ${telefone}`;
+                    } else if (numeros.length <= 10) {
+                        // Telefone fixo: (11) 1234-5678
+                        formatado = `(${ddd}) ${telefone.slice(0, 4)}-${telefone.slice(4)}`;
+                    } else {
+                        // Celular: (11) 91234-5678
+                        formatado = `(${ddd}) ${telefone.slice(0, 5)}-${telefone.slice(5)}`;
                     }
-
-
-                    if (valor.length > 6) {
-
-                        valor =
-                            valor.replace(
-                                /^(\d{2})(\d{5})(\d{0,4})/,
-                                "($1) $2-$3"
-                            );
-
-                    }
-
-                    else if (valor.length > 2) {
-
-                        valor =
-                            valor.replace(
-                                /^(\d{2})(\d{0,5})/,
-                                "($1) $2"
-                            );
-
-                    }
-
-                    else {
-
-                        valor =
-                            valor.replace(
-                                /^(\d*)/,
-                                "($1"
-                            );
-
-                    }
-
-
-                    input.value = valor;
-
                 }
-            );
 
+                input.value = formatado;
+            });
         }
 
 
@@ -2146,7 +2120,6 @@
         aplicarMascaraTelefone(
             document.getElementById("telefoneEmergencia")
         );
-
 
         /* =====================================================
            MOSTRAR / OCULTAR SENHA
@@ -2472,6 +2445,21 @@
                     );
 
                     return;
+                }
+
+                /* -----------------------------------------
+                   MOSTRAR CÓDIGO DE CONVITE
+                ----------------------------------------- */
+                if (
+                    tipo === "protegida" &&
+                    resposta.codigoConvite
+                ) {
+                    alert(
+                        "Conta criada!\n\n" +
+                        "Seu código de convite é: " +
+                        resposta.codigoConvite +
+                        "\n\nCompartilhe esse código com seu responsável."
+                    );
                 }
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 08/10/2026 às 12:34
+-- Tempo de geração: 15/10/2026 às 14:12
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -38,6 +38,16 @@ CREATE TABLE `alerts` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `alerts`
+--
+
+INSERT INTO `alerts` (`id`, `user_id`, `type`, `message`, `latitude`, `longitude`, `status`, `created_at`) VALUES
+(1, 36, 'emergencia', 'Alerta de emergência - Alerta de emergência acionado pelo usuário.', NULL, NULL, 'open', '2026-10-15 11:18:58'),
+(2, 36, 'emergencia', 'Alerta de emergência - Alerta de emergência acionado pelo usuário.', NULL, NULL, 'open', '2026-10-15 11:19:04'),
+(3, 36, 'emergencia', 'Alerta de emergência - Alerta de emergência acionado pelo usuário.', NULL, NULL, 'open', '2026-10-15 11:27:51'),
+(4, 36, 'emergencia', 'Alerta de emergência - Alerta de emergência acionado pelo usuário.', NULL, NULL, 'open', '2026-10-15 11:32:45');
+
 -- --------------------------------------------------------
 
 --
@@ -70,6 +80,13 @@ CREATE TABLE `diary_entries` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `diary_entries`
+--
+
+INSERT INTO `diary_entries` (`id`, `user_id`, `title`, `content`, `mood`, `entry_date`, `created_at`) VALUES
+(3, 36, 'rwewe', 'rrwerwer', '', '2026-10-15', '2026-10-15 11:33:43');
+
 -- --------------------------------------------------------
 
 --
@@ -85,6 +102,64 @@ CREATE TABLE `emergency_contacts` (
   `is_primary` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `emergency_contacts`
+--
+
+INSERT INTO `emergency_contacts` (`id`, `user_id`, `name`, `phone`, `relationship`, `is_primary`, `created_at`) VALUES
+(3, 36, 'Fulano', '(12) 99191-4394', 'Pessoa de confiança', 1, '2026-10-15 11:34:16');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `alert_id` int(11) DEFAULT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `read_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `messages`
+--
+
+INSERT INTO `messages` (`id`, `sender_id`, `receiver_id`, `alert_id`, `message`, `is_read`, `read_at`, `created_at`) VALUES
+(6, 36, 37, NULL, 'olá', 1, '2026-10-15 08:04:39', '2026-10-15 11:04:37'),
+(7, 37, 36, NULL, 'oi', 1, '2026-10-15 08:04:42', '2026-10-15 11:04:42'),
+(8, 36, 37, NULL, 'i', 1, '2026-10-15 08:04:49', '2026-10-15 11:04:46'),
+(9, 36, 37, NULL, 'sasdfgh', 1, '2026-10-15 08:05:00', '2026-10-15 11:04:58'),
+(10, 37, 36, NULL, 'asdfuio', 1, '2026-10-15 08:05:06', '2026-10-15 11:05:04');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `responsible_links`
+--
+
+CREATE TABLE `responsible_links` (
+  `id` int(11) NOT NULL,
+  `protected_user_id` int(11) NOT NULL,
+  `responsible_user_id` int(11) NOT NULL,
+  `relationship` varchar(100) DEFAULT NULL,
+  `status` enum('pending','active','blocked','ended') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `responsible_links`
+--
+
+INSERT INTO `responsible_links` (`id`, `protected_user_id`, `responsible_user_id`, `relationship`, `status`, `created_at`, `updated_at`) VALUES
+(2, 36, 37, 'amiga', 'active', '2026-10-15 11:04:23', '2026-10-15 11:04:23');
 
 -- --------------------------------------------------------
 
@@ -127,8 +202,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `type`, `name`, `email`, `phone`, `password_hash`, `invite_code`, `emergency_contact`, `emergency_phone`, `relationship`, `status`, `created_at`, `updated_at`) VALUES
 (7, 'protegida', 'Edgar', 'edd@gmail.com', '(12) 99191-4394', '$2y$10$W9Yj5QZRd3DsxLFZlaR7gektKnmTkjze20yKBplEQwv6vILo3VsTm', '', 'fdafde', '(21) 32141-2312', '', 'protegida', '2026-10-06 12:33:29', '2026-10-06 12:33:29'),
-(8, 'responsavel', 'eddr', 'eddr@gmail.com', '(12) 99191-4394', '$2y$10$etZtwoH9d6lgVuEgSh2xYu1f452HCCUD/5I9cXwgCBXzV2ppQJpem', 'I47YG5', '', '', 'Eu', 'protegida', '2026-10-06 13:13:01', '2026-10-06 13:13:01'),
-(33, 'admin', 'Admin', 'admin@gmail.com', '(12) 99191-4394', '$2y$10$VxR/FfujstpDZ.Jm717q.OlBpwWu8rHL/WcZf9lu4W1ahC3i0/aNW', NULL, '', '', '', 'protegida', '2026-10-06 16:36:46', '2026-10-06 16:36:46');
+(33, 'admin', 'Admin', 'admin@gmail.com', '(12) 99191-4394', '$2y$10$VxR/FfujstpDZ.Jm717q.OlBpwWu8rHL/WcZf9lu4W1ahC3i0/aNW', NULL, '', '', '', 'protegida', '2026-10-06 16:36:46', '2026-10-06 16:36:46'),
+(34, 'protegida', 'Fulano', 'alemao@gmail.com', '(12) 99999-9999', '$2y$10$EPvcCiW78AGwK09cQi9u0OhS6arA6g2yJBrdkzhL.x1ujxBGQ./U2', NULL, 'fasdfe', '(12) 99191-4394', '', 'protegida', '2026-10-08 11:07:28', '2026-10-08 11:07:28'),
+(35, 'responsavel', 'EdgarR', 'eddr@gmail.com', '(12) 99999-9999', '$2y$10$BWKdOCi3Ep5jHfY2LpLawO4CGOmhN5fFF0iivsH8DXZZRQqjwo8Zm', 'BY31KX', '', '', 'Sósia', 'protegida', '2026-10-15 10:42:18', '2026-10-15 10:42:18'),
+(36, 'protegida', 'Pedro', 'pedro@gmail.com', '(12) 99999-9999', '$2y$10$hS93bQ1LReCPNS1XNeKu0eBovI.Dr.juzqPfgcnIJRc866Rc69MDK', 'SHE6CA3616', 'felix', '(12) 99999-9999', '', 'protegida', '2026-10-15 11:03:05', '2026-10-15 11:03:05'),
+(37, 'responsavel', 'Maria', 'maria@gmail.com', '(12) 99999-9999', '$2y$10$4B2B0hwmLrskWLiIEDxPoOuPowEp.aHxMIZ3RvC2pHzUGTCpLGpsa', NULL, '', '', 'amiga', 'protegida', '2026-10-15 11:04:23', '2026-10-15 11:04:23');
 
 --
 -- Índices para tabelas despejadas
@@ -164,6 +242,26 @@ ALTER TABLE `emergency_contacts`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Índices de tabela `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_sender` (`sender_id`),
+  ADD KEY `idx_receiver` (`receiver_id`),
+  ADD KEY `idx_alert` (`alert_id`),
+  ADD KEY `idx_chat` (`sender_id`,`receiver_id`,`created_at`);
+
+--
+-- Índices de tabela `responsible_links`
+--
+ALTER TABLE `responsible_links`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_responsible_link` (`protected_user_id`,`responsible_user_id`),
+  ADD KEY `idx_protected_user` (`protected_user_id`),
+  ADD KEY `idx_responsible_user` (`responsible_user_id`),
+  ADD KEY `idx_link_status` (`status`);
+
+--
 -- Índices de tabela `settings`
 --
 ALTER TABLE `settings`
@@ -186,7 +284,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de tabela `alerts`
 --
 ALTER TABLE `alerts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `devices`
@@ -198,13 +296,25 @@ ALTER TABLE `devices`
 -- AUTO_INCREMENT de tabela `diary_entries`
 --
 ALTER TABLE `diary_entries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `emergency_contacts`
 --
 ALTER TABLE `emergency_contacts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de tabela `responsible_links`
+--
+ALTER TABLE `responsible_links`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `settings`
@@ -216,7 +326,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- Restrições para tabelas despejadas
@@ -245,6 +355,21 @@ ALTER TABLE `diary_entries`
 --
 ALTER TABLE `emergency_contacts`
   ADD CONSTRAINT `emergency_contacts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_message_alert` FOREIGN KEY (`alert_id`) REFERENCES `alerts` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_message_receiver` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_message_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `responsible_links`
+--
+ALTER TABLE `responsible_links`
+  ADD CONSTRAINT `fk_link_protected` FOREIGN KEY (`protected_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_link_responsible` FOREIGN KEY (`responsible_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `settings`

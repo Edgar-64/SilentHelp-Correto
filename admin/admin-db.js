@@ -79,7 +79,9 @@
 
     async function loadAlerts() {
         const response = await api.post("admin_alerts");
-        if (!response.ok) return [];
+        if (!response || !response.ok) {
+            throw new Error(response?.message || "Não foi possível carregar os alertas do banco de dados.");
+        }
         return Array.isArray(response.items) ? response.items : [];
     }
 
@@ -103,36 +105,98 @@
 
     function renderDashboardAlerts(items) {
         const recentList = document.querySelector(".recent-list");
-        if (!recentList) return;
+        const count = (predicate) => items.filter(predicate).length;
+        const normalizedType = item => String(item.tipo || "").trim().toLowerCase();
+        const normalizedStatus = item => String(item.status || "").trim().toLowerCase();
 
+        const emergency = count(item => ["emergency", "emergencia"].includes(normalizedType(item)));
+        const tests = count(item => ["test", "teste", "safety_test"].includes(normalizedType(item)));
+        const resolved = count(item => ["resolved", "resolvido", "resolvida", "closed", "concluido", "concluído"].includes(normalizedStatus(item)));
+        const active = count(item => ["open", "active", "ativo", "ativa", "em_atendimento"].includes(normalizedStatus(item)));
+        const cancelled = count(item => ["cancelled", "canceled", "cancelado", "cancelada"].includes(normalizedStatus(item)));
+
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = String(value);
+        };
+        setText("summaryEmergency", emergency);
+        setText("summaryResolved", resolved);
+        setText("summaryActive", active);
+        setText("summaryTests", tests);
+        setText("summaryCancelled", cancelled);
+        setText("emergencyCount", emergency);
+
+        const badge = document.getElementById("sidebarAlertCount");
+        if (badge) {
+            badge.textContent = String(active);
+            badge.hidden = active === 0;
+        }
+
+        if (!recentList) return;
         const recent = items.slice(0, 5);
         recentList.innerHTML = recent.length
             ? recent.map(item => {
-                const status = String(item.status || "").toLowerCase();
-                const type = String(item.tipo || "").toLowerCase();
-                const statusClass = status === "open" ? "active" : status === "resolved" ? "resolved" : "cancelled";
-                const iconClass = type === "emergency" || type === "emergencia" ? "emergency" : "test";
+                const status = normalizedStatus(item);
+                const type = normalizedType(item);
+                const isResolved = ["resolved", "resolvido", "resolvida", "closed", "concluido", "concluído"].includes(status);
+                const isActive = ["open", "active", "ativo", "ativa", "em_atendimento"].includes(status);
+                const statusClass = isActive ? "active" : isResolved ? "resolved" : "cancelled";
+                const iconClass = ["emergency", "emergencia"].includes(type) ? "emergency" : "test";
+                const title = item.titulo || item.descricao || "Alerta";
+                const date = formatDateTime(item.data_inicio);
+                const user = item.usuario || "Usuário não identificado";
+                const location = item.latitude != null && item.longitude != null
+                    ? `${item.latitude}, ${item.longitude}`
+                    : "Localização não informada";
+                const details = [title, date, user, location, statusLabel(item.status)];
                 return `
-                    <div class="recent-alert" onclick="openAlert(
-                        '${escapeHTML(item.titulo).replace(/'/g, "\\'")}',
-                        '${escapeHTML(formatDateTime(item.data_inicio)).replace(/'/g, "\\'")}',
-                        '${escapeHTML(item.usuario || "Usuário").replace(/'/g, "\\'")}',
-                        '${escapeHTML(item.latitude && item.longitude ? item.latitude + ', ' + item.longitude : 'Localização não informada').replace(/'/g, "\\'")}',
-                        '${escapeHTML(statusLabel(item.status)).replace(/'/g, "\\'")}'
-                    )">
+                    <div class="recent-alert" role="button" tabindex="0"
+                         data-alert-details="${escapeHTML(JSON.stringify(details))}">
                         <div class="recent-icon ${iconClass}">
                             <span style="font-size:18px">!</span>
                         </div>
                         <div class="recent-info">
-                            <strong>${escapeHTML(item.titulo || "Alerta")}</strong>
-                            <span>${escapeHTML(item.usuario || "Usuário")} • ${escapeHTML(formatDateTime(item.data_inicio))}</span>
+                            <strong>${escapeHTML(title)}</strong>
+                            <span>${escapeHTML(user)} • ${escapeHTML(date)}</span>
                         </div>
                         <span class="recent-status ${statusClass}">${escapeHTML(statusLabel(item.status))}</span>
                     </div>`;
             }).join("")
-            : `<div style="padding:25px;text-align:center;color:var(--cinza)">Nenhum alerta registrado.</div>`;
+            : `<div style="padding:25px;text-align:center;color:var(--cinza)">Nenhum alerta registrado no banco de dados.</div>`;
+
+        recentList.querySelectorAll("[data-alert-details]").forEach(el => {
+            const open = () => {
+                try {
+                    const [title, date, user, location, status] = JSON.parse(el.dataset.alertDetails);
+                    if (typeof window.openAlert === "function") window.openAlert(title, date, user, location, status);
+                } catch (error) {
+                    console.error("Não foi possível abrir os detalhes do alerta.", error);
+                }
+            };
+            el.addEventListener("click", open);
+            el.addEventListener("keydown", event => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    open();
+                }
+            });
+        });
     }
 
+    window.showAlertNotification = async function () {
+        try {
+            const items = await loadAlerts();
+            const active = items.filter(item =>
+                ["open", "active", "ativo", "ativa", "em_atendimento"].includes(String(item.status || "").toLowerCase())
+            ).length;
+            if (typeof window.showToast === "function") {
+                window.showToast(active ? `Existem ${active} alerta(s) ativo(s) registrado(s) no banco.` : "Não há alertas ativos registrados no banco.");
+            }
+        } catch (error) {
+            if (typeof window.showToast === "function") window.showToast(error.message);
+            else console.error(error);
+        }
+    };
     function renderUsers(items) {
         const table = document.getElementById("userTable");
         if (!table) return;
@@ -188,6 +252,18 @@
         document.getElementById("emergencyAlerts")?.replaceChildren(document.createTextNode(String(emergency)));
         document.getElementById("testAlerts")?.replaceChildren(document.createTextNode(String(test)));
         document.getElementById("cancelledAlerts")?.replaceChildren(document.createTextNode(String(cancelled)));
+        const activeCount = items.filter(i => ["open", "active", "ativo", "ativa", "em_atendimento"].includes(String(i.status || "").toLowerCase())).length;
+        const badge = document.getElementById("sidebarAlertCount");
+        if (badge) {
+            badge.textContent = String(activeCount);
+            badge.hidden = activeCount === 0;
+        }
+
+        if (!items.length) {
+            table.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px">Nenhum alerta registrado no banco de dados.</td></tr>';
+            document.getElementById("alertCount")?.replaceChildren(document.createTextNode("0"));
+            return;
+        }
 
         table.innerHTML = items.map(item => {
             const typeRaw = String(item.tipo || "emergency").toLowerCase();
@@ -305,6 +381,11 @@
         const response = await api.post("admin_report");
         if (!response.ok) return;
         const items = response.items || [];
+        const alertsResponse = await api.post("admin_alerts");
+        if (!alertsResponse || !alertsResponse.ok) {
+            throw new Error(alertsResponse?.message || "Não foi possível carregar os alertas para o relatório.");
+        }
+        const alerts = Array.isArray(alertsResponse.items) ? alertsResponse.items : [];
         const stats = await loadStats() || {};
 
         const byDay = {};
@@ -326,7 +407,8 @@
         const chart2 = window.Chart && Chart.getChart(document.getElementById("typeChart"));
         if (chart2) {
             const typeLabels = Object.keys(byType);
-            chart2.data.labels = typeLabels;
+            const typeLabel = t => ({ emergency: "Emergência", emergencia: "Emergência", test: "Teste", teste: "Teste", cancelled: "Cancelado", cancelado: "Cancelado" }[String(t).toLowerCase()] || String(t));
+            chart2.data.labels = typeLabels.map(typeLabel);
             chart2.data.datasets[0].data = typeLabels.map(t => byType[t]);
             chart2.update();
         }
@@ -337,53 +419,133 @@
         document.getElementById("totalDispositivos")?.replaceChildren(document.createTextNode(String(stats.dispositivos || 0)));
         document.getElementById("totalAtivos")?.replaceChildren(document.createTextNode(String(stats.ativos || 0)));
         document.getElementById("emergencyCount")?.replaceChildren(document.createTextNode(String(byType.emergency || byType.emergencia || 0)));
+
+        const table = document.getElementById("reportSummaryTable");
+        if (table) {
+            const totalAlerts = alerts.length;
+            if (!totalAlerts) {
+                table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px">Nenhum alerta registrado no banco de dados.</td></tr>';
+            } else {
+                const groups = {};
+                alerts.forEach(alert => {
+                    const rawType = String(alert.tipo || "outro").toLowerCase();
+                    const label = ({ emergency: "Emergência", emergencia: "Emergência", test: "Teste", teste: "Teste", cancelled: "Cancelado", cancelado: "Cancelado" }[rawType] || rawType);
+                    if (!groups[label]) groups[label] = { total: 0, statuses: {} };
+                    groups[label].total++;
+                    const status = statusLabel(alert.status);
+                    groups[label].statuses[status] = (groups[label].statuses[status] || 0) + 1;
+                });
+                table.innerHTML = Object.entries(groups).map(([label, data]) => {
+                    const percent = ((data.total / totalAlerts) * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%";
+                    const mostCommonStatus = Object.entries(data.statuses).sort((a, b) => b[1] - a[1])[0]?.[0] || "—";
+                    return `<tr><td>${escapeHTML(label)}</td><td>${data.total}</td><td>${percent}</td><td>${escapeHTML(mostCommonStatus)}</td></tr>`;
+                }).join("");
+            }
+        }
     }
 
     async function setupMap() {
         if (!document.getElementById("map")) return;
         const response = await api.post("admin_alerts");
-        if (!response.ok || !window.L || !window.map) return;
+        if (!response || !response.ok) {
+            throw new Error(response?.message || "Não foi possível carregar as ocorrências do banco.");
+        }
 
-        const map = window.map;
-        const items = (response.items || []).filter(i => i.latitude != null && i.longitude != null);
-        map.eachLayer(layer => {
-            if (!(layer instanceof L.TileLayer)) map.removeLayer(layer);
-        });
+        const allItems = Array.isArray(response.items) ? response.items : [];
+        const items = allItems.filter(i =>
+            i.latitude !== null && i.latitude !== undefined && i.latitude !== "" &&
+            i.longitude !== null && i.longitude !== undefined && i.longitude !== "" &&
+            Number.isFinite(Number(i.latitude)) && Number.isFinite(Number(i.longitude))
+        );
 
-        const colors = { open: "#f4c95d", resolved: "#55df91", cancelled: "#817b8c" };
-        items.forEach(item => {
-            const status = String(item.status || "resolved").toLowerCase();
-            const color = colors[status] || "#ff5d73";
-            const marker = L.circleMarker([Number(item.latitude), Number(item.longitude)], {
-                radius: 8, color: "#ffffff", weight: 2, fillColor: color, fillOpacity: 1
-            }).addTo(map);
-            marker.bindPopup(`<strong>${escapeHTML(item.titulo || "Alerta")}</strong><br>Usuário: ${escapeHTML(item.usuario || "—")}<br>Status: ${escapeHTML(statusLabel(status))}<br>${escapeHTML(formatDateTime(item.data_inicio))}`);
-        });
+        if (window.L && window.map) {
+            const map = window.map;
+            map.eachLayer(layer => {
+                if (!(layer instanceof L.TileLayer)) map.removeLayer(layer);
+            });
 
-        document.getElementById("mapTotal")?.replaceChildren(document.createTextNode(String(items.length)));
-        document.getElementById("mapActive")?.replaceChildren(document.createTextNode(String(items.filter(i => i.status === "open").length)));
+            const colors = { open: "#f4c95d", active: "#f4c95d", resolved: "#55df91", cancelled: "#817b8c", canceled: "#817b8c" };
+            const bounds = [];
+            items.forEach(item => {
+                const lat = Number(item.latitude);
+                const lng = Number(item.longitude);
+                // Ignora coordenadas inválidas ou fora dos limites geográficos.
+                if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) return;
+
+                const status = String(item.status || "").toLowerCase();
+                const color = colors[status] || "#ff5d73";
+                const marker = L.circleMarker([lat, lng], {
+                    radius: 8, color: "#ffffff", weight: 2, fillColor: color, fillOpacity: 1
+                }).addTo(map);
+                const popup = `<strong>${escapeHTML(item.titulo || "Alerta de emergência")}</strong><br>` +
+                    `Usuária: ${escapeHTML(item.usuario || "Não identificada")}<br>` +
+                    `Status: ${escapeHTML(statusLabel(status))}<br>` +
+                    `Data: ${escapeHTML(formatDateTime(item.data_inicio))}<br>` +
+                    `Coordenadas: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                marker.bindPopup(popup);
+                bounds.push([lat, lng]);
+            });
+
+            // Enquadra automaticamente todos os alertas que possuem localização real.
+            if (bounds.length === 1) {
+                map.setView(bounds[0], 16);
+            } else if (bounds.length > 1) {
+                map.fitBounds(bounds, { padding: [35, 35], maxZoom: 16 });
+            }
+        }
+
+        const activeCount = allItems.filter(i => ["open", "active", "ativo", "ativa", "em_atendimento"].includes(String(i.status || "").toLowerCase())).length;
+        document.getElementById("mapTotal")?.replaceChildren(document.createTextNode(String(allItems.length)));
+        document.getElementById("mapActive")?.replaceChildren(document.createTextNode(String(activeCount)));
+        const occurrenceCount = document.getElementById("occurrenceCount");
+        if (occurrenceCount) occurrenceCount.textContent = `${allItems.length} ocorrência(s)`;
+
+        const list = document.getElementById("occurrenceList");
+        if (list) {
+            list.innerHTML = allItems.length ? allItems.slice(0, 10).map(item => {
+                const status = String(item.status || "").toLowerCase();
+                const active = ["open", "active", "ativo", "ativa", "em_atendimento"].includes(status);
+                const resolved = ["resolved", "resolvido", "resolvida", "closed", "concluido", "concluído"].includes(status);
+                const cls = active ? "active" : resolved ? "resolved" : "cancelled";
+                const title = item.titulo || item.descricao || "Alerta";
+                return `<article class="occurrence" data-status="${cls}">
+                    <div class="occurrence-icon"><span>!</span></div>
+                    <div class="occurrence-info">
+                        <h3>${escapeHTML(title)}</h3>
+                        <p>Usuária: ${escapeHTML(item.usuario || "Não identificada")} • ${escapeHTML(formatDateTime(item.data_inicio))}</p>
+                        <p>Localização: ${item.latitude != null && item.longitude != null ? escapeHTML(`${item.latitude}, ${item.longitude}`) : "Não informada"}</p>
+                    </div>
+                    <span class="status ${cls}">${escapeHTML(statusLabel(item.status))}</span>
+                </article>`;
+            }).join("") : '<div style="padding:24px;text-align:center;color:var(--cinza)">Nenhuma ocorrência registrada no banco de dados.</div>';
+        }
     }
 
     async function init() {
         const path = location.pathname.toLowerCase();
 
-        if (path.endsWith("/admin.php")) {
-            const stats = await loadStats();
-            const alerts = await loadAlerts();
-            if (stats) {
-                const emergency = alerts.filter(i => ["emergency", "emergencia"].includes(String(i.tipo).toLowerCase())).length;
-                document.getElementById("emergencyCount")?.replaceChildren(document.createTextNode(String(emergency)));
+        try {
+            if (path.endsWith("/admin.php")) {
+                await loadStats();
+                renderDashboardAlerts(await loadAlerts());
             }
-            renderDashboardAlerts(alerts);
-        }
 
-        if (path.endsWith("/usuarios.php")) renderUsers(await loadUsers());
-        if (path.endsWith("/alertas.php")) renderAlerts(await loadAlerts());
-        if (path.endsWith("/dispositivos.php")) renderDevices(await loadDevices());
-        if (path.endsWith("/contatos-admin.php")) renderContacts(await loadContacts());
-        if (path.endsWith("/relatorios.php")) await setupReports();
-        if (path.endsWith("/config-admin.php")) await setupConfig();
-        if (path.endsWith("/mapa-admin.php")) await setupMap();
+            if (path.endsWith("/usuarios.php")) renderUsers(await loadUsers());
+            if (path.endsWith("/alertas.php")) renderAlerts(await loadAlerts());
+            if (path.endsWith("/dispositivos.php")) renderDevices(await loadDevices());
+            if (path.endsWith("/contatos-admin.php")) renderContacts(await loadContacts());
+            if (path.endsWith("/relatorios.php")) await setupReports();
+            if (path.endsWith("/config-admin.php")) await setupConfig();
+            if (path.endsWith("/mapa-admin.php")) await setupMap();
+        } catch (error) {
+            console.error("Falha ao carregar dados do SilentHelp:", error);
+            const recentList = document.querySelector(".recent-list");
+            if (recentList) {
+                recentList.innerHTML = `<div style="padding:25px;text-align:center;color:var(--vermelho)">Erro ao consultar os alertas no banco de dados. Verifique a API e a conexão com o banco.</div>`;
+            }
+            const table = document.getElementById("alertTable");
+            if (table) table.innerHTML = `<tr><td colspan="6">Não foi possível consultar os alertas no banco de dados.</td></tr>`;
+        }
     }
 
     // Substitui o toggle fictício da página de usuários por alteração persistente.

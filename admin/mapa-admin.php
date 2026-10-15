@@ -1494,7 +1494,7 @@
                         <line x1="12" y1="17" x2="12.01" y2="17" />
                     </svg>
                     <span>Alertas</span>
-                    <span class="link-badge">3</span>
+                    <span class="link-badge" id="sidebarAlertCount" hidden>0</span>
                 </a>
 
                 <a href="mapa-admin.php" class="sidebar-link active">
@@ -1765,9 +1765,7 @@
 
                     <div class="map-stat">
 
-                        <strong id="mapTotal">
-                            8
-                        </strong>
+                        <strong id="mapTotal">—</strong>
 
                         ocorrências
 
@@ -1776,9 +1774,7 @@
 
                     <div class="map-stat active">
 
-                        <strong id="mapActive">
-                            2
-                        </strong>
+                        <strong id="mapActive">—</strong>
 
                         ativas
 
@@ -1790,6 +1786,9 @@
                 <div id="map"></div>
 
             </section>
+            <p style="margin-top:10px;color:var(--cinza);font-size:11px;line-height:1.5;">
+                O mapa exibe somente alertas com latitude e longitude registradas no banco. Alertas sem coordenadas continuam na lista, mas não podem ser posicionados no mapa.
+            </p>
 
 
 
@@ -1806,175 +1805,12 @@
                         Ocorrências recentes
                     </h2>
 
-                    <span id="occurrenceCount">
-                        4 ocorrências
-                    </span>
+                    <span id="occurrenceCount">Carregando...</span>
 
                 </div>
 
 
-                <div class="occurrence-list" id="occurrenceList">
-
-
-                    <!-- OCORRÊNCIA 1 -->
-
-                    <article class="occurrence" data-type="emergency" data-status="active">
-
-                        <div class="occurrence-icon">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <path
-                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
-
-                                <line x1="12" y1="9" x2="12" y2="13" />
-
-                                <line x1="12" y1="17" x2="12.01" y2="17" />
-
-                            </svg>
-
-                        </div>
-
-
-                        <div class="occurrence-info">
-
-                            <h3>
-                                Alerta de emergência
-                            </h3>
-
-                            <p>
-                                Usuária: Ana Silva • Hoje, 10:42
-                            </p>
-
-                        </div>
-
-
-                        <span class="status active">
-                            Ativo
-                        </span>
-
-                    </article>
-
-
-
-                    <!-- OCORRÊNCIA 2 -->
-
-                    <article class="occurrence" data-type="emergency" data-status="resolved">
-
-                        <div class="occurrence-icon">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <path
-                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
-
-                                <line x1="12" y1="9" x2="12" y2="13" />
-
-                                <line x1="12" y1="17" x2="12.01" y2="17" />
-
-                            </svg>
-
-                        </div>
-
-
-                        <div class="occurrence-info">
-
-                            <h3>
-                                Alerta de emergência
-                            </h3>
-
-                            <p>
-                                Usuária: Beatriz Santos • Hoje, 08:15
-                            </p>
-
-                        </div>
-
-
-                        <span class="status resolved">
-                            Resolvido
-                        </span>
-
-                    </article>
-
-
-
-                    <!-- OCORRÊNCIA 3 -->
-
-                    <article class="occurrence" data-type="test" data-status="resolved">
-
-                        <div class="occurrence-icon test">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <circle cx="12" cy="12" r="9" />
-
-                                <path d="m8 12 2.5 2.5L16 9" />
-
-                            </svg>
-
-                        </div>
-
-
-                        <div class="occurrence-info">
-
-                            <h3>
-                                Teste de segurança
-                            </h3>
-
-                            <p>
-                                Usuária: Carla Oliveira • Ontem, 21:37
-                            </p>
-
-                        </div>
-
-
-                        <span class="status resolved">
-                            Resolvido
-                        </span>
-
-                    </article>
-
-
-
-                    <!-- OCORRÊNCIA 4 -->
-
-                    <article class="occurrence" data-type="cancelled" data-status="cancelled">
-
-                        <div class="occurrence-icon cancelled">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                                <circle cx="12" cy="12" r="9" />
-
-                                <path d="m9 9 6 6" />
-
-                                <path d="m15 9-6 6" />
-
-                            </svg>
-
-                        </div>
-
-
-                        <div class="occurrence-info">
-
-                            <h3>
-                                Alerta cancelado
-                            </h3>
-
-                            <p>
-                                Usuária: Mariana Costa • 14/08/2026
-                            </p>
-
-                        </div>
-
-
-                        <span class="status cancelled">
-                            Cancelado
-                        </span>
-
-                    </article>
-
-                </div>
+                <div class="occurrence-list" id="occurrenceList"><div style="padding:24px;text-align:center;color:var(--cinza)">Carregando ocorrências do banco de dados...</div></div>
 
             </section>
 
@@ -2070,89 +1906,7 @@
            OCORRÊNCIAS
         ===================================================== */
 
-        const occurrences = [
-
-            {
-                lat: -23.0227,
-                lng: -45.5550,
-                type: "emergency",
-                status: "active",
-                title: "Alerta de emergência",
-                user: "Ana Silva",
-                date: "Hoje, 10:42"
-            },
-
-            {
-                lat: -23.0305,
-                lng: -45.5480,
-                type: "emergency",
-                status: "resolved",
-                title: "Alerta de emergência",
-                user: "Beatriz Santos",
-                date: "Hoje, 08:15"
-            },
-
-            {
-                lat: -23.0150,
-                lng: -45.5620,
-                type: "test",
-                status: "resolved",
-                title: "Teste de segurança",
-                user: "Carla Oliveira",
-                date: "Ontem, 21:37"
-            },
-
-            {
-                lat: -23.0380,
-                lng: -45.5700,
-                type: "cancelled",
-                status: "cancelled",
-                title: "Alerta cancelado",
-                user: "Mariana Costa",
-                date: "14/08/2026"
-            },
-
-            {
-                lat: -23.0100,
-                lng: -45.5400,
-                type: "emergency",
-                status: "active",
-                title: "Alerta de emergência",
-                user: "Juliana Souza",
-                date: "13/08/2026"
-            },
-
-            {
-                lat: -23.0270,
-                lng: -45.5750,
-                type: "test",
-                status: "resolved",
-                title: "Teste de segurança",
-                user: "Fernanda Lima",
-                date: "12/08/2026"
-            },
-
-            {
-                lat: -23.0450,
-                lng: -45.5500,
-                type: "emergency",
-                status: "resolved",
-                title: "Alerta de emergência",
-                user: "Larissa Alves",
-                date: "11/08/2026"
-            },
-
-            {
-                lat: -23.0180,
-                lng: -45.5300,
-                type: "cancelled",
-                status: "cancelled",
-                title: "Alerta cancelado",
-                user: "Camila Rocha",
-                date: "10/08/2026"
-            }
-
-        ];
+        const occurrences = [];
 
 
         let markers = [];
@@ -2482,7 +2236,6 @@
 
     </script>
 
-    <script src="../assets/db-sync.js"></script>
     <script src="../assets/admin-db.js"></script>
 </body>
 

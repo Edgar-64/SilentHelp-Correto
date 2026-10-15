@@ -1142,7 +1142,8 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         }
 
         function aplicarDadosDoAlerta() {
-            alertaAtual = lerUltimoAlerta();
+            // Usa o alerta recebido da API. Não substitua por localStorage,
+            // pois o responsável pode estar em outro dispositivo/navegador.
 
             const nome =
                 alertaAtual?.usuario_nome ||
@@ -1155,7 +1156,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 nome.trim().charAt(0).toUpperCase() || "P";
 
             const status = alertaAtual?.status || "";
-            const ativo = ["Enviado", "enviado", "recebido", "em_atendimento"].includes(status);
+            const ativo = ["open", "Enviado", "enviado", "recebido", "em_atendimento"].includes(status);
 
             if (!alertaAtual) {
                 document.getElementById("alertTitle").textContent = "Nenhum alerta ativo";
