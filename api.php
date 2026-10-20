@@ -76,6 +76,51 @@ try {
 
     switch ($action) {
 
+        case "battery_update":
+            needUser();
+            $nivel = filter_var($d["level"] ?? null, FILTER_VALIDATE_INT);
+            if ($nivel === false || $nivel < 0 || $nivel > 100) {
+                out(["ok" => false, "message" => "Nível de bateria inválido."], 400);
+            }
+            $usuarioId = uid();
+            $stmt = $conn->prepare("INSERT INTO settings (user_id, setting_key, setting_value) VALUES (?, 'battery_level', ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
+            if (!$stmt) throw new Exception($conn->error);
+            $valor = (string)$nivel;
+            $stmt->bind_param("is", $usuarioId, $valor);
+            $stmt->execute();
+            $stmt->close();
+            $agora = date('Y-m-d H:i:s');
+            $stmt = $conn->prepare("INSERT INTO settings (user_id, setting_key, setting_value) VALUES (?, 'battery_updated_at', ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
+            if (!$stmt) throw new Exception($conn->error);
+            $stmt->bind_param("is", $usuarioId, $agora);
+            $stmt->execute();
+            $stmt->close();
+            out(["ok" => true, "level" => $nivel]);
+
+        case "responsible_battery":
+            needUser();
+            $responsavelId = uid();
+            $stmt = $conn->prepare("SELECT u.id FROM responsible_links rl INNER JOIN users u ON u.id = rl.protected_user_id WHERE rl.responsible_user_id = ? AND rl.status = 'active' LIMIT 1");
+            if (!$stmt) throw new Exception($conn->error);
+            $stmt->bind_param("i", $responsavelId);
+            $stmt->execute();
+            $stmt->bind_result($protegidoId);
+            if (!$stmt->fetch()) { $stmt->close(); out(["ok"=>true,"level"=>null,"updated_at"=>null]); }
+            $stmt->close();
+            $stmt = $conn->prepare("SELECT setting_key, setting_value FROM settings WHERE user_id = ? AND setting_key IN ('battery_level','battery_updated_at')");
+            if (!$stmt) throw new Exception($conn->error);
+            $stmt->bind_param("i", $protegidoId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $vals = [];
+            while ($row = $result->fetch_assoc()) $vals[$row['setting_key']] = $row['setting_value'];
+            $stmt->close();
+            $level = isset($vals['battery_level']) ? (int)$vals['battery_level'] : null;
+            $updated = $vals['battery_updated_at'] ?? null;
+            // Leituras com mais de 10 minutos são consideradas desatualizadas.
+            $fresh = $updated && (time() - strtotime($updated) <= 600);
+            out(["ok"=>true,"level"=>($fresh ? $level : null),"updated_at"=>$updated,"stale"=>!$fresh]);
+
         /* =========================
            CADASTRO
         ========================= */
@@ -945,6 +990,53 @@ ALERTA DO RESPONSÁVEL
             ]);
 
 
+        case "attend_alert":
+
+            needUser();
+
+            $responsavelId = uid();
+            $idAlerta = (int) ($d["id"] ?? 0);
+
+            if ($idAlerta <= 0) {
+                out(["ok" => false, "message" => "ID do alerta inválido."], 400);
+            }
+
+            // Só permite ao responsável vinculado assumir um alerta aberto.
+            $stmt = $conn->prepare("
+                UPDATE alerts a
+                INNER JOIN responsible_links rl
+                    ON rl.protected_user_id = a.user_id
+                SET a.status = 'attended'
+                WHERE a.id = ?
+                  AND rl.responsible_user_id = ?
+                  AND rl.status = 'active'
+                  AND a.status = 'open'
+            ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param("ii", $idAlerta, $responsavelId);
+            $stmt->execute();
+            $alteradas = $stmt->affected_rows;
+            $stmt->close();
+
+            if ($alteradas < 1) {
+                out([
+                    "ok" => false,
+                    "message" => "O alerta não está mais aberto ou não pertence a uma pessoa vinculada a você."
+                ], 409);
+            }
+
+            out([
+                "ok" => true,
+                "id" => $idAlerta,
+                "status" => "attended",
+                "message" => "Atendimento registrado no banco de dados."
+            ]);
+
+
         case "resolve_alert":
 
             needUser();
@@ -1682,6 +1774,90 @@ ALERTA DO RESPONSÁVEL
                 "ok" => true,
                 "items" => $items
             ]);
+
+        case "responsible_alert_history":
+
+            needUser();
+
+            $responsavelId = uid();
+
+            // Localiza a pessoa protegida vinculada
+            $stmt = $conn->prepare("
+        SELECT protected_user_id
+        FROM responsible_links
+        WHERE responsible_user_id = ?
+          AND status = 'active'
+        LIMIT 1
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param("i", $responsavelId);
+            $stmt->execute();
+            $stmt->bind_result($protegidoId);
+
+            if (!$stmt->fetch()) {
+                $stmt->close();
+
+                out([
+                    "ok" => true,
+                    "alertas" => []
+                ]);
+            }
+
+            $stmt->close();
+
+            // Busca os 5 alertas mais recentes dessa pessoa
+            $stmt = $conn->prepare("
+        SELECT
+            id,
+            type,
+            message,
+            status,
+            created_at
+        FROM alerts
+        WHERE user_id = ?
+        ORDER BY created_at DESC, id DESC
+        LIMIT 5
+    ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param("i", $protegidoId);
+            $stmt->execute();
+
+            $stmt->bind_result(
+                $alertaId,
+                $tipo,
+                $mensagem,
+                $status,
+                $criadoEm
+            );
+
+            $alertas = [];
+
+            while ($stmt->fetch()) {
+                $alertas[] = [
+                    "id" => (int) $alertaId,
+                    "tipo" => $tipo,
+                    "mensagem" => $mensagem,
+                    "status" => $status,
+                    "created_at" => $criadoEm
+                ];
+            }
+
+            $stmt->close();
+
+            out([
+                "ok" => true,
+                "alertas" => $alertas
+            ]);
+
+            break;
 
 
         default:

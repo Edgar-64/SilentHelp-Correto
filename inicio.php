@@ -5286,12 +5286,32 @@ $nomeUsuario = $usuario["nome"];
             const online = navigator.onLine;
             resultados.push(online ? "Conexão OK" : "Sem conexão");
 
+            async function enviarNivelBateria(nivel) {
+                try {
+                    await fetch("api.php?action=battery_update", {
+                        method: "POST",
+                        credentials: "same-origin",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ level: nivel })
+                    });
+                } catch (erro) {
+                    console.warn("Não foi possível sincronizar a bateria.", erro);
+                }
+            }
+
             /* 2. Bateria real, quando o navegador disponibiliza a API */
             let nivelBateria = null;
             try {
                 if (navigator.getBattery) {
                     const bateria = await navigator.getBattery();
                     nivelBateria = Math.round(bateria.level * 100);
+                    enviarNivelBateria(nivelBateria);
+                    bateria.addEventListener("levelchange", () => {
+                        nivelBateria = Math.round(bateria.level * 100);
+                        enviarNivelBateria(nivelBateria);
+                        const valorAtual = document.getElementById("batteryValue");
+                        if (valorAtual) valorAtual.textContent = nivelBateria + "%";
+                    });
 
                     const batteryValue =
                         document.getElementById("batteryValue");

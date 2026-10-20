@@ -427,33 +427,143 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             margin-top: 20px;
         }
 
-        .history-item {
-            display: flex;
-            gap: 13px;
-            padding: 15px 20px;
-            border-top: 1px solid rgba(255, 255, 255, .05);
+        .history-subtitle {
+            margin-top: 5px;
+            color: var(--cinza);
+            font-size: 12px;
         }
 
-        .history-icon {
-            width: 35px;
-            height: 35px;
+        .history-counter {
+            padding: 6px 10px;
+            border: 1px solid rgba(166, 92, 255, .25);
+            border-radius: 20px;
+            background: rgba(166, 92, 255, .10);
+            color: var(--roxo-claro);
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .history-entry {
+            padding: 15px;
+            border: 1px solid var(--borda);
+            border-radius: 15px;
+            background: linear-gradient(145deg, #14141b, #0d0d12);
+        }
+
+        .history-entry-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .history-entry-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .history-entry-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
-            background: rgba(166, 92, 255, .12);
-            color: var(--roxo-claro);
+            border-radius: 12px;
+            background: rgba(255, 93, 115, .12);
+            font-size: 19px;
         }
 
-        .history-item strong {
-            display: block;
+        .history-entry-title {
             font-size: 14px;
-            margin-bottom: 3px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
         }
 
-        .history-item span {
+        .history-entry-date {
+            display: block;
+            margin-top: 5px;
+            color: var(--cinza-escuro);
+            font-size: 11px;
+        }
+
+        .history-status {
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .history-status.open {
+            color: var(--vermelho);
+            background: rgba(255, 93, 115, .12);
+        }
+
+        .history-status.resolved {
+            color: var(--verde);
+            background: rgba(85, 223, 145, .12);
+        }
+
+        .history-status.other {
+            color: var(--roxo-claro);
+            background: rgba(166, 92, 255, .12);
+        }
+
+        .history-entry-message {
+            margin: 14px 0 0;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            color: var(--cinza);
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .history-empty {
+            margin: 16px;
+            padding: 28px 16px;
+            border: 1px dashed var(--borda);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .history-empty-icon {
+            font-size: 27px;
+        }
+
+        .history-empty strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .history-empty p {
+            margin-top: 6px;
             color: var(--cinza);
             font-size: 12px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 550px) {
+            .history-entry-top {
+                flex-direction: column;
+            }
+
+            .history-entry-top>.history-status {
+                margin-left: 50px;
+            }
         }
 
         /* CHAT FLUTUANTE */
@@ -1012,19 +1122,21 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
 
         </div>
 
-        <!-- HISTÓRICO -->
+        <!-- HISTÓRICO DOS 5 ALERTAS MAIS RECENTES -->
         <section class="card history">
             <div class="card-header">
-                <h2>Histórico do alerta</h2>
+                <div>
+                    <h2>Histórico de alertas</h2>
+                    <p class="history-subtitle">Os 5 registros mais recentes do banco de dados</p>
+                </div>
+                <span class="history-counter" id="historyCounter">0 alertas</span>
             </div>
 
-            <div id="alertHistory">
-                <div class="history-item">
-                    <div class="history-icon">ℹ️</div>
-                    <div>
-                        <strong>Aguardando alerta</strong>
-                        <span>Nenhum alerta ativo foi carregado.</span>
-                    </div>
+            <div id="alertHistory" class="history-list">
+                <div class="history-empty">
+                    <div class="history-empty-icon">⏳</div>
+                    <strong>Carregando histórico...</strong>
+                    <p>Buscando os alertas registrados no sistema.</p>
                 </div>
             </div>
         </section>
@@ -1142,8 +1254,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
         }
 
         function aplicarDadosDoAlerta() {
-            // Usa o alerta recebido da API. Não substitua por localStorage,
-            // pois o responsável pode estar em outro dispositivo/navegador.
+            alertaAtual = lerUltimoAlerta();
 
             const nome =
                 alertaAtual?.usuario_nome ||
@@ -1156,7 +1267,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 nome.trim().charAt(0).toUpperCase() || "P";
 
             const status = alertaAtual?.status || "";
-            const ativo = ["open", "Enviado", "enviado", "recebido", "em_atendimento"].includes(status);
+            const ativo = ["Enviado", "enviado", "recebido", "em_atendimento"].includes(status);
 
             if (!alertaAtual) {
                 document.getElementById("alertTitle").textContent = "Nenhum alerta ativo";
@@ -1169,7 +1280,6 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                 document.getElementById("gpsStatus").textContent = "Aguardando localização";
                 document.getElementById("latitude").textContent = "--";
                 document.getElementById("longitude").textContent = "--";
-                atualizarHistorico([]);
                 return;
             }
 
@@ -1207,28 +1317,6 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             document.getElementById("liveText").style.color =
                 ativo ? "#55df91" : "#aaaab3";
 
-            atualizarHistorico([
-                {
-                    icone: "🚨",
-                    titulo: "Alerta recebido",
-                    texto: `${nome} enviou um alerta de emergência.`
-                },
-                {
-                    icone: "📍",
-                    titulo: "Localização",
-                    texto: alertaAtual.localizacao === "Compartilhada"
-                        ? "Localização disponibilizada para o responsável."
-                        : "O alerta não possui localização compartilhada."
-                },
-                {
-                    icone: "📱",
-                    titulo: "Chamado",
-                    texto: alertaAtual.id
-                        ? `Número do chamado: ${alertaAtual.id}`
-                        : "Chamado registrado no SilentHelp."
-                }
-            ]);
-
             if (!ativo) {
                 document.querySelector(".alert-card").style.borderColor =
                     "rgba(85,223,145,.4)";
@@ -1237,31 +1325,114 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             }
         }
 
-        function atualizarHistorico(itens) {
+        function atualizarHistorico(alertas) {
             const container = document.getElementById("alertHistory");
+            const contador = document.getElementById("historyCounter");
             if (!container) return;
 
-            if (!itens.length) {
+            const lista = Array.isArray(alertas) ? alertas.slice(0, 5) : [];
+
+            if (contador) {
+                contador.textContent = `${lista.length} ${lista.length === 1 ? "alerta" : "alertas"}`;
+            }
+
+            if (lista.length === 0) {
                 container.innerHTML = `
-                    <div class="history-item">
-                        <div class="history-icon">ℹ️</div>
-                        <div>
-                            <strong>Aguardando alerta</strong>
-                            <span>Nenhum alerta ativo foi carregado.</span>
-                        </div>
+                    <div class="history-empty">
+                        <div class="history-empty-icon">ℹ️</div>
+                        <strong>Nenhum alerta encontrado</strong>
+                        <p>Os alertas registrados aparecerão aqui quando existirem.</p>
                     </div>`;
                 return;
             }
 
-            container.innerHTML = itens.map(item => `
-                <div class="history-item">
-                    <div class="history-icon">${escaparHTML(item.icone)}</div>
-                    <div>
-                        <strong>${escaparHTML(item.titulo)}</strong>
-                        <span>${escaparHTML(item.texto)}</span>
-                    </div>
-                </div>
-            `).join("");
+            const escapar = valor => escaparHTML(String(valor ?? ""));
+
+            container.innerHTML = lista.map(alerta => {
+                const tipoOriginal = String(alerta.tipo ?? alerta.type ?? "Alerta");
+                const tipo = tipoOriginal.replaceAll("_", " ");
+                const statusOriginal = String(alerta.status ?? "open").toLowerCase();
+
+                let statusClasse = "other";
+                let statusTexto = statusOriginal.replaceAll("_", " ") || "Não informado";
+
+                if (["open", "aberto", "aberta", "pending", "pendente", "em_atendimento"].includes(statusOriginal)) {
+                    statusClasse = "open";
+                    statusTexto = statusOriginal === "em_atendimento" ? "Em atendimento" : "Aberto";
+                } else if (["resolved", "resolvido", "resolvida", "closed", "fechado", "fechada", "encerrado", "encerrada"].includes(statusOriginal)) {
+                    statusClasse = "resolved";
+                    statusTexto = "Resolvido";
+                }
+
+                let dataFormatada = "Data não informada";
+                const valorData = alerta.created_at ?? alerta.data ?? alerta.timestamp;
+                if (valorData) {
+                    let data;
+                    if (typeof valorData === "number" || /^\d{10,13}$/.test(String(valorData))) {
+                        const numero = Number(valorData);
+                        data = new Date(String(valorData).length <= 10 ? numero * 1000 : numero);
+                    } else {
+                        data = new Date(String(valorData).replace(" ", "T"));
+                    }
+                    if (!Number.isNaN(data.getTime())) {
+                        dataFormatada = data.toLocaleString("pt-BR", {
+                            day: "2-digit", month: "2-digit", year: "numeric",
+                            hour: "2-digit", minute: "2-digit"
+                        });
+                    } else {
+                        dataFormatada = String(valorData);
+                    }
+                }
+
+                const mensagem = alerta.message ?? alerta.mensagem ?? "Sem mensagem registrada.";
+                const icone = /emerg[eê]ncia|sos/i.test(tipo) ? "🚨" : "🔔";
+
+                return `
+                    <article class="history-entry">
+                        <div class="history-entry-top">
+                            <div class="history-entry-heading">
+                                <div class="history-entry-icon">${icone}</div>
+                                <div>
+                                    <div class="history-entry-title">${escapar(tipo)}</div>
+                                    <time class="history-entry-date">${escapar(dataFormatada)}</time>
+                                </div>
+                            </div>
+                            <span class="history-status ${statusClasse}">${escapar(statusTexto)}</span>
+                        </div>
+                        <p class="history-entry-message">${escapar(mensagem)}</p>
+                    </article>`;
+            }).join("");
+        }
+
+        async function carregarHistoricoAlertas() {
+            const container = document.getElementById("alertHistory");
+            if (!container) return;
+
+            try {
+                const resposta = await fetch("api.php?action=responsible_alert_history", {
+                    method: "GET",
+                    credentials: "same-origin",
+                    cache: "no-store",
+                    headers: {"Accept": "application/json"}
+                });
+
+                const dados = await resposta.json();
+                if (!resposta.ok || !dados.ok) {
+                    throw new Error(dados.message || "Não foi possível carregar o histórico.");
+                }
+
+                atualizarHistorico(Array.isArray(dados.alertas) ? dados.alertas : []);
+            } catch (erro) {
+                console.error("Erro ao carregar histórico de alertas:", erro);
+                container.innerHTML = `
+                    <div class="history-empty">
+                        <div class="history-empty-icon">⚠️</div>
+                        <strong>Não foi possível carregar o histórico</strong>
+                        <p>Verifique a conexão e se a API de histórico está configurada.</p>
+                    </div>`;
+                const contador = document.getElementById("historyCounter");
+                if (contador) contador.textContent = "Indisponível";
+            }
         }
 
         /* MAPA */
@@ -1284,7 +1455,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             iconAnchor: [35, 35]
         });
 
-        let personMarker = L.marker(mapaInicial, { icon: heartIcon }).addTo(map);
+        let personMarker = L.marker(mapaInicial, {icon: heartIcon}).addTo(map);
         let accuracyCircle = L.circle(mapaInicial, {
             radius: 120,
             color: "#a65cff",
@@ -1374,100 +1545,65 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
                     }
                     mostrarMensagem(mensagem);
                 },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                {enableHighAccuracy: true, timeout: 10000, maximumAge: 0}
             );
         }
 
         /* ATENDIMENTO */
-        function confirmarAtendimento() {
+        async function confirmarAtendimento() {
             if (!alertaAtual) {
                 mostrarMensagem("Não há alerta ativo para acompanhar.");
                 return;
             }
 
-            atendimentoConfirmado = true;
-
-            const nome =
-                document.getElementById("personName").textContent ||
-                "a pessoa protegida";
-
-            document.getElementById("attendanceText").textContent =
-                `Você confirmou que está acompanhando ${nome}. A localização continuará disponível enquanto o alerta estiver ativo.`;
-
             const botao = document.getElementById("attendButton");
-            botao.innerHTML = "✓ Atendimento confirmado";
-            botao.style.background = "rgba(85,223,145,.12)";
-            botao.style.color = "#55df91";
-            botao.style.border = "1px solid rgba(85,223,145,.4)";
+            if (botao.disabled) return;
 
-            localStorage.setItem(
-                "silentHelpAtendimento",
-                JSON.stringify({
-                    alerta_id: alertaAtual.id || null,
-                    responsavel_id: RESPONSAVEL_ID,
-                    confirmado_em: Date.now()
-                })
-            );
+            const textoOriginal = botao.innerHTML;
+            botao.disabled = true;
+            botao.innerHTML = "⏳ Registrando atendimento...";
 
-            mostrarMensagem("Atendimento confirmado.");
-        }
+            try {
+                const resposta = await fetch("api.php?action=attend_alert", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: Number(alertaAtual.id) })
+                });
 
-        function abrirFinalizacao() {
-            if (!alertaAtual) {
-                mostrarMensagem("Não há atendimento ativo para encerrar.");
-                return;
-            }
-
-            document.getElementById("finishModal").classList.add("show");
-        }
-
-        function fecharFinalizacao() {
-            document.getElementById("finishModal").classList.remove("show");
-        }
-
-        function finalizarAtendimento() {
-            fecharFinalizacao();
-
-            document.querySelector(".alert-card").style.borderColor =
-                "rgba(85,223,145,.4)";
-            document.querySelector(".alert-card").style.background =
-                "rgba(85,223,145,.08)";
-
-            document.getElementById("alertTitle").textContent =
-                "Atendimento encerrado";
-
-            document.getElementById("alertDescription").textContent =
-                "O acompanhamento deste alerta foi encerrado.";
-
-            document.getElementById("liveText").textContent = "ENCERRADO";
-            document.querySelector(".live").style.color = "#aaaab3";
-            document.querySelector(".live-dot").style.background = "#aaaab3";
-
-            if (alertaAtual) {
-                alertaAtual.status = "resolvido";
-                alertaAtual.resolvido_em = Date.now();
-
-                localStorage.setItem(
-                    "ultimoAlertaSilentHelp",
-                    JSON.stringify(alertaAtual)
-                );
-            }
-
-            localStorage.removeItem("silentHelpAtendimento");
-            atualizarHistorico([
-                {
-                    icone: "🚨",
-                    titulo: "Alerta recebido",
-                    texto: "O alerta foi registrado."
-                },
-                {
-                    icone: "✓",
-                    titulo: "Atendimento encerrado",
-                    texto: "O acompanhamento foi finalizado pelo responsável."
+                const dados = await resposta.json();
+                if (!resposta.ok || !dados.ok) {
+                    throw new Error(dados.message || "Não foi possível registrar o atendimento.");
                 }
-            ]);
 
-            mostrarMensagem("Atendimento encerrado.");
+                alertaAtual.status = "attended";
+                atendimentoConfirmado = true;
+
+                const nome = document.getElementById("personName").textContent || "a pessoa protegida";
+                document.getElementById("attendanceText").textContent =
+                    `Você está acompanhando ${nome}. O alerta foi marcado como atendido no sistema.`;
+
+                botao.innerHTML = "✓ Atendimento registrado";
+                botao.style.background = "rgba(85,223,145,.12)";
+                botao.style.color = "#55df91";
+                botao.style.border = "1px solid rgba(85,223,145,.4)";
+
+                localStorage.setItem("silentHelpAtendimento", JSON.stringify({
+                    alerta_id: Number(alertaAtual.id),
+                    responsavel_id: RESPONSAVEL_ID,
+                    confirmado_em: Date.now(),
+                    status: "attended"
+                }));
+
+                mostrarMensagem("Atendimento registrado no banco de dados.");
+                if (typeof carregarHistoricoAlertas === "function") {
+                    carregarHistoricoAlertas();
+                }
+            } catch (erro) {
+                botao.disabled = false;
+                botao.innerHTML = textoOriginal;
+                mostrarMensagem(erro.message || "Erro ao registrar atendimento.");
+            }
         }
 
         /* TOAST */
@@ -2144,6 +2280,36 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
             }
 
         }
+        async function carregarBateriaProtegido() {
+            const elemento = document.getElementById("batteryStatus");
+            if (!elemento) return;
+            try {
+                const resposta = await fetch("api.php?action=responsible_battery", {
+                    credentials: "same-origin", cache: "no-store"
+                });
+                const dados = await resposta.json();
+                if (!resposta.ok || !dados.ok) throw new Error(dados.message || "Falha ao consultar bateria");
+                if (dados.level === null || dados.level === undefined) {
+                    elemento.textContent = dados.updated_at ? "Sem leitura recente" : "Indisponível";
+                    elemento.style.color = "";
+                    return;
+                }
+                elemento.textContent = dados.level + "%";
+                elemento.style.color = dados.level <= 20 ? "#e85c6b" : (dados.level <= 50 ? "#d99a24" : "#32b99a");
+                elemento.title = dados.updated_at ? "Última atualização: " + dados.updated_at : "";
+            } catch (erro) {
+                console.warn("Erro ao carregar bateria da pessoa protegida:", erro);
+                elemento.textContent = "Indisponível";
+            }
+        }
+
+        carregarBateriaProtegido();
+        setInterval(carregarBateriaProtegido, 15000);
+
+        // Carrega os 5 alertas mais recentes do banco e atualiza periodicamente.
+        carregarHistoricoAlertas();
+        setInterval(carregarHistoricoAlertas, 15000);
+
     </script>
     <script src="assets/db-sync.js"></script>
 </body>
