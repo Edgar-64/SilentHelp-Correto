@@ -18,7 +18,7 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SilentHelp - Responsável</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 
     <style>
         /* RESET */
@@ -1202,9 +1202,151 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
 
     <!-- TOAST DE NOTIFICAÇÕES -->
     <div id="toast" class="toast"></div>
+    <!-- MAPLIBRE GL + adaptador de compatibilidade -->
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+/* Adaptador de compatibilidade: preserva as chamadas do mapa existentes
+   enquanto a renderização é feita pelo MapLibre GL. */
+(function () {
+  let circleCounter = 0;
 
-    <!-- LEAFLET SCRIPT -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  function makeMap(container, options = {}) {
+    const native = new maplibregl.Map({
+      container,
+      style: "https://tiles.openfreemap.org/styles/liberty",
+      center: [-45.5553, -23.0266],
+      zoom: 13,
+      attributionControl: options.attributionControl !== false
+    });
+    native.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+    const wrapper = {
+      _native: native,
+      setView(coords, zoom) {
+        native.flyTo({ center: [coords[1], coords[0]], zoom: zoom || native.getZoom(), essential: true });
+        return wrapper;
+      },
+      removeLayer(item) {
+        if (item && typeof item._remove === "function") item._remove();
+        return wrapper;
+      },
+      hasLayer(item) { return !!item && item._visible === true; },
+      invalidateSize() { native.resize(); return wrapper; },
+      flyTo(options) {
+        const opts = { ...options };
+        if (Array.isArray(opts.center)) opts.center = [opts.center[1], opts.center[0]];
+        native.flyTo(opts);
+        return wrapper;
+      },
+      on(event, callback) { native.on(event, callback); return wrapper; }
+    };
+    return wrapper;
+  }
+
+  function makeMarker(coords, options = {}) {
+    const iconOptions = options.icon && options.icon.options ? options.icon.options : {};
+    const el = document.createElement("div");
+    if (iconOptions.html != null) {
+      el.className = iconOptions.className || "";
+      el.innerHTML = iconOptions.html;
+      if (iconOptions.iconSize) {
+        el.style.width = iconOptions.iconSize[0] + "px";
+        el.style.height = iconOptions.iconSize[1] + "px";
+      }
+    } else {
+      el.className = "sh-map-marker";
+    }
+    const marker = {
+      _visible: false, _nativeMarker: null, _popup: null, _map: null,
+      _coords: coords,
+      addTo(map) {
+        this._map = map;
+        this._nativeMarker = new maplibregl.Marker({ element: el, anchor: "center" })
+          .setLngLat([this._coords[1], this._coords[0]]).addTo(map._native);
+        if (this._popup) this._nativeMarker.setPopup(this._popup);
+        this._visible = true;
+        return this;
+      },
+      setLatLng(next) {
+        this._coords = next;
+        if (this._nativeMarker) this._nativeMarker.setLngLat([next[1], next[0]]);
+        return this;
+      },
+      bindPopup(html) {
+        this._popup = new maplibregl.Popup({ offset: 24, maxWidth: "280px" }).setHTML(html);
+        if (this._nativeMarker) this._nativeMarker.setPopup(this._popup);
+        return this;
+      },
+      remove() { this._remove(); return this; },
+      _remove() {
+        if (this._nativeMarker) this._nativeMarker.remove();
+        this._nativeMarker = null;
+        this._visible = false;
+      }
+    };
+    return marker;
+  }
+
+  function circleFeature(coords, radius) {
+    const lat = coords[0], lng = coords[1], points = [];
+    for (let i = 0; i <= 64; i++) {
+      const angle = (i / 64) * Math.PI * 2;
+      const dLat = (radius / 111320) * Math.cos(angle);
+      const dLng = (radius / (111320 * Math.max(0.01, Math.cos(lat * Math.PI / 180)))) * Math.sin(angle);
+      points.push([lng + dLng, lat + dLat]);
+    }
+    return { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [points] } };
+  }
+
+  function makeCircle(coords, options = {}) {
+    const id = "sh-responsavel-circle-" + (++circleCounter);
+    const radius = Math.max(10, Number(options.radius) || 100);
+    const circle = {
+      _visible: false, _map: null, _coords: coords,
+      addTo(map) {
+        this._map = map;
+        const add = () => {
+          const native = map._native;
+          if (!native.getSource(id)) {
+            native.addSource(id, { type: "geojson", data: circleFeature(this._coords, radius) });
+            native.addLayer({ id: id + "-fill", type: "fill", source: id,
+              paint: { "fill-color": options.fillColor || options.color || "#a65cff", "fill-opacity": options.fillOpacity ?? 0.08 } });
+            native.addLayer({ id: id + "-line", type: "line", source: id,
+              paint: { "line-color": options.color || "#a65cff", "line-width": options.weight || 1 } });
+          }
+          this._visible = true;
+        };
+        if (map._native.isStyleLoaded()) add(); else map._native.once("load", add);
+        return this;
+      },
+      setLatLng(next) {
+        this._coords = next;
+        const native = this._map && this._map._native;
+        const source = native && native.getSource(id);
+        if (source) source.setData(circleFeature(next, radius));
+        return this;
+      },
+      remove() { this._remove(); return this; },
+      _remove() {
+        const native = this._map && this._map._native;
+        if (native && native.isStyleLoaded()) {
+          [id + "-line", id + "-fill"].forEach(layer => { if (native.getLayer(layer)) native.removeLayer(layer); });
+          if (native.getSource(id)) native.removeSource(id);
+        }
+        this._visible = false;
+      }
+    };
+    return circle;
+  }
+
+  window.L = {
+    map: makeMap,
+    tileLayer: function () { return { addTo: function () { return this; } }; },
+    divIcon: function (options) { return { options }; },
+    marker: makeMarker,
+    circle: makeCircle
+  };
+})();
+</script>
 
     <script>
         const RESPONSAVEL_ID = <?= (int) ($usuario['id'] ?? 0) ?>;

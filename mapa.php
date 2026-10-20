@@ -16,15 +16,7 @@ exigirLogin();
     >
 
     <title>SilentHelp - Mapa</title>
-
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    >
-
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-    </script>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 
 
     <style>
@@ -1768,6 +1760,169 @@ exigirLogin();
 
 </nav>
 
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+
+/* Adaptador de compatibilidade: mantém as funções Leaflet existentes,
+   mas renderiza o mapa com MapLibre GL. */
+(function () {
+  const mapInstances = new WeakMap();
+  let circleCounter = 0;
+
+  function makeMap(container, options = {}) {
+    const native = new maplibregl.Map({
+      container,
+      style: "https://tiles.openfreemap.org/styles/liberty",
+      center: [-45.5554, -23.0264],
+      zoom: 13,
+      pitch: 0,
+      attributionControl: options.attributionControl !== false
+    });
+
+    native.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+    native.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+    const tracked = new Set();
+    const circles = new Set();
+    const wrapper = {
+      _native: native,
+      setView(coords, zoom) {
+        native.flyTo({ center: [coords[1], coords[0]], zoom: zoom || native.getZoom(), essential: true });
+        return wrapper;
+      },
+      removeLayer(item) {
+        if (item && typeof item._remove === "function") {
+          item._remove();
+          tracked.delete(item);
+          circles.delete(item);
+        }
+        return wrapper;
+      },
+      hasLayer(item) {
+        return !!item && item._visible === true;
+      },
+      invalidateSize() {
+        native.resize();
+        return wrapper;
+      },
+      flyTo(options) {
+        const opts = { ...options };
+        if (Array.isArray(opts.center)) opts.center = [opts.center[1], opts.center[0]];
+        native.flyTo(opts);
+        return wrapper;
+      },
+      on(event, callback) {
+        native.on(event, callback);
+        return wrapper;
+      }
+    };
+    mapInstances.set(wrapper, native);
+    return wrapper;
+  }
+
+  function makeMarker(coords, options = {}) {
+    let element = options.icon && options.icon.options ? options.icon.options.html : null;
+    const el = document.createElement("div");
+    if (element !== null) {
+      el.className = options.icon.options.className || "";
+      el.innerHTML = element;
+      if (options.icon.options.iconSize) {
+        const size = options.icon.options.iconSize;
+        el.style.width = size[0] + "px";
+        el.style.height = size[1] + "px";
+      }
+    } else {
+      el.className = "sh-map-marker";
+    }
+    const marker = {
+      _visible: false,
+      _nativeMarker: null,
+      _popup: null,
+      _map: null,
+      _coords: coords,
+      addTo(map) {
+        this._map = map;
+        const native = map._native;
+        this._nativeMarker = new maplibregl.Marker({ element: el, anchor: "bottom" })
+          .setLngLat([this._coords[1], this._coords[0]])
+          .addTo(native);
+        this._visible = true;
+        return this;
+      },
+      bindPopup(html) {
+        this._popup = new maplibregl.Popup({ offset: 24, maxWidth: "280px" }).setHTML(html);
+        if (this._nativeMarker) this._nativeMarker.setPopup(this._popup);
+        return this;
+      },
+      remove() {
+        this._remove();
+        return this;
+      },
+      _remove() {
+        if (this._nativeMarker) this._nativeMarker.remove();
+        this._nativeMarker = null;
+        this._visible = false;
+      }
+    };
+    return marker;
+  }
+
+  function makeCircle(coords, options = {}) {
+    const id = "sh-accuracy-" + (++circleCounter);
+    const radius = Math.max(10, Number(options.radius) || 100);
+    const lat = coords[0], lng = coords[1];
+    const points = [];
+    for (let i = 0; i <= 64; i++) {
+      const angle = (i / 64) * Math.PI * 2;
+      const dLat = (radius / 111320) * Math.cos(angle);
+      const dLng = (radius / (111320 * Math.cos(lat * Math.PI / 180))) * Math.sin(angle);
+      points.push([lng + dLng, lat + dLat]);
+    }
+    const feature = { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [points] } };
+    const circle = {
+      _visible: false,
+      addTo(map) {
+        this._map = map;
+        const add = () => {
+          if (!map._native.getSource(id)) {
+            map._native.addSource(id, { type: "geojson", data: feature });
+            map._native.addLayer({
+              id: id + "-fill", type: "fill", source: id,
+              paint: { "fill-color": options.fillColor || options.color || "#a65cff", "fill-opacity": options.fillOpacity ?? 0.08 }
+            });
+            map._native.addLayer({
+              id: id + "-line", type: "line", source: id,
+              paint: { "line-color": options.color || "#a65cff", "line-width": options.weight || 1 }
+            });
+          }
+          circle._visible = true;
+        };
+        if (map._native.isStyleLoaded()) add(); else map._native.once("load", add);
+        return circle;
+      },
+      remove() { this._remove(); return this; },
+      _remove() {
+        const native = this._map && this._map._native;
+        if (native && native.isStyleLoaded()) {
+          [id + "-line", id + "-fill"].forEach(layer => { if (native.getLayer(layer)) native.removeLayer(layer); });
+          if (native.getSource(id)) native.removeSource(id);
+        }
+        this._visible = false;
+      }
+    };
+    return circle;
+  }
+
+  window.L = {
+    map: makeMap,
+    tileLayer: function () { return { addTo: function () { return this; } }; },
+    divIcon: function (options) { return { options }; },
+    marker: makeMarker,
+    circle: makeCircle
+  };
+})();
+
+</script>
 
 <script>
 
