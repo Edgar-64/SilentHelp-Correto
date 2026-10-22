@@ -16,7 +16,6 @@ $usuario = exigirLogin();
     <title>SilentHelp - Contatos de Confiança</title>
 
     <style>
-
         /* =====================================================
            RESET
         ===================================================== */
@@ -63,11 +62,9 @@ $usuario = exigirLogin();
             min-height: 100vh;
 
             background:
-                radial-gradient(
-                    circle at 50% -10%,
+                radial-gradient(circle at 50% -10%,
                     rgba(166, 92, 255, .15),
-                    transparent 35%
-                ),
+                    transparent 35%),
                 var(--fundo);
 
             color: var(--branco);
@@ -107,9 +104,7 @@ $usuario = exigirLogin();
             margin: auto;
 
             padding:
-                25px
-                25px
-                155px;
+                25px 25px 155px;
         }
 
 
@@ -196,17 +191,14 @@ $usuario = exigirLogin();
             margin-bottom: 22px;
 
             border:
-                1px solid
-                rgba(166, 92, 255, .25);
+                1px solid rgba(166, 92, 255, .25);
 
             border-radius: 23px;
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #17121d,
-                    #0b0b10
-                );
+                    #0b0b10);
         }
 
 
@@ -274,8 +266,7 @@ $usuario = exigirLogin();
             margin-bottom: 25px;
 
             border:
-                1px solid
-                rgba(166, 92, 255, .23);
+                1px solid rgba(166, 92, 255, .23);
 
             border-radius: 18px;
 
@@ -385,8 +376,7 @@ $usuario = exigirLogin();
             transform: translateY(-1px);
 
             box-shadow:
-                0 8px 20px
-                rgba(166, 92, 255, .18);
+                0 8px 20px rgba(166, 92, 255, .18);
         }
 
 
@@ -404,17 +394,14 @@ $usuario = exigirLogin();
             overflow: hidden;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 22px;
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #111116,
-                    #0b0b10
-                );
+                    #0b0b10);
         }
 
 
@@ -431,8 +418,7 @@ $usuario = exigirLogin();
             padding: 18px;
 
             border-bottom:
-                1px solid
-                rgba(255,255,255,.05);
+                1px solid rgba(255, 255, 255, .05);
 
             transition: .2s;
         }
@@ -566,8 +552,7 @@ $usuario = exigirLogin();
             justify-content: center;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 12px;
 
@@ -619,8 +604,7 @@ $usuario = exigirLogin();
             padding: 45px 20px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 22px;
 
@@ -704,8 +688,7 @@ $usuario = exigirLogin();
             margin-top: 25px;
 
             border:
-                1px solid
-                rgba(85, 223, 145, .18);
+                1px solid rgba(85, 223, 145, .18);
 
             border-radius: 20px;
 
@@ -773,7 +756,7 @@ $usuario = exigirLogin();
             padding: 20px;
 
             background:
-                rgba(0,0,0,.72);
+                rgba(0, 0, 0, .72);
 
             backdrop-filter: blur(8px);
 
@@ -795,21 +778,17 @@ $usuario = exigirLogin();
             padding: 25px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 24px;
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #15151c,
-                    #0d0d12
-                );
+                    #0d0d12);
 
             box-shadow:
-                0 25px 70px
-                rgba(0,0,0,.45);
+                0 25px 70px rgba(0, 0, 0, .45);
 
             animation:
                 modalEntrada .2s ease;
@@ -822,16 +801,14 @@ $usuario = exigirLogin();
                 opacity: 0;
 
                 transform:
-                    translateY(15px)
-                    scale(.98);
+                    translateY(15px) scale(.98);
             }
 
             to {
                 opacity: 1;
 
                 transform:
-                    translateY(0)
-                    scale(1);
+                    translateY(0) scale(1);
             }
 
         }
@@ -866,7 +843,7 @@ $usuario = exigirLogin();
             border-radius: 10px;
 
             background:
-                rgba(255,255,255,.05);
+                rgba(255, 255, 255, .05);
 
             color: var(--cinza);
 
@@ -880,7 +857,7 @@ $usuario = exigirLogin();
             color: white;
 
             background:
-                rgba(255,255,255,.1);
+                rgba(255, 255, 255, .1);
         }
 
 
@@ -912,8 +889,7 @@ $usuario = exigirLogin();
             padding: 0 14px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 12px;
 
@@ -937,8 +913,7 @@ $usuario = exigirLogin();
             border-color: var(--roxo);
 
             box-shadow:
-                0 0 0 3px
-                rgba(166,92,255,.08);
+                0 0 0 3px rgba(166, 92, 255, .08);
         }
 
 
@@ -977,11 +952,9 @@ $usuario = exigirLogin();
             border-radius: 13px;
 
             background:
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     var(--roxo),
-                    var(--roxo-escuro)
-                );
+                    var(--roxo-escuro));
 
             color: white;
 
@@ -999,8 +972,7 @@ $usuario = exigirLogin();
             transform: translateY(-1px);
 
             box-shadow:
-                0 8px 25px
-                rgba(166,92,255,.20);
+                0 8px 25px rgba(166, 92, 255, .20);
         }
 
 
@@ -1010,8 +982,7 @@ $usuario = exigirLogin();
             padding: 0 18px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 13px;
 
@@ -1057,8 +1028,7 @@ $usuario = exigirLogin();
             background: #18181f;
 
             border:
-                1px solid
-                var(--roxo);
+                1px solid var(--roxo);
 
             color: white;
 
@@ -1092,10 +1062,8 @@ $usuario = exigirLogin();
                 translateX(-50%);
 
             width:
-                min(
-                    calc(100% - 30px),
-                    850px
-                );
+                min(calc(100% - 30px),
+                    850px);
 
             height: 100px;
 
@@ -1105,11 +1073,10 @@ $usuario = exigirLogin();
                 repeat(5, 1fr);
 
             background:
-                rgba(18,18,22,.97);
+                rgba(18, 18, 22, .97);
 
             border:
-                1px solid
-                rgba(255,255,255,.07);
+                1px solid rgba(255, 255, 255, .07);
 
             border-radius: 28px;
 
@@ -1165,9 +1132,7 @@ $usuario = exigirLogin();
 
             .app {
                 padding:
-                    18px
-                    15px
-                    120px;
+                    18px 15px 120px;
             }
 
 
@@ -1329,7 +1294,6 @@ $usuario = exigirLogin();
             }
 
         }
-
     </style>
 
 </head>
@@ -1337,863 +1301,561 @@ $usuario = exigirLogin();
 
 <body>
 
-<main class="app">
+    <main class="app">
 
-    <header class="header">
+        <header class="header">
 
-        <button
-            class="back-button"
-            id="backButton"
-            aria-label="Voltar"
-            type="button"
-        >
+            <button class="back-button" id="backButton" aria-label="Voltar" type="button">
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
 
-                <path d="M19 12H5"/>
-                <path d="M12 19l-7-7 7-7"/>
+                    <path d="M19 12H5" />
+                    <path d="M12 19l-7-7 7-7" />
 
-            </svg>
+                </svg>
 
-        </button>
+            </button>
 
 
-        <div class="header-text">
+            <div class="header-text">
 
-            <h1>Contatos de confiança</h1>
+                <h1>Contatos de confiança</h1>
 
-            <p>
-                Cadastre quem poderá receber seu alerta de segurança.
-            </p>
+                <p>
+                    Cadastre quem poderá receber seu alerta de segurança.
+                </p>
 
-        </div>
+            </div>
 
-    </header>
+        </header>
 
 
-    <section class="intro-card">
+        <section class="intro-card">
 
-        <div class="intro-top">
+            <div class="intro-top">
 
-            <div class="intro-icon">
+                <div class="intro-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
 
-                    <circle cx="12" cy="8" r="4"/>
+                        <circle cx="12" cy="8" r="4" />
 
-                    <path
-                        d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-                    />
+                        <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="intro-text">
+
+                    <h2>Pessoas de confiança</h2>
+
+                    <p>
+                        Cadastre pessoas que você confia para
+                        facilitar o contato durante uma situação
+                        de emergência ou quando um alerta de
+                        segurança for acionado.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="security-info">
+
+            <div class="security-info-icon">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+
+                    <path d="M10 21h4" />
 
                 </svg>
 
             </div>
 
 
-            <div class="intro-text">
+            <div>
 
-                <h2>Pessoas de confiança</h2>
+                <h3>Como funciona?</h3>
 
                 <p>
-                    Cadastre pessoas que você confia para
-                    facilitar o contato durante uma situação
-                    de emergência ou quando um alerta de
-                    segurança for acionado.
+                    Quando um alerta de segurança for acionado,
+                    os contatos cadastrados poderão ser utilizados
+                    pelo sistema para comunicação.
                 </p>
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
 
+        <div class="section-title">
 
-    <section class="security-info">
+            <h2>Meus contatos</h2>
 
-        <div class="security-info-icon">
+            <button class="add-button" id="addButton" type="button">
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
 
-                <path
-                    d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-                />
+                    <path d="M12 5v14" />
+                    <path d="M5 12h14" />
 
-                <path d="M10 21h4"/>
+                </svg>
 
-            </svg>
+                <span>Adicionar contato</span>
 
-        </div>
-
-
-        <div>
-
-            <h3>Como funciona?</h3>
-
-            <p>
-                Quando um alerta de segurança for acionado,
-                os contatos cadastrados poderão ser utilizados
-                pelo sistema para comunicação.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <div class="section-title">
-
-        <h2>Meus contatos</h2>
-
-        <button
-            class="add-button"
-            id="addButton"
-            type="button"
-        >
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-            >
-
-                <path d="M12 5v14"/>
-                <path d="M5 12h14"/>
-
-            </svg>
-
-            <span>Adicionar contato</span>
-
-        </button>
-
-    </div>
-
-
-    <section
-        class="contacts-card"
-        id="contactsCard"
-    ></section>
-
-
-    <div
-        class="empty"
-        id="emptyContacts"
-    >
-
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-
-            <circle cx="12" cy="8" r="4"/>
-
-            <path
-                d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-            />
-
-        </svg>
-
-
-        <h3>Nenhum contato cadastrado</h3>
-
-        <p>
-            Adicione uma pessoa de confiança
-            para situações de emergência.
-        </p>
-
-    </div>
-
-
-    <div class="privacy-info">
-
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-
-            <path
-                d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6l8-3Z"
-            />
-
-            <rect
-                x="9"
-                y="10"
-                width="6"
-                height="5"
-                rx="1"
-            />
-
-            <path
-                d="M10 10V8a2 2 0 0 1 4 0v2"
-            />
-
-        </svg>
-
-
-        <span>
-            Os contatos são armazenados localmente neste
-            navegador. Em uma versão conectada a um servidor,
-            essas informações deverão ser protegidas
-            adequadamente.
-        </span>
-
-    </div>
-
-
-    <section class="security-card">
-
-        <div class="security-icon">
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-
-                <path
-                    d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6l8-3Z"
-                />
-
-                <path
-                    d="M8.5 12l2.3 2.3 4.9-5"
-                />
-
-            </svg>
-
-        </div>
-
-
-        <div class="security-text">
-
-            <h3>Sua segurança é prioridade</h3>
-
-            <p>
-                Utilize apenas contatos de pessoas em quem
-                você realmente confia. Eles serão utilizados
-                para as funções de segurança autorizadas
-                dentro do SilentHelp.
-            </p>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<!-- =====================================================
-     MODAL
-====================================================== -->
-
-<div
-    class="modal"
-    id="modal"
->
-
-    <div class="modal-card">
-
-        <div class="modal-header">
-
-            <h2 id="modalTitle">
-                Novo contato
-            </h2>
-
-
-            <button
-                class="close-button"
-                id="closeButton"
-                type="button"
-                aria-label="Fechar"
-            >
-                ×
             </button>
 
         </div>
 
 
-        <form id="contactForm">
-
-            <div class="form-group">
-
-                <label for="nome">
-                    Nome
-                </label>
-
-                <input
-                    type="text"
-                    id="nome"
-                    placeholder="Ex.: Maria Silva"
-                    autocomplete="name"
-                    maxlength="80"
-                    required
-                >
-
-            </div>
+        <section class="contacts-card" id="contactsCard"></section>
 
 
-            <div class="form-group">
+        <div class="empty" id="emptyContacts">
 
-                <label for="relacao">
-                    Relação
-                </label>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                stroke-linejoin="round">
 
-                <select
-                    id="relacao"
-                    required
-                >
+                <circle cx="12" cy="8" r="4" />
 
-                    <option value="">
-                        Selecione
-                    </option>
+                <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" />
 
-                    <option value="Mãe">Mãe</option>
-                    <option value="Pai">Pai</option>
-                    <option value="Irmã">Irmã</option>
-                    <option value="Irmão">Irmão</option>
-                    <option value="Amiga">Amiga</option>
-                    <option value="Amigo">Amigo</option>
-                    <option value="Familiar">Familiar</option>
-                    <option value="Responsável">Responsável</option>
-                    <option value="Pessoa de confiança">
-                        Pessoa de confiança
-                    </option>
-                    <option value="Outro">Outro</option>
-
-                </select>
-
-            </div>
+            </svg>
 
 
-            <div class="form-group">
+            <h3>Nenhum contato cadastrado</h3>
 
-                <label for="telefone">
-                    Telefone
-                </label>
+            <p>
+                Adicione uma pessoa de confiança
+                para situações de emergência.
+            </p>
 
-                <input
-                    type="tel"
-                    id="telefone"
-                    placeholder="(00) 00000-0000"
-                    autocomplete="tel"
-                    maxlength="15"
-                    required
-                >
+        </div>
+
+
+        <div class="privacy-info">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6l8-3Z" />
+
+                <rect x="9" y="10" width="6" height="5" rx="1" />
+
+                <path d="M10 10V8a2 2 0 0 1 4 0v2" />
+
+            </svg>
+
+
+            <span>
+                Os contatos são armazenados localmente neste
+                navegador. Em uma versão conectada a um servidor,
+                essas informações deverão ser protegidas
+                adequadamente.
+            </span>
+
+        </div>
+
+
+        <section class="security-card">
+
+            <div class="security-icon">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M12 3l8 3v5c0 5.2-3.4 8.7-8 10-4.6-1.3-8-4.8-8-10V6l8-3Z" />
+
+                    <path d="M8.5 12l2.3 2.3 4.9-5" />
+
+                </svg>
 
             </div>
 
 
-            <div class="modal-actions">
+            <div class="security-text">
 
-                <button
-                    type="button"
-                    class="cancel-button"
-                    id="cancelButton"
-                >
-                    Cancelar
+                <h3>Sua segurança é prioridade</h3>
+
+                <p>
+                    Utilize apenas contatos de pessoas em quem
+                    você realmente confia. Eles serão utilizados
+                    para as funções de segurança autorizadas
+                    dentro do SilentHelp.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     MODAL
+====================================================== -->
+
+    <div class="modal" id="modal">
+
+        <div class="modal-card">
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle">
+                    Novo contato
+                </h2>
+
+
+                <button class="close-button" id="closeButton" type="button" aria-label="Fechar">
+                    ×
                 </button>
 
-
-                <button
-                    type="submit"
-                    class="save-button"
-                >
-                    Salvar contato
-                </button>
-
             </div>
 
-        </form>
+
+            <form id="contactForm">
+
+                <div class="form-group">
+
+                    <label for="nome">
+                        Nome
+                    </label>
+
+                    <input type="text" id="nome" placeholder="Ex.: Maria Silva" autocomplete="name" maxlength="80"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="relacao">
+                        Relação
+                    </label>
+
+                    <select id="relacao" required>
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="Mãe">Mãe</option>
+                        <option value="Pai">Pai</option>
+                        <option value="Irmã">Irmã</option>
+                        <option value="Irmão">Irmão</option>
+                        <option value="Amiga">Amiga</option>
+                        <option value="Amigo">Amigo</option>
+                        <option value="Familiar">Familiar</option>
+                        <option value="Responsável">Responsável</option>
+                        <option value="Pessoa de confiança">
+                            Pessoa de confiança
+                        </option>
+                        <option value="Outro">Outro</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="telefone">
+                        Telefone
+                    </label>
+
+                    <input type="tel" id="telefone" placeholder="99191-9191" autocomplete="tel" maxlength="10" required>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button type="button" class="cancel-button" id="cancelButton">
+                        Cancelar
+                    </button>
+
+
+                    <button type="submit" class="save-button">
+                        Salvar contato
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
-</div>
 
-
-<!-- =====================================================
+    <!-- =====================================================
      TOAST
 ====================================================== -->
 
-<div
-    class="toast"
-    id="toast"
-></div>
+    <div class="toast" id="toast"></div>
 
 
-<!-- =====================================================
-     MENU INFERIOR
-====================================================== -->
+    <script>
 
-<nav class="bottom-nav">
+        /* =====================================================
+           CONFIGURAÇÃO
+        ===================================================== */
 
-    <button
-        class="nav-button"
-        data-page="inicio.php"
-        type="button"
-    >
+        const STORAGE_KEY = "silenthelp_contatos";
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="currentColor"
-        >
+        let contatoEditando = null;
+        let toastTimer = null;
 
-            <path
-                d="M3 10.8L12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"
-            />
 
-        </svg>
+        /* =====================================================
+           ELEMENTOS
+        ===================================================== */
 
-        <span>Início</span>
+        const modal = document.getElementById("modal");
 
-    </button>
+        const contactForm =
+            document.getElementById("contactForm");
 
+        const nomeInput =
+            document.getElementById("nome");
 
-    <button
-        class="nav-button"
-        data-page="mapa.php"
-        type="button"
-    >
+        const telefoneInput =
+            document.getElementById("telefone");
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
+        const relacaoInput =
+            document.getElementById("relacao");
 
-            <path
-                d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"
-            />
+        const contactsCard =
+            document.getElementById("contactsCard");
 
-            <path d="M9 3v15"/>
-            <path d="M15 6v15"/>
+        const emptyContacts =
+            document.getElementById("emptyContacts");
 
-        </svg>
+        const modalTitle =
+            document.getElementById("modalTitle");
 
-        <span>Mapa</span>
+        const toast =
+            document.getElementById("toast");
 
-    </button>
 
+        /* =====================================================
+           NAVEGAÇÃO
+        ===================================================== */
 
-    <button
-        class="nav-button"
-        data-page="historico.php"
-        type="button"
-    >
+        function abrirPagina(pagina) {
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
+            if (!pagina) {
+                return;
+            }
 
-            <path
-                d="M6 2h9l5 5v15H6z"
-            />
-
-            <path d="M14 2v6h6"/>
-
-            <circle
-                cx="16"
-                cy="17"
-                r="3"
-            />
-
-            <path d="M16 15v2l1 1"/>
-
-        </svg>
-
-        <span>Histórico</span>
-
-    </button>
-
-
-    <button
-        class="nav-button active"
-        data-page="config.php"
-        type="button"
-    >
-
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-
-            <circle
-                cx="12"
-                cy="12"
-                r="3"
-            />
-
-            <path
-                d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21h-3v-.8a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-2-2 .1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-.3-1.9 1.7 1.7 0 0 0-1.6-1h-.8v-3h.8a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L6 7.9l2-2 .1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V4h3v.8a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 2 2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.8v3h-.8a1.7 1.7 0 0 0-1.6 1z"
-            />
-
-        </svg>
-
-        <span>Config.</span>
-
-    </button>
-
-
-    <button
-        class="nav-button"
-        data-page="perfil.php"
-        type="button"
-    >
-
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-        >
-
-            <circle
-                cx="12"
-                cy="8"
-                r="4"
-            />
-
-            <path
-                d="M4 21c0-4 3.5-7 8-7s8 3 8 7"
-            />
-
-        </svg>
-
-        <span>Perfil</span>
-
-    </button>
-
-</nav>
-
-
-<script>
-
-    /* =====================================================
-       CONFIGURAÇÃO
-    ===================================================== */
-
-    const STORAGE_KEY = "silenthelp_contatos";
-
-    let contatoEditando = null;
-    let toastTimer = null;
-
-
-    /* =====================================================
-       ELEMENTOS
-    ===================================================== */
-
-    const modal = document.getElementById("modal");
-
-    const contactForm =
-        document.getElementById("contactForm");
-
-    const nomeInput =
-        document.getElementById("nome");
-
-    const telefoneInput =
-        document.getElementById("telefone");
-
-    const relacaoInput =
-        document.getElementById("relacao");
-
-    const contactsCard =
-        document.getElementById("contactsCard");
-
-    const emptyContacts =
-        document.getElementById("emptyContacts");
-
-    const modalTitle =
-        document.getElementById("modalTitle");
-
-    const toast =
-        document.getElementById("toast");
-
-
-    /* =====================================================
-       NAVEGAÇÃO
-    ===================================================== */
-
-    function abrirPagina(pagina) {
-
-        if (!pagina) {
-            return;
+            window.location.href = pagina;
         }
 
-        window.location.href = pagina;
-    }
+
+        document
+            .querySelectorAll(".nav-button")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const pagina =
+                            button.dataset.page;
+
+                        abrirPagina(pagina);
+
+                    }
+                );
+
+            });
 
 
-    document
-        .querySelectorAll(".nav-button")
-        .forEach(function(button) {
-
-            button.addEventListener(
+        document
+            .getElementById("backButton")
+            .addEventListener(
                 "click",
-                function() {
+                function () {
 
-                    const pagina =
-                        button.dataset.page;
-
-                    abrirPagina(pagina);
+                    abrirPagina("config.php");
 
                 }
             );
 
-        });
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        function mostrarMensagem(mensagem) {
+
+            toast.textContent = mensagem;
+
+            toast.classList.add("show");
+
+            clearTimeout(toastTimer);
+
+            toastTimer = setTimeout(
+                function () {
+
+                    toast.classList.remove("show");
+
+                },
+                2500
+            );
+        }
 
 
-    document
-        .getElementById("backButton")
-        .addEventListener(
-            "click",
-            function() {
+        /* =====================================================
+           LOCAL STORAGE
+        ===================================================== */
 
-                abrirPagina("config.php");
+        function obterContatos() {
+
+            const dados =
+                localStorage.getItem(STORAGE_KEY);
+
+            if (!dados) {
+                return [];
+            }
+
+            try {
+
+                const contatos =
+                    JSON.parse(dados);
+
+                if (Array.isArray(contatos)) {
+                    return contatos;
+                }
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao ler contatos:",
+                    erro
+                );
 
             }
-        );
 
-
-    /* =====================================================
-       TOAST
-    ===================================================== */
-
-    function mostrarMensagem(mensagem) {
-
-        toast.textContent = mensagem;
-
-        toast.classList.add("show");
-
-        clearTimeout(toastTimer);
-
-        toastTimer = setTimeout(
-            function() {
-
-                toast.classList.remove("show");
-
-            },
-            2500
-        );
-    }
-
-
-    /* =====================================================
-       LOCAL STORAGE
-    ===================================================== */
-
-    function obterContatos() {
-
-        const dados =
-            localStorage.getItem(STORAGE_KEY);
-
-        if (!dados) {
             return [];
         }
 
-        try {
 
-            const contatos =
-                JSON.parse(dados);
+        function salvarContatos(contatos) {
 
-            if (Array.isArray(contatos)) {
-                return contatos;
-            }
+            try {
 
-        } catch (erro) {
-
-            console.error(
-                "Erro ao ler contatos:",
-                erro
-            );
-
-        }
-
-        return [];
-    }
-
-
-    function salvarContatos(contatos) {
-
-        try {
-
-            localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(contatos)
-            );
-
-            return true;
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao salvar contatos:",
-                erro
-            );
-
-            mostrarMensagem(
-                "Erro ao salvar os contatos."
-            );
-
-            return false;
-        }
-    }
-
-
-    /* =====================================================
-       SEGURANÇA HTML
-    ===================================================== */
-
-    function escaparHTML(texto) {
-
-        return String(texto)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-
-    /* =====================================================
-       TELEFONE
-    ===================================================== */
-
-    function limparTelefone(telefone) {
-
-        return String(telefone)
-            .replace(/\D/g, "");
-    }
-
-
-    function formatarTelefone(telefone) {
-
-        const numeros =
-            limparTelefone(telefone)
-                .slice(0, 11);
-
-        if (numeros.length <= 2) {
-            return numeros;
-        }
-
-        if (numeros.length <= 6) {
-
-            return numeros.replace(
-                /^(\d{2})(\d+)/,
-                "($1) $2"
-            );
-        }
-
-        if (numeros.length <= 10) {
-
-            return numeros.replace(
-                /^(\d{2})(\d{4})(\d+)/,
-                "($1) $2-$3"
-            );
-        }
-
-        return numeros.replace(
-            /^(\d{2})(\d{5})(\d{4})$/,
-            "($1) $2-$3"
-        );
-    }
-
-
-    telefoneInput.addEventListener(
-        "input",
-        function() {
-
-            telefoneInput.value =
-                formatarTelefone(
-                    telefoneInput.value
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify(contatos)
                 );
 
-        }
-    );
+                return true;
 
+            } catch (erro) {
 
-    /* =====================================================
-       RENDERIZAR
-    ===================================================== */
+                console.error(
+                    "Erro ao salvar contatos:",
+                    erro
+                );
 
-    function renderizarContatos() {
+                mostrarMensagem(
+                    "Erro ao salvar os contatos."
+                );
 
-        const contatos =
-            obterContatos();
-
-        contactsCard.innerHTML = "";
-
-        if (contatos.length === 0) {
-
-            contactsCard.style.display = "none";
-
-            emptyContacts.classList.add("show");
-
-            return;
+                return false;
+            }
         }
 
-        contactsCard.style.display = "block";
 
-        emptyContacts.classList.remove("show");
+        /* =====================================================
+           SEGURANÇA HTML
+        ===================================================== */
 
+        function escaparHTML(texto) {
 
-        contatos.forEach(function(contato) {
-
-            const item =
-                document.createElement("div");
-
-            item.className = "contact";
-
-
-            const inicial =
-                contato.nome
-                    ? contato.nome.charAt(0).toUpperCase()
-                    : "?";
+            return String(texto)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
 
-            item.innerHTML = `
+        /* =====================================================
+           TELEFONE (MÁSCARA 99191-9191)
+        ===================================================== */
+
+        function limparTelefone(telefone) {
+            return String(telefone).replace(/\D/g, "");
+        }
+
+        function formatarTelefone(telefone) {
+            const numeros = limparTelefone(telefone).slice(0, 9);
+
+            if (numeros.length <= 5) {
+                return numeros;
+            }
+
+            return numeros.replace(/^(\d{5})(\d{1,4})$/, "$1-$2");
+        }
+
+        telefoneInput.addEventListener("input", function () {
+            telefoneInput.value = formatarTelefone(telefoneInput.value);
+        });
+
+
+        /* =====================================================
+           RENDERIZAR
+        ===================================================== */
+
+        function renderizarContatos() {
+
+            const contatos =
+                obterContatos();
+
+            contactsCard.innerHTML = "";
+
+            if (contatos.length === 0) {
+
+                contactsCard.style.display = "none";
+
+                emptyContacts.classList.add("show");
+
+                return;
+            }
+
+            contactsCard.style.display = "block";
+
+            emptyContacts.classList.remove("show");
+
+
+            contatos.forEach(function (contato) {
+
+                const item =
+                    document.createElement("div");
+
+                item.className = "contact";
+
+
+                const inicial =
+                    contato.nome
+                        ? contato.nome.charAt(0).toUpperCase()
+                        : "?";
+
+
+                item.innerHTML = `
 
                 <div class="contact-avatar">
                     ${escaparHTML(inicial)}
@@ -2204,15 +1866,14 @@ $usuario = exigirLogin();
                     <h3>
                         ${escaparHTML(contato.nome)}
 
-                        ${
-                            contato.principal
-                            ? `
+                        ${contato.principal
+                        ? `
                                 <span class="principal-badge">
                                     Principal
                                 </span>
                             `
-                            : ""
-                        }
+                        : ""
+                    }
                     </h3>
 
                     <p>
@@ -2266,11 +1927,10 @@ $usuario = exigirLogin();
 
                         <svg
                             viewBox="0 0 24 24"
-                            fill="${
-                                contato.principal
-                                ? "currentColor"
-                                : "none"
-                            }"
+                            fill="${contato.principal
+                        ? "currentColor"
+                        : "none"
+                    }"
                             stroke="currentColor"
                             stroke-width="1.8"
                             stroke-linecap="round"
@@ -2352,280 +2012,313 @@ $usuario = exigirLogin();
             `;
 
 
-            contactsCard.appendChild(item);
+                contactsCard.appendChild(item);
 
-        });
-    }
-
-
-    /* =====================================================
-       EVENTOS DOS CONTATOS
-    ===================================================== */
-
-    contactsCard.addEventListener(
-        "click",
-        function(event) {
-
-            const botao =
-                event.target.closest(
-                    "button[data-action]"
-                );
-
-            if (!botao) {
-                return;
-            }
-
-            const id =
-                Number(botao.dataset.id);
-
-            const acao =
-                botao.dataset.action;
-
-
-            if (acao === "call") {
-                ligarContato(id);
-            }
-
-            else if (acao === "principal") {
-                definirPrincipal(id);
-            }
-
-            else if (acao === "edit") {
-                editarContato(id);
-            }
-
-            else if (acao === "delete") {
-                removerContato(id);
-            }
-
+            });
         }
-    );
 
 
-    /* =====================================================
-       MODAL
-    ===================================================== */
+        /* =====================================================
+           EVENTOS DOS CONTATOS
+        ===================================================== */
 
-    function abrirModal() {
-
-        contatoEditando = null;
-
-        modalTitle.textContent =
-            "Novo contato";
-
-        contactForm.reset();
-
-        modal.classList.add("show");
-
-        setTimeout(
-            function() {
-                nomeInput.focus();
-            },
-            100
-        );
-    }
-
-
-    document
-        .getElementById("addButton")
-        .addEventListener(
+        contactsCard.addEventListener(
             "click",
-            abrirModal
-        );
+            function (event) {
 
-
-    function fecharModal() {
-
-        modal.classList.remove("show");
-
-        contactForm.reset();
-
-        contatoEditando = null;
-    }
-
-
-    document
-        .getElementById("closeButton")
-        .addEventListener(
-            "click",
-            fecharModal
-        );
-
-
-    document
-        .getElementById("cancelButton")
-        .addEventListener(
-            "click",
-            fecharModal
-        );
-
-
-    modal.addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === modal) {
-                fecharModal();
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "Escape" &&
-                modal.classList.contains("show")
-            ) {
-
-                fecharModal();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       SALVAR CONTATO
-    ===================================================== */
-
-    contactForm.addEventListener(
-        "submit",
-        function(event) {
-
-            event.preventDefault();
-
-
-            const nome =
-                nomeInput.value.trim();
-
-            const telefone =
-                telefoneInput.value.trim();
-
-            const relacao =
-                relacaoInput.value;
-
-
-            if (!nome) {
-
-                mostrarMensagem(
-                    "Digite o nome do contato."
-                );
-
-                nomeInput.focus();
-
-                return;
-            }
-
-
-            if (!relacao) {
-
-                mostrarMensagem(
-                    "Selecione a relação."
-                );
-
-                relacaoInput.focus();
-
-                return;
-            }
-
-
-            const numero =
-                limparTelefone(telefone);
-
-
-            if (numero.length < 10) {
-
-                mostrarMensagem(
-                    "Digite um telefone válido."
-                );
-
-                telefoneInput.focus();
-
-                return;
-            }
-
-
-            const contatos =
-                obterContatos();
-
-
-            const duplicado =
-                contatos.some(
-                    function(contato) {
-
-                        if (
-                            contatoEditando !== null &&
-                            contato.id === contatoEditando
-                        ) {
-
-                            return false;
-                        }
-
-                        return (
-                            limparTelefone(
-                                contato.telefone
-                            ) === numero
-                        );
-                    }
-                );
-
-
-            if (duplicado) {
-
-                mostrarMensagem(
-                    "Este telefone já está cadastrado."
-                );
-
-                telefoneInput.focus();
-
-                return;
-            }
-
-
-            /* =================================================
-               EDITAR
-            ================================================= */
-
-            if (contatoEditando !== null) {
-
-                const indice =
-                    contatos.findIndex(
-                        function(contato) {
-
-                            return (
-                                contato.id ===
-                                contatoEditando
-                            );
-
-                        }
+                const botao =
+                    event.target.closest(
+                        "button[data-action]"
                     );
 
+                if (!botao) {
+                    return;
+                }
 
-                if (indice === -1) {
+                const id =
+                    Number(botao.dataset.id);
 
-                    mostrarMensagem(
-                        "Contato não encontrado."
-                    );
+                const acao =
+                    botao.dataset.action;
+
+
+                if (acao === "call") {
+                    ligarContato(id);
+                }
+
+                else if (acao === "principal") {
+                    definirPrincipal(id);
+                }
+
+                else if (acao === "edit") {
+                    editarContato(id);
+                }
+
+                else if (acao === "delete") {
+                    removerContato(id);
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        function abrirModal() {
+
+            contatoEditando = null;
+
+            modalTitle.textContent =
+                "Novo contato";
+
+            contactForm.reset();
+
+            modal.classList.add("show");
+
+            setTimeout(
+                function () {
+                    nomeInput.focus();
+                },
+                100
+            );
+        }
+
+
+        document
+            .getElementById("addButton")
+            .addEventListener(
+                "click",
+                abrirModal
+            );
+
+
+        function fecharModal() {
+
+            modal.classList.remove("show");
+
+            contactForm.reset();
+
+            contatoEditando = null;
+        }
+
+
+        document
+            .getElementById("closeButton")
+            .addEventListener(
+                "click",
+                fecharModal
+            );
+
+
+        document
+            .getElementById("cancelButton")
+            .addEventListener(
+                "click",
+                fecharModal
+            );
+
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (event.target === modal) {
+                    fecharModal();
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape" &&
+                    modal.classList.contains("show")
+                ) {
 
                     fecharModal();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           SALVAR CONTATO
+        ===================================================== */
+
+        contactForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const nome =
+                    nomeInput.value.trim();
+
+                const telefone =
+                    telefoneInput.value.trim();
+
+                const relacao =
+                    relacaoInput.value;
+
+
+                if (!nome) {
+
+                    mostrarMensagem(
+                        "Digite o nome do contato."
+                    );
+
+                    nomeInput.focus();
 
                     return;
                 }
 
 
-                contatos[indice].nome =
-                    nome;
+                if (!relacao) {
 
-                contatos[indice].telefone =
-                    formatarTelefone(telefone);
+                    mostrarMensagem(
+                        "Selecione a relação."
+                    );
 
-                contatos[indice].relacao =
-                    relacao;
+                    relacaoInput.focus();
+
+                    return;
+                }
+
+
+                const numero = limparTelefone(telefone);
+
+                if (numero.length !== 9) {
+                    mostrarMensagem("Digite um telefone válido no formato 99191-9191.");
+                    telefoneInput.focus();
+                    return;
+                }
+
+
+                const contatos =
+                    obterContatos();
+
+
+                const duplicado =
+                    contatos.some(
+                        function (contato) {
+
+                            if (
+                                contatoEditando !== null &&
+                                contato.id === contatoEditando
+                            ) {
+
+                                return false;
+                            }
+
+                            return (
+                                limparTelefone(
+                                    contato.telefone
+                                ) === numero
+                            );
+                        }
+                    );
+
+
+                if (duplicado) {
+
+                    mostrarMensagem(
+                        "Este telefone já está cadastrado."
+                    );
+
+                    telefoneInput.focus();
+
+                    return;
+                }
+
+
+                /* =================================================
+                   EDITAR
+                ================================================= */
+
+                if (contatoEditando !== null) {
+
+                    const indice =
+                        contatos.findIndex(
+                            function (contato) {
+
+                                return (
+                                    contato.id ===
+                                    contatoEditando
+                                );
+
+                            }
+                        );
+
+
+                    if (indice === -1) {
+
+                        mostrarMensagem(
+                            "Contato não encontrado."
+                        );
+
+                        fecharModal();
+
+                        return;
+                    }
+
+
+                    contatos[indice].nome =
+                        nome;
+
+                    contatos[indice].telefone =
+                        formatarTelefone(telefone);
+
+                    contatos[indice].relacao =
+                        relacao;
+
+
+                    if (
+                        salvarContatos(contatos)
+                    ) {
+
+                        renderizarContatos();
+
+                        fecharModal();
+
+                        mostrarMensagem(
+                            "Contato atualizado com sucesso."
+                        );
+                    }
+
+                    return;
+                }
+
+
+                /* =================================================
+                   NOVO CONTATO
+                ================================================= */
+
+                const novoContato = {
+
+                    id: Date.now(),
+
+                    nome: nome,
+
+                    telefone:
+                        formatarTelefone(telefone),
+
+                    relacao: relacao,
+
+                    principal:
+                        contatos.length === 0
+                };
+
+
+                contatos.push(novoContato);
 
 
                 if (
@@ -2636,36 +2329,127 @@ $usuario = exigirLogin();
 
                     fecharModal();
 
-                    mostrarMensagem(
-                        "Contato atualizado com sucesso."
-                    );
+
+                    if (novoContato.principal) {
+
+                        mostrarMensagem(
+                            "Contato cadastrado como principal!"
+                        );
+
+                    } else {
+
+                        mostrarMensagem(
+                            "Contato adicionado com sucesso."
+                        );
+
+                    }
                 }
+
+            }
+        );
+
+
+        /* =====================================================
+           EDITAR
+        ===================================================== */
+
+        function editarContato(id) {
+
+            const contatos =
+                obterContatos();
+
+
+            const contato =
+                contatos.find(
+                    function (item) {
+
+                        return item.id === id;
+
+                    }
+                );
+
+
+            if (!contato) {
+
+                mostrarMensagem(
+                    "Contato não encontrado."
+                );
 
                 return;
             }
 
 
-            /* =================================================
-               NOVO CONTATO
-            ================================================= */
+            contatoEditando = id;
 
-            const novoContato = {
+            modalTitle.textContent =
+                "Editar contato";
 
-                id: Date.now(),
+            nomeInput.value =
+                contato.nome;
 
-                nome: nome,
+            telefoneInput.value =
+                contato.telefone;
 
-                telefone:
-                    formatarTelefone(telefone),
+            relacaoInput.value =
+                contato.relacao;
 
-                relacao: relacao,
-
-                principal:
-                    contatos.length === 0
-            };
+            modal.classList.add("show");
 
 
-            contatos.push(novoContato);
+            setTimeout(
+                function () {
+
+                    nomeInput.focus();
+
+                },
+                100
+            );
+        }
+
+
+        /* =====================================================
+           PRINCIPAL
+        ===================================================== */
+
+        function definirPrincipal(id) {
+
+            const contatos =
+                obterContatos();
+
+
+            const contato =
+                contatos.find(
+                    function (item) {
+
+                        return item.id === id;
+
+                    }
+                );
+
+
+            if (!contato) {
+                return;
+            }
+
+
+            if (contato.principal) {
+
+                mostrarMensagem(
+                    "Este contato já é o principal."
+                );
+
+                return;
+            }
+
+
+            contatos.forEach(
+                function (item) {
+
+                    item.principal =
+                        item.id === id;
+
+                }
+            );
 
 
             if (
@@ -2674,301 +2458,178 @@ $usuario = exigirLogin();
 
                 renderizarContatos();
 
-                fecharModal();
+                mostrarMensagem(
+                    contato.nome +
+                    " agora é o contato principal."
+                );
+            }
+        }
 
 
-                if (novoContato.principal) {
+        /* =====================================================
+           EXCLUIR
+        ===================================================== */
 
-                    mostrarMensagem(
-                        "Contato cadastrado como principal!"
-                    );
+        function removerContato(id) {
 
-                } else {
+            const contatos =
+                obterContatos();
 
-                    mostrarMensagem(
-                        "Contato adicionado com sucesso."
-                    );
 
-                }
+            const contato =
+                contatos.find(
+                    function (item) {
+
+                        return item.id === id;
+
+                    }
+                );
+
+
+            if (!contato) {
+                return;
             }
 
-        }
-    );
+
+            const confirmar =
+                confirm(
+                    "Deseja remover " +
+                    contato.nome +
+                    " dos contatos de confiança?"
+                );
 
 
-    /* =====================================================
-       EDITAR
-    ===================================================== */
-
-    function editarContato(id) {
-
-        const contatos =
-            obterContatos();
-
-
-        const contato =
-            contatos.find(
-                function(item) {
-
-                    return item.id === id;
-
-                }
-            );
-
-
-        if (!contato) {
-
-            mostrarMensagem(
-                "Contato não encontrado."
-            );
-
-            return;
-        }
-
-
-        contatoEditando = id;
-
-        modalTitle.textContent =
-            "Editar contato";
-
-        nomeInput.value =
-            contato.nome;
-
-        telefoneInput.value =
-            contato.telefone;
-
-        relacaoInput.value =
-            contato.relacao;
-
-        modal.classList.add("show");
-
-
-        setTimeout(
-            function() {
-
-                nomeInput.focus();
-
-            },
-            100
-        );
-    }
-
-
-    /* =====================================================
-       PRINCIPAL
-    ===================================================== */
-
-    function definirPrincipal(id) {
-
-        const contatos =
-            obterContatos();
-
-
-        const contato =
-            contatos.find(
-                function(item) {
-
-                    return item.id === id;
-
-                }
-            );
-
-
-        if (!contato) {
-            return;
-        }
-
-
-        if (contato.principal) {
-
-            mostrarMensagem(
-                "Este contato já é o principal."
-            );
-
-            return;
-        }
-
-
-        contatos.forEach(
-            function(item) {
-
-                item.principal =
-                    item.id === id;
-
+            if (!confirmar) {
+                return;
             }
+
+
+            const eraPrincipal =
+                contato.principal;
+
+
+            let novosContatos =
+                contatos.filter(
+                    function (item) {
+
+                        return item.id !== id;
+
+                    }
+                );
+
+
+            if (
+                eraPrincipal &&
+                novosContatos.length > 0
+            ) {
+
+                novosContatos.forEach(
+                    function (item, indice) {
+
+                        item.principal =
+                            indice === 0;
+
+                    }
+                );
+            }
+
+
+            if (
+                salvarContatos(novosContatos)
+            ) {
+
+                renderizarContatos();
+
+                mostrarMensagem(
+                    "Contato removido com sucesso."
+                );
+            }
+        }
+
+
+        /* =====================================================
+           LIGAR
+        ===================================================== */
+
+        function ligarContato(id) {
+
+            const contatos =
+                obterContatos();
+
+
+            const contato =
+                contatos.find(
+                    function (item) {
+
+                        return item.id === id;
+
+                    }
+                );
+
+
+            if (!contato) {
+
+                mostrarMensagem(
+                    "Contato não encontrado."
+                );
+
+                return;
+            }
+
+
+            const telefone =
+                limparTelefone(
+                    contato.telefone
+                );
+
+
+            if (telefone.length < 9) {
+
+                mostrarMensagem(
+                    "Número de telefone inválido."
+                );
+
+                return;
+            }
+
+
+            window.location.href =
+                "tel:" + telefone;
+        }
+
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        renderizarContatos();
+
+        console.log(
+            "SilentHelp - Contatos carregado."
         );
 
+        console.log(
+            "Contatos:",
+            obterContatos()
+        );
 
-        if (
-            salvarContatos(contatos)
-        ) {
-
-            renderizarContatos();
-
-            mostrarMensagem(
-                contato.nome +
-                " agora é o contato principal."
-            );
-        }
-    }
+    </script>
 
 
-    /* =====================================================
-       EXCLUIR
-    ===================================================== */
-
-    function removerContato(id) {
-
-        const contatos =
-            obterContatos();
-
-
-        const contato =
-            contatos.find(
-                function(item) {
-
-                    return item.id === id;
-
-                }
-            );
-
-
-        if (!contato) {
-            return;
+    <style>
+        /* Modo discreto: reduz a exposição de informações pessoais sem bloquear ações de emergência. */
+        body.sh-modo-discreto [data-sensitive],
+        body.sh-modo-discreto .dado-sensivel {
+            filter: blur(5px);
+            user-select: none;
         }
 
-
-        const confirmar =
-            confirm(
-                "Deseja remover " +
-                contato.nome +
-                " dos contatos de confiança?"
-            );
-
-
-        if (!confirmar) {
-            return;
+        body.sh-modo-discreto [data-sensitive]:hover,
+        body.sh-modo-discreto .dado-sensivel:hover {
+            filter: none;
         }
-
-
-        const eraPrincipal =
-            contato.principal;
-
-
-        let novosContatos =
-            contatos.filter(
-                function(item) {
-
-                    return item.id !== id;
-
-                }
-            );
-
-
-        if (
-            eraPrincipal &&
-            novosContatos.length > 0
-        ) {
-
-            novosContatos.forEach(
-                function(item, indice) {
-
-                    item.principal =
-                        indice === 0;
-
-                }
-            );
-        }
-
-
-        if (
-            salvarContatos(novosContatos)
-        ) {
-
-            renderizarContatos();
-
-            mostrarMensagem(
-                "Contato removido com sucesso."
-            );
-        }
-    }
-
-
-    /* =====================================================
-       LIGAR
-    ===================================================== */
-
-    function ligarContato(id) {
-
-        const contatos =
-            obterContatos();
-
-
-        const contato =
-            contatos.find(
-                function(item) {
-
-                    return item.id === id;
-
-                }
-            );
-
-
-        if (!contato) {
-
-            mostrarMensagem(
-                "Contato não encontrado."
-            );
-
-            return;
-        }
-
-
-        const telefone =
-            limparTelefone(
-                contato.telefone
-            );
-
-
-        if (telefone.length < 10) {
-
-            mostrarMensagem(
-                "Número de telefone inválido."
-            );
-
-            return;
-        }
-
-
-        window.location.href =
-            "tel:" + telefone;
-    }
-
-
-    /* =====================================================
-       INICIALIZAÇÃO
-    ===================================================== */
-
-    renderizarContatos();
-
-    console.log(
-        "SilentHelp - Contatos carregado."
-    );
-
-    console.log(
-        "Contatos:",
-        obterContatos()
-    );
-
-</script>
-
-
-<style>
-/* Modo discreto: reduz a exposição de informações pessoais sem bloquear ações de emergência. */
-body.sh-modo-discreto [data-sensitive], body.sh-modo-discreto .dado-sensivel { filter: blur(5px); user-select: none; }
-body.sh-modo-discreto [data-sensitive]:hover, body.sh-modo-discreto .dado-sensivel:hover { filter: none; }
-</style>
-<script src="assets/db-sync.js"></script>
+    </style>
+    <script src="assets/db-sync.js"></script>
 
 </body>
 
