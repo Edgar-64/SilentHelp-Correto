@@ -10,15 +10,11 @@ exigirLogin();
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SilentHelp - Histórico de Alertas</title>
 
     <style>
-
         /* =====================================================
            RESET
         ===================================================== */
@@ -69,21 +65,15 @@ exigirLogin();
             min-height: 100vh;
 
             background:
-                radial-gradient(
-                    circle at 50% -15%,
+                radial-gradient(circle at 50% -15%,
                     rgba(168, 85, 247, .20),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at 100% 25%,
+                    transparent 35%),
+                radial-gradient(circle at 100% 25%,
                     rgba(112, 45, 181, .12),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 0% 70%,
+                    transparent 30%),
+                radial-gradient(circle at 0% 70%,
                     rgba(168, 85, 247, .06),
-                    transparent 30%
-                ),
+                    transparent 30%),
                 var(--fundo);
 
             color: var(--branco);
@@ -109,19 +99,15 @@ exigirLogin();
             pointer-events: none;
 
             background-image:
-                radial-gradient(
-                    rgba(255, 255, 255, .035) 1px,
-                    transparent 1px
-                );
+                radial-gradient(rgba(255, 255, 255, .035) 1px,
+                    transparent 1px);
 
             background-size: 28px 28px;
 
             mask-image:
-                linear-gradient(
-                    to bottom,
+                linear-gradient(to bottom,
                     black,
-                    transparent 70%
-                );
+                    transparent 70%);
 
             opacity: .25;
             z-index: -1;
@@ -148,9 +134,7 @@ exigirLogin();
             margin: auto;
 
             padding:
-                28px
-                25px
-                50px;
+                28px 25px 50px;
         }
 
 
@@ -207,10 +191,7 @@ exigirLogin();
             color: var(--roxo-2);
 
             filter:
-                drop-shadow(
-                    0 0 16px
-                    rgba(168, 85, 247, .35)
-                );
+                drop-shadow(0 0 16px rgba(168, 85, 247, .35));
         }
 
         .logo-text {
@@ -244,8 +225,7 @@ exigirLogin();
             justify-content: center;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 16px;
 
@@ -304,12 +284,10 @@ exigirLogin();
             font-weight: 800;
 
             border:
-                2px solid
-                var(--fundo);
+                2px solid var(--fundo);
 
             box-shadow:
-                0 0 12px
-                rgba(255, 93, 115, .3);
+                0 0 12px rgba(255, 93, 115, .3);
         }
 
 
@@ -342,6 +320,43 @@ exigirLogin();
             line-height: 1.6;
         }
 
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        .back-button {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--borda);
+            border-radius: 14px;
+
+            background: var(--fundo-card);
+
+            color: var(--roxo-claro);
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            background:
+                rgba(166, 92, 255, 0.12);
+
+            border-color:
+                var(--roxo);
+        }
+
+        .back-button svg {
+            width: 23px;
+            height: 23px;
+        }
 
         /* =====================================================
            RESUMO
@@ -364,17 +379,14 @@ exigirLogin();
             padding: 18px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 20px;
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(20, 18, 26, .88),
-                    rgba(10, 10, 14, .92)
-                );
+                    rgba(10, 10, 14, .92));
 
             box-shadow:
                 var(--sombra);
@@ -499,12 +511,10 @@ exigirLogin();
 
         .clear-button {
             padding:
-                10px
-                14px;
+                10px 14px;
 
             border:
-                1px solid
-                rgba(255, 93, 115, .20);
+                1px solid rgba(255, 93, 115, .20);
 
             border-radius: 12px;
 
@@ -557,12 +567,10 @@ exigirLogin();
             flex-shrink: 0;
 
             padding:
-                10px
-                15px;
+                10px 15px;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 12px;
 
@@ -626,21 +634,17 @@ exigirLogin();
             padding: 19px;
 
             border:
-                1px solid
-                rgba(255, 255, 255, .065);
+                1px solid rgba(255, 255, 255, .065);
 
             border-radius: 21px;
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(20, 18, 26, .88),
-                    rgba(10, 10, 14, .94)
-                );
+                    rgba(10, 10, 14, .94));
 
             box-shadow:
-                0 12px 35px
-                rgba(0, 0, 0, .18);
+                0 12px 35px rgba(0, 0, 0, .18);
 
             transition:
                 transform .2s,
@@ -657,11 +661,9 @@ exigirLogin();
                 rgba(168, 85, 247, .30);
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(28, 22, 37, .92),
-                    rgba(11, 10, 15, .95)
-                );
+                    rgba(11, 10, 15, .95));
         }
 
         .alert-icon {
@@ -683,8 +685,7 @@ exigirLogin();
                 var(--roxo-claro);
 
             border:
-                1px solid
-                rgba(168, 85, 247, .12);
+                1px solid rgba(168, 85, 247, .12);
         }
 
         .alert-icon svg {
@@ -743,8 +744,7 @@ exigirLogin();
             gap: 5px;
 
             padding:
-                4px
-                8px;
+                4px 8px;
 
             border-radius: 7px;
 
@@ -821,8 +821,7 @@ exigirLogin();
             justify-content: center;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 12px;
 
@@ -867,8 +866,7 @@ exigirLogin();
             text-align: center;
 
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             border-radius: 23px;
 
@@ -889,8 +887,7 @@ exigirLogin();
             justify-content: center;
 
             margin:
-                0 auto
-                15px;
+                0 auto 15px;
 
             border-radius: 20px;
 
@@ -940,12 +937,10 @@ exigirLogin();
             max-width: 90%;
 
             padding:
-                14px
-                21px;
+                14px 21px;
 
             border:
-                1px solid
-                rgba(168, 85, 247, .45);
+                1px solid rgba(168, 85, 247, .45);
 
             border-radius: 15px;
 
@@ -959,8 +954,7 @@ exigirLogin();
             text-align: center;
 
             box-shadow:
-                0 15px 45px
-                rgba(0, 0, 0, .45);
+                0 15px 45px rgba(0, 0, 0, .45);
 
             backdrop-filter:
                 blur(15px);
@@ -1014,21 +1008,17 @@ exigirLogin();
             padding: 28px;
 
             border:
-                1px solid
-                rgba(168, 85, 247, .38);
+                1px solid rgba(168, 85, 247, .38);
 
             border-radius: 25px;
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(29, 22, 38, .98),
-                    rgba(10, 9, 14, .98)
-                );
+                    rgba(10, 9, 14, .98));
 
             box-shadow:
-                0 30px 90px
-                rgba(0, 0, 0, .65);
+                0 30px 90px rgba(0, 0, 0, .65);
         }
 
         .modal-top {
@@ -1091,12 +1081,10 @@ exigirLogin();
             gap: 15px;
 
             padding:
-                13px
-                14px;
+                13px 14px;
 
             border:
-                1px solid
-                rgba(255, 255, 255, .06);
+                1px solid rgba(255, 255, 255, .06);
 
             border-radius: 13px;
 
@@ -1128,8 +1116,7 @@ exigirLogin();
             padding: 14px;
 
             border:
-                1px solid
-                rgba(168, 85, 247, .30);
+                1px solid rgba(168, 85, 247, .30);
 
             border-radius: 13px;
 
@@ -1176,8 +1163,7 @@ exigirLogin();
             justify-content: center;
 
             margin:
-                0 auto
-                15px;
+                0 auto 15px;
 
             border-radius: 18px;
 
@@ -1227,8 +1213,7 @@ exigirLogin();
 
         .cancel-button {
             border:
-                1px solid
-                var(--borda);
+                1px solid var(--borda);
 
             background:
                 rgba(255, 255, 255, .035);
@@ -1241,11 +1226,9 @@ exigirLogin();
             border: none;
 
             background:
-                linear-gradient(
-                    100deg,
+                linear-gradient(100deg,
                     #c73f57,
-                    #ff5d73
-                );
+                    #ff5d73);
 
             color: white;
         }
@@ -1259,13 +1242,19 @@ exigirLogin();
 
             .app {
                 padding:
-                    19px
-                    15px
-                    40px;
+                    19px 15px 40px;
             }
 
             .header {
                 margin-bottom: 28px;
+            }
+            
+            .back-button {
+                width: 43px;
+                height: 43px;
+                min-width: 43px;
+
+                border-radius: 13px;
             }
 
             .logo-heart {
@@ -1325,8 +1314,7 @@ exigirLogin();
 
             .clear-button {
                 padding:
-                    9px
-                    11px;
+                    9px 11px;
 
                 font-size: 10px;
             }
@@ -1424,8 +1412,7 @@ exigirLogin();
             .alert-status {
                 font-size: 7px;
                 padding:
-                    3px
-                    6px;
+                    3px 6px;
             }
 
             .alert-meta {
@@ -1445,8 +1432,7 @@ exigirLogin();
 
             .modal-content {
                 padding:
-                    23px
-                    18px;
+                    23px 18px;
             }
 
             .modal-top h2 {
@@ -1493,7 +1479,6 @@ exigirLogin();
                 font-size: 9px;
             }
         }
-
     </style>
 
 </head>
@@ -1501,1003 +1486,771 @@ exigirLogin();
 
 <body>
 
-<div class="app">
+    <div class="app">
 
 
-    <!-- =====================================================
+        <!-- =====================================================
          HEADER
     ===================================================== -->
 
-    <header class="header">
+        <header class="header">
 
-        <button
-            class="logo-button"
-            onclick="goTo('inicio.php')"
-        >
+            <button class="back-button" onclick="abrirPagina('inicio.php')" aria-label="Voltar">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M19 12H5" />
+
+                    <path d="M12 19l-7-7 7-7" />
+
+                </svg>
+
+            </button>
 
             <?php include 'components/logo.php'; ?>
 
-        </button>
+            </button>
 
 
-        <button
-            class="notification"
-            onclick="goTo('notificacoes.php')"
-            aria-label="Notificações"
-        >
+            <button class="notification" onclick="goTo('notificacoes.php')" aria-label="Notificações">
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-            >
-                <path
-                    d="M18 8
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M18 8
                        C18 5 16.2 3 13.5 2.5
                        M6 8
                        C6 4.7 8.4 2 12 2
                        C15.6 2 18 4.7 18 8
                        C18 14 20 16 20 16
                        H4
-                       C4 16 6 14 6 8Z"
-                />
+                       C4 16 6 14 6 8Z" />
 
-                <path
-                    d="M10 20
+                    <path d="M10 20
                        C10.5 21.3 11.2 22 12 22
-                       C12.8 22 13.5 21.3 14 20"
-                />
-            </svg>
+                       C12.8 22 13.5 21.3 14 20" />
+                </svg>
 
-            <span
-                class="notification-badge"
-                id="notificationBadge"
-            >
-                2
-            </span>
+                <span class="notification-badge" id="notificationBadge">
+                    2
+                </span>
 
-        </button>
+            </button>
 
-    </header>
+        </header>
 
 
 
-    <!-- =====================================================
+        <!-- =====================================================
          CONTEÚDO
     ===================================================== -->
 
-    <main>
+        <main>
 
 
-        <!-- TÍTULO -->
+            <!-- TÍTULO -->
 
-        <section class="page-title">
+            <section class="page-title">
 
-            <h1>
-                Histórico de <span>Alertas</span>
-            </h1>
+                <h1>
+                    Histórico de <span>Alertas</span>
+                </h1>
 
-            <p>
-                Consulte os registros de emergência e verificações do seu dispositivo.
-            </p>
+                <p>
+                    Consulte os registros de emergência e verificações do seu dispositivo.
+                </p>
 
-        </section>
+            </section>
 
 
 
-        <!-- =================================================
+            <!-- =================================================
              RESUMO
         ================================================= -->
 
-        <section class="summary-grid">
+            <section class="summary-grid">
 
 
-            <div class="summary-card">
+                <div class="summary-card">
 
-                <div class="summary-top">
+                    <div class="summary-top">
 
-                    <div class="summary-icon">
-                        📋
+                        <div class="summary-icon">
+                            📋
+                        </div>
+
+                        <strong class="summary-number" id="totalAlerts">
+                            0
+                        </strong>
+
                     </div>
 
-                    <strong
-                        class="summary-number"
-                        id="totalAlerts"
-                    >
-                        0
-                    </strong>
+                    <p>
+                        Total de alertas
+                    </p>
 
                 </div>
 
-                <p>
-                    Total de alertas
-                </p>
-
-            </div>
 
 
+                <div class="summary-card danger">
 
-            <div class="summary-card danger">
+                    <div class="summary-top">
 
-                <div class="summary-top">
+                        <div class="summary-icon">
+                            🆘
+                        </div>
 
-                    <div class="summary-icon">
-                        🆘
+                        <strong class="summary-number" id="emergencyAlerts">
+                            0
+                        </strong>
+
                     </div>
 
-                    <strong
-                        class="summary-number"
-                        id="emergencyAlerts"
-                    >
-                        0
-                    </strong>
+                    <p>
+                        Emergências
+                    </p>
 
                 </div>
 
-                <p>
-                    Emergências
-                </p>
-
-            </div>
 
 
+                <div class="summary-card success">
 
-            <div class="summary-card success">
+                    <div class="summary-top">
 
-                <div class="summary-top">
+                        <div class="summary-icon">
+                            ✓
+                        </div>
 
-                    <div class="summary-icon">
-                        ✓
+                        <strong class="summary-number" id="resolvedAlerts">
+                            0
+                        </strong>
+
                     </div>
 
-                    <strong
-                        class="summary-number"
-                        id="resolvedAlerts"
-                    >
-                        0
-                    </strong>
+                    <p>
+                        Resolvidos
+                    </p>
 
                 </div>
 
-                <p>
-                    Resolvidos
-                </p>
 
-            </div>
-
-
-        </section>
+            </section>
 
 
 
-        <!-- =================================================
+            <!-- =================================================
              CABEÇALHO HISTÓRICO
         ================================================= -->
 
-        <section class="history-header">
+            <section class="history-header">
 
-            <div class="history-title">
+                <div class="history-title">
 
-                <h2>
-                    Histórico
-                </h2>
+                    <h2>
+                        Histórico
+                    </h2>
 
-                <span
-                    class="history-count"
-                    id="historyCount"
-                >
-                    0
-                </span>
+                    <span class="history-count" id="historyCount">
+                        0
+                    </span>
 
-            </div>
+                </div>
 
 
-            <button
-                class="clear-button"
-                onclick="openClearModal()"
-            >
-                Limpar
-            </button>
+                <button class="clear-button" onclick="openClearModal()">
+                    Limpar
+                </button>
 
-        </section>
+            </section>
 
 
 
-        <!-- =================================================
+            <!-- =================================================
              FILTROS
         ================================================= -->
 
-        <div class="filters">
+            <div class="filters">
 
-            <button
-                class="filter-button active"
-                onclick="filterAlerts('all', this)"
-            >
-                Todos
-            </button>
+                <button class="filter-button active" onclick="filterAlerts('all', this)">
+                    Todos
+                </button>
 
 
-            <button
-                class="filter-button"
-                onclick="filterAlerts('emergency', this)"
-            >
-                Emergência
-            </button>
+                <button class="filter-button" onclick="filterAlerts('open', this)">
+                    Abertos
+                </button>
 
 
-            <button
-                class="filter-button"
-                onclick="filterAlerts('test', this)"
-            >
-                Testes
-            </button>
+                <button class="filter-button" onclick="filterAlerts('attended', this)">
+                    Atendidos
+                </button>
 
 
-            <button
-                class="filter-button"
-                onclick="filterAlerts('cancelled', this)"
-            >
-                Cancelados
-            </button>
+                <button class="filter-button" onclick="filterAlerts('encerrado', this)">
+                    Encerrados
+                </button>
 
-        </div>
+
+                <button class="filter-button" onclick="filterAlerts('cancelled', this)">
+                    Cancelados
+                </button>
+
+            </div>
 
 
 
-        <!-- =================================================
+            <!-- =================================================
              LISTA
         ================================================= -->
 
-        <div
-            class="alert-list"
-            id="alertList"
-        >
-        </div>
+            <div class="alert-list" id="alertList">
+            </div>
 
 
 
-        <!-- =================================================
+            <!-- =================================================
              ESTADO VAZIO
         ================================================= -->
 
-        <div
-            class="empty-state"
-            id="emptyState"
-        >
+            <div class="empty-state" id="emptyState">
 
-            <div class="empty-icon">
-                📋
-            </div>
+                <div class="empty-icon">
+                    📋
+                </div>
 
-            <h3>
-                Nenhum alerta encontrado
-            </h3>
-
-            <p>
-                Quando houver registros de alertas ou verificações,
-                eles aparecerão aqui.
-            </p>
-
-        </div>
-
-    </main>
-
-</div>
-
-
-
-<!-- =========================================================
-     MODAL DE DETALHES
-========================================================= -->
-
-<div
-    class="modal"
-    id="detailsModal"
-    onclick="fecharModalFora(event)"
->
-
-    <div
-        class="modal-content"
-        onclick="event.stopPropagation()"
-    >
-
-        <div class="modal-top">
-
-            <div class="modal-icon">
-                🆘
-            </div>
-
-            <div>
-
-                <h2 id="detailTitle">
-                    Detalhes do alerta
-                </h2>
+                <h3>
+                    Nenhum alerta encontrado
+                </h3>
 
                 <p>
-                    Informações do registro
+                    Quando houver registros de alertas ou verificações,
+                    eles aparecerão aqui.
                 </p>
 
             </div>
 
-        </div>
-
-
-        <div class="detail-list">
-
-
-            <div class="detail-item">
-
-                <span>
-                    Data
-                </span>
-
-                <strong id="detailDate">
-                    -
-                </strong>
-
-            </div>
-
-
-
-            <div class="detail-item">
-
-                <span>
-                    Status
-                </span>
-
-                <strong id="detailStatus">
-                    -
-                </strong>
-
-            </div>
-
-
-
-            <div class="detail-item">
-
-                <span>
-                    Localização
-                </span>
-
-                <strong id="detailLocation">
-                    -
-                </strong>
-
-            </div>
-
-
-
-            <div class="detail-item">
-
-                <span>
-                    Contatos
-                </span>
-
-                <strong id="detailContacts">
-                    -
-                </strong>
-
-            </div>
-
-
-        </div>
-
-
-        <button
-            class="modal-close"
-            onclick="closeDetails()"
-        >
-            Fechar
-        </button>
+        </main>
 
     </div>
 
-</div>
+
+
+    <!-- =========================================================
+     MODAL DE DETALHES
+========================================================= -->
+
+    <div class="modal" id="detailsModal" onclick="fecharModalFora(event)">
+
+        <div class="modal-content" onclick="event.stopPropagation()">
+
+            <div class="modal-top">
+
+                <div class="modal-icon">
+                    🆘
+                </div>
+
+                <div>
+
+                    <h2 id="detailTitle">
+                        Detalhes do alerta
+                    </h2>
+
+                    <p>
+                        Informações do registro
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-list">
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Data
+                    </span>
+
+                    <strong id="detailDate">
+                        -
+                    </strong>
+
+                </div>
 
 
 
-<!-- =========================================================
+                <div class="detail-item">
+
+                    <span>
+                        Status
+                    </span>
+
+                    <strong id="detailStatus">
+                        -
+                    </strong>
+
+                </div>
+
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Localização
+                    </span>
+
+                    <strong id="detailLocation">
+                        -
+                    </strong>
+
+                </div>
+
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Contatos
+                    </span>
+
+                    <strong id="detailContacts">
+                        -
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <button class="modal-close" onclick="closeDetails()">
+                Fechar
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
      MODAL CONFIRMAÇÃO
 ========================================================= -->
 
-<div
-    class="modal"
-    id="clearModal"
-    onclick="fecharClearFora(event)"
->
+    <div class="modal" id="clearModal" onclick="fecharClearFora(event)">
 
-    <div
-        class="modal-content confirm-modal"
-        onclick="event.stopPropagation()"
-    >
+        <div class="modal-content confirm-modal" onclick="event.stopPropagation()">
 
-        <div class="confirm-icon">
-            ⚠
-        </div>
+            <div class="confirm-icon">
+                ⚠
+            </div>
 
 
-        <h2>
-            Limpar histórico?
-        </h2>
+            <h2>
+                Limpar histórico?
+            </h2>
 
 
-        <p>
-            Todos os registros de alertas serão apagados
-            deste dispositivo. Essa ação não poderá ser desfeita.
-        </p>
+            <p>
+                Todos os registros de alertas serão apagados
+                deste dispositivo. Essa ação não poderá ser desfeita.
+            </p>
 
 
-        <div class="modal-buttons">
+            <div class="modal-buttons">
 
-            <button
-                class="cancel-button"
-                onclick="closeClearModal()"
-            >
-                Cancelar
-            </button>
+                <button class="cancel-button" onclick="closeClearModal()">
+                    Cancelar
+                </button>
 
 
-            <button
-                class="delete-button"
-                onclick="clearHistory()"
-            >
-                Limpar histórico
-            </button>
+                <button class="delete-button" onclick="clearHistory()">
+                    Limpar histórico
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
 
 
-
-<!-- =========================================================
+    <!-- =========================================================
      TOAST
 ========================================================= -->
 
-<div
-    class="toast"
-    id="toast"
->
-    <span id="toastMessage"></span>
-</div>
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
 
 
 
-<script>
+    <script>
+        function abrirPagina(pagina) {
+            window.location.href = pagina;
+        }
 
-const HISTORY_KEY =
-    "historicoAlertasSilentHelp";
+        const HISTORY_KEY =
+            "historicoAlertasSilentHelp";
 
-let alertas = [];
+        let alertas = [];
 
-let filtroAtual = "all";
+        let filtroAtual = "all";
 
-let toastTimer = null;
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(mensagem) {
-
-    const toast =
-        document.getElementById("toast");
-
-    const texto =
-        document.getElementById("toastMessage");
+        let toastTimer = null;
 
 
-    if (!toast || !texto) {
-        return;
-    }
+        /* =========================================================
+           TOAST
+        ========================================================= */
+
+        function showToast(mensagem) {
+
+            const toast =
+                document.getElementById("toast");
+
+            const texto =
+                document.getElementById("toastMessage");
 
 
-    texto.textContent = mensagem;
+            if (!toast || !texto) {
+                return;
+            }
 
 
-    toast.classList.add("show");
+            texto.textContent = mensagem;
 
 
-    clearTimeout(toastTimer);
+            toast.classList.add("show");
 
 
-    toastTimer = setTimeout(() => {
-
-        toast.classList.remove("show");
-
-    }, 3000);
-}
+            clearTimeout(toastTimer);
 
 
-/* =========================================================
-   ESCAPAR HTML
-========================================================= */
+            toastTimer = setTimeout(() => {
 
-function escapeHTML(valor) {
+                toast.classList.remove("show");
 
-    if (
-        valor === null ||
-        valor === undefined
-    ) {
-        return "";
-    }
-
-
-    return String(valor)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/* =========================================================
-   CARREGAR HISTÓRICO
-========================================================= */
-
-function carregarHistorico() {
-
-    try {
-
-        const dados =
-            localStorage.getItem(
-                HISTORY_KEY
-            );
-
-
-        if (!dados) {
-
-            alertas = [];
-
-            renderizarHistorico();
-
-            return;
+            }, 3000);
         }
 
 
-        const historico =
-            JSON.parse(dados);
+        /* =========================================================
+           ESCAPAR HTML
+        ========================================================= */
+
+        function escapeHTML(valor) {
+
+            if (
+                valor === null ||
+                valor === undefined
+            ) {
+                return "";
+            }
 
 
-        if (Array.isArray(historico)) {
-
-            alertas = historico;
-
-        } else {
-
-            alertas = [];
-
+            return String(valor)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
-    } catch (erro) {
 
-        console.error(
-            "Erro ao carregar histórico:",
-            erro
-        );
-
-        alertas = [];
-
-        showToast(
-            "Erro ao carregar histórico."
-        );
-    }
-
-
-    renderizarHistorico();
-}
-
-
-/* =========================================================
-   TIPO DO ALERTA
-========================================================= */
-
-function normalizarTipo(alerta) {
-
-    const tipo = String(
-        alerta?.tipo ||
-        alerta?.type ||
-        alerta?.categoria ||
-        ""
-    ).toLowerCase();
-
-
-    if (
-        tipo.includes("cancel")
-    ) {
-        return "cancelled";
-    }
-
-
-    if (
-        tipo.includes("test") ||
-        tipo.includes("check") ||
-        tipo.includes("verific")
-    ) {
-        return "test";
-    }
-
-
-    if (
-        tipo.includes("emerg") ||
-        tipo.includes("sos") ||
-        tipo.includes("alert")
-    ) {
-        return "emergency";
-    }
-
-
-    const titulo = String(
-        alerta?.titulo ||
-        alerta?.title ||
-        ""
-    ).toLowerCase();
-
-
-    if (
-        titulo.includes("teste") ||
-        titulo.includes("verificação") ||
-        titulo.includes("check-up") ||
-        titulo.includes("checkup")
-    ) {
-        return "test";
-    }
-
-
-    if (
-        titulo.includes("cancel")
-    ) {
-        return "cancelled";
-    }
-
-
-    return "emergency";
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function normalizarStatus(alerta) {
-
-    const status = String(
-        alerta?.status ||
-        alerta?.situacao ||
-        ""
-    ).toLowerCase();
-
-
-    if (
-        status.includes("resolv") ||
-        status.includes("conclu") ||
-        status.includes("atend")
-    ) {
-        return "Resolvido";
-    }
-
-
-    if (
-        status.includes("cancel")
-    ) {
-        return "Cancelado";
-    }
-
-
-    if (
-        normalizarTipo(alerta) === "test"
-    ) {
-        return "Concluído";
-    }
-
-
-    return "Registrado";
-}
-
-
-/* =========================================================
-   TÍTULO
-========================================================= */
-
-function obterTitulo(alerta) {
-
-    if (alerta?.titulo) {
-        return alerta.titulo;
-    }
-
-
-    if (alerta?.title) {
-        return alerta.title;
-    }
-
-
-    if (alerta?.nome) {
-        return alerta.nome;
-    }
-
-
-    const tipo =
-        normalizarTipo(alerta);
-
-
-    if (tipo === "test") {
-        return "Verificação do dispositivo";
-    }
-
-
-    if (tipo === "cancelled") {
-        return "Alerta cancelado";
-    }
-
-
-    return "Alerta de emergência";
-}
-
-
-/* =========================================================
-   DATA
-========================================================= */
-
-function obterData(alerta) {
-
-    return (
-        alerta?.dataHora ||
-        alerta?.data_hora ||
-        alerta?.data ||
-        alerta?.created_at ||
-        alerta?.createdAt ||
-        alerta?.timestamp ||
-        ""
-    );
-}
-
-
-function formatarData(valor) {
-
-    if (!valor) {
-        return "Data não informada";
-    }
-
-
-    const data =
-        new Date(valor);
-
-
-    if (
-        isNaN(data.getTime())
-    ) {
-        return String(valor);
-    }
-
-
-    return data.toLocaleString(
-        "pt-BR",
-        {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        }
-    );
-}
-
-
-/* =========================================================
-   LOCALIZAÇÃO
-========================================================= */
-
-function obterLocalizacao(alerta) {
-
-    return (
-        alerta?.localizacao ||
-        alerta?.local ||
-        alerta?.endereco ||
-        alerta?.location ||
-        "Localização não informada"
-    );
-}
-
-
-/* =========================================================
-   CONTATOS
-========================================================= */
-
-function obterContatos(alerta) {
-
-    if (
-        Array.isArray(alerta?.contatos)
-    ) {
-
-        return alerta.contatos
-            .map(contato => {
-
-                if (
-                    typeof contato === "string"
-                ) {
-                    return contato;
+        /* =========================================================
+           CARREGAR HISTÓRICO
+        ========================================================= */
+
+        async function carregarHistorico() {
+
+            const lista = document.getElementById("alertList");
+            const vazio = document.getElementById("emptyState");
+
+            if (lista) {
+                lista.innerHTML = "";
+                lista.style.display = "none";
+            }
+            if (vazio) {
+                vazio.classList.add("show");
+                const titulo = vazio.querySelector("h3");
+                const texto = vazio.querySelector("p");
+                if (titulo) titulo.textContent = "Carregando histórico...";
+                if (texto) texto.textContent = "Buscando alertas registrados no banco de dados.";
+            }
+
+            try {
+                const resposta = await fetch("api.php?action=alert_history", {
+                    method: "GET",
+                    credentials: "same-origin",
+                    cache: "no-store",
+                    headers: { "Accept": "application/json" }
+                });
+
+                const dados = await resposta.json();
+                if (!resposta.ok || !dados.ok) {
+                    throw new Error(dados.message || "Não foi possível carregar os alertas do banco.");
                 }
 
+                alertas = Array.isArray(dados.alertas) ? dados.alertas : [];
+                renderizarHistorico();
 
-                return (
-                    contato?.nome ||
-                    contato?.telefone ||
-                    "Contato"
-                );
+            } catch (erro) {
+                console.error("Erro ao buscar histórico no banco:", erro);
+                alertas = [];
+                renderizarHistorico();
 
-            })
-            .join(", ");
-    }
-
-
-    return (
-        alerta?.contatos ||
-        alerta?.contato ||
-        alerta?.responsavel ||
-        "Não informado"
-    );
-}
-
-
-/* =========================================================
-   ÍCONE
-========================================================= */
-
-function obterIcone(alerta) {
-
-    const tipo =
-        normalizarTipo(alerta);
-
-
-    if (tipo === "test") {
-        return "📱";
-    }
-
-
-    if (tipo === "cancelled") {
-        return "✕";
-    }
-
-
-    return "🆘";
-}
-
-
-/* =========================================================
-   RENDERIZAR
-========================================================= */
-
-function renderizarHistorico() {
-
-    const lista =
-        document.getElementById(
-            "alertList"
-        );
-
-    const vazio =
-        document.getElementById(
-            "emptyState"
-        );
-
-
-    if (!lista || !vazio) {
-        return;
-    }
-
-
-    lista.innerHTML = "";
-
-
-    let registros =
-        [...alertas];
-
-
-    if (
-        filtroAtual !== "all"
-    ) {
-
-        registros =
-            registros.filter(
-                alerta =>
-                    normalizarTipo(alerta)
-                    === filtroAtual
-            );
-    }
-
-
-    if (
-        registros.length === 0
-    ) {
-
-        lista.style.display = "none";
-
-        vazio.classList.add("show");
-
-    } else {
-
-        lista.style.display = "flex";
-
-        vazio.classList.remove("show");
-
-
-        registros.forEach(
-            alerta => {
-
-                lista.appendChild(
-                    criarCard(alerta)
-                );
-
+                if (vazio) {
+                    vazio.classList.add("show");
+                    const titulo = vazio.querySelector("h3");
+                    const texto = vazio.querySelector("p");
+                    if (titulo) titulo.textContent = "Não foi possível carregar o histórico";
+                    if (texto) texto.textContent = erro.message || "Verifique sua conexão e tente novamente.";
+                }
+                showToast("Erro ao consultar o histórico no banco de dados.");
             }
-        );
-    }
+        }
+
+        /* =========================================================
+           NORMALIZAÇÃO DOS DADOS DO BANCO
+        ========================================================= */
+
+        function normalizarTipo(alerta) {
+            const tipo = String(alerta?.tipo ?? alerta?.type ?? "").trim().toLowerCase();
+            if (["emergencia", "emergency", "sos", "socorro"].includes(tipo)) return "emergency";
+            if (["teste", "test", "verificacao", "verificação"].includes(tipo)) return "test";
+            if (["cancelado", "cancelada", "cancelled", "canceled"].includes(tipo)) return "cancelled";
+            return tipo || "emergency";
+        }
+
+        function normalizarStatusChave(alerta) {
+            const bruto = String(alerta?.status ?? alerta?.situacao ?? alerta?.state ?? "open")
+                .trim().toLowerCase();
+            if (["open", "aberto", "aberta", "pending", "pendente", "novo", "new"].includes(bruto)) return "open";
+            if (["attended", "atendido", "atendida", "em_atendimento", "em atendimento", "in_progress"].includes(bruto)) return "attended";
+            if (["encerrado", "encerrada", "resolved", "resolvido", "resolvida", "closed", "concluido", "concluído"].includes(bruto)) return "encerrado";
+            if (["cancelled", "canceled", "cancelado", "cancelada"].includes(bruto)) return "cancelled";
+            return bruto;
+        }
+
+        function normalizarStatus(alerta) {
+            const status = normalizarStatusChave(alerta);
+            if (status === "open") return "Aberto";
+            if (status === "attended") return "Atendido";
+            if (status === "encerrado") return "Resolvido";
+            if (status === "cancelled") return "Cancelado";
+            return status ? status.charAt(0).toUpperCase() + status.slice(1) : "Desconhecido";
+        }
+
+        function obterTitulo(alerta) {
+            return alerta?.titulo ?? alerta?.title ?? alerta?.message ?? alerta?.mensagem ?? "Alerta de emergência";
+        }
+
+        function obterData(alerta) {
+            return alerta?.created_at ?? alerta?.data ?? alerta?.data_hora ?? alerta?.timestamp ?? "";
+        }
+
+        function formatarData(valor) {
+            if (!valor) return "Data não informada";
+            const data = new Date(String(valor).replace(" ", "T") + (String(valor).includes("Z") || /[+-]\d\d:\d\d$/.test(String(valor)) ? "" : "Z"));
+            if (Number.isNaN(data.getTime())) return String(valor);
+            return data.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+        }
+
+        function obterLocalizacao(alerta) {
+            if (alerta?.localizacao) return alerta.localizacao;
+            const lat = alerta?.latitude;
+            const lng = alerta?.longitude;
+            if (lat !== null && lat !== undefined && lng !== null && lng !== undefined && lat !== "" && lng !== "") {
+                return `Coordenadas: ${lat}, ${lng}`;
+            }
+            return "Localização não informada";
+        }
+
+        function obterContatos(alerta) {
+            const contatos = alerta?.contatos ?? alerta?.contacts ?? [];
+            if (Array.isArray(contatos)) {
+                return contatos.map(c => typeof c === "string" ? c : (c?.name ?? c?.nome ?? c?.phone ?? c?.telefone ?? ""))
+                    .filter(Boolean).join(", ") || "Nenhum contato informado";
+            }
+            return String(contatos || "Nenhum contato informado");
+        }
+
+        /* =========================================================
+           ÍCONE
+        ========================================================= */
+
+        function obterIcone(alerta) {
+
+            const tipo =
+                normalizarTipo(alerta);
 
 
-    atualizarResumo();
-}
+            if (tipo === "test") {
+                return "📱";
+            }
 
 
-/* =========================================================
-   CRIAR CARD
-========================================================= */
-
-function criarCard(alerta) {
-
-    const card =
-        document.createElement("article");
+            if (tipo === "cancelled") {
+                return "✕";
+            }
 
 
-    const tipo =
-        normalizarTipo(alerta);
+            return "🆘";
+        }
 
 
-    const titulo =
-        obterTitulo(alerta);
+        /* =========================================================
+           RENDERIZAR
+        ========================================================= */
+
+        function renderizarHistorico() {
+
+            const lista =
+                document.getElementById(
+                    "alertList"
+                );
+
+            const vazio =
+                document.getElementById(
+                    "emptyState"
+                );
 
 
-    const data =
-        formatarData(
-            obterData(alerta)
-        );
+            if (!lista || !vazio) {
+                return;
+            }
 
 
-    const status =
-        normalizarStatus(alerta);
+            lista.innerHTML = "";
 
 
-    const localizacao =
-        obterLocalizacao(alerta);
+            let registros =
+                [...alertas];
 
 
-    const contatos =
-        obterContatos(alerta);
+            if (filtroAtual !== "all") {
+
+                registros = registros.filter(alerta => {
+                    // Mantém compatibilidade com registros antigos que guardavam
+                    // o status em campos alternativos.
+                    return normalizarStatusChave(alerta) === filtroAtual;
+                });
+            }
+
+            // Exibe primeiro os alertas mais recentes, sem descartar registros.
+            registros.sort((a, b) => {
+                const dataA = new Date(obterData(a) || 0).getTime() || 0;
+                const dataB = new Date(obterData(b) || 0).getTime() || 0;
+                return dataB - dataA;
+            });
 
 
-    card.className =
-        "alert-card";
+            if (
+                registros.length === 0
+            ) {
+
+                lista.style.display = "none";
+
+                vazio.classList.add("show");
+
+                const tituloVazio = vazio.querySelector("h3");
+                const textoVazio = vazio.querySelector("p");
+                if (tituloVazio) {
+                    tituloVazio.textContent = filtroAtual === "all"
+                        ? "Nenhum alerta encontrado"
+                        : "Nenhum alerta com este status";
+                }
+                if (textoVazio) {
+                    textoVazio.textContent = filtroAtual === "all"
+                        ? "Quando houver registros de alertas ou verificações, eles aparecerão aqui."
+                        : "Tente selecionar outro status para consultar os registros.";
+                }
+
+            } else {
+
+                lista.style.display = "flex";
+
+                vazio.classList.remove("show");
 
 
-    const classeIcone =
-        tipo === "emergency"
-            ? "emergency"
-            : tipo === "test"
-                ? "test"
-                : "";
+                registros.forEach(
+                    alerta => {
+
+                        lista.appendChild(
+                            criarCard(alerta)
+                        );
+
+                    }
+                );
+            }
 
 
-    const classeStatus =
-        status === "Resolvido"
-            ? "resolved"
-            : status === "Cancelado"
-                ? "cancelled"
-                : "";
+            atualizarResumo();
+        }
 
 
-    card.innerHTML = `
+        /* =========================================================
+           CRIAR CARD
+        ========================================================= */
+
+        function criarCard(alerta) {
+
+            const card =
+                document.createElement("article");
+
+
+            const tipo =
+                normalizarTipo(alerta);
+
+
+            const titulo =
+                obterTitulo(alerta);
+
+
+            const data =
+                formatarData(
+                    obterData(alerta)
+                );
+
+
+            const status =
+                normalizarStatus(alerta);
+
+
+            const localizacao =
+                obterLocalizacao(alerta);
+
+
+            const contatos =
+                obterContatos(alerta);
+
+
+            card.className =
+                "alert-card";
+
+
+            const classeIcone =
+                tipo === "emergency"
+                    ? "emergency"
+                    : tipo === "test"
+                        ? "test"
+                        : "";
+
+
+            const classeStatus =
+                status === "Resolvido"
+                    ? "resolved"
+                    : status === "Cancelado"
+                        ? "cancelled"
+                        : "";
+
+
+            card.innerHTML = `
 
         <div class="alert-icon ${classeIcone}">
             ${obterIcone(alerta)}
@@ -2555,384 +2308,333 @@ function criarCard(alerta) {
     `;
 
 
-    const botao =
-        card.querySelector(
-            ".alert-action"
-        );
+            const botao =
+                card.querySelector(
+                    ".alert-action"
+                );
 
 
-    botao.addEventListener(
-        "click",
-        function(event) {
+            botao.addEventListener(
+                "click",
+                function (event) {
 
-            event.stopPropagation();
+                    event.stopPropagation();
 
-            openDetails(
-                titulo,
-                data,
-                status,
-                localizacao,
-                contatos
+                    openDetails(
+                        titulo,
+                        data,
+                        status,
+                        localizacao,
+                        contatos
+                    );
+                }
             );
-        }
-    );
 
 
-    card.addEventListener(
-        "click",
-        function() {
+            card.addEventListener(
+                "click",
+                function () {
 
-            openDetails(
-                titulo,
-                data,
-                status,
-                localizacao,
-                contatos
+                    openDetails(
+                        titulo,
+                        data,
+                        status,
+                        localizacao,
+                        contatos
+                    );
+                }
             );
+
+
+            return card;
         }
-    );
 
 
-    return card;
-}
+        /* =========================================================
+           ATUALIZAR RESUMO
+        ========================================================= */
 
+        function atualizarResumo() {
 
-/* =========================================================
-   ATUALIZAR RESUMO
-========================================================= */
+            const total =
+                alertas.length;
 
-function atualizarResumo() {
 
-    const total =
-        alertas.length;
+            const emergencias =
+                alertas.filter(
+                    alerta =>
+                        normalizarTipo(alerta)
+                        === "emergency"
+                ).length;
 
 
-    const emergencias =
-        alertas.filter(
-            alerta =>
-                normalizarTipo(alerta)
-                === "emergency"
-        ).length;
+            const resolvidos =
+                alertas.filter(
+                    alerta => {
 
+                        return normalizarStatusChave(alerta) === "encerrado";
+                    }
+                ).length;
 
-    const resolvidos =
-        alertas.filter(
-            alerta => {
 
-                const status =
-                    normalizarStatus(
-                        alerta
-                    ).toLowerCase();
+            document.getElementById(
+                "totalAlerts"
+            ).textContent = total;
 
 
-                return (
-                    status.includes("resolv") ||
-                    status.includes("conclu")
-                );
-            }
-        ).length;
+            document.getElementById(
+                "emergencyAlerts"
+            ).textContent =
+                emergencias;
 
 
-    document.getElementById(
-        "totalAlerts"
-    ).textContent = total;
+            document.getElementById(
+                "resolvedAlerts"
+            ).textContent =
+                resolvidos;
 
 
-    document.getElementById(
-        "emergencyAlerts"
-    ).textContent =
-        emergencias;
+            document.getElementById(
+                "historyCount"
+            ).textContent =
+                total === 1
+                    ? "1"
+                    : total;
+        }
 
 
-    document.getElementById(
-        "resolvedAlerts"
-    ).textContent =
-        resolvidos;
+        /* =========================================================
+           FILTROS
+        ========================================================= */
 
-
-    document.getElementById(
-        "historyCount"
-    ).textContent =
-        total === 1
-            ? "1"
-            : total;
-}
-
-
-/* =========================================================
-   FILTROS
-========================================================= */
-
-function filterAlerts(
-    tipo,
-    botao
-) {
-
-    filtroAtual = tipo;
-
-
-    document
-        .querySelectorAll(
-            ".filter-button"
-        )
-        .forEach(
-            elemento => {
-
-                elemento.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-
-    if (botao) {
-
-        botao.classList.add(
-            "active"
-        );
-    }
-
-
-    renderizarHistorico();
-}
-
-
-/* =========================================================
-   MODAL DETALHES
-========================================================= */
-
-function openDetails(
-    titulo,
-    data,
-    status,
-    localizacao,
-    contatos
-) {
-
-    document.getElementById(
-        "detailTitle"
-    ).textContent =
-        titulo || "-";
-
-
-    document.getElementById(
-        "detailDate"
-    ).textContent =
-        data || "-";
-
-
-    document.getElementById(
-        "detailStatus"
-    ).textContent =
-        status || "-";
-
-
-    document.getElementById(
-        "detailLocation"
-    ).textContent =
-        localizacao || "-";
-
-
-    document.getElementById(
-        "detailContacts"
-    ).textContent =
-        contatos || "-";
-
-
-    document.getElementById(
-        "detailsModal"
-    ).classList.add("show");
-
-
-    document.body.style.overflow =
-        "hidden";
-}
-
-
-function closeDetails() {
-
-    document.getElementById(
-        "detailsModal"
-    ).classList.remove("show");
-
-
-    document.body.style.overflow =
-        "";
-}
-
-
-function fecharModalFora(event) {
-
-    if (
-        event.target.id ===
-        "detailsModal"
-    ) {
-
-        closeDetails();
-    }
-}
-
-
-/* =========================================================
-   MODAL LIMPAR
-========================================================= */
-
-function openClearModal() {
-
-    if (
-        alertas.length === 0
-    ) {
-
-        showToast(
-            "Não há histórico para limpar."
-        );
-
-        return;
-    }
-
-
-    document.getElementById(
-        "clearModal"
-    ).classList.add("show");
-
-
-    document.body.style.overflow =
-        "hidden";
-}
-
-
-function closeClearModal() {
-
-    document.getElementById(
-        "clearModal"
-    ).classList.remove("show");
-
-
-    document.body.style.overflow =
-        "";
-}
-
-
-function fecharClearFora(event) {
-
-    if (
-        event.target.id ===
-        "clearModal"
-    ) {
-
-        closeClearModal();
-    }
-}
-
-
-/* =========================================================
-   LIMPAR HISTÓRICO
-========================================================= */
-
-function clearHistory() {
-
-    localStorage.removeItem(
-        HISTORY_KEY
-    );
-
-
-    alertas = [];
-
-
-    filtroAtual = "all";
-
-
-    document
-        .querySelectorAll(
-            ".filter-button"
-        )
-        .forEach(
-            botao => {
-
-                botao.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-
-    const primeiro =
-        document.querySelector(
-            ".filter-button"
-        );
-
-
-    if (primeiro) {
-
-        primeiro.classList.add(
-            "active"
-        );
-    }
-
-
-    closeClearModal();
-
-
-    renderizarHistorico();
-
-
-    showToast(
-        "Histórico apagado com sucesso."
-    );
-}
-
-
-/* =========================================================
-   NAVEGAÇÃO
-========================================================= */
-
-function goTo(pagina) {
-
-    window.location.href =
-        pagina;
-}
-
-
-/* =========================================================
-   TECLA ESC
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Escape"
+        function filterAlerts(
+            tipo,
+            botao
         ) {
 
-            closeDetails();
+            filtroAtual = tipo;
 
-            closeClearModal();
+
+            document
+                .querySelectorAll(
+                    ".filter-button"
+                )
+                .forEach(
+                    elemento => {
+
+                        elemento.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+            if (botao) {
+
+                botao.classList.add(
+                    "active"
+                );
+            }
+
+
+            renderizarHistorico();
         }
 
-    }
-);
+
+        /* =========================================================
+           MODAL DETALHES
+        ========================================================= */
+
+        function openDetails(
+            titulo,
+            data,
+            status,
+            localizacao,
+            contatos
+        ) {
+
+            document.getElementById(
+                "detailTitle"
+            ).textContent =
+                titulo || "-";
 
 
-/* =========================================================
-   INICIAR
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-        carregarHistorico();
-
-    }
-);
-
-</script>
+            document.getElementById(
+                "detailDate"
+            ).textContent =
+                data || "-";
 
 
+            document.getElementById(
+                "detailStatus"
+            ).textContent =
+                status || "-";
+
+
+            document.getElementById(
+                "detailLocation"
+            ).textContent =
+                localizacao || "-";
+
+
+            document.getElementById(
+                "detailContacts"
+            ).textContent =
+                contatos || "-";
+
+
+            document.getElementById(
+                "detailsModal"
+            ).classList.add("show");
+
+
+            document.body.style.overflow =
+                "hidden";
+        }
+
+
+        function closeDetails() {
+
+            document.getElementById(
+                "detailsModal"
+            ).classList.remove("show");
+
+
+            document.body.style.overflow =
+                "";
+        }
+
+
+        function fecharModalFora(event) {
+
+            if (
+                event.target.id ===
+                "detailsModal"
+            ) {
+
+                closeDetails();
+            }
+        }
+
+
+        /* =========================================================
+           MODAL LIMPAR
+        ========================================================= */
+
+        function openClearModal() {
+
+            if (
+                alertas.length === 0
+            ) {
+
+                showToast(
+                    "Não há histórico para limpar."
+                );
+
+                return;
+            }
+
+
+            document.getElementById(
+                "clearModal"
+            ).classList.add("show");
+
+
+            document.body.style.overflow =
+                "hidden";
+        }
+
+
+        function closeClearModal() {
+
+            document.getElementById(
+                "clearModal"
+            ).classList.remove("show");
+
+
+            document.body.style.overflow =
+                "";
+        }
+
+
+        function fecharClearFora(event) {
+
+            if (
+                event.target.id ===
+                "clearModal"
+            ) {
+
+                closeClearModal();
+            }
+        }
+
+
+        /* =========================================================
+           LIMPAR HISTÓRICO
+        ========================================================= */
+
+        function clearHistory() {
+
+            closeClearModal();
+            showToast("Os registros são mantidos no banco de dados. A exclusão permanente não está disponível nesta página.");
+        }
+
+        /* =========================================================
+           NAVEGAÇÃO
+        ========================================================= */
+
+        function goTo(pagina) {
+
+            window.location.href =
+                pagina;
+        }
+
+
+        /* =========================================================
+           TECLA ESC
+        ========================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeDetails();
+
+                    closeClearModal();
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           INICIAR
+        ========================================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                carregarHistorico();
+
+            }
+        );
+
+    </script>
+
+
+    <style>
+/* Modo discreto: reduz a exposição de informações pessoais sem bloquear ações de emergência. */
+body.sh-modo-discreto [data-sensitive], body.sh-modo-discreto .dado-sensivel { filter: blur(5px); user-select: none; }
+body.sh-modo-discreto [data-sensitive]:hover, body.sh-modo-discreto .dado-sensivel:hover { filter: none; }
+</style>
 <script src="assets/db-sync.js"></script>
 
 </body>
+
 </html>

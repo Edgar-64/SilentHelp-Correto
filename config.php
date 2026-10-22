@@ -2016,101 +2016,51 @@ $primeiraLetra = mb_strtoupper(
            TOGGLES
         ================================================== */
 
-        function alternarToggle(botao, nome, chave) {
-
-            botao.classList.toggle("active");
-
-            const ativo =
-                botao.classList.contains("active");
-
-            localStorage.setItem(
-                "silenthelp_" + chave,
-                ativo ? "1" : "0"
-            );
-
-            mostrarMensagem(
-                nome +
-                (ativo ? " ativado." : " desativado.")
-            );
+        async function alternarToggle(botao, nome, chave) {
+            const estavaAtivo = botao.classList.contains("active");
+            const ativo = !estavaAtivo;
+            botao.classList.toggle("active", ativo);
+            botao.disabled = true;
+            try {
+                const api = window.SilentHelpAPI;
+                if (!api) throw new Error("API indisponível");
+                const resultado = await api.post("save_preferences", { [chave]: ativo });
+                if (!resultado || !resultado.ok) throw new Error(resultado?.message || "Não foi possível salvar");
+                localStorage.setItem("silenthelp_" + chave, ativo ? "1" : "0");
+                document.documentElement.dataset["sh" + chave] = ativo ? "1" : "0";
+                document.body.classList.toggle("sh-modo-discreto", chave === "modoDiscreto" && ativo);
+                mostrarMensagem(nome + (ativo ? " ativado." : " desativado."));
+            } catch (erro) {
+                botao.classList.toggle("active", estavaAtivo);
+                mostrarMensagem("Não foi possível salvar a configuração. Tente novamente.");
+                console.error(erro);
+            } finally {
+                botao.disabled = false;
+            }
         }
 
-
-        function carregarToggles() {
-
-            const toggles =
-                document.querySelectorAll(".toggle");
-
-            toggles.forEach(function (botao) {
-
-                const onclick =
-                    botao.getAttribute("onclick");
-
-                if (!onclick) {
-                    return;
+        async function carregarToggles() {
+            const chaves = ["localizacao", "modoDiscreto", "alertas", "notificacoes", "sons"];
+            try {
+                const api = window.SilentHelpAPI;
+                if (api) {
+                    const resposta = await api.post("get_preferences", {});
+                    if (resposta && resposta.ok && resposta.preferences) {
+                        resposta.preferences && Object.entries(resposta.preferences).forEach(([chave, valor]) => {
+                            localStorage.setItem("silenthelp_" + chave, valor ? "1" : "0");
+                        });
+                    }
                 }
-
-                const resultado =
-                    onclick.match(/'([^']+)'\)/);
-
-                /*
-                    As configurações são carregadas
-                    diretamente pelas chaves abaixo.
-                */
-
+            } catch (erro) { console.warn("Preferências não carregadas do servidor", erro); }
+            const toggles = document.querySelectorAll(".toggle");
+            chaves.forEach((chave, indice) => {
+                const valor = localStorage.getItem("silenthelp_" + chave);
+                const botao = toggles[indice];
+                if (!botao) return;
+                if (valor !== null) botao.classList.toggle("active", valor === "1");
+                document.documentElement.dataset["sh" + chave] = valor === null ? (botao.classList.contains("active") ? "1" : "0") : valor;
             });
-
-            carregarTogglePorChave(
-                "localizacao",
-                0
-            );
-
-            carregarTogglePorChave(
-                "modoDiscreto",
-                1
-            );
-
-            carregarTogglePorChave(
-                "alertas",
-                2
-            );
-
-            carregarTogglePorChave(
-                "notificacoes",
-                3
-            );
-
-            carregarTogglePorChave(
-                "sons",
-                4
-            );
-        }
-
-
-        function carregarTogglePorChave(chave, indice) {
-
-            const valor =
-                localStorage.getItem(
-                    "silenthelp_" + chave
-                );
-
-            if (valor === null) {
-                return;
-            }
-
-            const toggles =
-                document.querySelectorAll(".toggle");
-
-            const botao = toggles[indice];
-
-            if (!botao) {
-                return;
-            }
-
-            if (valor === "1") {
-                botao.classList.add("active");
-            } else {
-                botao.classList.remove("active");
-            }
+            document.body.classList.toggle("sh-modo-discreto", localStorage.getItem("silenthelp_modoDiscreto") === "1");
         }
 
 

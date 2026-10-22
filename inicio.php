@@ -3134,7 +3134,7 @@ $nomeUsuario = $usuario["nome"];
         <section class="greeting">
 
             <h1>
-                Olá, <span><?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?>!</span> 👋
+                Olá, <span><?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?>!</span>
             </h1>
 
             <p>
@@ -3195,8 +3195,6 @@ $nomeUsuario = $usuario["nome"];
 
 
                 <button type="button" class="emergency-button" onclick="abrirSOS()">
-
-                    <span>🚨</span>
 
                     BOTÃO DE EMERGÊNCIA
 
@@ -3448,7 +3446,7 @@ $nomeUsuario = $usuario["nome"];
 
                 <button type="button" class="test-button" id="testButton" onclick="testarDispositivo()">
 
-                    ⚡ &nbsp; TESTAR DISPOSITIVO
+                    TESTAR DISPOSITIVO
 
                 </button>
 
@@ -5017,48 +5015,8 @@ $nomeUsuario = $usuario["nome"];
                 };
 
 
-                /*
-                 * Guarda apenas para a própria tela
-                 * e histórico local.
-                 *
-                 * O responsável NÃO depende disso.
-                 */
-
-                localStorage.setItem(
-                    "ultimoAlertaSilentHelp",
-                    JSON.stringify(alerta)
-                );
-
-
-                let historico = [];
-
-                try {
-
-                    historico =
-                        JSON.parse(
-                            localStorage.getItem(
-                                "historicoAlertasSilentHelp"
-                            )
-                        ) || [];
-
-                } catch (erro) {
-
-                    historico = [];
-                }
-
-
-                historico.unshift(
-                    alerta
-                );
-
-                historico =
-                    historico.slice(0, 50);
-
-
-                localStorage.setItem(
-                    "historicoAlertasSilentHelp",
-                    JSON.stringify(historico)
-                );
+                // O alerta já foi enviado ao api.php e registrado no banco.
+                // Não manter cópia persistente no navegador.
 
 
                 /*
@@ -5278,7 +5236,7 @@ $nomeUsuario = $usuario["nome"];
             const textoOriginal = botao.innerHTML;
 
             botao.disabled = true;
-            botao.innerHTML = "⏳ &nbsp; TESTANDO...";
+            botao.innerHTML = "TESTANDO...";
 
             const resultados = [];
 
@@ -6047,7 +6005,12 @@ $nomeUsuario = $usuario["nome"];
 
     </script>
 
-    <script src="assets/db-sync.js"></script>
+    <style>
+/* Modo discreto: reduz a exposição de informações pessoais sem bloquear ações de emergência. */
+body.sh-modo-discreto [data-sensitive], body.sh-modo-discreto .dado-sensivel { filter: blur(5px); user-select: none; }
+body.sh-modo-discreto [data-sensitive]:hover, body.sh-modo-discreto .dado-sensivel:hover { filter: none; }
+</style>
+<script src="assets/db-sync.js"></script>
 </body>
 
 </html>

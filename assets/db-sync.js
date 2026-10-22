@@ -152,8 +152,36 @@
         bootstrap();
     }
 
-    window.SilentHelpAPI = {
-        post
+    window.SilentHelpAPI = { post };
+
+    // Preferências do protegido: carregadas da conta e disponibilizadas em todas as páginas.
+    window.SilentHelpSettings = {
+        localizacao: true,
+        modoDiscreto: false,
+        alertas: true,
+        notificacoes: true,
+        sons: false,
+        ready: Promise.resolve()
     };
+
+    window.SilentHelpSettings.ready = post('get_preferences', {}).then(function (r) {
+        if (!r || !r.ok || !r.preferences) return window.SilentHelpSettings;
+        Object.assign(window.SilentHelpSettings, r.preferences);
+        Object.keys(r.preferences).forEach(function (key) {
+            originalSet.call(localStorage, 'silenthelp_' + key, r.preferences[key] ? '1' : '0');
+        });
+        if (document.body) document.body.classList.toggle('sh-modo-discreto', !!r.preferences.modoDiscreto);
+        document.documentElement.dataset.shLocalizacao = r.preferences.localizacao ? '1' : '0';
+        document.documentElement.dataset.shAlertas = r.preferences.alertas ? '1' : '0';
+        document.documentElement.dataset.shNotificacoes = r.preferences.notificacoes ? '1' : '0';
+        document.documentElement.dataset.shSons = r.preferences.sons ? '1' : '0';
+        return window.SilentHelpSettings;
+    }).catch(function () { return window.SilentHelpSettings; });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (window.SilentHelpSettings) {
+            document.body.classList.toggle('sh-modo-discreto', !!window.SilentHelpSettings.modoDiscreto);
+        }
+    });
 
 })();

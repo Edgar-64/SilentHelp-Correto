@@ -1912,6 +1912,11 @@
 </script>
 
 
+<style>
+/* Modo discreto: reduz a exposição de informações pessoais sem bloquear ações de emergência. */
+body.sh-modo-discreto [data-sensitive], body.sh-modo-discreto .dado-sensivel { filter: blur(5px); user-select: none; }
+body.sh-modo-discreto [data-sensitive]:hover, body.sh-modo-discreto .dado-sensivel:hover { filter: none; }
+</style>
 <script src="assets/db-sync.js"></script>
 </body>
 
