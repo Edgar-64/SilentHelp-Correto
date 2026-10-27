@@ -76,60 +76,6 @@ try {
 
     switch ($action) {
 
-        case "get_preferences":
-            needUser();
-            $defaults = [
-                "localizacao" => "1",
-                "modoDiscreto" => "0",
-                "alertas" => "1",
-                "notificacoes" => "1",
-                "sons" => "0"
-            ];
-            $usuarioId = uid();
-            $stmt = $conn->prepare("SELECT setting_key, setting_value FROM settings WHERE user_id = ? AND setting_key IN ('localizacao','modoDiscreto','alertas','notificacoes','sons')");
-            if (!$stmt) throw new Exception($conn->error);
-            $stmt->bind_param("i", $usuarioId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {
-                $defaults[$row["setting_key"]] = $row["setting_value"] === "1" ? "1" : "0";
-            }
-            $stmt->close();
-            $prefs = [];
-            foreach ($defaults as $key => $value) $prefs[$key] = ($value === "1");
-            out(["ok" => true, "preferences" => $prefs]);
-
-        case "save_preferences":
-            needUser();
-            $allowed = ["localizacao", "modoDiscreto", "alertas", "notificacoes", "sons"];
-            $usuarioId = uid();
-            $saved = [];
-            foreach ($allowed as $key) {
-                if (!array_key_exists($key, $d)) continue;
-                $value = filter_var($d[$key], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-                if ($value === null) out(["ok" => false, "message" => "Preferência inválida: " . $key], 400);
-                $valor = $value ? "1" : "0";
-                $check = $conn->prepare("SELECT id FROM settings WHERE user_id = ? AND setting_key = ? LIMIT 1");
-                if (!$check) throw new Exception($conn->error);
-                $check->bind_param("is", $usuarioId, $key);
-                $check->execute();
-                $check->bind_result($settingId);
-                $exists = $check->fetch();
-                $check->close();
-                if ($exists) {
-                    $stmt = $conn->prepare("UPDATE settings SET setting_value = ? WHERE id = ?");
-                    if (!$stmt) throw new Exception($conn->error);
-                    $stmt->bind_param("si", $valor, $settingId);
-                } else {
-                    $stmt = $conn->prepare("INSERT INTO settings (user_id, setting_key, setting_value) VALUES (?, ?, ?)");
-                    if (!$stmt) throw new Exception($conn->error);
-                    $stmt->bind_param("iss", $usuarioId, $key, $valor);
-                }
-                $stmt->execute();
-                $stmt->close();
-                $saved[$key] = $value;
-            }
-            out(["ok" => true, "preferences" => $saved]);
         case "battery_update":
             needUser();
             $nivel = filter_var($d["level"] ?? null, FILTER_VALIDATE_INT);
@@ -1897,6 +1843,56 @@ ALERTA DO RESPONSÁVEL
                 "ok" => true,
                 "items" => $items
             ]);
+
+        case "alert_history":
+
+            needUser();
+
+            // O histórico da pessoa protegida consulta todos os alertas
+            // vinculados à sessão atual, diretamente no banco.
+            $usuarioId = uid();
+            $stmt = $conn->prepare("
+                SELECT id, type, message, status, latitude, longitude, created_at
+                FROM alerts
+                WHERE user_id = ?
+                ORDER BY created_at DESC, id DESC
+            ");
+
+            if (!$stmt) {
+                throw new Exception($conn->error);
+            }
+
+            $stmt->bind_param("i", $usuarioId);
+            $stmt->execute();
+            $stmt->bind_result($idAlerta, $tipo, $mensagem, $status, $latitude, $longitude, $criadoEm);
+
+            $alertas = [];
+            while ($stmt->fetch()) {
+                $localizacao = "Localização não informada";
+                if ($latitude !== null && $longitude !== null) {
+                    $localizacao = "Coordenadas: " . $latitude . ", " . $longitude;
+                }
+
+                $alertas[] = [
+                    "id" => (int) $idAlerta,
+                    "tipo" => $tipo,
+                    "titulo" => $mensagem,
+                    "mensagem" => $mensagem,
+                    "status" => $status,
+                    "latitude" => $latitude,
+                    "longitude" => $longitude,
+                    "localizacao" => $localizacao,
+                    "contatos" => [],
+                    "created_at" => $criadoEm
+                ];
+            }
+            $stmt->close();
+
+            out([
+                "ok" => true,
+                "alertas" => $alertas
+            ]);
+
 
         case "responsible_alert_history":
 

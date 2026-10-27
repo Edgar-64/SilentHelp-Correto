@@ -1093,70 +1093,6 @@
 
                     </label>
 
-
-                    <!-- =================================================
-                         ADMINISTRADOR — DESATIVADO
-                         
-                         Mantido no código para uso futuro.
-                    ==================================================
-
-                    <label class="type-option">
-
-                        <input
-                            type="radio"
-                            name="tipoConta"
-                            value="admin"
-                            onchange="alterarTipoConta()"
-                        >
-
-                        <div class="type-card">
-
-                            <div class="type-icon">
-
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                >
-
-                                    <path
-                                        d="
-                                            M12 3
-                                            l8 3
-                                            v5
-                                            c0 5.2-3.4 8.7-8 10
-                                            c-4.6-1.3-8-4.8-8-10
-                                            V6l8-3Z
-                                        "
-                                    />
-
-                                    <path
-                                        d="M9 12l2 2 4-4"
-                                    />
-
-                                </svg>
-
-                            </div>
-
-                            <strong>
-                                Administrador
-                            </strong>
-
-                            <small>
-                                Gerenciar usuários e
-                                recursos do sistema.
-                            </small>
-
-                        </div>
-
-                    </label>
-
-                    ==================================================
-                         FIM — ADMINISTRADOR
-                    ================================================== -->
-
-
                 </div>
 
             </section>
@@ -1935,13 +1871,19 @@
                     Li e concordo com os
 
                     <a
-                        href="#"
+                        href="termos.php"
                         onclick="mostrarTermos(event)"
                     >
                         termos de uso
                     </a>
 
-                    e a política de privacidade
+                    e a 
+                    <a
+                        href="termos.php"
+                        onclick="mostrarTermos(event)"
+                    >
+                        política de privacidade
+                    </a>
                     do SilentHelp.
 
                 </label>

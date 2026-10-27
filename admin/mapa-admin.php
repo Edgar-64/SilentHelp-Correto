@@ -1432,6 +1432,59 @@
             background: #0c0a10;
         }
     </style>
+<style id="silenthelp-responsive-admin">
+/* Botão de menu aparece apenas em telas compactas */
+.sh-menu-toggle { display: none; }
+/* Ajustes responsivos globais do painel SilentHelp */
+:root { --sh-sidebar-width: 260px; }
+@media (max-width: 1000px) {
+  body { overflow-x: hidden; }
+  #sidebar.sidebar {
+    position: fixed !important; top: 0 !important; bottom: 0 !important; left: 0 !important; right: auto !important;
+    width: min(285px, 86vw) !important; height: 100dvh !important; max-height: 100dvh !important;
+    display: flex !important; flex-direction: column !important; align-items: stretch !important;
+    padding: 22px 14px !important; overflow-y: auto !important; overflow-x: hidden !important;
+    transform: translateX(-110%) !important; transition: transform .25s ease !important;
+    z-index: 1201 !important; border-right: 1px solid rgba(255,255,255,.12) !important; border-top: 0 !important;
+    box-shadow: 16px 0 40px rgba(0,0,0,.35) !important;
+  }
+  #sidebar.sidebar.open { transform: translateX(0) !important; }
+  #sidebar .brand, #sidebar .admin-profile, #sidebar .nav-label, #sidebar .sidebar-bottom { display: initial; }
+  #sidebar .sidebar-nav { display: flex !important; flex-direction: column !important; width: 100% !important; gap: 5px !important; overflow: visible !important; }
+  #sidebar .sidebar-link { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 12px !important; padding: 12px 13px !important; font-size: 13px !important; text-align: left !important; white-space: normal !important; }
+  #sidebar .sidebar-link svg { flex: 0 0 20px !important; width: 20px !important; height: 20px !important; }
+  #sidebar .link-badge { position: static !important; margin-left: auto !important; }
+  .sh-sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.62); backdrop-filter: blur(2px); z-index: 1200; opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease; }
+  .sh-sidebar-overlay.show { opacity: 1; visibility: visible; }
+  .sh-menu-toggle { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex: 0 0 42px; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; background: #17121d; color: #fff; cursor: pointer; font-size: 22px; line-height: 1; box-shadow: 0 4px 16px rgba(0,0,0,.18); }
+  .sh-menu-toggle:focus-visible { outline: 2px solid #b76cff; outline-offset: 3px; }
+  body.sh-sidebar-active { overflow: hidden !important; }
+  .main, .main-content, .content, .content-wrapper, .content-container { width: 100% !important; max-width: 100% !important; margin-left: 0 !important; }
+  .main, .main-content, .content { min-width: 0 !important; }
+  .layout { display: block !important; width: 100% !important; }
+  .content, .main, .main-content, .content-wrapper, .content-container { box-sizing: border-box; }
+  .content-header, .page-header, .header-content { min-width: 0; flex-wrap: wrap; gap: 12px; }
+  .filters { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; overflow: visible !important; padding: 14px !important; }
+  .filter { flex: 0 1 auto; min-height: 38px; white-space: nowrap; }
+  .table-container, .table-wrapper, .data-table-wrapper, .table-responsive { max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  table { max-width: 100%; }
+  input, select, textarea { max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .sh-menu-toggle { width: 40px; height: 40px; flex-basis: 40px; }
+  .content, .main, .main-content, .content-wrapper, .content-container { padding-left: 14px !important; padding-right: 14px !important; }
+  .filters { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filter { width: 100%; padding: 10px 8px !important; text-align: center; font-size: 12px !important; }
+  .summary-grid, .stats-grid, .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .modal, .modal-content, .dialog { max-width: calc(100vw - 24px) !important; }
+}
+@media (max-width: 380px) {
+  .filters { grid-template-columns: minmax(0, 1fr); }
+  .summary-grid, .stats-grid, .cards-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
+
+</style>
+<link rel="stylesheet" href="assets/admin-modals.css?v=20261027b">
 </head>
 
 
@@ -1503,16 +1556,6 @@
                         <circle cx="12" cy="10" r="2.5" />
                     </svg>
                     <span>Mapa de ocorrências</span>
-
-                </a>
-
-                <a href="dispositivos.php" class="sidebar-link">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <rect x="5" y="2" width="14" height="20" rx="2" />
-                        <line x1="9" y1="18" x2="15" y2="18" />
-                    </svg>
-                    <span>Dispositivos</span>
 
                 </a>
 
@@ -2395,7 +2438,84 @@
 
     </script>
 
-    <script src="../assets/admin-db.js"></script>
+    <script src="assets/admin-db.js"></script>
+<script id="silenthelp-responsive-admin-js">
+(function () {
+  function setupSilentHelpSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    if (!sidebar || document.body.dataset.shSidebarReady === '1') return;
+    document.body.dataset.shSidebarReady = '1';
+
+    var overlay = document.getElementById('sidebarOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'sidebarOverlay';
+      overlay.className = 'sh-sidebar-overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(overlay);
+    } else {
+      overlay.classList.add('sh-sidebar-overlay');
+    }
+
+    var toggle = document.querySelector('.mobile-menu, .menu-toggle, [data-sidebar-toggle]');
+    if (!toggle) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'sh-menu-toggle';
+      toggle.setAttribute('aria-label', 'Abrir menu lateral');
+      toggle.setAttribute('aria-controls', 'sidebar');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.innerHTML = '&#9776;';
+      var main = document.querySelector('.main-content, .content, .main, main') || document.body;
+      var header = main.querySelector('.content-header, .page-header, header, .header-content');
+      if (header) header.insertBefore(toggle, header.firstChild);
+      else document.body.insertBefore(toggle, document.body.firstChild);
+    }
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+      document.body.classList.add('sh-sidebar-active');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Fechar menu lateral');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+      document.body.classList.remove('sh-sidebar-active');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Abrir menu lateral');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    function toggleSidebar() {
+      if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar();
+    }
+
+    // Existing buttons may call their own toggleSidebar function; this listener
+    // makes the behavior consistent across every admin page.
+    toggle.addEventListener('click', function (event) {
+      event.preventDefault();
+      toggleSidebar();
+    });
+    overlay.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeSidebar();
+    });
+    sidebar.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.matchMedia('(max-width: 1000px)').matches) closeSidebar();
+      });
+    });
+    window.addEventListener('resize', function () {
+      if (!window.matchMedia('(max-width: 1000px)').matches) closeSidebar();
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupSilentHelpSidebar);
+  else setupSilentHelpSidebar();
+})();
+
+</script>
 </body>
 
 </html>

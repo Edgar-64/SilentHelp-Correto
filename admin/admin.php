@@ -6,14 +6,14 @@ require_once __DIR__ . '/../db.php';
 
 /* Autorização compatível com a tabela users do SQL enviado. */
 if (empty($_SESSION['usuario_id'])) {
-    header('Location: ../login.php');
+    header('Location: login-admin.php');
     exit;
 }
 $adminId = (int) $_SESSION['usuario_id'];
 $authStmt = $conn->prepare('SELECT id, type FROM users WHERE id = ? LIMIT 1');
 if (!$authStmt) {
     error_log('SilentHelp dashboard auth: ' . $conn->error);
-    header('Location: ../login.php');
+    header('Location: ../admin.php');
     exit;
 }
 $authStmt->bind_param('i', $adminId);
@@ -47,7 +47,7 @@ try {
         'usuarios' => "SELECT COUNT(*) AS total FROM users WHERE type <> 'admin'",
         'dispositivos' => "SELECT COUNT(*) AS total FROM devices",
         'emergencias' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(type) = 'emergencia'",
-        'resolvidos' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(status) = 'resolved'",
+        'resolvidos' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(status) IN ('resolved','encerrado','encerrada','closed','resolvido','resolvida')",
         'ativos' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(status) = 'open'",
         'testes' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(type) IN ('teste', 'test')",
         'cancelados' => "SELECT COUNT(*) AS total FROM alerts WHERE LOWER(status) IN ('cancelled', 'canceled', 'cancelado', 'cancelada')",
@@ -59,7 +59,7 @@ try {
             throw new Exception($conn->error);
         }
         $row = $result->fetch_assoc();
-        $dashboardStats[$key] = (int) ($row['total'] ?? 0);
+        $dashboardStats[$key] = (int)($row['total'] ?? 0);
         $result->free();
     }
 
@@ -88,7 +88,7 @@ try {
     }
     $chartTotals = [];
     while ($row = $resultChart->fetch_assoc()) {
-        $chartTotals[$row['dia']] = (int) $row['total'];
+        $chartTotals[$row['dia']] = (int)$row['total'];
     }
     $resultChart->free();
 
@@ -105,9 +105,8 @@ try {
     error_log('SilentHelp dashboard SQL: ' . $e->getMessage());
 }
 
-function dashboardEscape($value): string
-{
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+function dashboardEscape($value): string {
+    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 }
 ?>
 <!DOCTYPE html>
@@ -117,11 +116,15 @@ function dashboardEscape($value): string
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>SilentHelp - Dashboard Administrativo</title>
 
     <style>
+
         /* =====================================================
            RESET
         ===================================================== */
@@ -179,13 +182,17 @@ function dashboardEscape($value): string
 
             background:
 
-                radial-gradient(circle at 30% -10%,
+                radial-gradient(
+                    circle at 30% -10%,
                     rgba(168, 85, 247, .18),
-                    transparent 32%),
+                    transparent 32%
+                ),
 
-                radial-gradient(circle at 100% 20%,
+                radial-gradient(
+                    circle at 100% 20%,
                     rgba(112, 45, 181, .12),
-                    transparent 30%),
+                    transparent 30%
+                ),
 
                 var(--fundo);
 
@@ -214,8 +221,10 @@ function dashboardEscape($value): string
 
             background-image:
 
-                radial-gradient(rgba(255, 255, 255, .035) 1px,
-                    transparent 1px);
+                radial-gradient(
+                    rgba(255, 255, 255, .035) 1px,
+                    transparent 1px
+                );
 
             background-size: 28px 28px;
 
@@ -264,7 +273,8 @@ function dashboardEscape($value): string
                 rgba(12, 10, 16, .96);
 
             border-right:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
 
             z-index: 1000;
 
@@ -289,7 +299,9 @@ function dashboardEscape($value): string
             gap: 10px;
 
             padding:
-                5px 10px 30px;
+                5px
+                10px
+                30px;
 
             text-decoration: none;
 
@@ -304,7 +316,10 @@ function dashboardEscape($value): string
             color: var(--roxo-2);
 
             filter:
-                drop-shadow(0 0 13px rgba(168, 85, 247, .35));
+                drop-shadow(
+                    0 0 13px
+                    rgba(168, 85, 247, .35)
+                );
         }
 
         .brand-name {
@@ -337,12 +352,14 @@ function dashboardEscape($value): string
             gap: 11px;
 
             padding:
-                13px 11px;
+                13px
+                11px;
 
             margin-bottom: 24px;
 
             border:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
 
             border-radius: 15px;
 
@@ -365,9 +382,11 @@ function dashboardEscape($value): string
             border-radius: 12px;
 
             background:
-                linear-gradient(135deg,
+                linear-gradient(
+                    135deg,
                     var(--roxo),
-                    var(--roxo-escuro));
+                    var(--roxo-escuro)
+                );
 
             font-weight: 700;
 
@@ -412,7 +431,9 @@ function dashboardEscape($value): string
             letter-spacing: 1px;
 
             padding:
-                0 12px 9px;
+                0
+                12px
+                9px;
         }
 
         .sidebar-nav {
@@ -435,7 +456,8 @@ function dashboardEscape($value): string
             gap: 12px;
 
             padding:
-                12px 13px;
+                12px
+                13px;
 
             border: 1px solid transparent;
 
@@ -484,12 +506,15 @@ function dashboardEscape($value): string
             color: var(--roxo-claro);
 
             background:
-                linear-gradient(100deg,
+                linear-gradient(
+                    100deg,
                     rgba(168, 85, 247, .16),
-                    rgba(168, 85, 247, .06));
+                    rgba(168, 85, 247, .06)
+                );
 
             border:
-                1px solid rgba(168, 85, 247, .18);
+                1px solid
+                rgba(168, 85, 247, .18);
         }
 
         .sidebar-link .link-badge {
@@ -528,7 +553,8 @@ function dashboardEscape($value): string
             padding-top: 15px;
 
             border-top:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
         }
 
         /* =====================================================
@@ -542,7 +568,9 @@ function dashboardEscape($value): string
             margin-left: 255px;
 
             padding:
-                28px 32px 50px;
+                28px
+                32px
+                50px;
         }
 
         .content-container {
@@ -579,7 +607,8 @@ function dashboardEscape($value): string
             height: 42px;
 
             border:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
 
             border-radius: 12px;
 
@@ -646,7 +675,8 @@ function dashboardEscape($value): string
             justify-content: center;
 
             border:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
 
             border-radius: 13px;
 
@@ -694,7 +724,8 @@ function dashboardEscape($value): string
                 var(--vermelho);
 
             box-shadow:
-                0 0 8px rgba(255, 93, 115, .6);
+                0 0 8px
+                rgba(255, 93, 115, .6);
         }
 
         /* =====================================================
@@ -712,7 +743,8 @@ function dashboardEscape($value): string
             padding: 4px;
 
             border:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
 
             border-radius: 13px;
 
@@ -725,7 +757,8 @@ function dashboardEscape($value): string
             border: none;
 
             padding:
-                8px 11px;
+                8px
+                11px;
 
             border-radius: 9px;
 
@@ -781,18 +814,22 @@ function dashboardEscape($value): string
             overflow: hidden;
 
             border:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
 
             border-radius: 19px;
 
             background:
 
-                linear-gradient(145deg,
+                linear-gradient(
+                    145deg,
                     rgba(22, 19, 29, .92),
-                    rgba(11, 10, 14, .96));
+                    rgba(11, 10, 14, .96)
+                );
 
             box-shadow:
-                0 12px 35px rgba(0, 0, 0, .18);
+                0 12px 35px
+                rgba(0, 0, 0, .18);
 
             transition:
                 transform .2s,
@@ -875,9 +912,11 @@ function dashboardEscape($value): string
             color: var(--stat-color);
 
             background:
-                color-mix(in srgb,
+                color-mix(
+                    in srgb,
                     var(--stat-color) 10%,
-                    transparent);
+                    transparent
+                );
         }
 
         .stat-icon svg {
@@ -922,7 +961,8 @@ function dashboardEscape($value): string
             display: grid;
 
             grid-template-columns:
-                minmax(0, 1.55fr) minmax(320px, .9fr);
+                minmax(0, 1.55fr)
+                minmax(320px, .9fr);
 
             gap: 18px;
 
@@ -936,14 +976,17 @@ function dashboardEscape($value): string
         .dashboard-card {
 
             border:
-                1px solid var(--borda);
+                1px solid
+                var(--borda);
 
             border-radius: 20px;
 
             background:
-                linear-gradient(145deg,
+                linear-gradient(
+                    145deg,
                     rgba(20, 18, 26, .90),
-                    rgba(10, 10, 14, .96));
+                    rgba(10, 10, 14, .96)
+                );
 
             box-shadow:
                 var(--sombra);
@@ -962,7 +1005,9 @@ function dashboardEscape($value): string
             gap: 15px;
 
             padding:
-                19px 20px 15px;
+                19px
+                20px
+                15px;
         }
 
         .card-title h2 {
@@ -1010,7 +1055,9 @@ function dashboardEscape($value): string
             height: 310px;
 
             padding:
-                10px 20px 20px;
+                10px
+                20px
+                20px;
 
             display: flex;
 
@@ -1028,10 +1075,13 @@ function dashboardEscape($value): string
             gap: 15px;
 
             padding:
-                20px 0 0;
+                20px
+                0
+                0;
 
             border-bottom:
-                1px solid rgba(255, 255, 255, .06);
+                1px solid
+                rgba(255, 255, 255, .06);
 
             position: relative;
         }
@@ -1059,7 +1109,8 @@ function dashboardEscape($value): string
             width: 100%;
 
             border-top:
-                1px dashed rgba(255, 255, 255, .055);
+                1px dashed
+                rgba(255, 255, 255, .055);
         }
 
         .bar-group {
@@ -1088,15 +1139,21 @@ function dashboardEscape($value): string
             max-width: 38px;
 
             border-radius:
-                8px 8px 2px 2px;
+                8px
+                8px
+                2px
+                2px;
 
             background:
-                linear-gradient(to top,
+                linear-gradient(
+                    to top,
                     var(--roxo-escuro),
-                    var(--roxo-2));
+                    var(--roxo-2)
+                );
 
             box-shadow:
-                0 0 18px rgba(168, 85, 247, .12);
+                0 0 18px
+                rgba(168, 85, 247, .12);
 
             transition:
                 height .5s ease,
@@ -1136,7 +1193,9 @@ function dashboardEscape($value): string
         .alert-summary {
 
             padding:
-                0 20px 20px;
+                0
+                20px
+                20px;
         }
 
         .summary-row {
@@ -1148,10 +1207,12 @@ function dashboardEscape($value): string
             gap: 11px;
 
             padding:
-                11px 0;
+                11px
+                0;
 
             border-bottom:
-                1px solid rgba(255, 255, 255, .045);
+                1px solid
+                rgba(255, 255, 255, .045);
         }
 
         .summary-row:last-child {
@@ -1223,10 +1284,12 @@ function dashboardEscape($value): string
             gap: 13px;
 
             padding:
-                13px 20px;
+                13px
+                20px;
 
             border-top:
-                1px solid rgba(255, 255, 255, .045);
+                1px solid
+                rgba(255, 255, 255, .045);
 
             cursor: pointer;
 
@@ -1314,7 +1377,8 @@ function dashboardEscape($value): string
         .recent-status {
 
             padding:
-                5px 8px;
+                5px
+                8px;
 
             border-radius: 7px;
 
@@ -1356,10 +1420,12 @@ function dashboardEscape($value): string
         .card-footer {
 
             padding:
-                12px 20px;
+                12px
+                20px;
 
             border-top:
-                1px solid rgba(255, 255, 255, .045);
+                1px solid
+                rgba(255, 255, 255, .045);
 
             text-align: center;
         }
@@ -1418,17 +1484,21 @@ function dashboardEscape($value): string
             padding: 25px;
 
             border:
-                1px solid var(--borda-roxa);
+                1px solid
+                var(--borda-roxa);
 
             border-radius: 23px;
 
             background:
-                linear-gradient(145deg,
+                linear-gradient(
+                    145deg,
                     rgba(29, 22, 38, .98),
-                    rgba(10, 9, 14, .99));
+                    rgba(10, 9, 14, .99)
+                );
 
             box-shadow:
-                0 30px 90px rgba(0, 0, 0, .65);
+                0 30px 90px
+                rgba(0, 0, 0, .65);
 
             animation:
                 modalIn .25s ease;
@@ -1518,10 +1588,12 @@ function dashboardEscape($value): string
             gap: 15px;
 
             padding:
-                12px 13px;
+                12px
+                13px;
 
             border:
-                1px solid rgba(255, 255, 255, .055);
+                1px solid
+                rgba(255, 255, 255, .055);
 
             border-radius: 12px;
 
@@ -1552,7 +1624,8 @@ function dashboardEscape($value): string
             padding: 12px;
 
             border:
-                1px solid rgba(168, 85, 247, .28);
+                1px solid
+                rgba(168, 85, 247, .28);
 
             border-radius: 12px;
 
@@ -1594,10 +1667,12 @@ function dashboardEscape($value): string
             pointer-events: none;
 
             padding:
-                12px 18px;
+                12px
+                18px;
 
             border:
-                1px solid rgba(168, 85, 247, .35);
+                1px solid
+                rgba(168, 85, 247, .35);
 
             border-radius: 13px;
 
@@ -1609,7 +1684,8 @@ function dashboardEscape($value): string
             font-size: 12px;
 
             box-shadow:
-                0 15px 45px rgba(0, 0, 0, .45);
+                0 15px 45px
+                rgba(0, 0, 0, .45);
 
             z-index: 7000;
 
@@ -1688,7 +1764,9 @@ function dashboardEscape($value): string
                 margin-left: 0;
 
                 padding:
-                    20px 18px 40px;
+                    20px
+                    18px
+                    40px;
             }
 
             .mobile-menu {
@@ -1777,7 +1855,9 @@ function dashboardEscape($value): string
             .main-content {
 
                 padding:
-                    17px 13px 30px;
+                    17px
+                    13px
+                    30px;
             }
 
             .welcome h1 {
@@ -1839,13 +1919,17 @@ function dashboardEscape($value): string
             .card-header {
 
                 padding:
-                    16px 15px 12px;
+                    16px
+                    15px
+                    12px;
             }
 
             .chart-area {
 
                 padding:
-                    8px 15px 15px;
+                    8px
+                    15px
+                    15px;
 
                 height: 270px;
             }
@@ -1853,7 +1937,8 @@ function dashboardEscape($value): string
             .recent-alert {
 
                 padding:
-                    12px 15px;
+                    12px
+                    15px;
             }
 
             .recent-icon {
@@ -1874,9 +1959,11 @@ function dashboardEscape($value): string
                 font-size: 8px;
             }
         }
+
     </style>
 
     <style id="admin-sidebar-structure">
+
         .sidebar {
             position: fixed;
             left: 0;
@@ -1944,9 +2031,11 @@ function dashboardEscape($value): string
             align-items: center;
             justify-content: center;
             border-radius: 12px;
-            background: linear-gradient(135deg,
-                    var(--roxo, #a855f7),
-                    var(--roxo-escuro, #702db5));
+            background: linear-gradient(
+                135deg,
+                var(--roxo, #a855f7),
+                var(--roxo-escuro, #702db5)
+            );
             color: white;
             font-weight: 700;
             font-size: 14px;
@@ -2019,9 +2108,11 @@ function dashboardEscape($value): string
 
         .sidebar .sidebar-link.active {
             color: var(--roxo-claro, #d0a0ff);
-            background: linear-gradient(100deg,
-                    rgba(168, 85, 247, .16),
-                    rgba(168, 85, 247, .06));
+            background: linear-gradient(
+                100deg,
+                rgba(168, 85, 247, .16),
+                rgba(168, 85, 247, .06)
+            );
             border-color: rgba(168, 85, 247, .18);
         }
 
@@ -2076,20 +2167,24 @@ function dashboardEscape($value): string
 
         ::-webkit-scrollbar-thumb {
             min-height: 42px;
-            background: linear-gradient(180deg,
-                    #c084fc 0%,
-                    #8b4dcc 55%,
-                    #5f2f91 100%);
+            background: linear-gradient(
+                180deg,
+                #c084fc 0%,
+                #8b4dcc 55%,
+                #5f2f91 100%
+            );
             border: 2px solid #0c0a10;
             border-radius: 999px;
             box-shadow: 0 0 9px rgba(168, 85, 247, .35);
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg,
-                    #d8a7ff 0%,
-                    #a855f7 55%,
-                    #7030b5 100%);
+            background: linear-gradient(
+                180deg,
+                #d8a7ff 0%,
+                #a855f7 55%,
+                #7030b5 100%
+            );
             box-shadow: 0 0 13px rgba(168, 85, 247, .55);
         }
 
@@ -2119,1044 +2214,1307 @@ function dashboardEscape($value): string
             background: rgba(255, 101, 122, .12);
             border-color: rgba(255, 101, 122, .45);
         }
+
     </style>
 
 </head>
 
 <body>
 
-    <div class="admin-layout">
+<div class="admin-layout">
 
-        <!-- =====================================================
+    <!-- =====================================================
          SIDEBAR
     ====================================================== -->
 
-        <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar">
 
-            <div class="brand">
+        <div class="brand">
 
-                <?php include '../components/logo.php'; ?>
+            <?php include '../components/logo.php'; ?>
+
+        </div>
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+                AD
+            </div>
+
+            <div class="admin-info">
+
+                <strong>
+                    Administrador
+                </strong>
+
+                <span>
+                    Painel administrativo
+                </span>
 
             </div>
 
-            <div class="admin-profile">
-
-                <div class="admin-avatar">
-                    AD
-                </div>
-
-                <div class="admin-info">
-
-                    <strong>
-                        Administrador
-                    </strong>
-
-                    <span>
-                        Painel administrativo
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="nav-label">
-                Principal
-            </div>
-
-            <nav class="sidebar-nav">
-
-                <a href="admin.php" class="sidebar-link active">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <rect x="3" y="3" width="7" height="7" rx="1" />
-
-                        <rect x="14" y="3" width="7" height="7" rx="1" />
-
-                        <rect x="3" y="14" width="7" height="7" rx="1" />
-
-                        <rect x="14" y="14" width="7" height="7" rx="1" />
-
-                    </svg>
-
-                    <span>
-                        Dashboard
-                    </span>
-
-                </a>
-
-                <a href="usuarios.php" class="sidebar-link">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-
-                        <circle cx="9" cy="7" r="4" />
-
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-
-                    </svg>
-
-                    <span>
-                        Usuárias
-                    </span>
-
-                </a>
-
-                <a href="alertas.php" class="sidebar-link">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <path
-                            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
-
-                        <line x1="12" y1="9" x2="12" y2="13" />
-
-                        <line x1="12" y1="17" x2="12.01" y2="17" />
-
-                    </svg>
-
-                    <span>
-                        Alertas
-                    </span>
-
-                    <span class="link-badge">
-                        3
-                    </span>
-
-                </a>
-
-                <a href="mapa-admin.php" class="sidebar-link">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
-
-                        <circle cx="12" cy="10" r="2.5" />
-
-                    </svg>
-
-                    <span>
-                        Mapa de ocorrências
-                    </span>
-
-                </a>
-
-                <a href="dispositivos.php" class="sidebar-link">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <rect x="5" y="2" width="14" height="20" rx="2" />
-
-                        <line x1="9" y1="18" x2="15" y2="18" />
-
-                    </svg>
-
-                    <span>
-                        Dispositivos
-                    </span>
-
-                </a>
-
-                <a href="contatos-admin.php" class="sidebar-link">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <circle cx="9" cy="7" r="4" />
-
-                        <path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2" />
-
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-
-                    </svg>
-
-                    <span>
-                        Contatos
-                    </span>
-
-                </a>
-
-                <a href="relatorios.php" class="sidebar-link">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <path d="M3 3v18h18" />
-
-                        <path d="m7 16 4-5 3 3 5-7" />
-
-                    </svg>
-
-                    <span>
-                        Relatórios
-                    </span>
-
-                </a>
-
-                <a href="config-admin.php" class="sidebar-link">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <circle cx="12" cy="12" r="3" />
-
-                        <path
-                            d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.42 1.42-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-2v-.48a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.42-1.42.06-.06A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.56-1.03H6v-2h.48A1.7 1.7 0 0 0 8.04 11a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.42-1.42.06.06A1.7 1.7 0 0 0 11 8.04 1.7 1.7 0 0 0 12.03 6.48V6h2v.48A1.7 1.7 0 0 0 15.06 8a1.7 1.7 0 0 0 1.88-.34l.06-.06 1.42 1.42-.06.06A1.7 1.7 0 0 0 18.04 11c.24.63.84 1.03 1.56 1.03H20v2h-.48A1.7 1.7 0 0 0 19.4 15Z" />
-
-                    </svg>
-
-                    <span>
-                        Configurações
-                    </span>
-
-                </a>
-
-            </nav>
-
-            <!-- =====================================================
+        </div>
+
+        <div class="nav-label">
+            Principal
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="admin.php" class="sidebar-link active">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <rect
+                        x="3"
+                        y="3"
+                        width="7"
+                        height="7"
+                        rx="1"
+                    />
+
+                    <rect
+                        x="14"
+                        y="3"
+                        width="7"
+                        height="7"
+                        rx="1"
+                    />
+
+                    <rect
+                        x="3"
+                        y="14"
+                        width="7"
+                        height="7"
+                        rx="1"
+                    />
+
+                    <rect
+                        x="14"
+                        y="14"
+                        width="7"
+                        height="7"
+                        rx="1"
+                    />
+
+                </svg>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+            <a href="usuarios.php" class="sidebar-link">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                    />
+
+                    <circle
+                        cx="9"
+                        cy="7"
+                        r="4"
+                    />
+
+                    <path
+                        d="M22 21v-2a4 4 0 0 0-3-3.87"
+                    />
+
+                    <path
+                        d="M16 3.13a4 4 0 0 1 0 7.75"
+                    />
+
+                </svg>
+
+                <span>
+                    Usuárias
+                </span>
+
+            </a>
+
+            <a href="alertas.php" class="sidebar-link">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+                    />
+
+                    <line
+                        x1="12"
+                        y1="9"
+                        x2="12"
+                        y2="13"
+                    />
+
+                    <line
+                        x1="12"
+                        y1="17"
+                        x2="12.01"
+                        y2="17"
+                    />
+
+                </svg>
+
+                <span>
+                    Alertas
+                </span>
+
+                <span class="link-badge">
+                    3
+                </span>
+
+            </a>
+
+            <a href="mapa-admin.php" class="sidebar-link">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"
+                    />
+
+                    <circle
+                        cx="12"
+                        cy="10"
+                        r="2.5"
+                    />
+
+                </svg>
+
+                <span>
+                    Mapa de ocorrências
+                </span>
+</a>
+
+            <a href="contatos-admin.php" class="sidebar-link">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <circle
+                        cx="9"
+                        cy="7"
+                        r="4"
+                    />
+
+                    <path
+                        d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"
+                    />
+
+                    <path
+                        d="M16 3.13a4 4 0 0 1 0 7.75"
+                    />
+
+                    <path
+                        d="M22 21v-2a4 4 0 0 0-3-3.87"
+                    />
+
+                </svg>
+
+                <span>
+                    Contatos
+                </span>
+
+            </a>
+
+            <a href="relatorios.php" class="sidebar-link">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M3 3v18h18"
+                    />
+
+                    <path
+                        d="m7 16 4-5 3 3 5-7"
+                    />
+
+                </svg>
+
+                <span>
+                    Relatórios
+                </span>
+
+            </a>
+
+            <a href="config-admin.php" class="sidebar-link">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="3"
+                    />
+
+                    <path
+                        d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.42 1.42-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-2v-.48a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.42-1.42.06-.06A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.56-1.03H6v-2h.48A1.7 1.7 0 0 0 8.04 11a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.42-1.42.06.06A1.7 1.7 0 0 0 11 8.04 1.7 1.7 0 0 0 12.03 6.48V6h2v.48A1.7 1.7 0 0 0 15.06 8a1.7 1.7 0 0 0 1.88-.34l.06-.06 1.42 1.42-.06.06A1.7 1.7 0 0 0 18.04 11c.24.63.84 1.03 1.56 1.03H20v2h-.48A1.7 1.7 0 0 0 19.4 15Z"
+                    />
+
+                </svg>
+
+                <span>
+                    Configurações
+                </span>
+
+            </a>
+
+        </nav>
+
+        <!-- =====================================================
              SAIR
              SEM CONFIRMAÇÃO
         ====================================================== -->
 
-            <div class="sidebar-bottom">
+        <div class="sidebar-bottom">
 
-                <?php include '../components/logout.php'; ?>
+            <?php include '../components/logout.php'; ?>
 
-            </div>
+        </div>
 
-        </aside>
+    </aside>
 
-        <!-- =====================================================
+    <!-- =====================================================
          OVERLAY MOBILE
     ====================================================== -->
 
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+        onclick="closeSidebar()"
+    ></div>
 
-        <!-- =====================================================
+    <!-- =====================================================
          CONTEÚDO PRINCIPAL
     ====================================================== -->
 
-        <main class="main-content">
+    <main class="main-content">
 
-            <div class="content-container">
+        <div class="content-container">
 
-                <!-- HEADER -->
+            <!-- HEADER -->
 
-                <header class="top-header">
+            <header class="top-header">
 
-                    <div class="welcome">
+                <div class="welcome">
 
-                        <button class="mobile-menu" onclick="toggleSidebar()" aria-label="Abrir menu">
+                    <button
+                        class="mobile-menu"
+                        onclick="toggleSidebar()"
+                        aria-label="Abrir menu"
+                    >
 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                stroke-linecap="round">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        >
 
-                                <line x1="4" y1="6" x2="20" y2="6" />
+                            <line
+                                x1="4"
+                                y1="6"
+                                x2="20"
+                                y2="6"
+                            />
 
-                                <line x1="4" y1="12" x2="20" y2="12" />
+                            <line
+                                x1="4"
+                                y1="12"
+                                x2="20"
+                                y2="12"
+                            />
 
-                                <line x1="4" y1="18" x2="20" y2="18" />
+                            <line
+                                x1="4"
+                                y1="18"
+                                x2="20"
+                                y2="18"
+                            />
 
-                            </svg>
+                        </svg>
 
-                        </button>
+                    </button>
 
-                        <div>
+                    <div>
 
-                            <h1>
-                                Olá, <span>Administrador</span>
-                            </h1>
+                        <h1>
+                            Olá, <span>Administrador</span>
+                        </h1>
 
-                            <p>
-                                Acompanhe o funcionamento e a segurança do SilentHelp.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="header-actions">
-
-                        <div class="period-filter">
-
-                            <button class="period-button" onclick="changePeriod(this, 'Hoje')">
-                                Hoje
-                            </button>
-
-                            <button class="period-button active" onclick="changePeriod(this, '7 dias')">
-                                7 dias
-                            </button>
-
-                            <button class="period-button" onclick="changePeriod(this, '30 dias')">
-                                30 dias
-                            </button>
-
-                        </div>
-
-                        <button class="header-button" onclick="refreshDashboard()" aria-label="Atualizar">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                stroke-linecap="round" stroke-linejoin="round">
-
-                                <polyline points="23 4 23 10 17 10" />
-
-                                <polyline points="1 20 1 14 7 14" />
-
-                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10" />
-
-                                <path d="M20.49 15A9 9 0 0 1 5.64 18.36L1 14" />
-
-                            </svg>
-
-                        </button>
-
-                        <button class="header-button" onclick="showToast('Notificações do sistema.')"
-                            aria-label="Notificações">
-
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                stroke-linecap="round" stroke-linejoin="round">
-
-                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
-
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-
-                            </svg>
-
-                            <span class="notification-dot" id="notificationDot" hidden></span>
-
-                        </button>
+                        <p>
+                            Acompanhe o funcionamento e a segurança do SilentHelp.
+                        </p>
 
                     </div>
 
-                </header>
+                </div>
 
-                <!-- =================================================
+                <div class="header-actions">
+
+                    <div class="period-filter">
+
+                        <button
+                            class="period-button"
+                            onclick="changePeriod(this, 'Hoje')"
+                        >
+                            Hoje
+                        </button>
+
+                        <button
+                            class="period-button active"
+                            onclick="changePeriod(this, '7 dias')"
+                        >
+                            7 dias
+                        </button>
+
+                        <button
+                            class="period-button"
+                            onclick="changePeriod(this, '30 dias')"
+                        >
+                            30 dias
+                        </button>
+
+                    </div>
+
+                    <button
+                        class="header-button"
+                        onclick="refreshDashboard()"
+                        aria-label="Atualizar"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <polyline
+                                points="23 4 23 10 17 10"
+                            />
+
+                            <polyline
+                                points="1 20 1 14 7 14"
+                            />
+
+                            <path
+                                d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"
+                            />
+
+                            <path
+                                d="M20.49 15A9 9 0 0 1 5.64 18.36L1 14"
+                            />
+
+                        </svg>
+
+                    </button>
+
+                    <button
+                        class="header-button"
+                        onclick="showToast('Notificações do sistema.')"
+                        aria-label="Notificações"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <path
+                                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                            />
+
+                            <path
+                                d="M13.73 21a2 2 0 0 1-3.46 0"
+                            />
+
+                        </svg>
+
+                        <span class="notification-dot" id="notificationDot" hidden></span>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- =================================================
                  MÉTRICAS
             ================================================== -->
 
-                <section class="stats-grid">
+            <section class="stats-grid">
 
-                    <div class="stat-card users">
+                <div class="stat-card users">
 
-                        <div class="stat-top">
+                    <div class="stat-top">
 
-                            <div class="stat-icon">
+                        <div class="stat-icon">
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
 
-                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <path
+                                    d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                                />
 
-                                    <circle cx="9" cy="7" r="4" />
+                                <circle
+                                    cx="9"
+                                    cy="7"
+                                    r="4"
+                                />
 
-                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                <path
+                                    d="M22 21v-2a4 4 0 0 0-3-3.87"
+                                />
 
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                <path
+                                    d="M16 3.13a4 4 0 0 1 0 7.75"
+                                />
 
-                                </svg>
-
-                            </div>
-
-                            <span class="stat-change">Banco de dados</span>
+                            </svg>
 
                         </div>
 
-                        <div class="stat-number" id="usersCount">
-                            <?= $dashboardError ? '—' : number_format($dashboardStats['usuarios'], 0, ',', '.') ?>
-                        </div>
-
-                        <div class="stat-label">
-                            Total de usuários
-                        </div>
+                        <span class="stat-change">Banco de dados</span>
 
                     </div>
 
-                    <div class="stat-card devices">
+                    <div class="stat-number" id="usersCount">
+                        <?= $dashboardError ? '—' : number_format($dashboardStats['usuarios'], 0, ',', '.') ?>
+                    </div>
 
-                        <div class="stat-top">
+                    <div class="stat-label">
+                        Total de usuários
+                    </div>
 
-                            <div class="stat-icon">
+                </div>
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                <div class="stat-card devices">
 
-                                    <rect x="5" y="2" width="14" height="20" rx="2" />
+                    <div class="stat-top">
 
-                                    <line x1="9" y1="18" x2="15" y2="18" />
+                        <div class="stat-icon">
 
-                                </svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
 
-                            </div>
+                                <rect
+                                    x="5"
+                                    y="2"
+                                    width="14"
+                                    height="20"
+                                    rx="2"
+                                />
 
-                            <span class="stat-change">Banco de dados</span>
+                                <line
+                                    x1="9"
+                                    y1="18"
+                                    x2="15"
+                                    y2="18"
+                                />
+
+                            </svg>
 
                         </div>
 
-                        <div class="stat-number" id="devicesCount">
-                            <?= $dashboardError ? '—' : number_format($dashboardStats['dispositivos'], 0, ',', '.') ?>
-                        </div>
-
-                        <div class="stat-label">
-                            Dispositivos cadastrados
-                        </div>
+                        <span class="stat-change">Banco de dados</span>
 
                     </div>
 
-                    <div class="stat-card emergency">
+                    <div class="stat-number" id="devicesCount">
+                        <?= $dashboardError ? '—' : number_format($dashboardStats['dispositivos'], 0, ',', '.') ?>
+                    </div>
 
-                        <div class="stat-top">
+                    <div class="stat-label">
+                        Dispositivos cadastrados
+                    </div>
 
-                            <div class="stat-icon">
+                </div>
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                <div class="stat-card emergency">
 
-                                    <path
-                                        d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+                    <div class="stat-top">
 
-                                    <line x1="12" y1="9" x2="12" y2="13" />
+                        <div class="stat-icon">
 
-                                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
 
-                                </svg>
+                                <path
+                                    d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+                                />
 
-                            </div>
+                                <line
+                                    x1="12"
+                                    y1="9"
+                                    x2="12"
+                                    y2="13"
+                                />
 
-                            <span class="stat-change" id="emergencyTrend" style="color:var(--vermelho);">
-                                Banco de dados
-                            </span>
+                                <line
+                                    x1="12"
+                                    y1="17"
+                                    x2="12.01"
+                                    y2="17"
+                                />
+
+                            </svg>
 
                         </div>
 
-                        <div class="stat-number" id="emergencyCount">
-                            <?= $dashboardError ? '—' : number_format($dashboardStats['emergencias'], 0, ',', '.') ?>
-                        </div>
-
-                        <div class="stat-label">
-                            Alertas de emergência
-                        </div>
+                        <span
+                            class="stat-change"
+                            id="emergencyTrend"
+                            style="color:var(--vermelho);"
+                        >
+                            Banco de dados
+                        </span>
 
                     </div>
 
-                    <div class="stat-card resolved">
+                    <div class="stat-number" id="emergencyCount"><?= $dashboardError ? '—' : number_format($dashboardStats['emergencias'], 0, ',', '.') ?></div>
 
-                        <div class="stat-top">
+                    <div class="stat-label">
+                        Alertas de emergência
+                    </div>
 
-                            <div class="stat-icon">
+                </div>
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                <div class="stat-card resolved">
 
-                                    <circle cx="12" cy="12" r="9" />
+                    <div class="stat-top">
 
-                                    <path d="m8 12 2.5 2.5L16 9" />
+                        <div class="stat-icon">
 
-                                </svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
 
-                            </div>
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="9"
+                                />
 
-                            <span class="stat-change">Banco de dados</span>
+                                <path
+                                    d="m8 12 2.5 2.5L16 9"
+                                />
+
+                            </svg>
 
                         </div>
 
-                        <div class="stat-number" id="resolvedCount">
-                            <?= $dashboardError ? '—' : number_format($dashboardStats['resolvidos'], 0, ',', '.') ?>
-                        </div>
-
-                        <div class="stat-label">
-                            Alertas resolvidos
-                        </div>
+                        <span class="stat-change">Banco de dados</span>
 
                     </div>
 
-                    <div class="stat-card active">
+                    <div class="stat-number" id="resolvedCount"><?= $dashboardError ? '—' : number_format($dashboardStats['resolvidos'], 0, ',', '.') ?></div>
 
-                        <div class="stat-top">
+                    <div class="stat-label">
+                        Alertas resolvidos
+                    </div>
 
-                            <div class="stat-icon">
+                </div>
 
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                <div class="stat-card active">
 
-                                    <circle cx="12" cy="12" r="9" />
+                    <div class="stat-top">
 
-                                    <polyline points="12 7 12 12 15 14" />
+                        <div class="stat-icon">
 
-                                </svg>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
 
-                            </div>
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="9"
+                                />
 
-                            <span class="stat-change" style="color:var(--amarelo);">
-                                Atenção
-                            </span>
+                                <polyline
+                                    points="12 7 12 12 15 14"
+                                />
+
+                            </svg>
 
                         </div>
 
-                        <div class="stat-number" id="activeCount">
-                            <?= $dashboardError ? '—' : number_format($dashboardStats['ativos'], 0, ',', '.') ?></div>
-
-                        <div class="stat-label">
-                            Alertas ativos
-                        </div>
+                        <span
+                            class="stat-change"
+                            style="color:var(--amarelo);"
+                        >
+                            Atenção
+                        </span>
 
                     </div>
 
-                </section>
+                    <div class="stat-number" id="activeCount"><?= $dashboardError ? '—' : number_format($dashboardStats['ativos'], 0, ',', '.') ?></div>
 
-                <!-- =================================================
+                    <div class="stat-label">
+                        Alertas ativos
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =================================================
                  GRÁFICO + RESUMO
             ================================================== -->
 
-                <section class="dashboard-grid">
+            <section class="dashboard-grid">
 
-                    <!-- GRÁFICO -->
+                <!-- GRÁFICO -->
 
-                    <div class="dashboard-card">
-
-                        <div class="card-header">
-
-                            <div class="card-title">
-
-                                <h2>
-                                    Alertas registrados
-                                </h2>
-
-                                <p>
-                                    Quantidade de alertas nos últimos 7 dias
-                                </p>
-
-                            </div>
-
-                            <button class="card-action" onclick="showToast('Abrindo relatório de alertas...')">
-                                Ver relatório
-                            </button>
-
-                        </div>
-
-                        <div class="chart-area">
-
-                            <div class="chart">
-
-                                <div class="chart-grid">
-
-                                    <div class="chart-grid-line"></div>
-                                    <div class="chart-grid-line"></div>
-                                    <div class="chart-grid-line"></div>
-                                    <div class="chart-grid-line"></div>
-                                    <div class="chart-grid-line"></div>
-
-                                </div>
-
-                                <?php if ($dashboardError): ?>
-                                    <div style="grid-column:1/-1;padding:25px;text-align:center;color:var(--vermelho)">Não
-                                        foi possível consultar os dados do banco.</div>
-                                <?php else: ?>
-                                    <?php $maxChart = max(1, ...array_column($chartDays, 'total')); ?>
-                                    <?php foreach ($chartDays as $day): ?>
-                                        <div class="bar-group"
-                                            title="<?= dashboardEscape($day['label']) ?>: <?= (int) $day['total'] ?> alerta(s)">
-                                            <div class="bar"
-                                                style="height:<?= $day['total'] > 0 ? max(5, (int) round(($day['total'] / $maxChart) * 100)) : 2 ?>%">
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-
-                            </div>
-
-                            <div class="bar-labels" id="alertsChartLabels">
-                                <?php foreach ($chartDays as $day): ?>
-                                    <div class="bar-label"><?= dashboardEscape($day['label']) ?></div>
-                                <?php endforeach; ?>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- RESUMO -->
-
-                    <div class="dashboard-card">
-
-                        <div class="card-header">
-
-                            <div class="card-title">
-
-                                <h2>
-                                    Resumo dos alertas
-                                </h2>
-
-                                <p>
-                                    Distribuição por situação
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        <div class="alert-summary">
-
-                            <div class="summary-row">
-
-                                <span class="summary-dot emergency"></span>
-
-                                <span>
-                                    Emergência
-                                </span>
-
-                                <strong
-                                    id="summaryEmergency"><?= $dashboardError ? '—' : number_format($dashboardStats['emergencias'], 0, ',', '.') ?></strong>
-
-                            </div>
-
-                            <div class="summary-row">
-
-                                <span class="summary-dot resolved"></span>
-
-                                <span>
-                                    Resolvidos
-                                </span>
-
-                                <strong
-                                    id="summaryResolved"><?= $dashboardError ? '—' : number_format($dashboardStats['resolvidos'], 0, ',', '.') ?></strong>
-
-                            </div>
-
-                            <div class="summary-row">
-
-                                <span class="summary-dot active"></span>
-
-                                <span>
-                                    Ativos
-                                </span>
-
-                                <strong
-                                    id="summaryActive"><?= $dashboardError ? '—' : number_format($dashboardStats['ativos'], 0, ',', '.') ?></strong>
-
-                            </div>
-
-                            <div class="summary-row">
-
-                                <span class="summary-dot test"></span>
-
-                                <span>
-                                    Testes
-                                </span>
-
-                                <strong
-                                    id="summaryTests"><?= $dashboardError ? '—' : number_format($dashboardStats['testes'], 0, ',', '.') ?></strong>
-
-                            </div>
-
-                            <div class="summary-row">
-
-                                <span class="summary-dot" style="background:var(--cinza-2);"></span>
-
-                                <span>
-                                    Cancelados
-                                </span>
-
-                                <strong
-                                    id="summaryCancelled"><?= $dashboardError ? '—' : number_format($dashboardStats['cancelados'], 0, ',', '.') ?></strong>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-                <!-- =================================================
-                 ÚLTIMOS ALERTAS
-            ================================================== -->
-
-                <section class="dashboard-card recent-card">
+                <div class="dashboard-card">
 
                     <div class="card-header">
 
                         <div class="card-title">
 
                             <h2>
-                                Últimos alertas registrados
+                                Alertas registrados
                             </h2>
 
                             <p>
-                                Acompanhe as ocorrências mais recentes
+                                Quantidade de alertas nos últimos 7 dias
                             </p>
 
                         </div>
 
-                        <button class="card-action" onclick="window.location.href='alertas.php'">
-                            Ver todos
+                        <button
+                            class="card-action"
+                            onclick="showToast('Abrindo relatório de alertas...')"
+                        >
+                            Ver relatório
                         </button>
 
                     </div>
 
-                    <div class="recent-list" aria-live="polite">
-                        <?php if ($dashboardError): ?>
-                            <div style="padding:25px;text-align:center;color:var(--vermelho)">Erro ao consultar os alertas
-                                do banco de dados.</div>
-                        <?php elseif (!$dashboardAlerts): ?>
-                            <div style="padding:25px;text-align:center;color:var(--cinza)">Nenhum alerta registrado no banco
-                                de dados.</div>
-                        <?php else: ?>
-                            <?php foreach ($dashboardAlerts as $alert): ?>
-                                <?php
-                                $status = strtolower((string) $alert['status']);
+                    <div class="chart-area">
+
+                        <div class="chart">
+
+                            <div class="chart-grid">
+
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+
+                            </div>
+
+                            <?php if ($dashboardError): ?>
+                                <div style="grid-column:1/-1;padding:25px;text-align:center;color:var(--vermelho)">Não foi possível consultar os dados do banco.</div>
+                            <?php else: ?>
+                                <?php $maxChart = max(1, ...array_column($chartDays, 'total')); ?>
+                                <?php foreach ($chartDays as $day): ?>
+                                    <div class="bar-group" title="<?= dashboardEscape($day['label']) ?>: <?= (int)$day['total'] ?> alerta(s)">
+                                        <div class="bar" style="height:<?= $day['total'] > 0 ? max(5, (int)round(($day['total'] / $maxChart) * 100)) : 2 ?>%"></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+                        </div>
+
+                        <div class="bar-labels" id="alertsChartLabels">
+                            <?php foreach ($chartDays as $day): ?>
+                                <div class="bar-label"><?= dashboardEscape($day['label']) ?></div>
+                            <?php endforeach; ?>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- RESUMO -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <div class="card-title">
+
+                            <h2>
+                                Resumo dos alertas
+                            </h2>
+
+                            <p>
+                                Distribuição por situação
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="alert-summary">
+
+                        <div class="summary-row">
+
+                            <span class="summary-dot emergency"></span>
+
+                            <span>
+                                Emergência
+                            </span>
+
+                            <strong id="summaryEmergency"><?= $dashboardError ? '—' : number_format($dashboardStats['emergencias'], 0, ',', '.') ?></strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span class="summary-dot resolved"></span>
+
+                            <span>
+                                Resolvidos
+                            </span>
+
+                            <strong id="summaryResolved"><?= $dashboardError ? '—' : number_format($dashboardStats['resolvidos'], 0, ',', '.') ?></strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span class="summary-dot active"></span>
+
+                            <span>
+                                Ativos
+                            </span>
+
+                            <strong id="summaryActive"><?= $dashboardError ? '—' : number_format($dashboardStats['ativos'], 0, ',', '.') ?></strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span class="summary-dot test"></span>
+
+                            <span>
+                                Testes
+                            </span>
+
+                            <strong id="summaryTests"><?= $dashboardError ? '—' : number_format($dashboardStats['testes'], 0, ',', '.') ?></strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span
+                                class="summary-dot"
+                                style="background:var(--cinza-2);"
+                            ></span>
+
+                            <span>
+                                Cancelados
+                            </span>
+
+                            <strong id="summaryCancelled"><?= $dashboardError ? '—' : number_format($dashboardStats['cancelados'], 0, ',', '.') ?></strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =================================================
+                 ÚLTIMOS ALERTAS
+            ================================================== -->
+
+            <section class="dashboard-card recent-card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <h2>
+                            Últimos alertas registrados
+                        </h2>
+
+                        <p>
+                            Acompanhe as ocorrências mais recentes
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="card-action"
+                        onclick="window.location.href='alertas.php'"
+                    >
+                        Ver todos
+                    </button>
+
+                </div>
+
+                <div class="recent-list" aria-live="polite">
+                    <?php if ($dashboardError): ?>
+                        <div style="padding:25px;text-align:center;color:var(--vermelho)">Erro ao consultar os alertas do banco de dados.</div>
+                    <?php elseif (!$dashboardAlerts): ?>
+                        <div style="padding:25px;text-align:center;color:var(--cinza)">Nenhum alerta registrado no banco de dados.</div>
+                    <?php else: ?>
+                        <?php foreach ($dashboardAlerts as $alert): ?>
+                            <?php
+                                $status = strtolower((string)$alert['status']);
                                 $statusLabel = in_array($status, ['resolved', 'resolvido', 'resolvida'], true) ? 'Resolvido' : (in_array($status, ['cancelled', 'canceled', 'cancelado', 'cancelada'], true) ? 'Cancelado' : ($status === 'open' ? 'Ativo' : ucfirst($status)));
                                 $statusClass = in_array($status, ['resolved', 'resolvido', 'resolvida'], true) ? 'resolved' : (in_array($status, ['cancelled', 'canceled', 'cancelado', 'cancelada'], true) ? 'cancelled' : 'active');
-                                $alertTitle = trim((string) $alert['type']) !== '' ? ucfirst((string) $alert['type']) : 'Alerta';
-                                $alertDate = date('d/m/Y H:i', strtotime((string) $alert['created_at']));
+                                $alertTitle = trim((string)$alert['type']) !== '' ? ucfirst((string)$alert['type']) : 'Alerta';
+                                $alertDate = date('d/m/Y H:i', strtotime((string)$alert['created_at']));
                                 $alertUser = $alert['user_name'] ?: 'Usuário não identificado';
-                                $alertLocation = ($alert['latitude'] !== null && $alert['longitude'] !== null) ? ((string) $alert['latitude'] . ', ' . (string) $alert['longitude']) : 'Localização não informada';
-                                ?>
-                                <div class="recent-alert" role="button" tabindex="0"
-                                    onclick="openAlert(<?= htmlspecialchars(json_encode($alertTitle, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertDate, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertUser, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertLocation, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($statusLabel, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>)">
-                                    <div
-                                        class="recent-icon <?= strtolower((string) $alert['type']) === 'emergencia' ? 'emergency' : '' ?>">
-                                        <span aria-hidden="true">!</span>
-                                    </div>
-                                    <div class="recent-info">
-                                        <strong><?= dashboardEscape($alertTitle) ?></strong>
-                                        <span><?= dashboardEscape($alertUser) ?> · <?= dashboardEscape($alertDate) ?></span>
-                                    </div>
-                                    <span
-                                        class="recent-status <?= dashboardEscape($statusClass) ?>"><?= dashboardEscape($statusLabel) ?></span>
+                                $alertLocation = ($alert['latitude'] !== null && $alert['longitude'] !== null) ? ((string)$alert['latitude'] . ', ' . (string)$alert['longitude']) : 'Localização não informada';
+                            ?>
+                            <div class="recent-alert" role="button" tabindex="0" onclick="openAlert(<?= htmlspecialchars(json_encode($alertTitle, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertDate, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertUser, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($alertLocation, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars(json_encode($statusLabel, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>)">
+                                <div class="recent-icon <?= strtolower((string)$alert['type']) === 'emergencia' ? 'emergency' : '' ?>">
+                                    <span aria-hidden="true">!</span>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
+                                <div class="recent-info">
+                                    <strong><?= dashboardEscape($alertTitle) ?></strong>
+                                    <span><?= dashboardEscape($alertUser) ?> · <?= dashboardEscape($alertDate) ?></span>
+                                </div>
+                                <span class="recent-status <?= dashboardEscape($statusClass) ?>"><?= dashboardEscape($statusLabel) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
 
-                    <div class="card-footer">
+                <div class="card-footer">
 
-                        <button onclick="window.location.href='alertas.php'">
-                            Visualizar todos os alertas →
-                        </button>
-
-                    </div>
-
-                </section>
-
-            </div>
-
-        </main>
-
-    </div>
-
-    <!-- =====================================================
-     MODAL
-====================================================== -->
-
-    <div class="modal" id="alertModal" onclick="closeModalOutside(event)">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <div class="modal-icon">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        stroke-linejoin="round">
-
-                        <path
-                            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
-
-                        <line x1="12" y1="9" x2="12" y2="13" />
-
-                        <line x1="12" y1="17" x2="12.01" y2="17" />
-
-                    </svg>
+                    <button
+                        onclick="window.location.href='alertas.php'"
+                    >
+                        Visualizar todos os alertas →
+                    </button>
 
                 </div>
 
-                <div>
-
-                    <h2 id="modalTitle">
-                        Detalhes do alerta
-                    </h2>
-
-                    <p>
-                        Informações registradas pelo sistema
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="detail-list">
-
-                <div class="detail-row">
-
-                    <span>
-                        Data e horário
-                    </span>
-
-                    <strong id="modalDate">
-                        -
-                    </strong>
-
-                </div>
-
-                <div class="detail-row">
-
-                    <span>
-                        Usuária
-                    </span>
-
-                    <strong id="modalUser">
-                        -
-                    </strong>
-
-                </div>
-
-                <div class="detail-row">
-
-                    <span>
-                        Localização
-                    </span>
-
-                    <strong id="modalLocation">
-                        -
-                    </strong>
-
-                </div>
-
-                <div class="detail-row">
-
-                    <span>
-                        Status
-                    </span>
-
-                    <strong id="modalStatus">
-                        -
-                    </strong>
-
-                </div>
-
-            </div>
-
-            <button class="close-modal" onclick="closeModal()">
-                Fechar
-            </button>
+            </section>
 
         </div>
 
+    </main>
+
+</div>
+
+<!-- =====================================================
+     MODAL
+====================================================== -->
+
+<div
+    class="modal"
+    id="alertModal"
+    onclick="closeModalOutside(event)"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <div class="modal-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+                    />
+
+                    <line
+                        x1="12"
+                        y1="9"
+                        x2="12"
+                        y2="13"
+                    />
+
+                    <line
+                        x1="12"
+                        y1="17"
+                        x2="12.01"
+                        y2="17"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Detalhes do alerta
+                </h2>
+
+                <p>
+                    Informações registradas pelo sistema
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="detail-list">
+
+            <div class="detail-row">
+
+                <span>
+                    Data e horário
+                </span>
+
+                <strong id="modalDate">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="detail-row">
+
+                <span>
+                    Usuária
+                </span>
+
+                <strong id="modalUser">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="detail-row">
+
+                <span>
+                    Localização
+                </span>
+
+                <strong id="modalLocation">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="detail-row">
+
+                <span>
+                    Status
+                </span>
+
+                <strong id="modalStatus">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+        <button
+            class="close-modal"
+            onclick="closeModal()"
+        >
+            Fechar
+        </button>
+
     </div>
 
-    <!-- =====================================================
+</div>
+
+<!-- =====================================================
      TOAST
 ====================================================== -->
 
-    <div class="toast" id="toast"></div>
+<div
+    class="toast"
+    id="toast"
+></div>
 
-    <script>
+<script>
 
-        /* =====================================================
-           TOAST
-        ===================================================== */
+    /* =====================================================
+       TOAST
+    ===================================================== */
 
-        let toastTimer;
+    let toastTimer;
 
-        function showToast(message) {
+    function showToast(message) {
 
-            const toast =
-                document.getElementById("toast");
+        const toast =
+            document.getElementById("toast");
 
-            toast.textContent = message;
+        toast.textContent = message;
 
-            toast.classList.add("show");
+        toast.classList.add("show");
 
-            clearTimeout(toastTimer);
+        clearTimeout(toastTimer);
 
-            toastTimer =
-                setTimeout(() => {
-
-                    toast.classList.remove("show");
-
-                }, 2600);
-        }
-
-        /* =====================================================
-           SIDEBAR MOBILE
-        ===================================================== */
-
-        function toggleSidebar() {
-
-            document
-                .getElementById("sidebar")
-                .classList.toggle("open");
-
-            document
-                .getElementById("sidebarOverlay")
-                .classList.toggle("show");
-        }
-
-        function closeSidebar() {
-
-            document
-                .getElementById("sidebar")
-                .classList.remove("open");
-
-            document
-                .getElementById("sidebarOverlay")
-                .classList.remove("show");
-        }
-
-        /* =====================================================
-           PERÍODO
-        ===================================================== */
-
-        function changePeriod(button, period) {
-
-            document
-                .querySelectorAll(".period-button")
-                .forEach(btn => {
-
-                    btn.classList.remove("active");
-
-                });
-
-            button.classList.add("active");
-
-            showToast(
-                "Período alterado para: " + period
-            );
-        }
-
-        /* =====================================================
-           ATUALIZAR DASHBOARD
-        ===================================================== */
-
-        function refreshDashboard() {
-
-            showToast(
-                "Dashboard atualizado com sucesso."
-            );
-
-            const button =
-                document.querySelector(
-                    ".header-button"
-                );
-
-            button.style.transform =
-                "rotate(180deg)";
-
+        toastTimer =
             setTimeout(() => {
 
-                button.style.transform =
-                    "rotate(0deg)";
+                toast.classList.remove("show");
 
-            }, 450);
-        }
+            }, 2600);
+    }
 
-        /* =====================================================
-           MODAL DE ALERTA
-        ===================================================== */
+    /* =====================================================
+       SIDEBAR MOBILE
+    ===================================================== */
 
-        function openAlert(
-            title,
-            date,
-            user,
-            location,
-            status
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle("open");
+
+        document
+            .getElementById("sidebarOverlay")
+            .classList.toggle("show");
+    }
+
+    function closeSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.remove("open");
+
+        document
+            .getElementById("sidebarOverlay")
+            .classList.remove("show");
+    }
+
+    /* =====================================================
+       PERÍODO
+    ===================================================== */
+
+    function changePeriod(button, period) {
+
+        document
+            .querySelectorAll(".period-button")
+            .forEach(btn => {
+
+                btn.classList.remove("active");
+
+            });
+
+        button.classList.add("active");
+
+        showToast(
+            "Período alterado para: " + period
+        );
+    }
+
+    /* =====================================================
+       ATUALIZAR DASHBOARD
+    ===================================================== */
+
+    function refreshDashboard() {
+
+        showToast(
+            "Dashboard atualizado com sucesso."
+        );
+
+        const button =
+            document.querySelector(
+                ".header-button"
+            );
+
+        button.style.transform =
+            "rotate(180deg)";
+
+        setTimeout(() => {
+
+            button.style.transform =
+                "rotate(0deg)";
+
+        }, 450);
+    }
+
+    /* =====================================================
+       MODAL DE ALERTA
+    ===================================================== */
+
+    function openAlert(
+        title,
+        date,
+        user,
+        location,
+        status
+    ) {
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent = title;
+
+        document.getElementById(
+            "modalDate"
+        ).textContent = date;
+
+        document.getElementById(
+            "modalUser"
+        ).textContent = user;
+
+        document.getElementById(
+            "modalLocation"
+        ).textContent = location;
+
+        document.getElementById(
+            "modalStatus"
+        ).textContent = status;
+
+        document
+            .getElementById("alertModal")
+            .classList.add("show");
+    }
+
+    function closeModal() {
+
+        document
+            .getElementById("alertModal")
+            .classList.remove("show");
+    }
+
+    function closeModalOutside(event) {
+
+        if (
+            event.target.id ===
+            "alertModal"
         ) {
 
-            document.getElementById(
-                "modalTitle"
-            ).textContent = title;
+            closeModal();
 
-            document.getElementById(
-                "modalDate"
-            ).textContent = date;
-
-            document.getElementById(
-                "modalUser"
-            ).textContent = user;
-
-            document.getElementById(
-                "modalLocation"
-            ).textContent = location;
-
-            document.getElementById(
-                "modalStatus"
-            ).textContent = status;
-
-            document
-                .getElementById("alertModal")
-                .classList.add("show");
         }
+    }
 
-        function closeModal() {
+    /* =====================================================
+       ESC
+    ===================================================== */
 
-            document
-                .getElementById("alertModal")
-                .classList.remove("show");
-        }
-
-        function closeModalOutside(event) {
+    document.addEventListener(
+        "keydown",
+        function(event) {
 
             if (
-                event.target.id ===
-                "alertModal"
+                event.key === "Escape"
             ) {
 
                 closeModal();
 
+                closeSidebar();
+
             }
+
         }
+    );
 
-        /* =====================================================
-           ESC
-        ===================================================== */
+    /* =====================================================
+       FECHAR SIDEBAR AO REDIMENSIONAR
+    ===================================================== */
 
-        document.addEventListener(
-            "keydown",
-            function (event) {
+    window.addEventListener(
+        "resize",
+        function() {
 
-                if (
-                    event.key === "Escape"
-                ) {
+            if (
+                window.innerWidth > 850
+            ) {
 
-                    closeModal();
-
-                    closeSidebar();
-
-                }
+                closeSidebar();
 
             }
-        );
 
-        /* =====================================================
-           FECHAR SIDEBAR AO REDIMENSIONAR
-        ===================================================== */
+        }
+    );
 
-        window.addEventListener(
-            "resize",
-            function () {
-
-                if (
-                    window.innerWidth > 850
-                ) {
-
-                    closeSidebar();
-
-                }
-
-            }
-        );
-
-        function sairConta() {
+    function sairConta() {
 
             const confirmar =
                 confirm(
@@ -3172,7 +3530,7 @@ function dashboardEscape($value): string
 
 
                 setTimeout(
-                    function () {
+                    function() {
 
                         window.location.href =
                             "logout.php";
@@ -3185,7 +3543,7 @@ function dashboardEscape($value): string
 
         }
 
-    </script>
+</script>
 
 
 </body>

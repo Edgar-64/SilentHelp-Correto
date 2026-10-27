@@ -2100,6 +2100,59 @@
 
     </style>
 
+<style id="silenthelp-responsive-admin">
+/* Botão de menu aparece apenas em telas compactas */
+.sh-menu-toggle { display: none; }
+/* Ajustes responsivos globais do painel SilentHelp */
+:root { --sh-sidebar-width: 260px; }
+@media (max-width: 1000px) {
+  body { overflow-x: hidden; }
+  #sidebar.sidebar {
+    position: fixed !important; top: 0 !important; bottom: 0 !important; left: 0 !important; right: auto !important;
+    width: min(285px, 86vw) !important; height: 100dvh !important; max-height: 100dvh !important;
+    display: flex !important; flex-direction: column !important; align-items: stretch !important;
+    padding: 22px 14px !important; overflow-y: auto !important; overflow-x: hidden !important;
+    transform: translateX(-110%) !important; transition: transform .25s ease !important;
+    z-index: 1201 !important; border-right: 1px solid rgba(255,255,255,.12) !important; border-top: 0 !important;
+    box-shadow: 16px 0 40px rgba(0,0,0,.35) !important;
+  }
+  #sidebar.sidebar.open { transform: translateX(0) !important; }
+  #sidebar .brand, #sidebar .admin-profile, #sidebar .nav-label, #sidebar .sidebar-bottom { display: initial; }
+  #sidebar .sidebar-nav { display: flex !important; flex-direction: column !important; width: 100% !important; gap: 5px !important; overflow: visible !important; }
+  #sidebar .sidebar-link { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 12px !important; padding: 12px 13px !important; font-size: 13px !important; text-align: left !important; white-space: normal !important; }
+  #sidebar .sidebar-link svg { flex: 0 0 20px !important; width: 20px !important; height: 20px !important; }
+  #sidebar .link-badge { position: static !important; margin-left: auto !important; }
+  .sh-sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.62); backdrop-filter: blur(2px); z-index: 1200; opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease; }
+  .sh-sidebar-overlay.show { opacity: 1; visibility: visible; }
+  .sh-menu-toggle { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex: 0 0 42px; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; background: #17121d; color: #fff; cursor: pointer; font-size: 22px; line-height: 1; box-shadow: 0 4px 16px rgba(0,0,0,.18); }
+  .sh-menu-toggle:focus-visible { outline: 2px solid #b76cff; outline-offset: 3px; }
+  body.sh-sidebar-active { overflow: hidden !important; }
+  .main, .main-content, .content, .content-wrapper, .content-container { width: 100% !important; max-width: 100% !important; margin-left: 0 !important; }
+  .main, .main-content, .content { min-width: 0 !important; }
+  .layout { display: block !important; width: 100% !important; }
+  .content, .main, .main-content, .content-wrapper, .content-container { box-sizing: border-box; }
+  .content-header, .page-header, .header-content { min-width: 0; flex-wrap: wrap; gap: 12px; }
+  .filters { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; overflow: visible !important; padding: 14px !important; }
+  .filter { flex: 0 1 auto; min-height: 38px; white-space: nowrap; }
+  .table-container, .table-wrapper, .data-table-wrapper, .table-responsive { max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  table { max-width: 100%; }
+  input, select, textarea { max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .sh-menu-toggle { width: 40px; height: 40px; flex-basis: 40px; }
+  .content, .main, .main-content, .content-wrapper, .content-container { padding-left: 14px !important; padding-right: 14px !important; }
+  .filters { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filter { width: 100%; padding: 10px 8px !important; text-align: center; font-size: 12px !important; }
+  .summary-grid, .stats-grid, .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .modal, .modal-content, .dialog { max-width: calc(100vw - 24px) !important; }
+}
+@media (max-width: 380px) {
+  .filters { grid-template-columns: minmax(0, 1fr); }
+  .summary-grid, .stats-grid, .cards-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
+
+</style>
+<link rel="stylesheet" href="assets/admin-modals.css?v=20261027b">
 </head>
 
 
@@ -2264,33 +2317,6 @@
                 </span>
 
             </a>
-
-
-            <a
-                href="dispositivos.php"
-                class="sidebar-link"
-            >
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-
-                    <rect x="5" y="2" width="14" height="20" rx="2"/>
-                    <line x1="9" y1="18" x2="15" y2="18"/>
-
-                </svg>
-
-                <span>
-                    Dispositivos
-                </span>
-
-            </a>
-
 
             <a
                 href="contatos-admin.php"
@@ -2542,13 +2568,13 @@
                         class="summary-number"
                         id="testAlerts"
                     >
-                        3
+                        0
                     </strong>
 
                 </div>
 
                 <p>
-                    Testes
+                    Atendidos
                 </p>
 
             </div>
@@ -2579,13 +2605,13 @@
                         class="summary-number"
                         id="cancelledAlerts"
                     >
-                        2
+                        0
                     </strong>
 
                 </div>
 
                 <p>
-                    Cancelados
+                    Encerrados
                 </p>
 
             </div>
@@ -2632,23 +2658,23 @@
 
                 <button
                     class="filter"
-                    onclick="filterAlerts('emergency', this)"
+                    onclick="filterAlerts('open', this)"
                 >
-                    Emergência
+                    Em aberto
                 </button>
 
                 <button
                     class="filter"
-                    onclick="filterAlerts('test', this)"
+                    onclick="filterAlerts('attended', this)"
                 >
-                    Teste
+                    Atendidos
                 </button>
 
                 <button
                     class="filter"
-                    onclick="filterAlerts('cancelled', this)"
+                    onclick="filterAlerts('encerrado', this)"
                 >
-                    Cancelado
+                    Encerrados
                 </button>
 
             </div>
@@ -2668,6 +2694,7 @@
                             <th>Localização</th>
                             <th>Status</th>
                             <th>Detalhes</th>
+                            <th>Ações</th>
 
                         </tr>
 
@@ -2675,822 +2702,7 @@
 
 
                     <tbody id="alertTable">
-
-
-                        <tr data-type="emergency">
-
-                            <td>
-                                <span class="type-badge type-emergency">
-                                    <span class="type-dot"></span>
-                                    Emergência
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        JP
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Julia Padilha
-                                        </div>
-
-                                        <div class="user-email">
-                                            julia@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                15/08/2026<br>
-                                10:42
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-                                        <circle cx="12" cy="10" r="2.5"/>
-
-                                    </svg>
-
-                                    Taubaté - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-resolved">
-                                    <span class="status-dot"></span>
-                                    Resolvido
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Alerta de emergência',
-                                        'Julia Padilha',
-                                        '15/08/2026 às 10:42',
-                                        'Taubaté - SP',
-                                        'Resolvido',
-                                        '3 contatos acionados'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr data-type="test">
-
-                            <td>
-
-                                <span class="type-badge type-test">
-                                    <span class="type-dot"></span>
-                                    Teste
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        MS
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Maria Silva
-                                        </div>
-
-                                        <div class="user-email">
-                                            maria@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                15/08/2026<br>
-                                08:15
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-
-                                    </svg>
-
-                                    São Paulo - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-resolved">
-                                    <span class="status-dot"></span>
-                                    Concluído
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Teste de segurança',
-                                        'Maria Silva',
-                                        '15/08/2026 às 08:15',
-                                        'São Paulo - SP',
-                                        'Concluído',
-                                        'Nenhum contato acionado'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr data-type="emergency">
-
-                            <td>
-
-                                <span class="type-badge type-emergency">
-                                    <span class="type-dot"></span>
-                                    Emergência
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        AC
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Ana Costa
-                                        </div>
-
-                                        <div class="user-email">
-                                            ana@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                14/08/2026<br>
-                                21:37
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-
-                                    </svg>
-
-                                    Campinas - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-active">
-                                    <span class="status-dot"></span>
-                                    Ativo
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Alerta de emergência',
-                                        'Ana Costa',
-                                        '14/08/2026 às 21:37',
-                                        'Campinas - SP',
-                                        'Ativo',
-                                        '3 contatos acionados'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr data-type="cancelled">
-
-                            <td>
-
-                                <span class="type-badge type-cancelled">
-                                    <span class="type-dot"></span>
-                                    Cancelado
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        CS
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Carla Souza
-                                        </div>
-
-                                        <div class="user-email">
-                                            carla@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                14/08/2026<br>
-                                17:20
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-
-                                    </svg>
-
-                                    Taubaté - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-cancelled">
-                                    <span class="status-dot"></span>
-                                    Cancelado
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Alerta cancelado',
-                                        'Carla Souza',
-                                        '14/08/2026 às 17:20',
-                                        'Taubaté - SP',
-                                        'Cancelado',
-                                        'Nenhum contato acionado'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr data-type="test">
-
-                            <td>
-
-                                <span class="type-badge type-test">
-                                    <span class="type-dot"></span>
-                                    Teste
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        BS
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Beatriz Santos
-                                        </div>
-
-                                        <div class="user-email">
-                                            beatriz@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                13/08/2026<br>
-                                14:05
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-
-                                    </svg>
-
-                                    Taubaté - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-resolved">
-                                    <span class="status-dot"></span>
-                                    Concluído
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Verificação do dispositivo',
-                                        'Beatriz Santos',
-                                        '13/08/2026 às 14:05',
-                                        'Taubaté - SP',
-                                        'Concluído',
-                                        'Nenhum contato acionado'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr data-type="emergency">
-
-                            <td>
-
-                                <span class="type-badge type-emergency">
-                                    <span class="type-dot"></span>
-                                    Emergência
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        LM
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Larissa Martins
-                                        </div>
-
-                                        <div class="user-email">
-                                            larissa@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                12/08/2026<br>
-                                22:18
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-
-                                    </svg>
-
-                                    São José dos Campos - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-resolved">
-                                    <span class="status-dot"></span>
-                                    Resolvido
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Alerta de emergência',
-                                        'Larissa Martins',
-                                        '12/08/2026 às 22:18',
-                                        'São José dos Campos - SP',
-                                        'Resolvido',
-                                        '3 contatos acionados'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr data-type="test">
-
-                            <td>
-
-                                <span class="type-badge type-test">
-                                    <span class="type-dot"></span>
-                                    Teste
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        RS
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Renata Silva
-                                        </div>
-
-                                        <div class="user-email">
-                                            renata@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                10/08/2026<br>
-                                09:30
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-
-                                    </svg>
-
-                                    São Paulo - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-resolved">
-                                    <span class="status-dot"></span>
-                                    Concluído
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Teste de segurança',
-                                        'Renata Silva',
-                                        '10/08/2026 às 09:30',
-                                        'São Paulo - SP',
-                                        'Concluído',
-                                        'Nenhum contato acionado'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr data-type="cancelled">
-
-                            <td>
-
-                                <span class="type-badge type-cancelled">
-                                    <span class="type-dot"></span>
-                                    Cancelado
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="user-cell">
-
-                                    <div class="user-avatar">
-                                        JS
-                                    </div>
-
-                                    <div>
-
-                                        <div class="user-name">
-                                            Juliana Santos
-                                        </div>
-
-                                        <div class="user-email">
-                                            juliana@email.com
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                08/08/2026<br>
-                                18:45
-                            </td>
-
-                            <td>
-
-                                <div class="location">
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-
-                                    </svg>
-
-                                    Taubaté - SP
-
-                                </div>
-
-                            </td>
-
-                            <td>
-
-                                <span class="status status-cancelled">
-                                    <span class="status-dot"></span>
-                                    Cancelado
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="details-button"
-                                    onclick="openDetails(
-                                        'Alerta cancelado',
-                                        'Juliana Santos',
-                                        '08/08/2026 às 18:45',
-                                        'Taubaté - SP',
-                                        'Cancelado',
-                                        'Nenhum contato acionado'
-                                    )"
-                                >
-
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                    >
-
-                                        <path d="m9 18 6-6-6-6"/>
-
-                                    </svg>
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
+                        <tr><td colspan="7" style="text-align:center;padding:24px">Carregando alertas do banco...</td></tr>
                     </tbody>
 
                 </table>
@@ -3667,58 +2879,38 @@
     ===================================================== */
 
     function filterAlerts(type, button) {
+        // Os valores usados aqui seguem a coluna alerts.status do MySQL:
+        // open, attended e encerrado. Normalizamos espaços e maiúsculas
+        // para evitar que diferenças de apresentação quebrem os filtros.
+        const normalizarStatusFiltro = (valor) => {
+            const status = String(valor || "")
+                .trim()
+                .toLowerCase()
+                .replace(/[\s-]+/g, "_");
 
-        const buttons =
-            document.querySelectorAll(".filter");
+            if (["open", "aberto", "aberta", "pending", "pendente"].includes(status)) return "open";
+            if (["attended", "atendido", "atendida", "em_atendimento", "in_progress", "em_andamento"].includes(status)) return "attended";
+            if (["encerrado", "encerrada", "closed", "fechado", "fechada", "resolved", "resolvido", "resolvida", "concluido", "concluida"].includes(status)) return "encerrado";
+            return status;
+        };
 
-
-        buttons.forEach(btn => {
-
-            btn.classList.remove("active");
-
+        document.querySelectorAll(".filters .filter").forEach((btn) => {
+            btn.classList.toggle("active", btn === button);
         });
 
-
-        button.classList.add("active");
-
-
-        const rows =
-            document.querySelectorAll(
-                "#alertTable tr"
-            );
-
-
+        const rows = document.querySelectorAll("#alertTable tr[data-status]");
         let visible = 0;
 
-
-        rows.forEach(row => {
-
-            const rowType =
-                row.dataset.type;
-
-
-            if (
-                type === "all" ||
-                rowType === type
-            ) {
-
-                row.style.display = "";
-
-                visible++;
-
-            } else {
-
-                row.style.display = "none";
-
-            }
-
+        rows.forEach((row) => {
+            const rowStatus = normalizarStatusFiltro(row.dataset.status);
+            const mostrar = type === "all" || rowStatus === normalizarStatusFiltro(type);
+            row.hidden = !mostrar;
+            row.style.display = mostrar ? "" : "none";
+            if (mostrar) visible++;
         });
 
-
-        document.getElementById(
-            "alertCount"
-        ).textContent = visible;
-
+        const contador = document.getElementById("alertCount");
+        if (contador) contador.textContent = String(visible);
     }
 
 
@@ -3799,12 +2991,20 @@
        ATUALIZAR
     ===================================================== */
 
-    function refreshAlerts() {
-
-        showToast(
-            "Lista de alertas atualizada."
-        );
-
+    async function refreshAlerts() {
+        try {
+            const response = await fetch("../api.php?action=admin_alerts", {
+                method: "POST", credentials: "same-origin",
+                headers: { "Content-Type": "application/json" }, body: "{}"
+            });
+            const data = await response.json();
+            if (!data.ok) throw new Error(data.message || "Falha ao atualizar");
+            if (window.SilentHelpAdminRenderAlerts) window.SilentHelpAdminRenderAlerts(data.items || []);
+            else location.reload();
+            showToast("Alertas atualizados.");
+        } catch (error) {
+            showToast(error.message || "Não foi possível atualizar os alertas.");
+        }
     }
 
 
@@ -3876,7 +3076,84 @@
 
 
 <script src="../assets/db-sync.js"></script>
-<script src="../assets/admin-db.js"></script>
+<script src="assets/admin-db.js"></script>
+<script id="silenthelp-responsive-admin-js">
+(function () {
+  function setupSilentHelpSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    if (!sidebar || document.body.dataset.shSidebarReady === '1') return;
+    document.body.dataset.shSidebarReady = '1';
+
+    var overlay = document.getElementById('sidebarOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'sidebarOverlay';
+      overlay.className = 'sh-sidebar-overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(overlay);
+    } else {
+      overlay.classList.add('sh-sidebar-overlay');
+    }
+
+    var toggle = document.querySelector('.mobile-menu, .menu-toggle, [data-sidebar-toggle]');
+    if (!toggle) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'sh-menu-toggle';
+      toggle.setAttribute('aria-label', 'Abrir menu lateral');
+      toggle.setAttribute('aria-controls', 'sidebar');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.innerHTML = '&#9776;';
+      var main = document.querySelector('.main-content, .content, .main, main') || document.body;
+      var header = main.querySelector('.content-header, .page-header, header, .header-content');
+      if (header) header.insertBefore(toggle, header.firstChild);
+      else document.body.insertBefore(toggle, document.body.firstChild);
+    }
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+      document.body.classList.add('sh-sidebar-active');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Fechar menu lateral');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+      document.body.classList.remove('sh-sidebar-active');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Abrir menu lateral');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    function toggleSidebar() {
+      if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar();
+    }
+
+    // Existing buttons may call their own toggleSidebar function; this listener
+    // makes the behavior consistent across every admin page.
+    toggle.addEventListener('click', function (event) {
+      event.preventDefault();
+      toggleSidebar();
+    });
+    overlay.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeSidebar();
+    });
+    sidebar.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.matchMedia('(max-width: 1000px)').matches) closeSidebar();
+      });
+    });
+    window.addEventListener('resize', function () {
+      if (!window.matchMedia('(max-width: 1000px)').matches) closeSidebar();
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupSilentHelpSidebar);
+  else setupSilentHelpSidebar();
+})();
+
+</script>
 </body>
 
 </html>

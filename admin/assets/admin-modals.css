@@ -1,0 +1,18 @@
+/* SilentHelp — estilos dos modais e botões administrativos */
+.sh-modal-backdrop{position:fixed;inset:0;background:rgba(5,3,10,.78);backdrop-filter:blur(7px);z-index:99998;display:flex;align-items:center;justify-content:center;padding:18px}
+.sh-modal-backdrop[hidden]{display:none!important}
+.sh-modal{width:min(560px,100%);max-height:90vh;overflow:auto;background:#14101c;color:#f8f5ff;border:1px solid rgba(168,85,247,.35);border-radius:18px;box-shadow:0 24px 90px #0009;padding:24px}
+.sh-modal h2{font-size:1.25rem;margin:0 0 7px}.sh-modal p{color:#aaa5b4;margin:0 0 18px}
+.sh-modal-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.sh-field{display:flex;flex-direction:column;gap:6px;min-width:0}.sh-field.full{grid-column:1/-1}
+.sh-field label{font-size:.86rem;color:#d9d0e5}.sh-field input,.sh-field select,.sh-field textarea{width:100%;min-height:42px;border:1px solid #393044;border-radius:9px;background:#0d0a12;color:#fff;padding:10px;font:inherit;outline:none;box-sizing:border-box}
+.sh-field input:focus,.sh-field select:focus,.sh-field textarea:focus{border-color:#b76cff;box-shadow:0 0 0 3px #a855f722}
+.sh-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;flex-wrap:wrap}
+.sh-btn{border:1px solid transparent;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer;transition:.18s ease;font:inherit}
+.sh-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}.sh-btn:focus-visible{outline:3px solid #d0a0ff;outline-offset:2px}
+.sh-btn-primary{background:linear-gradient(135deg,#a855f7,#7c3aed);color:white}.sh-btn-muted{background:#24202c;color:#eee;border-color:#393044}.sh-btn-danger{background:#dc3658;color:white}
+@media(max-width:520px){.sh-modal{padding:18px}.sh-modal-form{grid-template-columns:1fr}.sh-field.full{grid-column:auto}.sh-modal-actions .sh-btn{flex:1}}
+button.action-button,button.details-button,button.filter,button[type=submit],.btn,.button{border-radius:9px!important;transition:background .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease!important}
+button.action-button{padding:8px 12px!important;border:1px solid rgba(168,85,247,.3)!important;background:#21172e!important;color:#e8d7ff!important;font-weight:650!important;cursor:pointer}
+button.action-button:hover{background:#39214f!important;border-color:#b76cff!important;transform:translateY(-1px)}
+button.action-button[style*="ff667d"],button.action-button.danger{background:#351621!important;color:#ff9aaa!important;border-color:#783044!important}
+button.details-button{padding:8px 12px!important;background:#21172e!important;border:1px solid #4a2e61!important;color:#e8d7ff!important;cursor:pointer}
