@@ -55,7 +55,7 @@ A plataforma reúne ferramentas de segurança, comunicação e monitoramento em 
 ## Tecnologias utilizadas
 
 - **PHP** — processamento no servidor e integração com o banco de dados.
-- **JavaScript** — interatividade, filtros, comunicação com a API e funcionalidades da interface.
+- **JavaScript** — interatividade, gráficos, filtros, comunicação com a API e funcionalidades da interface.
 - **MySQL** — armazenamento persistente de usuários, configurações e demais registros do sistema.
 - **HTML5** — estrutura das páginas.
 - **CSS3** — estilização e responsividade.
