@@ -6,6 +6,7 @@ $usuario = exigirLogin();
 
 $nomeUsuario = $usuario["nome"];
 
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -4208,6 +4209,94 @@ $nomeUsuario = $usuario["nome"];
 
     <script>
 
+        let verificandoStatusAtendimento = false;
+
+        async function verificarSeResponsavelAcompanha() {
+            if (verificandoStatusAtendimento) return;
+            verificandoStatusAtendimento = true;
+
+            try {
+                const resposta = await fetch("api.php?action=my_alert_status", {
+                    method: "GET",
+                    credentials: "same-origin",
+                    cache: "no-store",
+                    headers: { "Accept": "application/json" }
+                });
+
+                const dados = await resposta.json();
+
+                if (resposta.ok && dados.ok && dados.alerta) {
+                    const status = String(dados.alerta.status || "").toLowerCase();
+
+                    // Se o responsável clicou em "Estou acompanhando" (status: attended / atendido / em_atendimento)
+                    if (["attended", "atendido", "atendida", "em_atendimento"].includes(status)) {
+
+                        // 1. Atualiza o texto na tela do protegido
+                        const elementoStatus = document.getElementById("statusSosProtegido");
+                        if (elementoStatus) {
+                            elementoStatus.textContent = "🟢 O responsável já está te acompanhando!";
+                            elementoStatus.style.color = "#55df91";
+                        }
+
+                        // 2. Dispara a notificação/vibração no telemóvel do protegido (se for novo atendimento)
+                        if (!window.notificadoAcompanhamento) {
+                            window.notificadoAcompanhamento = true;
+
+                            if ("vibrate" in navigator) {
+                                navigator.vibrate([200, 100, 200]); // Vibração curta de confirmação
+                            }
+
+                            if ("Notification" in window && Notification.permission === "granted") {
+                                new Notification("💜 Ajuda a caminho!", {
+                                    body: "Seu responsável confirmou que está te acompanhando agora.",
+                                    icon: "assets/icon.png"
+                                });
+                            }
+                        }
+                    }
+                }
+            } catch (erro) {
+                console.warn("Erro ao verificar atendimento do responsável:", erro);
+            } finally {
+                verificandoStatusAtendimento = false;
+            }
+        }
+
+        // Executa a verificação a cada 3 segundos na tela do protegido
+        setInterval(verificarSeResponsavelAcompanha, 3000);
+
+        let meuAlertaId = null;
+        let monitoramentoInterval = null;
+
+        function checarStatusAlerta() {
+            if (!meuAlertaId) return;
+
+            fetch('api.php?action=status_alerta&alerta_id=' + meuAlertaId)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'em_atendimento' || data.status === 'attended') {
+                        clearInterval(monitoramentoInterval);
+                        exibirFeedbackProtegido(data.responsavel_nome);
+                    }
+                })
+                .catch(err => console.error("Erro ao checar status:", err));
+        }
+
+        function exibirFeedbackProtegido(nomeResponsavel) {
+            if ("vibrate" in navigator) {
+                navigator.vibrate([200, 100, 200]);
+            }
+
+            mostrarMensagem(`✅ ${nomeResponsavel || 'Seu responsável'} já está te acompanhando!`);
+
+            const statusElement = document.getElementById("systemStatus");
+            if (statusElement) {
+                statusElement.style.borderColor = "rgba(85,223,145,.5)";
+                statusElement.style.background = "rgba(85,223,145,.12)";
+                document.getElementById("statusText").textContent = `Em atendimento por ${nomeResponsavel || 'Responsável'}`;
+            }
+        }
+
         function ir() {
             window.location.href = 'diario.php';
         }
@@ -4957,6 +5046,11 @@ $nomeUsuario = $usuario["nome"];
                  * =================================================
                  */
 
+                // Guarda o ID para monitorar a resposta do responsável
+                meuAlertaId = dados.id;
+                if (monitoramentoInterval) clearInterval(monitoramentoInterval);
+                monitoramentoInterval = setInterval(checarStatusAlerta, 3000);
+
                 const agora =
                     new Date();
 
@@ -5013,10 +5107,6 @@ $nomeUsuario = $usuario["nome"];
                     timestamp:
                         Date.now()
                 };
-
-
-                // O alerta já foi enviado ao api.php e registrado no banco.
-                // Não manter cópia persistente no navegador.
 
 
                 /*
@@ -6006,11 +6096,19 @@ $nomeUsuario = $usuario["nome"];
     </script>
 
     <style>
-/* Modo discreto: reduz a exposição de informações pessoais sem bloquear ações de emergência. */
-body.sh-modo-discreto [data-sensitive], body.sh-modo-discreto .dado-sensivel { filter: blur(5px); user-select: none; }
-body.sh-modo-discreto [data-sensitive]:hover, body.sh-modo-discreto .dado-sensivel:hover { filter: none; }
-</style>
-<script src="assets/db-sync.js"></script>
+        /* Modo discreto: reduz a exposição de informações pessoais sem bloquear ações de emergência. */
+        body.sh-modo-discreto [data-sensitive],
+        body.sh-modo-discreto .dado-sensivel {
+            filter: blur(5px);
+            user-select: none;
+        }
+
+        body.sh-modo-discreto [data-sensitive]:hover,
+        body.sh-modo-discreto .dado-sensivel:hover {
+            filter: none;
+        }
+    </style>
+    <script src="assets/db-sync.js"></script>
 </body>
 
 </html>

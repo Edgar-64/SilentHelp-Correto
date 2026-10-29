@@ -294,7 +294,13 @@
             const id = Number(item.id);
             const status = normalizeAlertStatus(item.status);
             const statusClass = status === "open" ? "status-active" : status === "attended" ? "status-resolved" : "status-cancelled";
-            const type = String(item.tipo || "emergencia").replaceAll("_", " ");
+            const rawType = String(item.tipo || "emergencia").trim().toLowerCase();
+            const type = rawType.replaceAll("_", " ").replaceAll("-", " ");
+            const typeClass = /cancel|cancelad/.test(rawType) ? "type-cancelled"
+                : /teste|test/.test(rawType) ? "type-test"
+                : /aviso|aten[cç][aã]o|warning|alerta/.test(rawType) ? "type-warning"
+                : /inform|normal|rotina/.test(rawType) ? "type-info"
+                : "type-emergency";
             const user = item.usuario || "";
             const date = item.data_inicio ? formatDateTime(item.data_inicio) : "";
             const hasLocation = item.latitude !== null && item.latitude !== undefined && item.latitude !== "" && item.longitude !== null && item.longitude !== undefined && item.longitude !== "" && Number.isFinite(Number(item.latitude)) && Number.isFinite(Number(item.longitude));
@@ -302,7 +308,7 @@
                 ? `<a href="https://www.google.com/maps?q=${encodeURIComponent(item.latitude + ',' + item.longitude)}" target="_blank" rel="noopener noreferrer">${escapeHTML(Number(item.latitude).toFixed(6))}, ${escapeHTML(Number(item.longitude).toFixed(6))}</a>`
                 : "";
             return `<tr data-id="${id}" data-type="${escapeHTML(type)}" data-status="${escapeHTML(status)}">
-                <td><span class="type-badge type-emergency"><span class="type-dot"></span>${escapeHTML(type)}</span></td>
+                <td><span class="type-badge ${typeClass}"><span class="type-dot"></span>${escapeHTML(type)}</span></td>
                 <td><div class="user-cell"><div class="user-avatar">${escapeHTML(user ? initials(user) : "")}</div><div><div class="user-name">${escapeHTML(user)}</div></div></div></td>
                 <td>${escapeHTML(date)}</td>
                 <td><div class="location">${location}</div></td>
@@ -457,25 +463,49 @@
         const table = document.getElementById("contactsTable");
         if (!table) return;
 
-        const users = new Set(items.map(i => i.usuario_id));
+        items = Array.isArray(items) ? items : [];
+        const users = new Set(items.map(i => String(i.usuario || "").trim()).filter(Boolean));
         const active = items.filter(i => Number(i.principal) === 1).length;
         document.getElementById("totalContacts")?.replaceChildren(document.createTextNode(String(items.length)));
         document.getElementById("totalUsers")?.replaceChildren(document.createTextNode(String(users.size)));
         document.getElementById("activeContacts")?.replaceChildren(document.createTextNode(String(active)));
         document.getElementById("contactCount")?.replaceChildren(document.createTextNode(String(items.length)));
 
-        table.innerHTML = items.map(item => {
-            const status = Number(item.principal) === 1 ? "active" : "inactive";
-            return `
-                <tr data-id="${Number(item.id)}" data-status="${status}" data-user="${escapeHTML(item.usuario || "")}">
-                    <td><div class="contact-cell"><div class="contact-avatar">${escapeHTML(initials(item.nome))}</div><div class="contact-name">${escapeHTML(item.nome)}</div></div></td>
-                    <td>${escapeHTML(item.telefone)}</td>
-                    <td class="user-name">${escapeHTML(item.usuario || "—")}</td>
-                    <td><span class="quantity">${Number(item.principal) === 1 ? "Principal" : "Secundário"}</span></td>
-                    <td><span class="status ${status}"><span class="status-dot"></span>${status === "active" ? "Ativo" : "Cadastrado"}</span></td>
-                    <td><button class="details-button" onclick='showDetails(${JSON.stringify(item.nome)},${JSON.stringify(item.telefone)},${JSON.stringify(item.usuario || "—")},${JSON.stringify(Number(item.principal) === 1 ? "Principal" : "Secundário")},${JSON.stringify(status === "active" ? "Ativo" : "Cadastrado")})'>Detalhes</button> <button class="action-button" onclick="editContact(${Number(item.id)})">Editar</button> <button class="action-button" style="color:#ff667d" onclick="deleteContact(${Number(item.id)})">Excluir</button></td>
-                </tr>`;
-        }).join("");
+        if (!items.length) {
+            table.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px">Nenhum contato registrado no banco de dados.</td></tr>';
+        } else {
+            table.innerHTML = items.map(item => {
+                const id = Number(item.id);
+                const principal = Number(item.principal) === 1;
+                const status = principal ? "active" : "inactive";
+                const tipo = principal ? "Principal" : "Secundário";
+                const statusTexto = principal ? "Ativo" : "Cadastrado";
+                const nome = String(item.nome || "");
+                const telefone = String(item.telefone || "");
+                const usuario = String(item.usuario || "—");
+                return `
+                    <tr data-id="${id}" data-status="${status}" data-user="${escapeHTML(usuario === "—" ? "" : usuario)}">
+                        <td><div class="contact-cell"><div class="contact-avatar">${escapeHTML(initials(nome))}</div><div class="contact-name">${escapeHTML(nome)}</div></div></td>
+                        <td>${escapeHTML(telefone)}</td>
+                        <td class="user-name">${escapeHTML(usuario)}</td>
+                        <td><span class="quantity">${escapeHTML(tipo)}</span></td>
+                        <td><span class="status ${status}"><span class="status-dot"></span>${escapeHTML(statusTexto)}</span></td>
+                        <td><button type="button" class="details-button" onclick='showDetails(${JSON.stringify(nome)},${JSON.stringify(telefone)},${JSON.stringify(usuario)},${JSON.stringify(tipo)},${JSON.stringify(statusTexto)})'>Detalhes</button> <button type="button" class="action-button" onclick="editContact(${id})">Editar</button> <button type="button" class="action-button" style="color:#ff667d" onclick="deleteContact(${id})">Excluir</button></td>
+                    </tr>`;
+            }).join("");
+        }
+
+        // Atualiza as opções da lista com as usuárias que realmente aparecem no banco.
+        const userFilter = document.getElementById("userFilter");
+        if (userFilter) {
+            const selected = userFilter.value;
+            userFilter.innerHTML = '<option value="todos">Todas as usuárias</option>' +
+                Array.from(users).sort((a, b) => a.localeCompare(b, "pt-BR"))
+                    .map(name => `<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`).join("");
+            if (Array.from(users).includes(selected)) userFilter.value = selected;
+        }
+
+        if (typeof window.applyFilters === "function") window.applyFilters();
     }
 
     async function setupConfig() {
@@ -582,98 +612,8 @@
         }
     }
 
-    async function setupMap() {
-        if (!document.getElementById("map")) return;
-        const response = await api.post("admin_alerts");
-        if (!response || !response.ok) {
-            throw new Error(response?.message || "Não foi possível carregar as ocorrências do banco.");
-        }
-
-        const allItems = Array.isArray(response.items) ? response.items : [];
-        const items = allItems.filter(i =>
-            i.latitude !== null && i.latitude !== undefined && i.latitude !== "" &&
-            i.longitude !== null && i.longitude !== undefined && i.longitude !== "" &&
-            Number.isFinite(Number(i.latitude)) && Number.isFinite(Number(i.longitude))
-        );
-
-        if (window.L && window.map) {
-            const map = window.map;
-            map.eachLayer(layer => {
-                if (!(layer instanceof L.TileLayer)) map.removeLayer(layer);
-            });
-
-            const colors = { open: "#f4c95d", active: "#f4c95d", attended: "#55b8ff", encerrado: "#55df91", resolved: "#55df91", cancelled: "#817b8c", canceled: "#817b8c" };
-            const bounds = [];
-            items.forEach(item => {
-                const lat = Number(item.latitude);
-                const lng = Number(item.longitude);
-                // Ignora coordenadas inválidas ou fora dos limites geográficos.
-                if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) return;
-
-                const status = String(item.status || "").trim().toLowerCase();
-                const color = colors[status] || "#ff5d73";
-                const marker = L.circleMarker([lat, lng], {
-                    radius: 8, color: "#ffffff", weight: 2, fillColor: color, fillOpacity: 1
-                }).addTo(map);
-                const popup = `<strong>${escapeHTML(item.titulo || "Alerta de emergência")}</strong><br>` +
-                    `Usuária: ${escapeHTML(item.usuario || "Não identificada")}<br>` +
-                    `Status: ${escapeHTML(statusLabel(status))}<br>` +
-                    `Data: ${escapeHTML(formatDateTime(item.data_inicio))}<br>` +
-                    `Coordenadas: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                marker.bindPopup(popup);
-                bounds.push([lat, lng]);
-            });
-
-            // Enquadra automaticamente todos os alertas que possuem localização real.
-            if (bounds.length === 1) {
-                map.setView(bounds[0], 16);
-            } else if (bounds.length > 1) {
-                map.fitBounds(bounds, { padding: [35, 35], maxZoom: 16 });
-            }
-        }
-
-        const activeCount = allItems.filter(i => ["open", "active", "ativo", "ativa", "em_atendimento"].includes(String(i.status || "").toLowerCase())).length;
-        document.getElementById("mapTotal")?.replaceChildren(document.createTextNode(String(allItems.length)));
-        document.getElementById("mapActive")?.replaceChildren(document.createTextNode(String(activeCount)));
-        const occurrenceCount = document.getElementById("occurrenceCount");
-        if (occurrenceCount) occurrenceCount.textContent = `${allItems.length} ocorrência(s)`;
-
-        const list = document.getElementById("occurrenceList");
-        if (list) {
-            list.innerHTML = allItems.length ? allItems.slice(0, 10).map(item => {
-                const status = String(item.status || "").toLowerCase();
-                const active = ["open", "active", "ativo", "ativa", "em_atendimento"].includes(status);
-                const resolved = ["resolved", "resolvido", "resolvida", "closed", "concluido", "concluído"].includes(status);
-                const cls = active ? "active" : resolved ? "resolved" : "cancelled";
-                const title = item.titulo || item.descricao || "Alerta";
-                return `<article class="occurrence" data-status="${cls}">
-                    <div class="occurrence-icon"><span>!</span></div>
-                    <div class="occurrence-info">
-                        <h3>${escapeHTML(title)}</h3>
-                        <p>Usuária: ${escapeHTML(item.usuario || "Não identificada")} • ${escapeHTML(formatDateTime(item.data_inicio))}</p>
-                        <p>Localização: ${item.latitude != null && item.longitude != null ? escapeHTML(`${item.latitude}, ${item.longitude}`) : "Não informada"}</p>
-                    </div>
-                    <span class="status ${cls}">${escapeHTML(statusLabel(item.status))}</span>
-                </article>`;
-            }).join("") : '<div style="padding:24px;text-align:center;color:var(--cinza)">Nenhuma ocorrência registrada no banco de dados.</div>';
-        }
-    }
 
     async function fetchItems(action) { const r = await api.post(action); if (!r || !r.ok) throw new Error(r?.message || "Falha ao consultar o banco."); return r.items || []; }
-
-    function addAdminActionButton(tableId,label,handler) {
-        const table=document.getElementById(tableId);if(!table||document.getElementById("btn-"+tableId))return;
-        const button=document.createElement("button");button.id="btn-"+tableId;button.type="button";button.textContent=label;
-        button.className="sh-btn sh-btn-primary";button.style.margin="0 0 12px";button.addEventListener("click",handler);table.parentElement.insertBefore(button,table);
-    }
-    addAdminActionButton("userTable","+ Cadastrar usuário",()=>showAdminForm({title:"Cadastrar usuário",description:"Preencha os dados da nova conta.",fields:[
-        {name:"nome",label:"Nome completo"},{name:"email",label:"E-mail",type:"email"},{name:"telefone",label:"Telefone",required:false},
-        {name:"tipo",label:"Tipo de conta",type:"select",value:"protegida",options:[{value:"protegida",label:"Pessoa protegida"},{value:"responsavel",label:"Responsável"}]},
-        {name:"senha",label:"Senha inicial",type:"password"}],onSubmit:async d=>{if(d.senha.length<6)throw Error("A senha precisa ter pelo menos 6 caracteres.");const r=await api.post("admin_create_user",d);if(!r?.ok)throw Error(r?.message||"Falha ao cadastrar usuário.");closeAdminModal();window.showToast?.("Usuário cadastrado.");renderUsers(await loadUsers());}}));
-    addAdminActionButton("contactsTable","+ Cadastrar contato",()=>showAdminForm({title:"Cadastrar contato",description:"Informe o ID do usuário ao qual o contato pertence.",fields:[
-        {name:"usuario_id",label:"ID do usuário",type:"number"},{name:"nome",label:"Nome do contato"},{name:"telefone",label:"Telefone"},{name:"relacao",label:"Parentesco / relação",required:false},
-        {name:"principal",label:"Contato principal",type:"select",value:"0",options:[{value:"0",label:"Não"},{value:"1",label:"Sim"}]}],
-        onSubmit:async d=>{const r=await api.post("admin_save_contact",{...d,usuario_id:Number(d.usuario_id),principal:d.principal==="1"});if(!r?.ok)throw Error(r?.message||"Falha ao salvar contato.");closeAdminModal();window.showToast?.("Contato cadastrado.");renderContacts(await loadContacts());}}));
 
     window.editUser=async function(id){const list=await fetchItems("admin_users"),x=list.find(i=>Number(i.id)===Number(id));if(!x)return window.showToast?.("Usuário não encontrado.");
         showAdminForm({title:`Editar usuário #${id}`,fields:[{name:"nome",label:"Nome",value:x.nome},{name:"email",label:"E-mail",type:"email",value:x.email},{name:"telefone",label:"Telefone",required:false,value:x.telefone||""},{name:"tipo",label:"Tipo",type:"select",value:x.tipo,options:[{value:"protegida",label:"Pessoa protegida"},{value:"responsavel",label:"Responsável"}]}],onSubmit:async d=>{const r=await api.post("admin_update_user",{id:Number(id),...d});if(!r?.ok)throw Error(r?.message||"Falha ao editar usuário.");closeAdminModal();window.showToast?.("Usuário atualizado.");renderUsers(await loadUsers());}});};
@@ -700,7 +640,6 @@
             if (path.endsWith("/contatos-admin.php")) renderContacts(await loadContacts());
             if (path.endsWith("/relatorios.php")) await setupReports();
             if (path.endsWith("/config-admin.php")) await setupConfig();
-            if (path.endsWith("/mapa-admin.php")) await setupMap();
         } catch (error) {
             console.error("Falha ao carregar dados do SilentHelp:", error);
             const recentList = document.querySelector(".recent-list");

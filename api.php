@@ -31,6 +31,19 @@ function uid()
         : 0;
 }
 
+if ($action === 'my_alert_status') {
+    // Busca o último alerta ativo do usuário protegido que está logado
+    $stmt = $pdo->prepare("SELECT id, status, updated_at FROM alertas WHERE usuario_id = :usuario_id ORDER BY id DESC LIMIT 1");
+    $stmt->execute([':usuario_id' => $usuario['id']]);
+    $alerta = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    echo json_encode([
+        'ok' => true,
+        'alerta' => $alerta
+    ]);
+    exit;
+}
+
 function needUser()
 {
     if (!uid()) {
@@ -38,6 +51,32 @@ function needUser()
             "ok" => false,
             "message" => "Sessão expirada."
         ], 401);
+    }
+
+    global $conn;
+    $id = uid();
+    $stmt = $conn->prepare("SELECT account_status FROM users WHERE id = ? LIMIT 1");
+    if (!$stmt) {
+        throw new Exception($conn->error);
+    }
+
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->bind_result($statusConta);
+    $encontrado = $stmt->fetch();
+    $stmt->close();
+
+    if (!$encontrado || !in_array(strtolower(trim((string) $statusConta)), ["active", "ativo", "ativa", "1"], true)) {
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), "", time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+        }
+        session_destroy();
+        out([
+            "ok" => false,
+            "message" => "Esta conta está inativa. Entre em contato com a administração."
+        ], 403);
     }
 }
 
@@ -404,7 +443,7 @@ try {
             $senha = $d["senha"] ?? "";
 
             $stmt = $conn->prepare("
-        SELECT id, name, email, phone, password_hash, type
+        SELECT id, name, email, phone, password_hash, type, account_status
         FROM users
         WHERE email = ?
         LIMIT 1
@@ -424,7 +463,8 @@ try {
                 $emailBanco,
                 $telefone,
                 $senhaBanco,
-                $tipo
+                $tipo,
+                $statusConta
             );
 
             if (!$stmt->fetch()) {
@@ -443,6 +483,10 @@ try {
                     "ok" => false,
                     "message" => "E-mail ou senha incorretos."
                 ], 401);
+            }
+
+            if (!in_array(strtolower(trim((string) $statusConta)), ["active", "ativo", "ativa", "1"], true)) {
+                out(["ok" => false, "message" => "Sua conta está inativa. Entre em contato com a administração."], 403);
             }
 
             session_regenerate_id(true);
@@ -472,7 +516,7 @@ try {
             $senha = $d["senha"] ?? "";
 
             $stmt = $conn->prepare("\n
-            SELECT id, name, email, phone, password_hash, type\n
+            SELECT id, name, email, phone, password_hash, type, account_status\n
             FROM users\n
             WHERE email = ?\n
             AND type = 'admin'\n
@@ -490,7 +534,8 @@ try {
                 $emailBanco,
                 $telefone,
                 $senhaBanco,
-                $tipo
+                $tipo,
+                $statusConta
             );
 
             if (!$stmt->fetch()) {
@@ -510,6 +555,10 @@ try {
                 ], 401);
             }
 
+            if (!in_array(strtolower(trim((string) $statusConta)), ["active", "ativo", "ativa", "1"], true)) {
+                out(["ok" => false, "message" => "Conta administrativa inativa."], 403);
+            }
+
             session_regenerate_id(true);
             $_SESSION["usuario_id"] = (int) $id;
             $_SESSION["usuario_tipo"] = "admin";
@@ -524,6 +573,41 @@ try {
                     "telefone" => $telefone,
                     "tipo" => "admin"
                 ]
+            ]);
+
+        /* =========================
+        STATUS DO ALERTA (PARA O PROTEGIDO)
+        ========================= */
+        case "status_alerta":
+            needUser();
+            $alertaId = (int) ($d["alerta_id"] ?? $_GET["alerta_id"] ?? 0);
+
+            if ($alertaId <= 0) {
+                out(["ok" => false, "message" => "ID inválido."], 400);
+            }
+
+            $stmt = $conn->prepare("
+                SELECT a.status, u.name as responsavel_nome
+                FROM alerts a
+                LEFT JOIN users u ON u.id = a.responsavel_id
+                WHERE a.id = ?
+                LIMIT 1
+            ");
+            if (!$stmt)
+                throw new Exception($conn->error);
+            $stmt->bind_param("i", $alertaId);
+            $stmt->execute();
+            $stmt->bind_result($statusAlerta, $nomeResponsavel);
+            if (!$stmt->fetch()) {
+                $stmt->close();
+                out(["ok" => false, "message" => "Alerta não encontrado."], 404);
+            }
+            $stmt->close();
+
+            out([
+                "ok" => true,
+                "status" => $statusAlerta,
+                "responsavel_nome" => $nomeResponsavel ?? "Responsável"
             ]);
 
 

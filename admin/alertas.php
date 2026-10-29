@@ -1061,6 +1061,32 @@
         }
 
 
+        /* Cores adicionais para diferenciar a natureza do alerta */
+        .type-warning {
+            color: var(--amarelo);
+            background: rgba(244,201,93,.10);
+            border: 1px solid rgba(244,201,93,.18);
+        }
+
+        .type-info {
+            color: var(--verde);
+            background: rgba(85,223,145,.09);
+            border: 1px solid rgba(85,223,145,.16);
+        }
+
+        .type-emergency {
+            border: 1px solid rgba(255,93,115,.18);
+        }
+
+        .type-test {
+            border: 1px solid rgba(99,168,255,.18);
+        }
+
+        .type-cancelled {
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+
         /* =====================================================
            STATUS
         ===================================================== */
@@ -2286,37 +2312,10 @@
                     Alertas
                 </span>
 
-                <span class="link-badge">
-                    3
-                </span>
-
             </a>
 
 
-            <a
-                href="mapa-admin.php"
-                class="sidebar-link"
-            >
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-
-                    <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
-                    <circle cx="12" cy="10" r="2.5"/>
-
-                </svg>
-
-                <span>
-                    Mapa de ocorrências
-                </span>
-
-            </a>
+            
 
             <a
                 href="contatos-admin.php"
@@ -2905,8 +2904,8 @@
             const rowStatus = normalizarStatusFiltro(row.dataset.status);
             const mostrar = type === "all" || rowStatus === normalizarStatusFiltro(type);
             row.hidden = !mostrar;
-            row.style.display = mostrar ? "" : "none";
-            if (mostrar) visible++;
+
+            if (mostrar) visible++;            row.style.display = mostrar ? "" : "none";
         });
 
         const contador = document.getElementById("alertCount");
@@ -2993,7 +2992,7 @@
 
     async function refreshAlerts() {
         try {
-            const response = await fetch("../api.php?action=admin_alerts", {
+            const response = await fetch("api.php?action=admin_alerts", {
                 method: "POST", credentials: "same-origin",
                 headers: { "Content-Type": "application/json" }, body: "{}"
             });
@@ -3016,7 +3015,7 @@
     function logout() {
 
         window.location.href =
-            "login-admin.php";
+            "../login.php";
 
     }
 

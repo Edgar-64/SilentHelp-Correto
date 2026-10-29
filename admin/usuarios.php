@@ -1482,6 +1482,30 @@
         }
 
 
+        .admin-add-user {
+            min-height: 42px; padding: 0 16px; border: 1px solid rgba(168,85,247,.45);
+            border-radius: 12px; background: linear-gradient(135deg,#a855f7,#702db5);
+            color: #fff; font-weight: 700; cursor: pointer; white-space: nowrap;
+        }
+        .admin-add-user:hover { filter: brightness(1.1); }
+        .actions { display:flex; flex-wrap:wrap; align-items:center; gap:7px; min-width:150px; }
+        .action-button { flex:0 0 36px; min-width:36px; min-height:36px; touch-action:manipulation; }
+        .action-button:focus-visible, .admin-add-user:focus-visible { outline:2px solid var(--roxo-claro); outline-offset:2px; }
+        .table-container { -webkit-overflow-scrolling:touch; }
+        @media (max-width:700px) {
+            .toolbar { gap:10px; }
+            .admin-add-user, .filter-select { width:100%; }
+            .actions { min-width:150px; }
+            .action-button { width:40px; height:40px; flex-basis:40px; }
+            .toast { left:12px; right:12px; bottom:12px; text-align:center; }
+            .modal-content { max-height:calc(100dvh - 24px); overflow-y:auto; padding:20px; }
+        }
+        @media (max-width:480px) {
+            .table-header { padding:16px 14px; }
+            .table-container { overflow-x:auto; }
+            table { min-width:760px; }
+        }
+
         /* =====================================================
            RESPONSIVO
         ===================================================== */
@@ -1930,14 +1954,9 @@
             <a href="alertas.php" class="sidebar-link">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 <span>Alertas</span>
-                <span class="link-badge">3</span>
             </a>
 
-            <a href="mapa-admin.php" class="sidebar-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                <span>Mapa de ocorrências</span>
-                
-            </a>
+            
 
             <a href="contatos-admin.php" class="sidebar-link">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
@@ -2071,6 +2090,8 @@
                 </div>
 
 
+                <button type="button" class="admin-add-user" onclick="createUser()">+ Cadastrar usuária</button>
+
                 <select
                     class="filter-select"
                     id="statusFilter"
@@ -2157,1017 +2178,7 @@
                         </thead>
 
 
-                        <tbody id="userTable">
-
-
-                            <!-- USUÁRIA 1 -->
-
-                            <tr
-                                data-status="active"
-                                data-name="Ana Carolina"
-                                data-email="ana.carolina@email.com"
-                            >
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="user-avatar">
-                                            AC
-                                        </div>
-
-                                        <div>
-
-                                            <div class="user-name">
-                                                Ana Carolina
-                                            </div>
-
-                                            <div class="user-id">
-                                                ID #SH001
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    <span class="email">
-                                        ana.carolina@email.com
-                                    </span>
-                                </td>
-
-
-                                <td>
-
-                                    <span class="status active">
-
-                                        <span class="status-dot"></span>
-
-                                        Ativa
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="device connected">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-
-                                            <rect
-                                                x="5"
-                                                y="2"
-                                                width="14"
-                                                height="20"
-                                                rx="2"
-                                            />
-
-                                            <line
-                                                x1="9"
-                                                y1="18"
-                                                x2="15"
-                                                y2="18"
-                                            />
-
-                                        </svg>
-
-                                        SH-001
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-
-                                    <span class="date">
-                                        02/08/2026
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="actions">
-
-                                        <button
-                                            class="action-button"
-                                            onclick="viewUser('Ana Carolina','AC','ana.carolina@email.com','Ativa','SH-001','02/08/2026')"
-                                            title="Visualizar detalhes"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <path
-                                                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
-                                                />
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="3"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-
-                                        <button
-                                            class="action-button toggle-on"
-                                            onclick="toggleUser(this)"
-                                            title="Desativar conta"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="9"
-                                                />
-
-                                                <line
-                                                    x1="8"
-                                                    y1="12"
-                                                    x2="16"
-                                                    y2="12"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-
-
-                            <!-- USUÁRIA 2 -->
-
-                            <tr
-                                data-status="active"
-                                data-name="Beatriz Souza"
-                                data-email="beatriz.souza@email.com"
-                            >
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="user-avatar">
-                                            BS
-                                        </div>
-
-                                        <div>
-
-                                            <div class="user-name">
-                                                Beatriz Souza
-                                            </div>
-
-                                            <div class="user-id">
-                                                ID #SH002
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    <span class="email">
-                                        beatriz.souza@email.com
-                                    </span>
-                                </td>
-
-
-                                <td>
-
-                                    <span class="status active">
-
-                                        <span class="status-dot"></span>
-
-                                        Ativa
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="device connected">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-
-                                            <rect
-                                                x="5"
-                                                y="2"
-                                                width="14"
-                                                height="20"
-                                                rx="2"
-                                            />
-
-                                            <line
-                                                x1="9"
-                                                y1="18"
-                                                x2="15"
-                                                y2="18"
-                                            />
-
-                                        </svg>
-
-                                        SH-002
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    04/08/2026
-                                </td>
-
-
-                                <td>
-
-                                    <div class="actions">
-
-                                        <button
-                                            class="action-button"
-                                            onclick="viewUser('Beatriz Souza','BS','beatriz.souza@email.com','Ativa','SH-002','04/08/2026')"
-                                            title="Visualizar detalhes"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <path
-                                                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
-                                                />
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="3"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-
-                                        <button
-                                            class="action-button toggle-on"
-                                            onclick="toggleUser(this)"
-                                            title="Desativar conta"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="9"
-                                                />
-
-                                                <line
-                                                    x1="8"
-                                                    y1="12"
-                                                    x2="16"
-                                                    y2="12"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-
-
-                            <!-- USUÁRIA 3 -->
-
-                            <tr
-                                data-status="active"
-                                data-name="Camila Oliveira"
-                                data-email="camila.oliveira@email.com"
-                            >
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="user-avatar">
-                                            CO
-                                        </div>
-
-                                        <div>
-
-                                            <div class="user-name">
-                                                Camila Oliveira
-                                            </div>
-
-                                            <div class="user-id">
-                                                ID #SH003
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    <span class="email">
-                                        camila.oliveira@email.com
-                                    </span>
-                                </td>
-
-
-                                <td>
-
-                                    <span class="status active">
-
-                                        <span class="status-dot"></span>
-
-                                        Ativa
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="device connected">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-
-                                            <rect
-                                                x="5"
-                                                y="2"
-                                                width="14"
-                                                height="20"
-                                                rx="2"
-                                            />
-
-                                            <line
-                                                x1="9"
-                                                y1="18"
-                                                x2="15"
-                                                y2="18"
-                                            />
-
-                                        </svg>
-
-                                        SH-003
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    06/08/2026
-                                </td>
-
-
-                                <td>
-
-                                    <div class="actions">
-
-                                        <button
-                                            class="action-button"
-                                            onclick="viewUser('Camila Oliveira','CO','camila.oliveira@email.com','Ativa','SH-003','06/08/2026')"
-                                            title="Visualizar detalhes"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <path
-                                                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
-                                                />
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="3"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-
-                                        <button
-                                            class="action-button toggle-on"
-                                            onclick="toggleUser(this)"
-                                            title="Desativar conta"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="9"
-                                                />
-
-                                                <line
-                                                    x1="8"
-                                                    y1="12"
-                                                    x2="16"
-                                                    y2="12"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-
-
-                            <!-- USUÁRIA 4 -->
-
-                            <tr
-                                data-status="inactive"
-                                data-name="Daniela Martins"
-                                data-email="daniela.martins@email.com"
-                            >
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="user-avatar">
-                                            DM
-                                        </div>
-
-                                        <div>
-
-                                            <div class="user-name">
-                                                Daniela Martins
-                                            </div>
-
-                                            <div class="user-id">
-                                                ID #SH004
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    <span class="email">
-                                        daniela.martins@email.com
-                                    </span>
-                                </td>
-
-
-                                <td>
-
-                                    <span class="status inactive">
-
-                                        <span class="status-dot"></span>
-
-                                        Desativada
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="device none">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-
-                                            <rect
-                                                x="5"
-                                                y="2"
-                                                width="14"
-                                                height="20"
-                                                rx="2"
-                                            />
-
-                                        </svg>
-
-                                        Nenhum
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    07/08/2026
-                                </td>
-
-
-                                <td>
-
-                                    <div class="actions">
-
-                                        <button
-                                            class="action-button"
-                                            onclick="viewUser('Daniela Martins','DM','daniela.martins@email.com','Desativada','Nenhum dispositivo','07/08/2026')"
-                                            title="Visualizar detalhes"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <path
-                                                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
-                                                />
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="3"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-
-                                        <button
-                                            class="action-button toggle-off"
-                                            onclick="toggleUser(this)"
-                                            title="Ativar conta"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="9"
-                                                />
-
-                                                <path
-                                                    d="m8 12 2.5 2.5L16 9"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-
-
-                            <!-- USUÁRIA 5 -->
-
-                            <tr
-                                data-status="active"
-                                data-name="Fernanda Lima"
-                                data-email="fernanda.lima@email.com"
-                            >
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="user-avatar">
-                                            FL
-                                        </div>
-
-                                        <div>
-
-                                            <div class="user-name">
-                                                Fernanda Lima
-                                            </div>
-
-                                            <div class="user-id">
-                                                ID #SH005
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    <span class="email">
-                                        fernanda.lima@email.com
-                                    </span>
-                                </td>
-
-
-                                <td>
-
-                                    <span class="status active">
-
-                                        <span class="status-dot"></span>
-
-                                        Ativa
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="device connected">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-
-                                            <rect
-                                                x="5"
-                                                y="2"
-                                                width="14"
-                                                height="20"
-                                                rx="2"
-                                            />
-
-                                            <line
-                                                x1="9"
-                                                y1="18"
-                                                x2="15"
-                                                y2="18"
-                                            />
-
-                                        </svg>
-
-                                        SH-005
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    09/08/2026
-                                </td>
-
-
-                                <td>
-
-                                    <div class="actions">
-
-                                        <button
-                                            class="action-button"
-                                            onclick="viewUser('Fernanda Lima','FL','fernanda.lima@email.com','Ativa','SH-005','09/08/2026')"
-                                            title="Visualizar detalhes"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <path
-                                                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
-                                                />
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="3"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-
-                                        <button
-                                            class="action-button toggle-on"
-                                            onclick="toggleUser(this)"
-                                            title="Desativar conta"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="9"
-                                                />
-
-                                                <line
-                                                    x1="8"
-                                                    y1="12"
-                                                    x2="16"
-                                                    y2="12"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-
-
-                            <!-- USUÁRIA 6 -->
-
-                            <tr
-                                data-status="active"
-                                data-name="Gabriela Santos"
-                                data-email="gabriela.santos@email.com"
-                            >
-
-                                <td>
-
-                                    <div class="user-cell">
-
-                                        <div class="user-avatar">
-                                            GS
-                                        </div>
-
-                                        <div>
-
-                                            <div class="user-name">
-                                                Gabriela Santos
-                                            </div>
-
-                                            <div class="user-id">
-                                                ID #SH006
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    <span class="email">
-                                        gabriela.santos@email.com
-                                    </span>
-                                </td>
-
-
-                                <td>
-
-                                    <span class="status active">
-
-                                        <span class="status-dot"></span>
-
-                                        Ativa
-
-                                    </span>
-
-                                </td>
-
-
-                                <td>
-
-                                    <div class="device connected">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-
-                                            <rect
-                                                x="5"
-                                                y="2"
-                                                width="14"
-                                                height="20"
-                                                rx="2"
-                                            />
-
-                                            <line
-                                                x1="9"
-                                                y1="18"
-                                                x2="15"
-                                                y2="18"
-                                            />
-
-                                        </svg>
-
-                                        SH-006
-
-                                    </div>
-
-                                </td>
-
-
-                                <td>
-                                    11/08/2026
-                                </td>
-
-
-                                <td>
-
-                                    <div class="actions">
-
-                                        <button
-                                            class="action-button"
-                                            onclick="viewUser('Gabriela Santos','GS','gabriela.santos@email.com','Ativa','SH-006','11/08/2026')"
-                                            title="Visualizar detalhes"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <path
-                                                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
-                                                />
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="3"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-
-                                        <button
-                                            class="action-button toggle-on"
-                                            onclick="toggleUser(this)"
-                                            title="Desativar conta"
-                                        >
-
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="1.8"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="9"
-                                                />
-
-                                                <line
-                                                    x1="8"
-                                                    y1="12"
-                                                    x2="16"
-                                                    y2="12"
-                                                />
-
-                                            </svg>
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-
-                        </tbody>
+                        <tbody id="userTable"><tr><td colspan="6" style="text-align:center;padding:30px">Carregando usuárias...</td></tr></tbody>
 
                     </table>
 
@@ -3795,6 +2806,91 @@
         }
     );
 
+</script>
+
+
+<script id="silenthelp-user-crud">
+(() => {
+  const apiUrl = 'api.php?action=';
+  let usersCache = [];
+  async function request(action, payload) {
+    const response = await fetch(apiUrl + encodeURIComponent(action), {
+      method: payload ? 'POST' : 'GET',
+      headers: payload ? {'Content-Type':'application/json'} : {},
+      body: payload ? JSON.stringify(payload) : undefined,
+      credentials: 'same-origin'
+    });
+    let data;
+    try { data = await response.json(); } catch (_) { throw new Error('Resposta inválida do servidor.'); }
+    if (!response.ok || data.ok === false) throw new Error(data.message || 'Não foi possível concluir a ação.');
+    return data;
+  }
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function icon(path) { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`; }
+  function renderUsers() {
+    const tbody = document.getElementById('userTable');
+    if (!tbody) return;
+    const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+    const filter = document.getElementById('statusFilter')?.value || 'all';
+    const filtered = usersCache.filter(u => (`${u.nome} ${u.email}`).toLowerCase().includes(q) && (filter === 'all' || (u.ativo ? 'active':'inactive') === filter));
+    tbody.innerHTML = filtered.length ? filtered.map(u => {
+      const active = !!Number(u.ativo), initials = (u.nome || '?').trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase();
+      return `<tr data-id="${u.id}" data-status="${active?'active':'inactive'}" data-name="${esc(u.nome)}" data-email="${esc(u.email)}">
+        <td><div class="user-cell"><div class="user-avatar">${esc(initials)}</div><div><div class="user-name">${esc(u.nome)}</div><div class="user-id">ID #${u.id}</div></div></div></td>
+        <td><span class="email">${esc(u.email)}</span></td>
+        <td><span class="status ${active?'active':'inactive'}"><span class="status-dot"></span>${active?'Ativa':'Inativa'}</span></td>
+        <td>${esc(u.tipo === 'responsavel' ? 'Responsável' : 'Protegida')}</td>
+        <td><span class="date">${esc(u.criado_em || '—')}</span></td>
+        <td><div class="actions">
+          <button type="button" class="action-button" onclick="editUser(${u.id})" title="Editar" aria-label="Editar">${icon('<path d="m16 4 4 4M4 20l4-.8L19 8a2.1 2.1 0 0 0-3-3L5 16z"/>')}</button>
+          <button type="button" class="action-button ${active?'toggle-on':'toggle-off'}" onclick="toggleUserId(${u.id})" title="${active?'Desativar':'Ativar'} conta" aria-label="${active?'Desativar':'Ativar'} conta">${icon(active?'<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>':'<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/>')}</button>
+          <button type="button" class="action-button delete-action" onclick="deleteUser(${u.id})" title="Excluir" aria-label="Excluir">${icon('<path d="M3 6h18M8 6V4h8v2m-11 0 1 14h12l1-14M10 10v6m4-6v6"/>')}</button>
+        </div></td></tr>`;
+    }).join('') : '<tr><td colspan="6" style="text-align:center;padding:30px">Nenhuma usuária encontrada.</td></tr>';
+    const count = document.getElementById('userCount'); if (count) count.textContent = filtered.length;
+    const noResults = document.getElementById('noResults'); if (noResults) noResults.classList.toggle('show', filtered.length === 0);
+  }
+  async function loadUsers() {
+    try { const d = await request('admin_users'); usersCache = d.items || []; renderUsers(); }
+    catch(e) { const tbody=document.getElementById('userTable'); if(tbody) tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:25px">${esc(e.message)}</td></tr>`; showToast(e.message); }
+  }
+  window.searchUsers = renderUsers;
+  window.filterStatus = renderUsers;
+  window.createUser = async () => {
+    const nome = prompt('Nome completo da usuária:'); if (nome === null) return;
+    const email = prompt('E-mail:'); if (email === null) return;
+    const telefone = prompt('Telefone (opcional):') || '';
+    const tipo = prompt('Tipo: digite "protegida" ou "responsavel".','protegida'); if (tipo === null) return;
+    const senha = prompt('Senha inicial (mínimo 6 caracteres):'); if (senha === null) return;
+    try { const d = await request('admin_create_user',{nome:nome.trim(),email:email.trim(),telefone,tipo:tipo.trim(),senha}); showToast(d.message || 'Usuária cadastrada.'); await loadUsers(); }
+    catch(e) { showToast(e.message); alert(e.message); }
+  };
+  window.editUser = async id => {
+    const u = usersCache.find(x => Number(x.id) === Number(id)); if (!u) return;
+    const nome = prompt('Nome completo:',u.nome); if (nome === null) return;
+    const email = prompt('E-mail:',u.email); if (email === null) return;
+    const telefone = prompt('Telefone:',u.telefone || ''); if (telefone === null) return;
+    const tipo = prompt('Tipo: protegida ou responsavel',u.tipo); if (tipo === null) return;
+    try { const d=await request('admin_update_user',{id,nome:nome.trim(),email:email.trim(),telefone:telefone.trim(),tipo:tipo.trim()}); showToast(d.message || 'Usuária atualizada.'); await loadUsers(); }
+    catch(e) { showToast(e.message); alert(e.message); }
+  };
+  window.toggleUserId = async id => {
+    const u=usersCache.find(x=>Number(x.id)===Number(id)); if(!u)return;
+    const ativo = !Number(u.ativo);
+    if (!confirm(`Deseja ${ativo?'ativar':'desativar'} a conta de ${u.nome}?`)) return;
+    try { const result = await request('admin_toggle_user',{id,ativo}); showToast(result.message || `Conta ${ativo?'ativada':'desativada'} com sucesso.`); await loadUsers(); }
+    catch(e) { showToast(e.message); alert(e.message); }
+  };
+  window.deleteUser = async id => {
+    const u=usersCache.find(x=>Number(x.id)===Number(id)); if(!u)return;
+    if(!confirm(`Excluir permanentemente a conta de ${u.nome}? Esta ação não pode ser desfeita.`))return;
+    try { const d=await request('admin_delete_user',{id}); showToast(d.message || 'Conta excluída.'); await loadUsers(); }
+    catch(e) { showToast(e.message); alert(e.message); }
+  };
+  window.toggleUser = button => { const row=button.closest('tr'); if(row) window.toggleUserId(Number(row.dataset.id)); };
+  document.addEventListener('DOMContentLoaded', loadUsers);
+  if (document.readyState !== 'loading') loadUsers();
+})();
 </script>
 
 <script src="../assets/db-sync.js"></script>

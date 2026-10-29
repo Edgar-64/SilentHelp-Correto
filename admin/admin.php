@@ -6,7 +6,7 @@ require_once __DIR__ . '/../db.php';
 
 /* Autorização compatível com a tabela users do SQL enviado. */
 if (empty($_SESSION['usuario_id'])) {
-    header('Location: login-admin.php');
+    header('Location: ../login.php');
     exit;
 }
 $adminId = (int) $_SESSION['usuario_id'];
@@ -22,7 +22,7 @@ $authResult = $authStmt->get_result();
 $adminRow = $authResult->fetch_assoc();
 $authStmt->close();
 if (!$adminRow || $adminRow['type'] !== 'admin') {
-    header('Location: login-admin.php');
+    header('Location: ../login.php');
     exit;
 }
 
@@ -2384,39 +2384,9 @@ function dashboardEscape($value): string {
                     Alertas
                 </span>
 
-                <span class="link-badge">
-                    3
-                </span>
-
             </a>
 
-            <a href="mapa-admin.php" class="sidebar-link">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-
-                    <path
-                        d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"
-                    />
-
-                    <circle
-                        cx="12"
-                        cy="10"
-                        r="2.5"
-                    />
-
-                </svg>
-
-                <span>
-                    Mapa de ocorrências
-                </span>
-</a>
+            
 
             <a href="contatos-admin.php" class="sidebar-link">
 
@@ -2520,7 +2490,7 @@ function dashboardEscape($value): string {
 
         <div class="sidebar-bottom">
 
-            <?php include '../components/logout.php'; ?>
+            <?php include 'components/logout.php'; ?>
 
         </div>
 

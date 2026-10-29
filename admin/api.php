@@ -34,10 +34,27 @@ function uid()
 function needUser()
 {
     if (!uid()) {
-        out([
-            "ok" => false,
-            "message" => "Sessão expirada."
-        ], 401);
+        out(["ok" => false, "message" => "Sessão expirada."], 401);
+    }
+
+    global $conn;
+    $id = uid();
+    $stmt = $conn->prepare("SELECT account_status FROM users WHERE id = ? LIMIT 1");
+    if (!$stmt) throw new Exception($conn->error);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->bind_result($statusAtual);
+    $found = $stmt->fetch();
+    $stmt->close();
+
+    if (!$found || !in_array(strtolower(trim((string)$statusAtual)), ["active", "ativo", "ativa", "1"], true)) {
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), "", time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+        }
+        session_destroy();
+        out(["ok" => false, "message" => "Esta conta está inativa. Entre em contato com a administração."], 403);
     }
 }
 
@@ -458,7 +475,7 @@ try {
             $senha = $d["senha"] ?? "";
 
             $stmt = $conn->prepare("
-        SELECT id, name, email, phone, password_hash, type
+        SELECT id, name, email, phone, password_hash, type, account_status
         FROM users
         WHERE email = ?
         LIMIT 1
@@ -478,7 +495,8 @@ try {
                 $emailBanco,
                 $telefone,
                 $senhaBanco,
-                $tipo
+                $tipo,
+                $statusConta
             );
 
             if (!$stmt->fetch()) {
@@ -497,6 +515,10 @@ try {
                     "ok" => false,
                     "message" => "E-mail ou senha incorretos."
                 ], 401);
+            }
+
+            if (!in_array(strtolower(trim((string)$statusConta)), ["active", "ativo", "ativa", "1"], true)) {
+                out(["ok" => false, "message" => "Sua conta está inativa. Entre em contato com a administração."], 403);
             }
 
             session_regenerate_id(true);
@@ -526,7 +548,7 @@ try {
             $senha = $d["senha"] ?? "";
 
             $stmt = $conn->prepare("\n
-            SELECT id, name, email, phone, password_hash, type\n
+            SELECT id, name, email, phone, password_hash, type, account_status\n
             FROM users\n
             WHERE email = ?\n
             AND type = 'admin'\n
@@ -544,7 +566,8 @@ try {
                 $emailBanco,
                 $telefone,
                 $senhaBanco,
-                $tipo
+                $tipo,
+                $statusConta
             );
 
             if (!$stmt->fetch()) {
@@ -562,6 +585,10 @@ try {
                     "ok" => false,
                     "message" => "Credenciais administrativas inválidas."
                 ], 401);
+            }
+
+            if (!in_array(strtolower(trim((string)$statusConta)), ["active", "ativo", "ativa", "1"], true)) {
+                out(["ok" => false, "message" => "Conta administrativa inativa."], 403);
             }
 
             session_regenerate_id(true);
@@ -1735,7 +1762,7 @@ ALERTA DO RESPONSÁVEL
 
             needAdmin();
 
-            $stmt = $conn->prepare("\n                SELECT id, name, email, phone, type, status, created_at\n                FROM users\n                WHERE type <> 'admin'\n                ORDER BY id DESC\n            ");
+            $stmt = $conn->prepare("\n                SELECT id, name, email, phone, type, account_status, created_at\n                FROM users\n                WHERE type <> 'admin'\n                ORDER BY id DESC\n            ");
             if (!$stmt)
                 throw new Exception($conn->error);
 
@@ -1997,7 +2024,7 @@ ALERTA DO RESPONSÁVEL
             $st->bind_param("s",$email);$st->execute();$st->store_result();$exists=$st->num_rows>0;$st->close();
             if($exists)out(["ok"=>false,"message"=>"Este e-mail já está cadastrado."],409);
             $hash=password_hash($senha,PASSWORD_DEFAULT);
-            $st=$conn->prepare("INSERT INTO users (type,name,email,phone,password_hash,status) VALUES (?,?,?,?,?,'active')");
+            $st=$conn->prepare("INSERT INTO users (type,name,email,phone,password_hash,account_status) VALUES (?,?,?,?,?,'ativo')");
             if(!$st)throw new Exception($conn->error);$st->bind_param("sssss",$tipo,$nome,$email,$telefone,$hash);
             if(!$st->execute())throw new Exception($st->error);$id=$conn->insert_id;$st->close();
             out(["ok"=>true,"id"=>(int)$id,"message"=>"Usuário cadastrado."]);
@@ -2010,8 +2037,67 @@ ALERTA DO RESPONSÁVEL
             out(["ok"=>true,"message"=>"Usuário atualizado."]);
 
         case "admin_toggle_user":
-            needAdmin();$id=(int)($d["id"]??0);$active=!empty($d["ativo"])?1:0;$status=$active?"active":"inactive";
-            $st=$conn->prepare("UPDATE users SET status=? WHERE id=? AND type<>'admin'");if(!$st)throw new Exception($conn->error);$st->bind_param("si",$status,$id);$st->execute();$st->close();out(["ok"=>true]);
+            needAdmin();
+
+            $id = (int)($d["id"] ?? 0);
+            if ($id <= 0) {
+                out(["ok" => false, "message" => "ID de usuário inválido."], 422);
+            }
+
+            // Aceita booleano real do JavaScript e valores equivalentes enviados por formulários.
+            $rawAtivo = $d["ativo"] ?? false;
+            $ativo = filter_var($rawAtivo, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if ($ativo === null) {
+                out(["ok" => false, "message" => "Estado da conta inválido."], 422);
+            }
+            $novoStatus = $ativo ? "ativo" : "inativo";
+
+            // Nunca permite alterar a conta administrativa por esta tela.
+            $st = $conn->prepare("SELECT type FROM users WHERE id = ? LIMIT 1");
+            if (!$st) throw new Exception($conn->error);
+            $st->bind_param("i", $id);
+            $st->execute();
+            $st->bind_result($tipoUsuario);
+            $encontrado = $st->fetch();
+            $st->close();
+
+            if (!$encontrado) {
+                out(["ok" => false, "message" => "Usuário não encontrado."], 404);
+            }
+            if ($tipoUsuario === "admin") {
+                out(["ok" => false, "message" => "Não é permitido desativar uma conta administrativa por esta tela."], 403);
+            }
+
+            $st = $conn->prepare("UPDATE users SET account_status = ? WHERE id = ? AND type <> 'admin'");
+            if (!$st) throw new Exception($conn->error);
+            $st->bind_param("si", $novoStatus, $id);
+            if (!$st->execute()) {
+                $erro = $st->error;
+                $st->close();
+                throw new Exception($erro);
+            }
+            $alteradas = $st->affected_rows;
+            $st->close();
+
+            // Confirma o valor salvo, evitando que a interface mostre sucesso sem persistência.
+            $st = $conn->prepare("SELECT account_status FROM users WHERE id = ? LIMIT 1");
+            if (!$st) throw new Exception($conn->error);
+            $st->bind_param("i", $id);
+            $st->execute();
+            $st->bind_result($statusConfirmado);
+            $confirmou = $st->fetch();
+            $st->close();
+
+            if (!$confirmou || $statusConfirmado !== $novoStatus) {
+                out(["ok" => false, "message" => "Não foi possível confirmar a alteração do status no banco."], 500);
+            }
+
+            out([
+                "ok" => true,
+                "ativo" => $statusConfirmado === "ativo",
+                "account_status" => $statusConfirmado,
+                "message" => $statusConfirmado === "ativo" ? "Conta ativada com sucesso." : "Conta desativada com sucesso."
+            ]);
 
         case "admin_delete_user":
             needAdmin();$id=(int)($d["id"]??0);if($id<=0||$id===uid())out(["ok"=>false,"message"=>"ID inválido ou não é permitido excluir a própria conta administrativa."],422);

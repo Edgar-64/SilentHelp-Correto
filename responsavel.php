@@ -2135,6 +2135,33 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
    ALERTA SOS DO BANCO
 ===================================================== */
 
+        // 1. Pede permissão para notificações push do navegador assim que abrir a página
+        if ("Notification" in window && Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+
+        // 2. Função que dispara a vibração e a notificação nativa
+        function dispararAlertaResponsavel(alerta) {
+            // Toca padrão de vibração no telemóvel (suportado por dispositivos móveis)
+            if ("vibrate" in navigator) {
+                navigator.vibrate([500, 200, 500, 200, 1000]);
+            }
+
+            // Dispara Notificação Nativa do Sistema/Navegador
+            if (Notification.permission === "granted") {
+                const notif = new Notification("🚨 ALERTA DE EMERGÊNCIA!", {
+                    body: `A pessoa protegida enviou um alerta. Clique para acompanhar.`,
+                    tag: "alerta-emergencia",
+                    renotify: true
+                });
+
+                notif.onclick = function () {
+                    window.focus();
+                    confirmarAtendimento(); // Aciona o botão de acompanhar automaticamente ao clicar na notificação
+                };
+            }
+        }
+
         let verificandoAlerta = false;
 
         async function carregarAlertaSOS() {
@@ -2181,8 +2208,12 @@ $nomeResponsavel = $usuario['nome'] ?? 'Responsável';
 
                 // Notifica uma única vez por ID, somente quando o alerta é novo e está aberto.
                 const jaNotificado = alertasNotificadosNestaPagina.has(idNovo);
-                if (idNovo !== idAnterior && !jaNotificado && ["open", "aberto", "aberta", "pending", "pendente"].includes(String(alerta.status).toLowerCase())) {
+                if (idNovo !== idAnterior && !jaNotificado && ["open", "aberto", "aberta", "pending", "pendente"].includes(statusAtual)) {
                     alertasNotificadosNestaPagina.add(idNovo);
+                    
+                    // Dispara a vibração e a notificação nativa aqui!
+                    dispararAlertaResponsavel(alerta);
+                    
                     mostrarMensagem("🚨 Novo alerta de emergência recebido!");
                 }
             } catch (erro) {

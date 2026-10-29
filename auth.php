@@ -18,7 +18,7 @@ function usuarioAtual()
     $id = (int) $_SESSION["usuario_id"];
 
     $stmt = $conn->prepare("
-        SELECT id, name, email, phone, password_hash, type, status
+        SELECT id, name, email, phone, password_hash, type, status, account_status
         FROM users
         WHERE id = ?
         LIMIT 1
@@ -38,7 +38,8 @@ function usuarioAtual()
         $telefone,
         $senha,
         $tipo,
-        $status
+        $status,
+        $statusConta
     );
 
     if (!$stmt->fetch()) {
@@ -48,6 +49,18 @@ function usuarioAtual()
 
     $stmt->close();
 
+    // A coluna "status" existente contém valores de perfil/legado.
+    // A ativação da conta é controlada separadamente por "account_status".
+    if (!in_array(strtolower(trim((string) $statusConta)), ["active", "ativo", "ativa", "1"], true)) {
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), "", time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+        }
+        session_destroy();
+        return null;
+    }
+
     return [
         "id" => $idBanco,
         "nome" => $nome,
@@ -55,7 +68,8 @@ function usuarioAtual()
         "telefone" => $telefone,
         "senha" => $senha,
         "tipo" => $tipo,
-        "status" => $status
+        "status" => $status,
+        "account_status" => $statusConta
     ];
 }
 
